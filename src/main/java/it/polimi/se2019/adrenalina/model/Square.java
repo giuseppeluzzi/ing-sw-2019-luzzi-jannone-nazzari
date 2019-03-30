@@ -1,9 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class Square extends Target {
+public class Square extends Observable implements Target {
 
   private final int posX;
   private final int posY;
@@ -12,12 +12,12 @@ public class Square extends Target {
   private boolean spawnPoint;
   private AmmoCard ammoCard;
 
-  private final Material[] edges;
+  private final BorderType[] borders;
   private final List<Weapon> weapons;
 
   public Square(int posX, int posY, PlayerColor color,
-      Material edgeUp, Material edgeRight,
-      Material edgeDown, Material edgeLeft) {
+      BorderType edgeUp, BorderType edgeRight,
+      BorderType edgeDown, BorderType edgeLeft) {
 
     this.posX = posX;
     this.posY = posY;
@@ -26,11 +26,11 @@ public class Square extends Target {
     spawnPoint = false;
     ammoCard = null;
 
-    edges = new Material[4];
-    edges[Direction.UP.ordinal()] = edgeUp;
-    edges[Direction.RIGHT.ordinal()] = edgeRight;
-    edges[Direction.DOWN.ordinal()] = edgeDown;
-    edges[Direction.LEFT.ordinal()] = edgeLeft;
+    borders = new BorderType[4];
+    borders[Direction.NORTH.ordinal()] = edgeUp;
+    borders[Direction.EAST.ordinal()] = edgeRight;
+    borders[Direction.SOUTH.ordinal()] = edgeDown;
+    borders[Direction.WEST.ordinal()] = edgeLeft;
 
     weapons = new ArrayList<>();
   }
@@ -72,8 +72,8 @@ public class Square extends Target {
     this.ammoCard = ammoCard;
   }
 
-  public Material getEdge(Direction direction) {
-    return edges[direction.ordinal()];
+  public BorderType getEdge(Direction direction) {
+    return borders[direction.ordinal()];
   }
 
   // TODO: implement getWeapons, weapons is mutable

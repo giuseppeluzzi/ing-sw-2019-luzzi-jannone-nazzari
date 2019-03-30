@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
-public abstract class Target {
+public interface Target {
 
-  public abstract boolean isPlayer();
+  boolean isPlayer();
 
 }
