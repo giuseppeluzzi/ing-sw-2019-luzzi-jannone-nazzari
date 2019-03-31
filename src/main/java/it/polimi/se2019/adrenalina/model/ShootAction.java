@@ -29,5 +29,4 @@ public class ShootAction implements Action {
   public int getTag() {
     return tag;
   }
-
 }

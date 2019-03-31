@@ -1,14 +1,15 @@
 package it.polimi.se2019.adrenalina.model;
 
-import com.sun.tools.javac.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectAction implements Action {
-  private int from;
-  private int target;
-  private int minDistance;
-  private int maxDistance;
-  private int differentFrom;
-  private boolean visible;
+  private final int from;
+  private final int target;
+  private final int minDistance;
+  private final int maxDistance;
+  private final int differentFrom;
+  private final boolean visible;
   private final ActionType type;
 
   public SelectAction(int from, int target, int minDistance,
@@ -23,35 +24,14 @@ public class SelectAction implements Action {
     type = ActionType.SELECT;
   }
 
-
   @Override
   public ActionType getActionType() {
     return type;
   }
 
-  public SelectAction setMinDistance(int value) {
-    minDistance = value;
-    return this;
-  }
-
-  public SelectAction setMaxDistance(int value) {
-    maxDistance = value;
-    return this;
-  }
-
-  public SelectAction setDifferentFrom(int target) {
-    differentFrom = target;
-    return this;
-  }
-
-  public SelectAction setVisibility(boolean value) {
-    visible = value;
-    return this;
-  }
-
   public List<Target> filter(List<Target> targets) {
-    return null;
-    // TODO implement filter
+    // TODO: implement filter
+    return new ArrayList<>();
   }
 
   public int getFrom() {

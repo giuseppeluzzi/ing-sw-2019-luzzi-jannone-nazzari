@@ -76,12 +76,13 @@ public class Square extends Observable implements Target {
     return borders[direction.ordinal()];
   }
 
-  // TODO: implement getWeapons, weapons is mutable
-
-  public void addWeapon(Weapon weapon) {
-    // TODO: exception if this square is a spawnpoint
-    weapons.add(weapon);
+  public List<Weapon> getWeapons() {
+    // TODO: weapons is mutable
+    return new ArrayList<>();
   }
 
-
+  public void addWeapon(Weapon weapon) {
+    // TODO: exception if this square is not a spawnpoint
+    weapons.add(weapon);
+  }
 }

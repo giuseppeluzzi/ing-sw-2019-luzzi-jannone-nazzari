@@ -18,5 +18,4 @@ public class OptionalMoveAction extends MoveAction {
   public boolean isUsed() {
     return used;
   }
-
 }

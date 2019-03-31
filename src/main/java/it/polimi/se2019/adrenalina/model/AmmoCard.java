@@ -1,28 +1,21 @@
 package it.polimi.se2019.adrenalina.model;
 
+import java.util.EnumMap;
+
 public class AmmoCard {
-  private final int red;
-  private final int blue;
-  private final int yellow;
+  private final EnumMap<AmmoColor, Integer> ammo;
   private final int powerUp;
 
   public AmmoCard(int red, int blue, int yellow, int powerUp) {
-    this.red = red;
-    this.blue = blue;
-    this.yellow = yellow;
     this.powerUp = powerUp;
+    ammo = new EnumMap<>(AmmoColor.class);
+    ammo.put(AmmoColor.RED, red);
+    ammo.put(AmmoColor.BLUE, blue);
+    ammo.put(AmmoColor.YELLOW, yellow);
   }
 
-  public int getRed() {
-    return red;
-  }
-
-  public int getBlue() {
-    return blue;
-  }
-
-  public int getYellow() {
-    return yellow;
+  public int getAmmo(AmmoColor color) {
+    return ammo.get(color);
   }
 
   public int getPowerUp() {

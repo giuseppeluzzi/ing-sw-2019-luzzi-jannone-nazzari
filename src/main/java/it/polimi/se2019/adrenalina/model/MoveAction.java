@@ -23,5 +23,4 @@ public class MoveAction implements Action{
   public int getDestination() {
     return destination;
   }
-
 }

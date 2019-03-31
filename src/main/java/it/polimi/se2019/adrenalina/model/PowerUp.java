@@ -1,22 +1,34 @@
 package it.polimi.se2019.adrenalina.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PowerUp {
-
-  private AmmoColor color;
+public abstract class PowerUp {
+  private final AmmoColor color;
   private List<Action> actions;
 
-  public boolean canUse(){
-
+  protected PowerUp(AmmoColor color) {
+    this.color = color;
   }
 
-  public void addAction(Action action){
+  public abstract boolean canUse();
 
+  public AmmoColor getColor() {
+    return color;
   }
 
-  public void addOptionalMoveAction(OptionalMoveAction action){
-
+  public List<Action> getActions() {
+    // TODO: actions is mutable
+    return new ArrayList<>();
   }
 
+  public void addAction(Action action) {
+    actions.add(action);
+  }
+
+  public void addOptionalMoveAction(OptionalMoveAction action) {
+    // this type of action needs to be executed at the begin and at the end
+    actions.add(0, action);
+    actions.add(action);
+  }
 }
