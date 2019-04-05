@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class Board extends Observable {
+public class Board extends Observable implements Cloneable {
   private final Square[][] grid;
-  private boolean finalFrenzy;
+  private BoardStatus status;
+  private boolean finalFrenzyActive;
+  private boolean finalFrenzySelected;
+  private long turnStartTime;
   private Player currentPlayer;
   private final List<Player> players;
 
@@ -25,6 +28,7 @@ public class Board extends Observable {
     grid = new Square[3][4];
 
     currentPlayer = null;
+    status = BoardStatus.LOBBY;
     players = new ArrayList<>();
 
     weapons = new ArrayList<>();
@@ -53,12 +57,20 @@ public class Board extends Observable {
     currentPlayer = player;
   }
 
-  public boolean isFinalFrenzy() {
-    return finalFrenzy;
+  public boolean isFinalFrenzyActive() {
+    return finalFrenzyActive;
   }
 
-  public void setFinalFrenzy(boolean finalFrenzy) {
-    this.finalFrenzy = finalFrenzy;
+  public void setFinalFrenzyActive(boolean finalFrenzyActive) {
+    this.finalFrenzyActive = finalFrenzyActive;
+  }
+
+  public boolean isFinalFrenzySelected() {
+    return finalFrenzySelected;
+  }
+
+  public void setFinalFrenzySelected(boolean finalFrenzySelected) {
+    this.finalFrenzySelected = finalFrenzySelected;
   }
 
   public void addPlayer(Player player) {
@@ -126,5 +138,31 @@ public class Board extends Observable {
   public List<Kill> getKillShots() {
     // TODO: killShotTrack is mutable
     return new ArrayList<>();
+  }
+
+  public long getTurnStartTime() {
+    return turnStartTime;
+  }
+
+  public void setTurnStartTime(long turnStartTime) {
+    this.turnStartTime = turnStartTime;
+  }
+
+  public boolean isDominationBoard() {
+    return false;
+  }
+
+  public BoardStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(BoardStatus status) {
+    this.status = status;
+  }
+
+  @Override
+  public Board clone() {
+    // TODO: board is mutable
+    return this;
   }
 }

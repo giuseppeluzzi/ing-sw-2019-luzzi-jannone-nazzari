@@ -6150,7 +6150,7 @@
 											"top": 1021,
 											"width": 232.30517578125,
 											"height": 13,
-											"text": "-finalFrenzy: boolean",
+											"text": "-finalFrenzyActive: boolean",
 											"horizontalAlignment": 0
 										}
 									],
@@ -18161,7 +18161,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFpySEV8xJal5w="
 							},
-							"name": "finalFrenzy",
+							"name": "finalFrenzyActive",
 							"visibility": "private",
 							"type": "boolean"
 						}

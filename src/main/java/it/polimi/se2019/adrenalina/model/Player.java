@@ -4,7 +4,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Observable;
 
-public class Player extends Observable implements Target {
+public class Player extends Observable implements Target, Cloneable {
   private final String name;
   private final PlayerColor color;
   private Square square;
@@ -131,5 +131,11 @@ public class Player extends Observable implements Target {
 
   public void setFrenzy(boolean frenzy) {
     this.frenzy = frenzy;
+  }
+
+  @Override
+  public Player clone() {
+    //TODO: player is mutable
+    return this;
   }
 }

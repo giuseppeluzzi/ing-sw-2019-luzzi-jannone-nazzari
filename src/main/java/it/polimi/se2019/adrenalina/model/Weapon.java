@@ -5,7 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Observable;
 
-public class Weapon extends Observable {
+public class Weapon extends Observable implements Cloneable {
   private final AmmoColor baseCost;
   private boolean loaded;
   private final String name;
@@ -75,5 +75,11 @@ public class Weapon extends Observable {
 
   public int getCost(AmmoColor color) {
     return cost.get(color);
+  }
+
+  @Override
+  public Weapon clone() {
+    //TODO: Weapon is mutable
+    return this;
   }
 }

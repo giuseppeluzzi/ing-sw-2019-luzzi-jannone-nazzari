@@ -3,7 +3,7 @@ package it.polimi.se2019.adrenalina.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PowerUp {
+public abstract class PowerUp implements Cloneable{
   private final AmmoColor color;
   private List<Action> actions;
 
@@ -30,5 +30,10 @@ public abstract class PowerUp {
     // this type of action needs to be executed at the begin and at the end
     actions.add(0, action);
     actions.add(action);
+  }
+
+  @Override
+  public PowerUp clone() {
+    return this;
   }
 }

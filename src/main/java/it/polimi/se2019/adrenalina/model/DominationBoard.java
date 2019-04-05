@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-public class DominationBoard extends Board {
+public class DominationBoard extends Board implements Cloneable {
   private final List<Kill> blue;
   private final List<Kill> red;
   private final List<Kill> yellow;
@@ -40,5 +40,16 @@ public class DominationBoard extends Board {
   public List<Kill> getYellow() {
     // TODO: yellow is mutable
     return new ArrayList<>();
+  }
+
+  @Override
+  public boolean isDominationBoard() {
+    return true;
+  }
+
+  @Override
+  public DominationBoard clone() {
+    //TODO: DominationBoard is mutable
+    return this;
   }
 }
