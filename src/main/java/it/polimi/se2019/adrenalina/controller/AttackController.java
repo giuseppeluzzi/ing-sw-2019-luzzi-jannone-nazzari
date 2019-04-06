@@ -8,10 +8,10 @@ import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 
 public class AttackController implements Observer {
-  private Board board;
+  private BoardController boardController;
 
-  AttackController(Board board) {
-    this.board = board;
+  AttackController(BoardController boardController) {
+    this.boardController = boardController;
   }
 
   public void update(PlayerAttackEvent event) {

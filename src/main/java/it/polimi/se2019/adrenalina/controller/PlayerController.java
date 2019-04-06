@@ -10,10 +10,10 @@ import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 
 public class PlayerController implements Observer {
-  private Board board;
+  private BoardController boardController;
 
-  PlayerController(Board board) {
-    this.board = board;
+  PlayerController(BoardController boardController) {
+    this.boardController = boardController;
   }
 
 

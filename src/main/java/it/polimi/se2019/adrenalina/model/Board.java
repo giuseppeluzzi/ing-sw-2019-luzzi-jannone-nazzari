@@ -1,16 +1,16 @@
 package it.polimi.se2019.adrenalina.model;
 
+import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-public class Board extends Observable implements Cloneable {
+public class Board extends Observable {
   private final Square[][] grid;
   private BoardStatus status;
   private boolean finalFrenzyActive;
   private boolean finalFrenzySelected;
   private long turnStartTime;
-  private Player currentPlayer;
+  private PlayerColor currentPlayer;
   private final List<Player> players;
 
   // TODO: every weapon of this board should be in weapons or usedWeapons
@@ -23,6 +23,15 @@ public class Board extends Observable implements Cloneable {
 
   private final List<Player> doubleKills;
   private final List<Kill> killShots;
+
+  private final boolean publicCopy;
+  private final boolean publicCopyHasWeapons;
+
+  public Board(Board board, boolean publicCopy) {
+    // TODO: copy all attributes, if publicCopy powerUps, usedPowerUps, weapons and usedWeapons must be set empty
+    this.publicCopy = publicCopy;
+    publicCopyHasWeapons = board.hasWeapons();
+  }
 
   public Board() {
     grid = new Square[3][4];
@@ -37,6 +46,8 @@ public class Board extends Observable implements Cloneable {
     usedPowerUps = new ArrayList<>();
     doubleKills = new ArrayList<>();
     killShots = new ArrayList<>();
+    publicCopy = false;
+    publicCopyHasWeapons = false;
   }
 
   public void setSquare(int x, int y, Square square) {
@@ -49,11 +60,11 @@ public class Board extends Observable implements Cloneable {
     return grid[x][y];
   }
 
-  public Player getCurrentPlayer() {
+  public PlayerColor getCurrentPlayer() {
     return currentPlayer;
   }
 
-  public void setCurrentPlayer(Player player) {
+  public void setCurrentPlayer(PlayerColor player) {
     currentPlayer = player;
   }
 
@@ -160,9 +171,15 @@ public class Board extends Observable implements Cloneable {
     this.status = status;
   }
 
-  @Override
-  public Board clone() {
-    // TODO: board is mutable
-    return this;
+  public boolean hasWeapons() {
+    if (publicCopy) {
+      return publicCopyHasWeapons;
+    }
+    return !weapons.isEmpty();
+  }
+
+  public Player getPlayerByColor(PlayerColor color) {
+    // TODO: return correct player
+    return null;
   }
 }

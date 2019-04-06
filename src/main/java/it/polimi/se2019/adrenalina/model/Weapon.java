@@ -1,11 +1,12 @@
 package it.polimi.se2019.adrenalina.model;
 
+import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Observable;
 
-public class Weapon extends Observable implements Cloneable {
+public class Weapon extends Observable {
   private final AmmoColor baseCost;
   private boolean loaded;
   private final String name;
@@ -28,6 +29,10 @@ public class Weapon extends Observable implements Cloneable {
     cost.put(AmmoColor.RED, costRed);
     cost.put(AmmoColor.BLUE, costBlue);
     cost.put(AmmoColor.YELLOW, costYellow);
+  }
+
+  public Weapon(Weapon weapon) {
+    // TODO: create copy of weapon
   }
 
   public boolean isLoaded() {
@@ -75,11 +80,5 @@ public class Weapon extends Observable implements Cloneable {
 
   public int getCost(AmmoColor color) {
     return cost.get(color);
-  }
-
-  @Override
-  public Weapon clone() {
-    //TODO: Weapon is mutable
-    return this;
   }
 }

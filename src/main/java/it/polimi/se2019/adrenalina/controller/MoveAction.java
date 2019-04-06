@@ -1,4 +1,6 @@
-package it.polimi.se2019.adrenalina.model;
+package it.polimi.se2019.adrenalina.controller;
+
+import it.polimi.se2019.adrenalina.model.ActionType;
 
 public class MoveAction implements Action{
   private final int target;

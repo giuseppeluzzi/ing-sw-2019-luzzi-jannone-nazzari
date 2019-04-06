@@ -1,5 +1,6 @@
-package it.polimi.se2019.adrenalina.model;
+package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class Effect {
     requiredEffect = null;
     actions = new ArrayList<>();
     subEffects = new ArrayList<>();
+  }
+
+  public Effect(Effect effect) {
+    // TODO: create a copy
   }
 
   public String getName() {

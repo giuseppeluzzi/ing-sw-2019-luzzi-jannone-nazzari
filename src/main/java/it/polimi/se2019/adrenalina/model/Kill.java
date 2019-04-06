@@ -1,16 +1,16 @@
 package it.polimi.se2019.adrenalina.model;
 
 public class Kill {
-  private final Player player;
+  private final PlayerColor color;
   private final boolean overKill;
 
-  public Kill(Player player, boolean overKill) {
-    this.player = player;
+  public Kill(PlayerColor color, boolean overKill) {
+    this.color = color;
     this.overKill = overKill;
   }
 
-  public Player getPlayer() {
-    return player;
+  public PlayerColor getPlayerColor() {
+    return color;
   }
 
   public boolean isOverKill() {

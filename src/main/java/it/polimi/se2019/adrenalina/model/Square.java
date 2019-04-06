@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
+import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 public class Square extends Observable implements Target {
 
@@ -33,6 +33,10 @@ public class Square extends Observable implements Target {
     borders[Direction.WEST.ordinal()] = edgeLeft;
 
     weapons = new ArrayList<>();
+  }
+
+  public Square(Square square) {
+    // TODO: create a copy of square
   }
 
   @Override

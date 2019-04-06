@@ -1,10 +1,10 @@
 package it.polimi.se2019.adrenalina.model;
+import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Observable;
 
-public class Player extends Observable implements Target, Cloneable {
+public class Player extends Observable implements Target {
   private final String name;
   private final PlayerColor color;
   private Square square;
@@ -13,11 +13,13 @@ public class Player extends Observable implements Target, Cloneable {
   private boolean frenzy;
   private PlayerStatus status;
 
-  private final List<Player> damages;
-  private final List<Player> tags;
+  private final List<PlayerColor> damages;
+  private final List<PlayerColor> tags;
   private final List<PowerUp> powerUps;
   private final List<Weapon> weapons;
   private final EnumMap<AmmoColor, Integer> ammo;
+
+  private final boolean publicCopy;
 
   public Player(String name, PlayerColor color) {
     this.name = name;
@@ -34,6 +36,12 @@ public class Player extends Observable implements Target, Cloneable {
     ammo.put(AmmoColor.RED, 0);
     ammo.put(AmmoColor.BLUE, 0);
     ammo.put(AmmoColor.YELLOW, 0);
+    publicCopy = false;
+  }
+
+  public Player(Player player, boolean publicCopy) {
+    // TODO: create copy of player, if publicCopy is true only not loaded weapons must be copied
+    this.publicCopy = publicCopy;
   }
 
   @Override
@@ -81,22 +89,22 @@ public class Player extends Observable implements Target, Cloneable {
     this.status = status;
   }
 
-  public List<Player> getDamages() {
+  public List<PlayerColor> getDamages() {
     // TODO: damages is mutable
     return new ArrayList<>();
   }
 
-  public void addDamage(Player player) {
+  public void addDamage(PlayerColor player) {
     // TODO: check if dead
     damages.add(player);
   }
 
-  public List<Player> getTags() {
+  public List<PlayerColor> getTags() {
     // TODO: tags is mutable
     return new ArrayList<>();
   }
 
-  public void addTag(Player player) {
+  public void addTag(PlayerColor player) {
     // TODO: limit to 3 per offender
     tags.add(player);
   }
@@ -131,11 +139,5 @@ public class Player extends Observable implements Target, Cloneable {
 
   public void setFrenzy(boolean frenzy) {
     this.frenzy = frenzy;
-  }
-
-  @Override
-  public Player clone() {
-    //TODO: player is mutable
-    return this;
   }
 }

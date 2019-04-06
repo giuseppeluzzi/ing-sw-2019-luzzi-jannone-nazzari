@@ -1,5 +1,7 @@
-package it.polimi.se2019.adrenalina.model;
+package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.model.ActionType;
+import it.polimi.se2019.adrenalina.model.Target;
 import java.util.ArrayList;
 import java.util.List;
 

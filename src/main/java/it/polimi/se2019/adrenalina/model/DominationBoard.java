@@ -1,10 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
-public class DominationBoard extends Board implements Cloneable {
+public class DominationBoard extends Board {
   private final List<Kill> blue;
   private final List<Kill> red;
   private final List<Kill> yellow;
@@ -13,6 +12,11 @@ public class DominationBoard extends Board implements Cloneable {
     blue = new ArrayList<>();
     red = new ArrayList<>();
     yellow = new ArrayList<>();
+  }
+
+  public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
+    // TODO: create a copy
+    super(dominationBoard, publicCopy);
   }
 
   public void addBlueKill(Kill kill) {
@@ -45,11 +49,5 @@ public class DominationBoard extends Board implements Cloneable {
   @Override
   public boolean isDominationBoard() {
     return true;
-  }
-
-  @Override
-  public DominationBoard clone() {
-    //TODO: DominationBoard is mutable
-    return this;
   }
 }
