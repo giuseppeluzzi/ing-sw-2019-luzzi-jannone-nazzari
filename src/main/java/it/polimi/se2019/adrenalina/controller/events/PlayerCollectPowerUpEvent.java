@@ -3,11 +3,11 @@ package it.polimi.se2019.adrenalina.controller.events;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 
-public class PlayerPowerUpEvent implements Event {
+public class PlayerCollectPowerUpEvent {
   private final Player player;
   private final PowerUp powerUp;
 
-  public PlayerPowerUpEvent(Player player, PowerUp powerUp) {
+  public PlayerCollectPowerUpEvent(Player player, PowerUp powerUp) {
     this.player = player;
     this.powerUp = powerUp;
   }
