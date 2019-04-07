@@ -5,9 +5,10 @@ public class Teleporter extends PowerUp {
     super(color);
   }
 
-  public Teleporter(Teleporter teleporter) {
-    // TODO: create a copy
-    super(teleporter.getColor());
+  @Override
+  public Teleporter makeCopy() {
+    // TODO clone object
+    return null;
   }
 
   @Override

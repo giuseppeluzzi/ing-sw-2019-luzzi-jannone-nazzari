@@ -14,6 +14,14 @@ public class AmmoCard {
     ammo.put(AmmoColor.YELLOW, yellow);
   }
 
+  public AmmoCard(AmmoCard ammoCard) {
+    powerUp = ammoCard.powerUp;
+    ammo = new EnumMap<>(AmmoColor.class);
+    ammo.put(AmmoColor.RED, ammoCard.ammo.get(AmmoColor.RED));
+    ammo.put(AmmoColor.BLUE, ammoCard.ammo.get(AmmoColor.BLUE));
+    ammo.put(AmmoColor.YELLOW, ammoCard.ammo.get(AmmoColor.YELLOW));
+  }
+
   public int getAmmo(AmmoColor color) {
     return ammo.get(color);
   }

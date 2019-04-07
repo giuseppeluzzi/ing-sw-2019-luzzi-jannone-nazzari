@@ -14,6 +14,8 @@ public abstract class PowerUp {
     actions = new ArrayList<>();
   }
 
+  protected abstract PowerUp makeCopy();
+
   public abstract boolean canUse();
 
   public AmmoColor getColor() {

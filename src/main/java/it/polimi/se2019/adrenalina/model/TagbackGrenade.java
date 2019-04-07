@@ -5,9 +5,10 @@ public class TagbackGrenade extends PowerUp {
     super(color);
   }
 
-  public TagbackGrenade(TagbackGrenade tagbackGrenade) {
-    // TODO: create a copy
-    super(tagbackGrenade.getColor());
+  @Override
+  public TagbackGrenade makeCopy() {
+    // TODO copy object
+    return null;
   }
 
   @Override

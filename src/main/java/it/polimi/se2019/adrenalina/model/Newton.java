@@ -5,9 +5,10 @@ public class Newton extends PowerUp {
     super(color);
   }
 
-  public Newton(Newton newton) {
-    // TODO: create a copy
-    super(newton.getColor());
+  @Override
+  public Newton makeCopy() {
+    // TODO: copy object
+    return null;
   }
 
   @Override

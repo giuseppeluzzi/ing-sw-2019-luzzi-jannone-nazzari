@@ -9,6 +9,11 @@ public class Kill {
     this.overKill = overKill;
   }
 
+  public Kill(Kill kill) {
+    color = kill.color;
+    overKill = kill.overKill;
+  }
+
   public PlayerColor getPlayerColor() {
     return color;
   }
