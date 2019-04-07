@@ -29,15 +29,15 @@ public class CharacterView extends Observable implements Observer {
   }
 
   public void update(PlayerDeathEvent event) {
-    // TODO:
+    // TODO: handle the death of a character
   }
 
   public void update(PlayerSpawnEvent event) {
-    // TODO:
+    // TODO: handle the respawn of a character
   }
 
   public void update(PlayerMoveEvent event) {
-    // TODO:
+    // TODO: handle the movement of a character on a board
   }
 
   @Override

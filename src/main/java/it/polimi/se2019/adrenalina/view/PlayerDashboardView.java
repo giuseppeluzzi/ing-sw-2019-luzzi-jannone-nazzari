@@ -23,7 +23,7 @@ public class PlayerDashboardView extends Observable implements Observer {
   }
 
   public void reset() {
-    // TODO: reset
+    // TODO: reset the player dashboard
   }
 
   public void switchToFinalFrenzy() {
@@ -31,7 +31,7 @@ public class PlayerDashboardView extends Observable implements Observer {
   }
 
   public void update(PlayerUpdateEvent event) {
-    // TODO:
+    // TODO: update the status of the player dashboard
   }
 
   @Override

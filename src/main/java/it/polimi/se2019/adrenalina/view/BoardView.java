@@ -44,23 +44,23 @@ public class BoardView extends Observable implements Observer {
   }
 
   public void update(WeaponUpdateEvent event) {
-    // TODO:
+    // TODO: replace a weapon on the board
   }
 
   public void update(AmmoCardUpdateEvent event) {
-    // TODO:
+    // TODO: replace an ammo card on the board
   }
 
   public void update(KillShotEvent event) {
-    // TODO:
+    // TODO: mark a new killshot
   }
 
   public void update(DoubleKillEvent event) {
-    // TODO:
+    // TODO: mark a double kill
   }
 
   public void update(SpawnPointDamageEvent event) {
-    // TODO:
+    // TODO: mark a damage to a spawn point (in domination mode)
   }
 
   @Override
