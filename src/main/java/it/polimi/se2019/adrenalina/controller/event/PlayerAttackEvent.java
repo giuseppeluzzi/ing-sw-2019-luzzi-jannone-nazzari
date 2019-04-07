@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.events;
+package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -13,6 +13,11 @@ public class PlayerAttackEvent implements Event {
     this.player = player;
     this.target = target;
     this.effect = effect;
+  }
+
+  @Override
+  public String getEventName() {
+    return "PlayerAttack";
   }
 
   public Player getPlayer() {

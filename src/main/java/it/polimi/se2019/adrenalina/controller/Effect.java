@@ -28,6 +28,14 @@ public class Effect {
 
   public Effect(Effect effect) {
     // TODO: create a copy
+    name = effect.name;
+    weapon = effect.weapon;
+    costRed = effect.costRed;
+    costBlue = effect.costBlue;
+    costYellow = effect.costYellow;
+
+    actions = new ArrayList<>();
+    subEffects = new ArrayList<>();
   }
 
   public String getName() {

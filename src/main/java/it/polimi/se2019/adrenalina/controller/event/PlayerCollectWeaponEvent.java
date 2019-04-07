@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.events;
+package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -14,6 +14,11 @@ public class PlayerCollectWeaponEvent implements Event {
     this.player = player;
     this.weapon = weapon;
     this.square = square;
+  }
+
+  @Override
+  public String getEventName() {
+    return "PlayerCollectWeapon";
   }
 
   public Player getPlayer() {

@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.events;
+package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -10,6 +10,11 @@ public class AmmoCardUpdateEvent implements Event {
   public AmmoCardUpdateEvent(Square square, AmmoCard ammoCard) {
     this.square = square;
     this.ammoCard = ammoCard;
+  }
+
+  @Override
+  public String getEventName() {
+    return "AmmoCardUpdate";
   }
 
   public Square getSquare() {

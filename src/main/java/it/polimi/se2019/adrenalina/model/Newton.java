@@ -5,10 +5,9 @@ public class Newton extends PowerUp {
     super(color);
   }
 
-  @Override
-  public Newton makeCopy() {
-    // TODO: copy object
-    return null;
+  public Newton(Newton powerup) {
+    // TODO: copy actions
+    super(powerup.getColor());
   }
 
   @Override

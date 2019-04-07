@@ -17,6 +17,9 @@ public class DominationBoard extends Board {
   public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
     // TODO: create a copy
     super(dominationBoard, publicCopy);
+    blue = new ArrayList<>();
+    red = new ArrayList<>();
+    yellow = new ArrayList<>();
   }
 
   public void addBlueKill(Kill kill) {

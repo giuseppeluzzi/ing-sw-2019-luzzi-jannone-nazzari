@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.events;
+package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
@@ -14,6 +14,11 @@ public class PlayerSpawnEvent implements Event {
     this.player = player;
     this.spawnLocation = spawnLocation;
     this.tossedPowerUp = tossedPowerUp;
+  }
+
+  @Override
+  public String getEventName() {
+    return "PlayerSpawn";
   }
 
   public Player getPlayer() {

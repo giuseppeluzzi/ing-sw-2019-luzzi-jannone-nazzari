@@ -27,12 +27,6 @@ public class Board extends Observable {
   private final boolean publicCopy;
   private final boolean publicCopyHasWeapons;
 
-  public Board(Board board, boolean publicCopy) {
-    // TODO: copy all attributes, if publicCopy powerUps, usedPowerUps, weapons and usedWeapons must be set empty
-    this.publicCopy = publicCopy;
-    publicCopyHasWeapons = board.hasWeapons();
-  }
-
   public Board() {
     grid = new Square[3][4];
 
@@ -48,6 +42,22 @@ public class Board extends Observable {
     killShots = new ArrayList<>();
     publicCopy = false;
     publicCopyHasWeapons = false;
+  }
+
+  public Board(Board board, boolean publicCopy) {
+    // TODO: copy all attributes, if publicCopy powerUps, usedPowerUps, weapons and usedWeapons must be set empty
+    this.publicCopy = publicCopy;
+    publicCopyHasWeapons = board.hasWeapons();
+
+    grid = new Square[3][4];
+    players = new ArrayList<>();
+
+    weapons = new ArrayList<>();
+    usedWeapons = new ArrayList<>();
+    powerUps = new ArrayList<>();
+    usedPowerUps = new ArrayList<>();
+    doubleKills = new ArrayList<>();
+    killShots = new ArrayList<>();
   }
 
   public void setSquare(int x, int y, Square square) {

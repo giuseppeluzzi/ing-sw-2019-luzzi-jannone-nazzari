@@ -8,7 +8,7 @@ public class Configuration {
   private static Configuration instance;
 
   private Configuration() {
-
+    // private constructor
   }
 
   public static synchronized Configuration getInstance() {

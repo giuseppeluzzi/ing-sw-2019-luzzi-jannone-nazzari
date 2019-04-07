@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 public class Square extends Observable implements Target {
@@ -12,7 +13,7 @@ public class Square extends Observable implements Target {
   private boolean spawnPoint;
   private AmmoCard ammoCard;
 
-  private final BorderType[] borders;
+  private final EnumMap<Direction, BorderType> borders;
   private final List<Weapon> weapons;
 
   public Square(int posX, int posY, PlayerColor color,
@@ -26,17 +27,28 @@ public class Square extends Observable implements Target {
     spawnPoint = false;
     ammoCard = null;
 
-    borders = new BorderType[4];
-    borders[Direction.NORTH.ordinal()] = edgeUp;
-    borders[Direction.EAST.ordinal()] = edgeRight;
-    borders[Direction.SOUTH.ordinal()] = edgeDown;
-    borders[Direction.WEST.ordinal()] = edgeLeft;
+    borders = new EnumMap<>(Direction.class);
+    borders.put(Direction.NORTH, edgeUp);
+    borders.put(Direction.EAST, edgeRight);
+    borders.put(Direction.SOUTH, edgeDown);
+    borders.put(Direction.WEST, edgeLeft);
 
     weapons = new ArrayList<>();
   }
 
   public Square(Square square) {
     // TODO: create a copy of square
+    posX = square.posX;
+    posY = square.posY;
+    color = square.color;
+
+    borders = new EnumMap<>(Direction.class);
+    borders.put(Direction.NORTH, square.getEdge(Direction.NORTH));
+    borders.put(Direction.EAST, square.getEdge(Direction.EAST));
+    borders.put(Direction.SOUTH, square.getEdge(Direction.SOUTH));
+    borders.put(Direction.WEST, square.getEdge(Direction.WEST));
+
+    weapons = new ArrayList<>();
   }
 
   @Override
@@ -77,7 +89,7 @@ public class Square extends Observable implements Target {
   }
 
   public BorderType getEdge(Direction direction) {
-    return borders[direction.ordinal()];
+    return borders.get(direction);
   }
 
   public List<Weapon> getWeapons() {

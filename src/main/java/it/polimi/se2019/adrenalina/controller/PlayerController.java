@@ -1,16 +1,15 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import it.polimi.se2019.adrenalina.controller.events.Event;
-import it.polimi.se2019.adrenalina.controller.events.PlayerCollectAmmoEvent;
-import it.polimi.se2019.adrenalina.controller.events.PlayerCollectWeaponEvent;
-import it.polimi.se2019.adrenalina.controller.events.PlayerMoveEvent;
-import it.polimi.se2019.adrenalina.controller.events.PlayerPowerUpEvent;
-import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.PlayerCollectAmmoEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 
 public class PlayerController implements Observer {
-  private BoardController boardController;
+  private final BoardController boardController;
 
   PlayerController(BoardController boardController) {
     this.boardController = boardController;
@@ -18,23 +17,23 @@ public class PlayerController implements Observer {
 
 
   public void update(PlayerMoveEvent event) {
-
+    // TODO: invoked when a player wants to go in a square
   }
 
   public void update(PlayerCollectAmmoEvent event) {
-
+    // TODO: invoked when a player wants to collect an ammocard
   }
 
   public void update(PlayerCollectWeaponEvent event) {
-
+    // TODO: invoked when a player wants to collect a weapon
   }
 
   public void update(PlayerPowerUpEvent event) {
-
+    // TODO: invoked when a player uses a powerup
   }
 
   @Override
-  public void update(Event event) throws WrongMethodTypeException {
-
+  public void update(Event event) {
+    throw new WrongMethodTypeException();
   }
 }

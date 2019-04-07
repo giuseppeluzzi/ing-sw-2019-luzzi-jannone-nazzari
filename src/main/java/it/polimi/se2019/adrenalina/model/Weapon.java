@@ -33,6 +33,18 @@ public class Weapon extends Observable {
 
   public Weapon(Weapon weapon) {
     // TODO: create copy of weapon
+    baseCost = weapon.baseCost;
+    name = weapon.name;
+    loaded = weapon.loaded;
+
+    targetHistory = new ArrayList<>();
+    effects = new ArrayList<>();
+    selectedEffects = new ArrayList<>();
+    cost = new EnumMap<>(AmmoColor.class);
+
+    cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
+    cost.put(AmmoColor.BLUE, weapon.getCost(AmmoColor.BLUE));
+    cost.put(AmmoColor.YELLOW, weapon.getCost(AmmoColor.YELLOW));
   }
 
   public boolean isLoaded() {

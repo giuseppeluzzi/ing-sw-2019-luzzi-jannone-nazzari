@@ -7,14 +7,12 @@ import java.util.List;
 
 public abstract class PowerUp {
   private final AmmoColor color;
-  private List<Action> actions;
+  private final List<Action> actions;
 
   protected PowerUp(AmmoColor color) {
     this.color = color;
     actions = new ArrayList<>();
   }
-
-  protected abstract PowerUp makeCopy();
 
   public abstract boolean canUse();
 

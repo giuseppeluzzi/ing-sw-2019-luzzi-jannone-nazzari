@@ -5,10 +5,9 @@ public class TargetingScope extends PowerUp {
     super(color);
   }
 
-  @Override
-  public TargetingScope makeCopy() {
-    // TODO clone object
-    return null;
+  public TargetingScope(TargetingScope powerup) {
+    // TODO: copy actions
+    super(powerup.getColor());
   }
   
   @Override

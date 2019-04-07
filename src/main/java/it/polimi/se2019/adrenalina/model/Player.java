@@ -42,6 +42,14 @@ public class Player extends Observable implements Target {
   public Player(Player player, boolean publicCopy) {
     // TODO: create copy of player, if publicCopy is true only not loaded weapons must be copied
     this.publicCopy = publicCopy;
+    name = player.name;
+    color = player.color;
+
+    damages = new ArrayList<>();
+    tags = new ArrayList<>();
+    powerUps = new ArrayList<>();
+    weapons = new ArrayList<>();
+    ammo = new EnumMap<>(AmmoColor.class);
   }
 
   @Override
@@ -140,4 +148,9 @@ public class Player extends Observable implements Target {
   public void setFrenzy(boolean frenzy) {
     this.frenzy = frenzy;
   }
+
+  public boolean isPublicCopy() {
+    return publicCopy;
+  }
+
 }

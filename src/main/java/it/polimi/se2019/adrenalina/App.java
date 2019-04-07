@@ -8,8 +8,6 @@ package it.polimi.se2019.adrenalina;
 public class App {
     
     public static void main(String[] args) {
-
-        System.out.println("Hello World!");
-
+        // TODO: start the game
     }
 }

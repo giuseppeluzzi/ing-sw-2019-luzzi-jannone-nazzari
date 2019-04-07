@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.events;
+package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -10,6 +10,11 @@ public class PlayerReloadEvent implements Event {
   public PlayerReloadEvent(Player player, Weapon weapon) {
     this.player = player;
     this.weapon = weapon;
+  }
+
+  @Override
+  public String getEventName() {
+    return "PlayerReload";
   }
 
   public Player getPlayer() {

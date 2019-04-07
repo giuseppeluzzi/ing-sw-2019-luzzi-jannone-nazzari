@@ -1,16 +1,13 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import it.polimi.se2019.adrenalina.controller.events.Event;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.utils.Observer;
-import java.lang.invoke.WrongMethodTypeException;
 
-public class BoardController implements Runnable, Observer {
-  private Board board;
-  private AttackController attackController;
-  private PlayerController playerController;
+public class BoardController implements Runnable {
+  private final Board board;
+  private final AttackController attackController;
+  private final PlayerController playerController;
 
   BoardController(boolean domination) {
     if (domination) {
@@ -18,20 +15,12 @@ public class BoardController implements Runnable, Observer {
     } else {
       board = new Board();
     }
-    attackController = new AttackController(board);
-    playerController = new PlayerController(board);
+    attackController = new AttackController(this);
+    playerController = new PlayerController(this);
   }
 
   Board getBoard() {
     return board;
-  }
-
-  void connectPlayer(Player player) {
-
-  }
-
-  void disconnectPlayer(Player player) {
-
   }
 
   AttackController getAttackController() {
@@ -42,12 +31,16 @@ public class BoardController implements Runnable, Observer {
     return playerController;
   }
 
-  @Override
-  public void run() {
+  void connectPlayer(Player player) {
+    // TODO: add a player to the board or change his state to playing if he was already in game
+  }
+
+  void disconnectPlayer(Player player) {
+    // TODO: remove a player if the game is in lobby otherwise change his state to disconnected
   }
 
   @Override
-  public void update(Event event) throws WrongMethodTypeException {
-
+  public void run() {
+    // TODO: game manager
   }
 }

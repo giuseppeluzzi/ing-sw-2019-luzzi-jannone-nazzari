@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.controller.events.Event;
-import it.polimi.se2019.adrenalina.controller.events.PlayerUpdateEvent;
+import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.PlayerUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -14,20 +14,28 @@ public class PlayerDashboardView extends Observable implements Observer {
     this.player = player;
   }
 
-  public void reset(Player player) {
+  public Player getPlayer() {
+    return player;
+  }
 
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
+  public void reset() {
+    // TODO: reset
   }
 
   public void switchToFinalFrenzy() {
-
+    // TODO: change dashboard to final frenzy mode
   }
 
   public void update(PlayerUpdateEvent event) {
-
+    // TODO:
   }
 
   @Override
-  public void update(Event event) throws WrongMethodTypeException {
-
+  public void update(Event event) {
+    throw new WrongMethodTypeException();
   }
 }

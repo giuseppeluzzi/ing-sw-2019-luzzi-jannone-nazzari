@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.events;
+package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.model.Kill;
 
@@ -7,6 +7,11 @@ public class DoubleKillEvent implements Event {
 
   public DoubleKillEvent(Kill kill) {
     this.kill = kill;
+  }
+
+  @Override
+  public String getEventName() {
+    return "DoubleKill";
   }
 
   public Kill getKill() {

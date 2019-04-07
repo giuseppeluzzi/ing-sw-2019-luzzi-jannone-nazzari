@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.events;
+package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.model.Player;
 
@@ -9,6 +9,11 @@ public class PlayerDeathEvent implements Event {
   public PlayerDeathEvent(Player player, Player killer) {
     this.player = player;
     this.killer = killer;
+  }
+
+  @Override
+  public String getEventName() {
+    return "PlayerDeath";
   }
 
   public Player getPlayer() {

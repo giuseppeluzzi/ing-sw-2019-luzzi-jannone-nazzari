@@ -6,13 +6,10 @@ public class ClientController  {
   private Board board;
 
   public void connect() {
-    //TODO: connect client to specified server
-
+    //TODO: connect the client to specified server
   }
 
   public Board getBoard() {
     return board;
   }
-
-
 }
