@@ -8,34 +8,48 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.util.ArrayList;
 
-public class CharacterView extends Observable implements Observer {
-  private Player player;
+public class CharactersView extends Observable implements CharactersViewInterface, Observer {
+  private final ArrayList<Player> players;
+  private Player selectedPlayer;
 
-  public CharacterView(Player player) {
-    this.player = player;
+  public CharactersView() {
+    players = new ArrayList<>();
   }
 
-  public Player getPlayer() {
-    return player;
+  @Override
+  public ArrayList<Player> getPlayers() {
+    // TODO: return a copy of the players
+    return players;
   }
 
-  public void setPlayer(Player player) {
-    this.player = player;
+  @Override
+  public void addPlayer(Player player) {
+    players.add(player);
   }
 
-  public void setSelected(boolean selected) {
-    // TODO: mark the character as selected
+  @Override
+  public void setSelected(Player player) {
+    selectedPlayer = player;
   }
 
+  @Override
+  public void removeSelected() {
+    selectedPlayer = null;
+  }
+
+  @Override
   public void update(PlayerDeathEvent event) {
     // TODO: handle the death of a character
   }
 
+  @Override
   public void update(PlayerSpawnEvent event) {
     // TODO: handle the respawn of a character
   }
 
+  @Override
   public void update(PlayerMoveEvent event) {
     // TODO: handle the movement of a character on a board
   }

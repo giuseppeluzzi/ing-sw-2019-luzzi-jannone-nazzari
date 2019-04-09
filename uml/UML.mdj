@@ -696,7 +696,7 @@
 											"top": 1106,
 											"width": 237.70703125,
 											"height": 13,
-											"text": "~Player(player: Player, public: boolean)",
+											"text": "~Player(players: Player, public: boolean)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -11522,7 +11522,7 @@
 											"top": 458,
 											"width": 295,
 											"height": 13,
-											"text": "~connectPlayer(player: Player): void",
+											"text": "~connectPlayer(players: Player): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -11539,7 +11539,7 @@
 											"top": 473,
 											"width": 295,
 											"height": 13,
-											"text": "~disconnectPlayer(player: Player): void",
+											"text": "~disconnectPlayer(players: Player): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -12390,7 +12390,7 @@
 											"top": 1230,
 											"width": 175,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										}
 									],
@@ -13456,7 +13456,7 @@
 											"top": 1545,
 											"width": 175,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										}
 									],
@@ -13656,7 +13656,7 @@
 											"top": 1530,
 											"width": 175,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -13890,7 +13890,7 @@
 											"top": 1430,
 											"width": 175,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14121,7 +14121,7 @@
 											"top": 1330,
 											"width": 175,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14335,7 +14335,7 @@
 											"top": 1126,
 											"width": 175,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14552,7 +14552,7 @@
 											"top": 1230,
 											"width": 174,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14766,7 +14766,7 @@
 											"top": 1330,
 											"width": 174,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14997,7 +14997,7 @@
 											"top": 1126,
 											"width": 175,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15214,7 +15214,7 @@
 											"top": 1530,
 											"width": 174,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15699,7 +15699,7 @@
 											"top": 636,
 											"width": 332.78857421875,
 											"height": 13,
-											"text": "+joinGame(board: Board, player: Player): void",
+											"text": "+joinGame(board: Board, players: Player): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20088,7 +20088,7 @@
 											"top": 1854,
 											"width": 270,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										}
 									],
@@ -23592,7 +23592,7 @@
 											"top": 1430,
 											"width": 174.1162109375,
 											"height": 13,
-											"text": "-player: Player",
+											"text": "-players: Player",
 											"horizontalAlignment": 0
 										},
 										{
@@ -27088,7 +27088,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFp7Yu899qoies="
 											},
-											"name": "player",
+											"name": "players",
 											"type": {
 												"$ref": "AAAAAAFpuv240UbJjp0="
 											}
@@ -29836,7 +29836,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFp7b6duHJUJLY="
 											},
-											"name": "player",
+											"name": "players",
 											"type": {
 												"$ref": "AAAAAAFpuv240UbJjp0="
 											}
@@ -29867,7 +29867,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFp7b62unXcun0="
 											},
-											"name": "player",
+											"name": "players",
 											"type": {
 												"$ref": "AAAAAAFpuv240UbJjp0="
 											}
@@ -30091,7 +30091,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFp7b12/2bzIBU="
 											},
-											"name": "player",
+											"name": "players",
 											"type": {
 												"$ref": "AAAAAAFpuv240UbJjp0="
 											}
@@ -30771,7 +30771,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFp7fRAAJRPBYQ="
 									},
-									"name": "player",
+									"name": "players",
 									"visibility": "private",
 									"type": {
 										"$ref": "AAAAAAFpuv240UbJjp0="
@@ -30820,7 +30820,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFp7fTwwJppEz0="
 									},
-									"name": "player",
+									"name": "players",
 									"visibility": "private",
 									"type": {
 										"$ref": "AAAAAAFpuv240UbJjp0="
@@ -30869,7 +30869,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFp7fUeE51FXCE="
 									},
-									"name": "player",
+									"name": "players",
 									"visibility": "private",
 									"type": {
 										"$ref": "AAAAAAFpuv240UbJjp0="
@@ -30943,7 +30943,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFp7f8EP0QrWhY="
 									},
-									"name": "player",
+									"name": "players",
 									"visibility": "private",
 									"type": {
 										"$ref": "AAAAAAFpuv240UbJjp0="
@@ -31186,7 +31186,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFp7f03CCI85Qg="
 									},
-									"name": "player",
+									"name": "players",
 									"visibility": "private",
 									"type": {
 										"$ref": "AAAAAAFpuv240UbJjp0="
@@ -31208,7 +31208,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFp9L8m3NWsNco="
 									},
-									"name": "player",
+									"name": "players",
 									"visibility": "private",
 									"type": {
 										"$ref": "AAAAAAFpuv240UbJjp0="
@@ -31280,7 +31280,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFp7fPrhI6Xjdk="
 							},
-							"name": "player",
+							"name": "players",
 							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAFpuv240UbJjp0="
@@ -31329,7 +31329,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFp7fQVx5Fz+f8="
 							},
-							"name": "player",
+							"name": "players",
 							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAFpuv240UbJjp0="
@@ -31390,7 +31390,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFp7f6gtzxtaQA="
 							},
-							"name": "player",
+							"name": "players",
 							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAFpuv240UbJjp0="
@@ -31451,7 +31451,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFp7f4sGzJCXRg="
 							},
-							"name": "player",
+							"name": "players",
 							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAFpuv240UbJjp0="
@@ -31500,7 +31500,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFp7f20nytTySs="
 							},
-							"name": "player",
+							"name": "players",
 							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAFpuv240UbJjp0="
@@ -32036,7 +32036,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFp7hVybBVtZMg="
 									},
-									"name": "player",
+									"name": "players",
 									"visibility": "private",
 									"type": {
 										"$ref": "AAAAAAFpuv240UbJjp0="

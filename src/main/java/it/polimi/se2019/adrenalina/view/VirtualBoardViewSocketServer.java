@@ -8,25 +8,12 @@ import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.MessageSeverity;
-import it.polimi.se2019.adrenalina.utils.Observable;
-import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 
-public class BoardView extends Observable implements Observer, BoardViewInterface {
-  private Board board;
+public class VirtualBoardViewSocketServer extends BoardView {
 
-  protected BoardView(Board board) {
-    this.board = board;
-  }
-
-  @Override
-  public Board getBoard() {
-    return board;
-  }
-
-  @Override
-  public void setBoard(Board board) {
-    this.board = board;
+  protected VirtualBoardViewSocketServer(Board board) {
+    super(board);
   }
 
   @Override
