@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.ActionType;
 
 public class ShootAction implements Action {
@@ -18,6 +19,18 @@ public class ShootAction implements Action {
   @Override
   public ActionType getActionType() {
     return type;
+  }
+
+  @Override
+  public String serialize(){
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  @Override
+  public ShootAction deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, ShootAction.class);
   }
 
   public int getTarget() {

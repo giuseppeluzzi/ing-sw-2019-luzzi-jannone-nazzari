@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.model;
 
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.List;
@@ -191,5 +192,15 @@ public class Board extends Observable {
   public Player getPlayerByColor(PlayerColor color) {
     // TODO: return correct player
     return null;
+  }
+
+  public String serialize() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  public Player deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, Player.class);
   }
 }

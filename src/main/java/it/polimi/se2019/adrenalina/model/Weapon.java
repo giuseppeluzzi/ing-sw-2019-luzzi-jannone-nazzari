@@ -1,9 +1,11 @@
 package it.polimi.se2019.adrenalina.model;
 
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 
 public class Weapon extends Observable {
@@ -13,7 +15,7 @@ public class Weapon extends Observable {
   private final List<Target> targetHistory;
   private final List<Effect> effects;
   private final List<Effect> selectedEffects;
-  private final EnumMap<AmmoColor, Integer> cost;
+  private final HashMap<AmmoColor, Integer> cost;
 
   public Weapon(int costRed, int costBlue, int costYellow,
       AmmoColor baseCost, String name) {
@@ -24,7 +26,7 @@ public class Weapon extends Observable {
     targetHistory = new ArrayList<>();
     effects = new ArrayList<>();
     selectedEffects = new ArrayList<>();
-    cost = new EnumMap<>(AmmoColor.class);
+    cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, costRed);
     cost.put(AmmoColor.BLUE, costBlue);
@@ -40,7 +42,7 @@ public class Weapon extends Observable {
     targetHistory = new ArrayList<>();
     effects = new ArrayList<>();
     selectedEffects = new ArrayList<>();
-    cost = new EnumMap<>(AmmoColor.class);
+    cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
     cost.put(AmmoColor.BLUE, weapon.getCost(AmmoColor.BLUE));
@@ -92,5 +94,15 @@ public class Weapon extends Observable {
 
   public int getCost(AmmoColor color) {
     return cost.get(color);
+  }
+
+  public String serialize() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  public Player deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, Player.class);
   }
 }

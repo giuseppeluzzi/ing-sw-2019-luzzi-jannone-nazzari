@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
+import com.google.gson.Gson;
+
 public class Teleporter extends PowerUp {
   public Teleporter(AmmoColor color) {
     super(color);
@@ -14,5 +16,11 @@ public class Teleporter extends PowerUp {
   public boolean canUse(){
     //TODO implement function
     return true;
+  }
+
+  @Override
+  public Teleporter deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, Teleporter.class);
   }
 }

@@ -1,7 +1,15 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.annotations.Expose;
 import it.polimi.se2019.adrenalina.model.ActionType;
 import it.polimi.se2019.adrenalina.model.Target;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +21,6 @@ public class SelectAction implements Action {
   private final int differentFrom;
   private final boolean visible;
   private final ActionType type;
-
   public SelectAction(int from, int target, int minDistance,
       int maxDistance, int differentFrom, boolean visible) {
 
@@ -29,6 +36,18 @@ public class SelectAction implements Action {
   @Override
   public ActionType getActionType() {
     return type;
+  }
+
+  @Override
+  public String serialize() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  @Override
+  public SelectAction deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, SelectAction.class);
   }
 
   public List<Target> filter(List<Target> targets) {

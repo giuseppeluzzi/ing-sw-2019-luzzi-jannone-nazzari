@@ -1,7 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
 
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.Action;
 import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,4 +36,11 @@ public abstract class PowerUp {
     actions.add(0, action);
     actions.add(action);
   }
+
+  public String serialize(){
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  public abstract PowerUp deserialize(String json);
 }

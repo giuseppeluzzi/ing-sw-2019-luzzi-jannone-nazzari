@@ -1,6 +1,9 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
@@ -17,8 +20,17 @@ public class PlayerCollectWeaponEvent implements Event {
   }
 
   @Override
-  public String getEventName() {
-    return "PlayerCollectWeapon";
+  public PlayerCollectWeaponEvent deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, PlayerCollectWeaponEvent.class);
+  }
+
+  @Override
+  public String serialize() {
+    Gson gson = new Gson();
+    JsonElement jsonElement = gson.toJsonTree(this);
+    jsonElement.getAsJsonObject().addProperty("eventType", EventType.PLAYER_COLLECT_WEAPON_EVENT.toString());
+    return gson.toJson(jsonElement);
   }
 
   public Player getPlayer() {

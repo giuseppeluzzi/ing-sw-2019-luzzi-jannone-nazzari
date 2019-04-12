@@ -1,7 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 
 public class Player extends Observable implements Target {
@@ -17,7 +19,7 @@ public class Player extends Observable implements Target {
   private final List<PlayerColor> tags;
   private final List<PowerUp> powerUps;
   private final List<Weapon> weapons;
-  private final EnumMap<AmmoColor, Integer> ammo;
+  private final HashMap<AmmoColor, Integer> ammo;
 
   private final boolean publicCopy;
 
@@ -31,7 +33,7 @@ public class Player extends Observable implements Target {
     tags = new ArrayList<>();
     powerUps = new ArrayList<>();
     weapons = new ArrayList<>();
-    ammo = new EnumMap<>(AmmoColor.class);
+    ammo = new HashMap<>();
 
     ammo.put(AmmoColor.RED, 0);
     ammo.put(AmmoColor.BLUE, 0);
@@ -49,7 +51,7 @@ public class Player extends Observable implements Target {
     tags = new ArrayList<>();
     powerUps = new ArrayList<>();
     weapons = new ArrayList<>();
-    ammo = new EnumMap<>(AmmoColor.class);
+    ammo = new HashMap<>();
   }
 
   @Override
@@ -153,4 +155,13 @@ public class Player extends Observable implements Target {
     return publicCopy;
   }
 
+  public String serialize() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  public Player deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, Player.class);
+  }
 }

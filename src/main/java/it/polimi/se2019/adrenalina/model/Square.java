@@ -1,7 +1,8 @@
 package it.polimi.se2019.adrenalina.model;
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 
 public class Square extends Observable implements Target {
@@ -13,7 +14,7 @@ public class Square extends Observable implements Target {
   private boolean spawnPoint;
   private AmmoCard ammoCard;
 
-  private final EnumMap<Direction, BorderType> borders;
+  private final HashMap<Direction, BorderType> borders;
   private final List<Weapon> weapons;
 
   public Square(int posX, int posY, PlayerColor color,
@@ -27,7 +28,7 @@ public class Square extends Observable implements Target {
     spawnPoint = false;
     ammoCard = null;
 
-    borders = new EnumMap<>(Direction.class);
+    borders = new HashMap<>();
     borders.put(Direction.NORTH, edgeUp);
     borders.put(Direction.EAST, edgeRight);
     borders.put(Direction.SOUTH, edgeDown);
@@ -42,7 +43,7 @@ public class Square extends Observable implements Target {
     posY = square.posY;
     color = square.color;
 
-    borders = new EnumMap<>(Direction.class);
+    borders = new HashMap<>();
     borders.put(Direction.NORTH, square.getEdge(Direction.NORTH));
     borders.put(Direction.EAST, square.getEdge(Direction.EAST));
     borders.put(Direction.SOUTH, square.getEdge(Direction.SOUTH));
@@ -100,5 +101,15 @@ public class Square extends Observable implements Target {
   public void addWeapon(Weapon weapon) {
     // TODO: exception if this square is not a spawnpoint
     weapons.add(weapon);
+  }
+
+  public String serialize() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  public AmmoCard deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, AmmoCard.class);
   }
 }

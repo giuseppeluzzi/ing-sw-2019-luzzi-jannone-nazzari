@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
+import com.google.gson.Gson;
+
 public class TagbackGrenade extends PowerUp {
   public TagbackGrenade(AmmoColor color) {
     super(color);
@@ -14,5 +16,11 @@ public class TagbackGrenade extends PowerUp {
   public boolean canUse(){
     //TODO: implement function
     return true;
+  }
+
+  @Override
+  public TagbackGrenade deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, TagbackGrenade.class);
   }
 }

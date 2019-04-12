@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
+import com.google.gson.Gson;
+
 public class TargetingScope extends PowerUp {
   public TargetingScope(AmmoColor color) {
     super(color);
@@ -14,5 +16,11 @@ public class TargetingScope extends PowerUp {
   public boolean canUse(){
     //TODO implement function
     return true;
+  }
+
+  @Override
+  public TargetingScope deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, TargetingScope.class);
   }
 }

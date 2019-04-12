@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
@@ -15,8 +17,17 @@ public class WeaponUpdateEvent implements Event {
   }
 
   @Override
-  public String getEventName() {
-    return "WeaponUpdate";
+  public WeaponUpdateEvent deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, WeaponUpdateEvent.class);
+  }
+
+  @Override
+  public String serialize() {
+    Gson gson = new Gson();
+    JsonElement jsonElement = gson.toJsonTree(this);
+    jsonElement.getAsJsonObject().addProperty("eventType", EventType.WEAPON_UPDATE_EVENT.toString());
+    return gson.toJson(jsonElement);
   }
 
   public Square getSquare() {

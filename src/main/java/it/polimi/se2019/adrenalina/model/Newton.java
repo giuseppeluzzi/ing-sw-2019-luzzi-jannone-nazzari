@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
+import com.google.gson.Gson;
+
 public class Newton extends PowerUp {
   public Newton(AmmoColor color) {
     super(color);
@@ -15,6 +17,13 @@ public class Newton extends PowerUp {
     //TODO: implement function
     return true;
   }
+
+  @Override
+  public Newton deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, Newton.class);
+  }
+
 }
 
 

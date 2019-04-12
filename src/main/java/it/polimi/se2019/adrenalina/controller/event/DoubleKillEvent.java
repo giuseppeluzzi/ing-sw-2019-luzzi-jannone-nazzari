@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Kill;
 
 public class DoubleKillEvent implements Event {
@@ -9,12 +11,21 @@ public class DoubleKillEvent implements Event {
     this.kill = kill;
   }
 
-  @Override
-  public String getEventName() {
-    return "DoubleKill";
-  }
-
   public Kill getKill() {
     return kill;
+  }
+
+  @Override
+  public String serialize() {
+    Gson gson = new Gson();
+    JsonElement jsonElement = gson.toJsonTree(this);
+    jsonElement.getAsJsonObject().addProperty("eventType", EventType.DOUBLE_KILL_EVENT.toString());
+    return gson.toJson(jsonElement);
+  }
+
+  @Override
+  public DoubleKillEvent deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, DoubleKillEvent.class);
   }
 }
