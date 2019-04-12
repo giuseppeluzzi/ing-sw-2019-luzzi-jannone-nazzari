@@ -59,7 +59,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>it.polimi.se2019.adrenalina.App</mainClass>
+                            <mainClass>it.polimi.se2019.adrenalina.AppClient</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

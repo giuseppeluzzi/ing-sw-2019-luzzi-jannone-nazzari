@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Player extends Observable implements Target {
+  // TODO: powerUps and weapon should have a remove*() method (whith which parameter?)
   private final String name;
   private final PlayerColor color;
   private Square square;
@@ -14,6 +15,7 @@ public class Player extends Observable implements Target {
   private int deaths;
   private boolean frenzy;
   private PlayerStatus status;
+  private int powerUpCount;
 
   private final List<PlayerColor> damages;
   private final List<PlayerColor> tags;
@@ -42,16 +44,36 @@ public class Player extends Observable implements Target {
   }
 
   public Player(Player player, boolean publicCopy) {
-    // TODO: create copy of player, if publicCopy is true only not loaded weapons must be copied
     this.publicCopy = publicCopy;
     name = player.name;
     color = player.color;
 
-    damages = new ArrayList<>();
-    tags = new ArrayList<>();
-    powerUps = new ArrayList<>();
-    weapons = new ArrayList<>();
-    ammo = new HashMap<>();
+    damages = player.getDamages();
+    tags = player.getTags();
+
+    if (publicCopy) {
+      powerUps = new ArrayList<>();
+      weapons = new ArrayList<>();
+      for (Weapon weapon : player.weapons) {
+        if (!weapon.isLoaded()) {
+          weapons.add(weapon);
+        }
+      }
+    } else {
+      powerUps = player.getPowerUps();
+      weapons = player.getWeapons();
+    }
+
+    ammo = new EnumMap<>(AmmoColor.class);
+    for (AmmoColor ammoColor : AmmoColor.values()) {
+      ammo.put(ammoColor, player.getAmmo(ammoColor));
+    }
+    square = player.getSquare();
+    points = player.points;
+    deaths = player.deaths;
+    frenzy = player.frenzy;
+    status = player.status;
+    powerUpCount = player.powerUpCount;
   }
 
   @Override
@@ -64,7 +86,7 @@ public class Player extends Observable implements Target {
   }
 
   public Square getSquare() {
-    return square;
+    return new Square(square);
   }
 
   public void setSquare(Square square) {
@@ -100,23 +122,24 @@ public class Player extends Observable implements Target {
   }
 
   public List<PlayerColor> getDamages() {
-    // TODO: damages is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(damages);
   }
 
   public void addDamage(PlayerColor player) {
-    // TODO: check if dead
+    if (damages.size() >= 12) {
+      throw new IllegalStateException("Player is already dead");
+    }
     damages.add(player);
   }
 
   public List<PlayerColor> getTags() {
-    // TODO: tags is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(tags);
   }
 
   public void addTag(PlayerColor player) {
-    // TODO: limit to 3 per offender
-    tags.add(player);
+    if (tags.stream().filter(tag -> tag == player).count() < 3) {
+      tags.add(player);
+    }
   }
 
   public List<PowerUp> getPowerUps() {
@@ -125,17 +148,25 @@ public class Player extends Observable implements Target {
   }
 
   public void addPowerUp(PowerUp powerup) {
-    // TODO: limit to 3
+    if (powerUps.size() >= 3) {
+      throw new IllegalStateException("Player already has 3 powerUps");
+    }
     powerUps.add(powerup);
+    powerUpCount++;
   }
 
   public List<Weapon> getWeapons() {
-    // TODO: weapons is mutable
-    return new ArrayList<>();
+    List<Weapon> output = new ArrayList<>();
+    for (Weapon weapon : weapons) {
+      output.add(new Weapon(weapon));
+    }
+    return output;
   }
 
   public void addWeapon(Weapon weapon) {
-    // TODO: limit to 3
+    if (weapons.size() >= 3) {
+      throw new IllegalStateException("Player already has 3 weapons");
+    }
     weapons.add(weapon);
   }
 
@@ -163,5 +194,8 @@ public class Player extends Observable implements Target {
   public Player deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, Player.class);
+  }
+  public int getPowerUpCount() {
+    return powerUpCount;
   }
 }

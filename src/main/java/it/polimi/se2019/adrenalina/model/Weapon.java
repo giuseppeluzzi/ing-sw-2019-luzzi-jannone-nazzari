@@ -34,15 +34,14 @@ public class Weapon extends Observable {
   }
 
   public Weapon(Weapon weapon) {
-    // TODO: create copy of weapon
     baseCost = weapon.baseCost;
     name = weapon.name;
     loaded = weapon.loaded;
 
-    targetHistory = new ArrayList<>();
-    effects = new ArrayList<>();
-    selectedEffects = new ArrayList<>();
-    cost = new HashMap<>();
+    targetHistory = weapon.getTargetHistory();
+    effects = weapon.getEffects();
+    selectedEffects = weapon.getSelectedEffects();
+    cost = new EnumMap<>(AmmoColor.class);
 
     cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
     cost.put(AmmoColor.BLUE, weapon.getCost(AmmoColor.BLUE));
@@ -70,13 +69,23 @@ public class Weapon extends Observable {
   }
 
   public List<Target> getTargetHistory() {
-    // TODO: targetHistory is mutable
-    return new ArrayList<>();
+    List<Target> output = new ArrayList<>();
+    for (Target target : targetHistory) {
+      if (target.isPlayer()) {
+        output.add(new Player((Player) target, true));
+      } else {
+        output.add(new Square((Square) target));
+      }
+    }
+    return output;
   }
 
   public List<Effect> getEffects() {
-    // TODO: effects is mutable
-    return new ArrayList<>();
+    List<Effect> output = new ArrayList<>();
+    for (Effect effect : effects) {
+      output.add(new Effect(effect));
+    }
+    return output;
   }
 
   public void addEffect(Effect effect) {
@@ -84,8 +93,11 @@ public class Weapon extends Observable {
   }
 
   public List<Effect> getSelectedEffects() {
-    // TODO: selectedEffects is mutable
-    return new ArrayList<>();
+    List<Effect> output = new ArrayList<>();
+    for (Effect effect : selectedEffects) {
+      output.add(new Effect(effect));
+    }
+    return output;
   }
 
   public void clearSelectedEffects() {

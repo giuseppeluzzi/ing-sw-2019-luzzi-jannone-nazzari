@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CharactersView extends Observable implements CharactersViewInterface, Observer {
   private final ArrayList<Player> players;
@@ -19,9 +20,12 @@ public class CharactersView extends Observable implements CharactersViewInterfac
   }
 
   @Override
-  public ArrayList<Player> getPlayers() {
-    // TODO: return a copy of the players
-    return players;
+  public List<Player> getPlayers() {
+    List<Player> output = new ArrayList<>();
+    for (Player player : players) {
+      output.add(new Player(player, true));
+    }
+    return output;
   }
 
   @Override
