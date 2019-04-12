@@ -9,10 +9,11 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface CharactersViewInterface {
 
-  public ArrayList<Player> getPlayers();
+  public List<Player> getPlayers();
 
   public void addPlayer(Player player);
 

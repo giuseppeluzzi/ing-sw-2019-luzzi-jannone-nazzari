@@ -1,8 +1,10 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.BoardStatus;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PlayerStatus;
 
 public class BoardController implements Runnable {
   private final Board board;
@@ -32,11 +34,19 @@ public class BoardController implements Runnable {
   }
 
   void connectPlayer(Player player) {
-    // TODO: add a player to the board or change his state to playing if he was already in game
+    if (board.getStatus() == BoardStatus.LOBBY) {
+      board.addPlayer(player);
+    } else {
+      player.setStatus(PlayerStatus.PLAYING);
+    }
   }
 
   void disconnectPlayer(Player player) {
-    // TODO: remove a player if the game is in lobby otherwise change his state to disconnected
+    if (board.getStatus() == BoardStatus.LOBBY) {
+      board.removePlayer(player.getColor());
+    } else {
+      player.setStatus(PlayerStatus.DISCONNECTED);
+    }
   }
 
   @Override

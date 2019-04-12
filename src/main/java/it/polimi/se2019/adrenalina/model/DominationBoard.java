@@ -15,11 +15,10 @@ public class DominationBoard extends Board {
   }
 
   public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
-    // TODO: create a copy
     super(dominationBoard, publicCopy);
-    blue = new ArrayList<>();
-    red = new ArrayList<>();
-    yellow = new ArrayList<>();
+    blue = dominationBoard.getBlue();
+    red = dominationBoard.getRed();
+    yellow = dominationBoard.getYellow();
   }
 
   public void addBlueKill(Kill kill) {
@@ -27,26 +26,35 @@ public class DominationBoard extends Board {
   }
 
   public List<Kill> getBlue() {
-    // TODO: blue is mutable
-    return new ArrayList<>();
+    List<Kill> output = new ArrayList<>();
+    for (Kill kill : blue) {
+      output.add(new Kill(kill));
+    }
+    return output;
   }
 
   public void addRedKill(Kill kill) {
-    blue.add(kill);
+    red.add(kill);
   }
 
   public List<Kill> getRed() {
-    // TODO: red is mutable
-    return new ArrayList<>();
+    List<Kill> output = new ArrayList<>();
+    for (Kill kill : red) {
+      output.add(new Kill(kill));
+    }
+    return output;
   }
 
   public void addYellowKill(Kill kill) {
-    blue.add(kill);
+    yellow.add(kill);
   }
 
   public List<Kill> getYellow() {
-    // TODO: yellow is mutable
-    return new ArrayList<>();
+    List<Kill> output = new ArrayList<>();
+    for (Kill kill : yellow) {
+      output.add(new Kill(kill));
+    }
+    return output;
   }
 
   @Override

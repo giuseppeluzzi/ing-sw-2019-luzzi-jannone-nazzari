@@ -27,15 +27,14 @@ public class Effect {
   }
 
   public Effect(Effect effect) {
-    // TODO: create a copy
     name = effect.name;
     weapon = effect.weapon;
     costRed = effect.costRed;
     costBlue = effect.costBlue;
     costYellow = effect.costYellow;
-
-    actions = new ArrayList<>();
-    subEffects = new ArrayList<>();
+    requiredEffect = effect.getRequiredEffect();
+    actions = effect.getActions();
+    subEffects = effect.getSubEffects();
   }
 
   public String getName() {
@@ -43,7 +42,11 @@ public class Effect {
   }
 
   public Effect getRequiredEffect() {
-    return requiredEffect;
+    if (requiredEffect == null) {
+      return null;
+    } else {
+      return new Effect(requiredEffect);
+    }
   }
 
   public Weapon getWeapon() {
@@ -67,8 +70,11 @@ public class Effect {
   }
 
   public List<Effect> getSubEffects() {
-    // TODO: subEffects is mutable
-    return new ArrayList<>();
+    List<Effect> output = new ArrayList<>();
+    for (Effect effect : subEffects) {
+      output.add(new Effect(effect));
+    }
+    return output;
   }
 
   public void addSubEffect(Effect effect) {

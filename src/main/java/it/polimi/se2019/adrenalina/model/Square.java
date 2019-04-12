@@ -37,7 +37,6 @@ public class Square extends Observable implements Target {
   }
 
   public Square(Square square) {
-    // TODO: create a copy of square
     posX = square.posX;
     posY = square.posY;
     color = square.color;
@@ -48,7 +47,9 @@ public class Square extends Observable implements Target {
     borders.put(Direction.SOUTH, square.getEdge(Direction.SOUTH));
     borders.put(Direction.WEST, square.getEdge(Direction.WEST));
 
-    weapons = new ArrayList<>();
+    weapons = square.getWeapons();
+    ammoCard = square.ammoCard;
+    spawnPoint = square.spawnPoint;
   }
 
   @Override
@@ -93,12 +94,17 @@ public class Square extends Observable implements Target {
   }
 
   public List<Weapon> getWeapons() {
-    // TODO: weapons is mutable
-    return new ArrayList<>();
+    List<Weapon> output = new ArrayList<>();
+    for (Weapon weapon : weapons) {
+      output.add(new Weapon(weapon));
+    }
+    return output;
   }
 
   public void addWeapon(Weapon weapon) {
-    // TODO: exception if this square is not a spawnpoint
+    if (! spawnPoint) {
+      throw new IllegalStateException("Square is not a spawnPoint");
+    }
     weapons.add(weapon);
   }
 }
