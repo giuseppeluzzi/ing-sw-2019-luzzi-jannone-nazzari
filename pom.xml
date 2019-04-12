@@ -39,6 +39,11 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
 
     </dependencies>
 
@@ -53,7 +58,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>it.polimi.se2019.adrenalina.App</mainClass>
+                            <mainClass>it.polimi.se2019.adrenalina.AppClient</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
