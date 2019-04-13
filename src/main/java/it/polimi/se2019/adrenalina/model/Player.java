@@ -64,7 +64,7 @@ public class Player extends Observable implements Target {
       weapons = player.getWeapons();
     }
 
-    ammo = new EnumMap<>(AmmoColor.class);
+    ammo = new HashMap<>();
     for (AmmoColor ammoColor : AmmoColor.values()) {
       ammo.put(ammoColor, player.getAmmo(ammoColor));
     }

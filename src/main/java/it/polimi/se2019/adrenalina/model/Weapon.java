@@ -41,7 +41,7 @@ public class Weapon extends Observable {
     targetHistory = weapon.getTargetHistory();
     effects = weapon.getEffects();
     selectedEffects = weapon.getSelectedEffects();
-    cost = new EnumMap<>(AmmoColor.class);
+    cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
     cost.put(AmmoColor.BLUE, weapon.getCost(AmmoColor.BLUE));

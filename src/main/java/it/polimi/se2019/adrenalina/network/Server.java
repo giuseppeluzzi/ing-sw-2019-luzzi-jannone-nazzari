@@ -18,12 +18,12 @@ public class Server implements ServerInterface {
   @Override
   public void addClient(ClientInterface client) throws RemoteException {
     clients.add(client);
-    Log.info("New RMI client!");
+    Log.info("Server", "New client connected! (" + client.getName() + " - Domination: " + client.isDomination() + ")");
   }
 
   @Override
   public void createGame(BoardController boardController) throws RemoteException {
-
+    //
   }
 
   @Override

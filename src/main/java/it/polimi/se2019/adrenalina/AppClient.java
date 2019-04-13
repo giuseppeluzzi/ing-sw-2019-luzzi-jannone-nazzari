@@ -27,7 +27,7 @@ public class AppClient {
     Log.info("  (2) Domination");
     Character gameMode = scanner.nextLine().charAt(0);
     boolean domination = false;
-    if (gameMode == 2) {
+    if (gameMode == '2') {
       domination = true;
     }
 

@@ -8,7 +8,6 @@ public class AmmoCard {
   private final int powerUp;
 
   public AmmoCard(int red, int blue, int yellow, int powerUp) {
-    // TODO: why AmmoColor.class was an argument of HashMap<>()?
     this.powerUp = powerUp;
     ammo = new HashMap<>();
     ammo.put(AmmoColor.RED, red);

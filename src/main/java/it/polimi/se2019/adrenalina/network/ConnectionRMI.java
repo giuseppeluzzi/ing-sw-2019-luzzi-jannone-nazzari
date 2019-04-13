@@ -25,7 +25,17 @@ public class ConnectionRMI implements ClientInterface {
   }
 
   @Override
-  public void connect() throws RemoteException {
+  public String getName() {
+    return client.getName();
+  }
+
+  @Override
+  public boolean isDomination() {
+    return client.isDomination();
+  }
+
+  @Override
+  public void connect() {
     try {
       server.addClient(client);
     } catch (RemoteException e) {

@@ -24,6 +24,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     connection.connect();
   }
 
+  @Override
   public String getName() {
     return name;
   }
