@@ -6,5 +6,6 @@ import java.rmi.RemoteException;
 public interface ClientInterface extends Remote {
   String getName() throws RemoteException;
   boolean isDomination() throws RemoteException;
-  void connect() throws RemoteException;
+  void showMessage(String text) throws RemoteException;
+  void ping() throws RemoteException;
 }

@@ -1,8 +1,10 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Player;
 
-public class PlayerChatEvent {
+public class PlayerChatEvent implements Event{
   private final Player player;
   private final String message;
 
@@ -17,5 +19,19 @@ public class PlayerChatEvent {
 
   public String getMessage() {
     return message;
+  }
+
+  @Override
+  public PlayerChatEvent deserialize(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, PlayerChatEvent.class);
+  }
+
+  @Override
+  public String serialize() {
+    Gson gson = new Gson();
+    JsonElement jsonElement = gson.toJsonTree(this);
+    jsonElement.getAsJsonObject().addProperty("eventType", EventType.PLAYER_CHAT_EVENT.toString());
+    return gson.toJson(jsonElement);
   }
 }

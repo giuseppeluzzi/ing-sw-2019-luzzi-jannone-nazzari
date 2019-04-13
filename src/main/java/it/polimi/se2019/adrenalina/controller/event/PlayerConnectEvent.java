@@ -1,9 +1,9 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
-public class PlayerConnectEvent {
-  private final EventType type = EventType.PLAYER_CONNECT_EVENT;
+public class PlayerConnectEvent implements Event {
   private final String playerName;
   private final boolean domination;
 
@@ -20,13 +20,17 @@ public class PlayerConnectEvent {
     return domination;
   }
 
-  public String serialize() {
-    Gson gson = new Gson();
-    return gson.toJson(this);
-  }
-
-  public static PlayerConnectEvent deserialize(String json) {
+  @Override
+  public PlayerConnectEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerConnectEvent.class);
+  }
+
+  @Override
+  public String serialize() {
+    Gson gson = new Gson();
+    JsonElement jsonElement = gson.toJsonTree(this);
+    jsonElement.getAsJsonObject().addProperty("eventType", EventType.PLAYER_CONNECT_EVENT.toString());
+    return gson.toJson(jsonElement);
   }
 }
