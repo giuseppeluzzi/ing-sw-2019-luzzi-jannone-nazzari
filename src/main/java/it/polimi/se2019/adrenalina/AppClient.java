@@ -37,7 +37,11 @@ public class AppClient {
     switch (connectionMode) {
       case '1':
         // RMI
-        client = new Client(name, domination);
+        try {
+          client = new Client(name, domination);
+        } catch (RemoteException e) {
+          Log.severe("RMI", "Connection error: " + e.getMessage());
+        }
         break;
       case '2':
         // Socket

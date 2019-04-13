@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Server extends UnicastRemoteObject implements ServerInterface, Runnable {
+public class Server extends UnicastRemoteObject implements ServerInterface {
   private static final long serialVersionUID = -8473577041428305191L;
   private static final int RMI_PORT = 1099;
   private final ArrayList<BoardController> games;
@@ -20,6 +20,25 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Runn
   public Server() throws RemoteException {
     games = new ArrayList<>();
     clients = new ArrayList<>();
+
+    new Thread(() -> {
+      while (true) {
+        for (ClientInterface client: clients) {
+          try {
+            client.ping();
+          } catch (RemoteException e) {
+            Log.severe("A client disconnected!");
+            clients.remove(client);
+            // TODO: remove client?
+          }
+        }
+        try {
+          sleep(500);
+        } catch (InterruptedException e) {
+          Log.severe("Interrupted!");
+        }
+      }
+    }).start();
   }
 
   @Override
@@ -37,23 +56,4 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Runn
     return null;
   }
 
-  @Override
-  public void run() {
-    while (true) {
-      for (ClientInterface client: clients) {
-        String name = "";
-        try {
-          client.ping();
-          name = client.getName();
-        } catch (RemoteException e) {
-          Log.severe(name + " disconnected!");
-        }
-      }
-      try {
-        sleep(500);
-      } catch (InterruptedException e) {
-        Log.severe("Interrupted!");
-      }
-    }
-  }
 }

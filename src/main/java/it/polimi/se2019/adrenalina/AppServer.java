@@ -17,6 +17,7 @@ public class AppServer {
 
     try {
       Server server = new Server();
+
       LocateRegistry.createRegistry(RMI_PORT);
       Naming.rebind("//localhost/MyServer", server);
 
