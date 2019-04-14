@@ -3,6 +3,9 @@ package it.polimi.se2019.adrenalina.network;
 import static java.lang.Thread.sleep;
 
 import it.polimi.se2019.adrenalina.controller.BoardController;
+import it.polimi.se2019.adrenalina.model.BoardStatus;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PlayerColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 
 public class Server extends UnicastRemoteObject implements ServerInterface {
   private static final int PING_INTERVAL = 500;
+
   private static final long serialVersionUID = -8473577041428305191L;
   private final ArrayList<BoardController> games;
   private final ArrayList<ClientInterface> clients;
@@ -41,22 +45,45 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     }).start();
   }
 
+  /**
+   * Adds a client to an existing board or to a new board, per game-mode
+   * @param client client to be added
+   * @throws RemoteException in case of network problems with rmi
+   */
   @Override
   public void addClient(ClientInterface client) throws RemoteException {
     clients.add(client);
-    client.showMessage("ciaooo");
-    Log.info("Server", "New client connected! (" + client.getName() + " - Domination: " + client.isDomination() + ")");
+    Log.info("Server", "New client connected! (Name: " + client.getName() + " - Domination: " + client.isDomination() + ")");
+
+    BoardController game = getPendingGame(client.isDomination());
+    if (game == null) {
+      game = new BoardController(client.isDomination());
+      games.add(game);
+    }
+    Player player = game.getPlayerController().createPlayer(client.getName(),
+        PlayerColor.values()[game.getBoard().getPlayers().size()]);
   }
 
-  public void createGame(BoardController boardController) {
-    //
-  }
-
+  /**
+   * Finds a game in lobby, with a free spot for a player and in a certain game-mode
+   * @param domination if the game must be in domination mode
+   * @return a board controller or null if doesn't exists a free board
+   */
   public BoardController getPendingGame(boolean domination) {
+    for (BoardController game: games) {
+      if (game.getBoard().getStatus() == BoardStatus.LOBBY &&
+          game.getBoard().isDominationBoard() == domination &&
+          game.getBoard().getPlayers().size() < 5) {
+        return game;
+      }
+    }
     return null;
   }
 
-  public void stop() {
+  /**
+   * Stops the server pinging
+   */
+  private void stopPinging() {
     running = false;
   }
 

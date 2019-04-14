@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
+import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.BoardStatus;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
@@ -11,7 +13,7 @@ public class BoardController implements Runnable {
   private final AttackController attackController;
   private final PlayerController playerController;
 
-  BoardController(boolean domination) {
+  public BoardController(boolean domination) {
     if (domination) {
       board = new DominationBoard();
     } else {
@@ -21,27 +23,47 @@ public class BoardController implements Runnable {
     playerController = new PlayerController(this);
   }
 
-  Board getBoard() {
+  public Board getBoard() {
     return board;
   }
 
-  AttackController getAttackController() {
+  public AttackController getAttackController() {
     return attackController;
   }
 
-  PlayerController getPlayerController() {
+  public PlayerController getPlayerController() {
     return playerController;
   }
 
-  void connectPlayer(Player player) {
+  /**
+   * Adds a new (existing) player to a board in lobby (playing) status
+   * @param player player to be added
+   * @throws FullBoardException if the board already has 5 players
+   * @throws PlayingBoardException if the player is new and the match isn't in lobby status
+   */
+  void addPlayer(Player player) throws FullBoardException, PlayingBoardException {
     if (board.getStatus() == BoardStatus.LOBBY) {
-      board.addPlayer(player);
+      if (board.getPlayers().size() < 5) {
+        board.addPlayer(player);
+        player.setStatus(PlayerStatus.WAITING);
+      } else {
+        throw new FullBoardException();
+      }
     } else {
-      player.setStatus(PlayerStatus.PLAYING);
+      if (board.getPlayers().contains(player)) {
+        player.setStatus(PlayerStatus.PLAYING);
+      } else {
+        throw new PlayingBoardException("Board isn't in lobby status ");
+      }
     }
   }
 
-  void disconnectPlayer(Player player) {
+
+  /**
+   * Removes a player from a board
+   * @param player to be removed
+   */
+  void removePlayer(Player player) {
     if (board.getStatus() == BoardStatus.LOBBY) {
       board.removePlayer(player.getColor());
     } else {
