@@ -8,12 +8,10 @@ import it.polimi.se2019.adrenalina.model.Square;
 public class AmmoCardUpdateEvent implements Event {
   private final Square square;
   private final AmmoCard ammoCard;
-  private final EventType eventType;
 
   public AmmoCardUpdateEvent(Square square, AmmoCard ammoCard) {
     this.square = square;
     this.ammoCard = ammoCard;
-    eventType = EventType.AMMO_CARD_UPDATE_EVENT;
   }
 
   @Override

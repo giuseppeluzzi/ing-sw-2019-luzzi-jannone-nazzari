@@ -12,7 +12,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.rmi.RemoteException;
 
 public class VirtualClientSocket implements ClientInterface, Runnable {
   private String name;
@@ -35,7 +34,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
       printWriter = new PrintWriter(outputStream, true);
       bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "utf-8"));
     } catch (IOException e) {
-      Log.severe("Socket", "IO Error: " + e.getMessage());
+      Log.exception(e);
     }
   }
 
@@ -44,7 +43,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
     try {
       while (clientSocket.isConnected()) {
         String message = bufferedReader.readLine();
-        //Log.info(message);
 
         Gson gson = new Gson();
         JsonObject json = gson.fromJson(message, JsonObject.class);
@@ -63,10 +61,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
             break;
         }
       }
-    } catch (RemoteException e) {
-      Log.severe("RMI", "Connection error: " + e.getMessage());
     } catch (IOException e) {
-      Log.severe("Socket", "IO Error: " + e.getMessage());
+      Log.exception(e);
     }
   }
 
@@ -91,6 +87,17 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   @Override
   public void ping() {
     // useless
+  }
+
+  @Override
+  public void disconnect() {
+    try {
+      bufferedReader.close();
+      printWriter.close();
+      clientSocket.close();
+    } catch (IOException e) {
+      Log.exception(e);
+    }
   }
 
   public void sendEvent(Event event){

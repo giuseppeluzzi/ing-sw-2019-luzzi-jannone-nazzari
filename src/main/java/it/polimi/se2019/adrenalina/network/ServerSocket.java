@@ -7,30 +7,35 @@ import java.net.Socket;
 public class ServerSocket implements Runnable {
   private static final int SOCK_PORT = 3069;
 
-  private java.net.ServerSocket serverSocket;
+  private java.net.ServerSocket socket;
   private final Server server;
-  private boolean running = true;
+
+  private volatile boolean running = true;
 
   public ServerSocket(Server server) {
     this.server = server;
     try {
-      serverSocket = new java.net.ServerSocket(SOCK_PORT);
+      socket = new java.net.ServerSocket(SOCK_PORT);
     } catch (IOException e) {
-      Log.severe("Socket", "IO Error: " + e.getMessage());
+      Log.exception(e);
     }
   }
 
   @Override
   public void run() {
-    Socket socket = null;
+    Socket clientSocket = null;
     while (running) {
       try {
-        socket = serverSocket.accept();
-        new VirtualClientSocket(server, socket).run();
+        clientSocket = socket.accept();
+        new VirtualClientSocket(server, clientSocket).run();
       } catch (IOException e) {
-        Log.severe("Socket", "IO Error: " + e.getMessage());
+        Log.exception(e);
       }
     }
+  }
+
+  public void stop() {
+    running = false;
   }
 
 }

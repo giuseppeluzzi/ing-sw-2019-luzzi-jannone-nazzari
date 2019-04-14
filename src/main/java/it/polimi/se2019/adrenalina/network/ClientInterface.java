@@ -8,4 +8,5 @@ public interface ClientInterface extends Remote {
   boolean isDomination() throws RemoteException;
   void showMessage(String text) throws RemoteException;
   void ping() throws RemoteException;
+  void disconnect() throws RemoteException;
 }

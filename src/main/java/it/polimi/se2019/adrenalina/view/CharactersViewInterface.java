@@ -5,10 +5,6 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.utils.Observable;
-import it.polimi.se2019.adrenalina.utils.Observer;
-import java.lang.invoke.WrongMethodTypeException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface CharactersViewInterface {
