@@ -13,6 +13,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface{
   private static final long serialVersionUID = -2824559728518448567L;
   private final String name;
   private final boolean domination;
+  private volatile boolean running = true;
 
   public Client(String name, boolean domination) throws RemoteException {
     this.name = name;
@@ -27,18 +28,21 @@ public class Client extends UnicastRemoteObject implements ClientInterface{
     } catch (NotBoundException e) {
       Log.severe("RMI", "Object not bound");
     } catch (RemoteException e) {
-      Log.severe("RMI", "Connection error: " + e.getMessage());
+      Log.exception(e);
     }
 
-    new Thread(() -> {
-      while (true) {
+    final Thread pooling = new Thread(() -> {
+      while (running) {
         try {
           sleep(1000);
         } catch (InterruptedException e) {
-          Log.severe("Stopped!");
+          Log.severe("Client", "Pooling interrupted! Thread stopped.");
+          Thread.currentThread().interrupt();
         }
       }
-    }).start();
+    });
+
+    pooling.start();
   }
 
   @Override
@@ -57,7 +61,23 @@ public class Client extends UnicastRemoteObject implements ClientInterface{
   }
 
   @Override
-  public void ping() throws RemoteException {
+  public void ping() {
     // useless
+  }
+
+  @Override
+  public void disconnect() {
+    running = false;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj != null && (obj == this || getClass() == obj.getClass() && ((Client) obj).name
+        .equals(name));
+  }
+
+  @Override
+  public int hashCode() {
+    return name.hashCode();
   }
 }

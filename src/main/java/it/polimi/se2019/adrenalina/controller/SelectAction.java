@@ -1,15 +1,8 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.google.gson.annotations.Expose;
 import it.polimi.se2019.adrenalina.model.ActionType;
 import it.polimi.se2019.adrenalina.model.Target;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 

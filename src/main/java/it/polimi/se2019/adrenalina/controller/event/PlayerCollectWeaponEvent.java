@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.controller.event;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 

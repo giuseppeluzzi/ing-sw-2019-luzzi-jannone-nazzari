@@ -2,7 +2,6 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 

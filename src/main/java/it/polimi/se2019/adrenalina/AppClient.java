@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina;
 
-import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
@@ -32,7 +31,7 @@ public class AppClient {
       domination = true;
     }
 
-    ClientInterface client;
+    ClientInterface client = null;
 
     switch (connectionMode) {
       case '1':
@@ -40,7 +39,7 @@ public class AppClient {
         try {
           client = new Client(name, domination);
         } catch (RemoteException e) {
-          Log.severe("RMI", "Connection error: " + e.getMessage());
+          Log.exception(e);
         }
         break;
       case '2':
@@ -50,6 +49,15 @@ public class AppClient {
         break;
       default:
         Log.severe("Invalid option. Abort.");
+        return ;
+    }
+
+    if (client != null) {
+      try {
+        client.ping();
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
   }
 }

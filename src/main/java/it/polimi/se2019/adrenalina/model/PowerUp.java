@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.Action;
 import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -9,15 +9,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.rmi.RemoteException;
 
 public class ClientSocket implements ClientInterface, Runnable {
   private final String name;
   private final boolean domination;
 
-  private static final boolean running = true;
-
-  private Socket clientSocket;
+  private Socket socket;
   private static final int SOCK_PORT = 3069;
 
   private PrintWriter printWriter = null;
@@ -28,13 +25,13 @@ public class ClientSocket implements ClientInterface, Runnable {
     this.domination = domination;
 
     try {
-      clientSocket = new Socket("127.0.0.1", SOCK_PORT);
-      OutputStream outputStream = clientSocket.getOutputStream();
+      socket = new Socket("127.0.0.1", SOCK_PORT);
+      OutputStream outputStream = socket.getOutputStream();
       printWriter = new PrintWriter(outputStream, true);
-      bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "utf-8"));
+      bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
 
     } catch (IOException e) {
-      Log.severe("Socket", "IO Error: " + e.getMessage());
+      Log.exception(e);
       return ;
     }
 
@@ -61,25 +58,34 @@ public class ClientSocket implements ClientInterface, Runnable {
     // useless
   }
 
-  public final void sendEvent(Event event) throws IllegalStateException {
+  @Override
+  public void disconnect()  {
+    try {
+      bufferedReader.close();
+      printWriter.close();
+      socket.close();
+    } catch (IOException e) {
+      Log.exception(e);
+    }
+  }
+
+  public final void sendEvent(Event event) {
     printWriter.println(event.serialize());
     printWriter.flush();
   }
 
   @Override
   public void run() {
-    while (running) {
-      if (clientSocket.isConnected()) {
-        String message = null;
+    while (socket.isConnected()) {
+      String message = null;
 
-        try {
-          message = bufferedReader.readLine();
-        } catch (IOException e) {
-          Log.severe("Socket", "IO Error: " + e.getMessage());
-        }
-
-        Log.info(message);
+      try {
+        message = bufferedReader.readLine();
+      } catch (IOException e) {
+        Log.exception(e);
       }
+
+      Log.info(message);
     }
   }
 }
