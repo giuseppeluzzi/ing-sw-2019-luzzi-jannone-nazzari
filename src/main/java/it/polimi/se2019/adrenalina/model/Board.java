@@ -48,11 +48,15 @@ public class Board extends Observable {
 
   /**
    * Copy constructor
-   * @param board Board object that has to be copied
+   * @param board Board object that has to be copied, can't be null
    * @param publicCopy boolean value indicating if the copy should be private or public.
    * If true a public copy will be made containg only public informations
+   * @exception IllegalArgumentException thrown if board argument is null
    */
   public Board(Board board, boolean publicCopy) {
+    if (board == null) {
+      throw new IllegalArgumentException("Argument board can't be null");
+    }
     this.publicCopy = publicCopy;
     publicCopyHasWeapons = board.hasWeapons();
 
@@ -146,7 +150,7 @@ public class Board extends Observable {
   public List<Player> getPlayers() {
     List<Player> output = new ArrayList<>();
     for (Player player : players) {
-      output.add(new Player(player, false));
+      output.add(player);
     }
     return output;
   }

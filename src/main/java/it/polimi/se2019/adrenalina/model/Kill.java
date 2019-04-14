@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 /**
  * Class defining a Kill
  */
-
 public class Kill {
   private final PlayerColor color;
   private final boolean overKill;
@@ -23,9 +22,12 @@ public class Kill {
   /**
    * Copy constructor
    * @param kill kill to be copied, has to be not null
+   * @exception IllegalArgumentException thrown if kill argument is null
    */
-
   public Kill(Kill kill) {
+    if (kill == null) {
+      throw new IllegalArgumentException("Kill argument can't be null");
+    }
     color = kill.color;
     overKill = kill.overKill;
   }

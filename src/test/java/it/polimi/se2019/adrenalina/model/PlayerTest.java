@@ -5,46 +5,32 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class PlayerTest {
+  // TODO: complete test suite
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void testDamagesException() {
     Player player = new Player("test", PlayerColor.YELLOW);
 
-    try {
-      for (int i = 0; i < 13; i++) {
-        player.addDamage(PlayerColor.BLUE);
-      }
-      fail();
-    } catch (IllegalStateException e) {
-      assertTrue(true);
+    for (int i = 0; i < 13; i++) {
+      player.addDamage(PlayerColor.BLUE);
     }
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void testPowerupException() {
     Player player = new Player("test", PlayerColor.YELLOW);
 
-    try {
-      for (int i = 0; i < 4; i++) {
-        player.addPowerUp(new Newton(AmmoColor.RED));
-      }
-      fail();
-    } catch (IllegalStateException e) {
-      assertTrue(true);
+    for (int i = 0; i < 4; i++) {
+      player.addPowerUp(new Newton(AmmoColor.RED));
     }
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void testWeaponException() {
     Player player = new Player("test", PlayerColor.YELLOW);
 
-    try {
-      for (int i = 0; i < 4; i++) {
-        player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon"));
-      }
-      fail();
-    } catch (IllegalStateException e) {
-      assertTrue(true);
+    for (int i = 0; i < 4; i++) {
+      player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon"));
     }
   }
 
@@ -71,5 +57,19 @@ public class PlayerTest {
     }
 
     assertEquals("testWeapon", player2.getWeapons().get(0).getName());
+  }
+
+  @Test
+  public void testCopyConstructor() {
+    Player player = new Player("test", PlayerColor.GREEN);
+    Player player2 = new Player(player, false);
+
+    assertEquals(player.getName(), player2.getName());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testCopyConstructorException() {
+    Player player = null;
+    Player player2 = new Player(player, true);
   }
 }

@@ -4,56 +4,71 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class describing a Board during a Domination match.
+ * Three different List represent the different spawn points damages
+ */
 public class DominationBoard extends Board {
-  private final List<Kill> blue;
-  private final List<Kill> red;
-  private final List<Kill> yellow;
+  private final List<PlayerColor> blueDamages;
+  private final List<PlayerColor> redDamages;
+  private final List<PlayerColor> yellowDamages;
 
   public DominationBoard() {
-    blue = new ArrayList<>();
-    red = new ArrayList<>();
-    yellow = new ArrayList<>();
+    blueDamages = new ArrayList<>();
+    redDamages = new ArrayList<>();
+    yellowDamages = new ArrayList<>();
   }
 
+  /**
+   * Copy constructor
+   * @param dominationBoard DominationBoard object that has to be copied, can't be null
+   * @param publicCopy boolean value indicating if the copy should be private or public.
+   * If true a public copy will be made containg only public informations
+   * @exception IllegalArgumentException thrown if dominationBoard is null
+   */
   public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
+    // TODO: try/catch with specific exception message
     super(dominationBoard, publicCopy);
-    blue = dominationBoard.getBlue();
-    red = dominationBoard.getRed();
-    yellow = dominationBoard.getYellow();
+    if (dominationBoard == null) {
+      throw new IllegalArgumentException("Argument dominationBoard can't be null");
+    }
+    blueDamages = dominationBoard.getBlueDamages();
+    redDamages = dominationBoard.getRedDamages();
+    yellowDamages = dominationBoard.getYellowDamages();
   }
 
-  public void addBlueKill(Kill kill) {
-    blue.add(kill);
+  public void addBlueDamage(PlayerColor color) {
+    blueDamages.add(color);
   }
 
-  public List<Kill> getBlue() {
-    List<Kill> output = new ArrayList<>();
-    for (Kill kill : blue) {
-      output.add(new Kill(kill));
+  public List<PlayerColor> getBlueDamages() {
+    List<PlayerColor> output = new ArrayList<>();
+    for (PlayerColor color : blueDamages) {
+      output.add(color);
     }
     return output;
   }
 
-  public void addRedKill(Kill kill) {
-    red.add(kill);
+  public void addRedDamage(PlayerColor color) {
+    redDamages.add(color);
   }
 
-  public List<Kill> getRed() {
-    List<Kill> output = new ArrayList<>();
-    for (Kill kill : red) {
-      output.add(new Kill(kill));
+  public List<PlayerColor> getRedDamages() {
+    List<PlayerColor> output = new ArrayList<>();
+    for (PlayerColor color : redDamages) {
+      output.add(color);
     }
     return output;
   }
 
-  public void addYellowKill(Kill kill) {
-    yellow.add(kill);
+  public void addYellowDamage(PlayerColor color) {
+    yellowDamages.add(color);
   }
 
-  public List<Kill> getYellow() {
-    List<Kill> output = new ArrayList<>();
-    for (Kill kill : yellow) {
-      output.add(new Kill(kill));
+  public List<PlayerColor> getYellowDamages() {
+    List<PlayerColor> output = new ArrayList<>();
+    for (PlayerColor color : yellowDamages) {
+      output.add(color);
     }
     return output;
   }
@@ -63,12 +78,11 @@ public class DominationBoard extends Board {
     return true;
   }
 
-  @Override
-  public String serialize() {
-    Gson gson = new Gson();
-    return gson.toJson(this);
-  }
-
+  /**
+   * Create DominationBoard object from json formatted String
+   * @param json json input String
+   * @return DominationBoard
+   */
   public static DominationBoard deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, DominationBoard.class);

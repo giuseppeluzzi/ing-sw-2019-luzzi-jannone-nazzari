@@ -52,11 +52,15 @@ public class Player extends Observable implements Target {
 
   /**
    * Copy constructor
-   * @param player Player object that has to be copied
+   * @param player Player object that has to be copied, can't be null
    * @param publicCopy boolean value indicating if the copy should be private or public.
    * If true a public copy will be made containg only public informations
    */
   public Player(Player player, boolean publicCopy) {
+    // TODO: find error with, see testCopyConstructor for reference
+    if (player == null) {
+      throw new IllegalArgumentException("Argument player can't be null");
+    }
     this.publicCopy = publicCopy;
     name = player.name;
     color = player.color;
