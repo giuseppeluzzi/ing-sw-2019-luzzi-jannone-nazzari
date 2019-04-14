@@ -19,13 +19,9 @@ public class AmmoCardTest {
     assertEquals(2, ammoCard.getAmmo(AmmoColor.BLUE));
   }
 
-  @Test
+  @Test(expected = InvalidParameterException.class)
   public void testExceptionAmmoCard() {
-    try {
-      AmmoCard ammoCard = new AmmoCard(1, 2, 3, 4);
-    } catch (InvalidParameterException e) {
-      assertTrue(true);
-    }
+    AmmoCard ammoCard = new AmmoCard(1, 2, 3, 4);
   }
 
   @Test
@@ -37,5 +33,20 @@ public class AmmoCardTest {
       fail();
     }
     assertEquals(1, AmmoCard.deserialize(json).getPowerUp());
+  }
+
+  @Test
+  public void testCopyConstructor() {
+    AmmoCard ammoCard = new AmmoCard(1,1,1,0);
+    AmmoCard ammoCard2;
+
+    ammoCard2 = new AmmoCard(ammoCard);
+    assertEquals(ammoCard.getAmmo(AmmoColor.RED), ammoCard2.getAmmo(AmmoColor.RED));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testCopyConstructorException() {
+    AmmoCard ammoCard = null;
+    AmmoCard ammoCard2 = new AmmoCard(ammoCard);
   }
 }

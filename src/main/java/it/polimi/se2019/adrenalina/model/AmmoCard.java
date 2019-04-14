@@ -7,7 +7,6 @@ import java.util.HashMap;
 /**
  * Class defining an ammunition card
  */
-
 public class AmmoCard {
   private final HashMap<AmmoColor, Integer> ammo;
   private final int powerUp;
@@ -34,8 +33,12 @@ public class AmmoCard {
   /**
    * Copy constructor, create an exact copy of ammoCard parameter
    * @param ammoCard card to be copied, has to be not null
+   * @exception IllegalArgumentException exception thrown if ammoCard is null
    */
   public AmmoCard(AmmoCard ammoCard) {
+    if (ammoCard == null) {
+      throw new IllegalArgumentException("Argument ammoCard can't be null");
+    }
     powerUp = ammoCard.powerUp;
     ammo = new HashMap<>();
     ammo.put(AmmoColor.RED, ammoCard.ammo.get(AmmoColor.RED));
