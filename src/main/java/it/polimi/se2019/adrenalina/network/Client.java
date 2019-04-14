@@ -11,6 +11,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class Client extends UnicastRemoteObject implements ClientInterface{
   private static final long serialVersionUID = -2824559728518448567L;
+
   private final String name;
   private final boolean domination;
   private volatile boolean running = true;

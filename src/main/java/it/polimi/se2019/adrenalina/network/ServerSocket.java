@@ -1,11 +1,11 @@
 package it.polimi.se2019.adrenalina.network;
 
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.net.Socket;
 
 public class ServerSocket implements Runnable {
-  private static final int SOCK_PORT = 3069;
 
   private java.net.ServerSocket socket;
   private final Server server;
@@ -15,7 +15,7 @@ public class ServerSocket implements Runnable {
   public ServerSocket(Server server) {
     this.server = server;
     try {
-      socket = new java.net.ServerSocket(SOCK_PORT);
+      socket = new java.net.ServerSocket(Configuration.getInstance().getSocketPort());
     } catch (IOException e) {
       Log.exception(e);
     }

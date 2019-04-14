@@ -9,11 +9,12 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 public class Server extends UnicastRemoteObject implements ServerInterface {
+  private static final int PING_INTERVAL = 500;
   private static final long serialVersionUID = -8473577041428305191L;
   private final ArrayList<BoardController> games;
   private final ArrayList<ClientInterface> clients;
 
-  public volatile boolean running = true;
+  private volatile boolean running = true;
 
   public Server() throws RemoteException {
     games = new ArrayList<>();
@@ -31,7 +32,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
           }
         }
         try {
-          sleep(500);
+          sleep(PING_INTERVAL);
         } catch (InterruptedException e) {
           Log.severe("Server", "Pinging interrupted! Thread stopped.");
           Thread.currentThread().interrupt();

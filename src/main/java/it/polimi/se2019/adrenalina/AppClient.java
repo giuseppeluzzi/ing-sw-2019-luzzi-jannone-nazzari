@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina;
 
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
@@ -10,6 +11,9 @@ import java.util.Scanner;
 public class AppClient {
   public static void main(String... args) {
     Log.setName("ClientRMI");
+
+    // Verify if the configuration exists
+    Configuration.getInstance();
 
     Scanner scanner = new Scanner(System.in, "utf-8");
     Log.info("Please select a connection mode");

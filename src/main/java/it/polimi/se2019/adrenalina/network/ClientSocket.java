@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.network;
 
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -15,7 +16,6 @@ public class ClientSocket implements ClientInterface, Runnable {
   private final boolean domination;
 
   private Socket socket;
-  private static final int SOCK_PORT = 3069;
 
   private PrintWriter printWriter = null;
   private BufferedReader bufferedReader;
@@ -25,11 +25,10 @@ public class ClientSocket implements ClientInterface, Runnable {
     this.domination = domination;
 
     try {
-      socket = new Socket("127.0.0.1", SOCK_PORT);
+      socket = new Socket(Configuration.getInstance().getServerIP(), Configuration.getInstance().getSocketPort());
       OutputStream outputStream = socket.getOutputStream();
       printWriter = new PrintWriter(outputStream, true);
       bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
-
     } catch (IOException e) {
       Log.exception(e);
       return ;

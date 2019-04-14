@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -20,10 +21,16 @@ public class Configuration {
     // private constructor
   }
 
-  public static synchronized Configuration getInstance() throws IOException {
+  public static synchronized Configuration getInstance() {
     if (instance == null) {
-      File file  = new File(Configuration.class.getResource("/config.json").getFile());
-      String json = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+      String json = null;
+      try {
+        File file = new File(Configuration.class.getResource("/config.json").getFile());
+        json = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+      } catch (IOException e) {
+        Log.severe("Configuration not found!");
+        System.exit(0);
+      }
       Gson gson = new Gson();
       instance = gson.fromJson(json, Configuration.class);
     }
