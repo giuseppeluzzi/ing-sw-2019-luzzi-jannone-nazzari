@@ -6,6 +6,4 @@ public interface Action {
   ActionType getActionType();
 
   String serialize();
-
-  Action deserialize(String json);
 }

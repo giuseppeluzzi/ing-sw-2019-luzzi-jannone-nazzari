@@ -14,9 +14,7 @@ public class PlayerReloadEvent implements Event {
     this.weapon = weapon;
   }
 
-
-  @Override
-  public PlayerReloadEvent deserialize(String json) {
+  public static PlayerReloadEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerReloadEvent.class);
   }

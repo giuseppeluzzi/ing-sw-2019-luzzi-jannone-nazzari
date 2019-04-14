@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class defining the game board
+ */
 public class Board extends Observable {
   private final Square[][] grid;
   private BoardStatus status;
@@ -43,6 +46,12 @@ public class Board extends Observable {
     publicCopyHasWeapons = false;
   }
 
+  /**
+   * Copy constructor
+   * @param board Board object that has to be copied
+   * @param publicCopy boolean value indicating if the copy should be private or public.
+   * If true a public copy will be made containg only public informations
+   */
   public Board(Board board, boolean publicCopy) {
     this.publicCopy = publicCopy;
     publicCopyHasWeapons = board.hasWeapons();
@@ -78,6 +87,13 @@ public class Board extends Observable {
     currentPlayer = board.currentPlayer;
   }
 
+  /**
+   * Insert given square in the board
+   * @param x x coordinate
+   * @param y y coordinate
+   * @param square inserted square
+   * @exception IllegalArgumentException thrown if x or y are not within the size of the grid
+   */
   public void setSquare(int x, int y, Square square) {
     if (x < 0 ||  x > 2 || y < 0 || y > 3) {
       throw new IllegalArgumentException("Invalid square coordinates");
@@ -85,6 +101,13 @@ public class Board extends Observable {
     grid[x][y] = square;
   }
 
+  /**
+   * Get specific square
+   * @param x x coordinate
+   * @param y y coordinate
+   * @return square found at the specified location
+   * @exception IllegalArgumentException thrown if x or y are not within the size of the grid
+   */
   public Square getSquare(int x, int y) {
     if (x < 0 ||  x > 2 || y < 0 || y > 3) {
       throw new IllegalArgumentException("Invalid square coordinates");
@@ -132,6 +155,11 @@ public class Board extends Observable {
     weapons.add(weapon);
   }
 
+  /**
+   * Use a weapon and moves it from weapons list to usedWeapons list
+   * @param weapon weapon to be used
+   * @exception IllegalArgumentException thrown if weapon argument is not in weapons list
+   */
   public void useWeapon(Weapon weapon) {
     if (! weapons.contains(weapon)) {
       throw new IllegalArgumentException("Weapon not present");
@@ -160,6 +188,11 @@ public class Board extends Observable {
     powerUps.add(powerup);
   }
 
+  /**
+   * Use a powerup and moves it from powerUps list to usedPowerUps list
+   * @param powerup powerup to be used
+   * @exception IllegalArgumentException thrown if powerup argument is not in powerup list
+   */
   public void usePowerUp(PowerUp powerup) {
     if (! powerUps.contains(powerup)) {
       throw new IllegalArgumentException("PowerUp not present");
@@ -229,6 +262,12 @@ public class Board extends Observable {
     return !weapons.isEmpty();
   }
 
+  /**
+   * Return a Player object of a specified color
+   * @param color player color
+   * @return Player
+   * @exception IllegalArgumentException thrown if there's no player of the specified color
+   */
   public Player getPlayerByColor(PlayerColor color) {
     for (Player player : players) {
       if (player.getColor() == color) {
@@ -242,13 +281,22 @@ public class Board extends Observable {
     players.remove(getPlayerByColor(color));
   }
 
+  /**
+   * Create json serialization of a Board object
+   * @return String
+   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
 
-  public Player deserialize(String json) {
+  /**
+   * Create Board object from json formatted String
+   * @param json json input String
+   * @return Board
+   */
+  public static Board deserialize(String json) {
     Gson gson = new Gson();
-    return gson.fromJson(json, Player.class);
+    return gson.fromJson(json, Board.class);
   }
 }

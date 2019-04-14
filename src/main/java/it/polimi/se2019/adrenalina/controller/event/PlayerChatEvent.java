@@ -21,8 +21,7 @@ public class PlayerChatEvent implements Event{
     return message;
   }
 
-  @Override
-  public PlayerChatEvent deserialize(String json) {
+  public static PlayerChatEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerChatEvent.class);
   }

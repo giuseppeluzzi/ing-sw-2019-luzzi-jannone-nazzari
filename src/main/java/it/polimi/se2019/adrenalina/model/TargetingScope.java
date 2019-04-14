@@ -18,8 +18,7 @@ public class TargetingScope extends PowerUp {
     return true;
   }
 
-  @Override
-  public TargetingScope deserialize(String json) {
+  public static TargetingScope deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, TargetingScope.class);
   }

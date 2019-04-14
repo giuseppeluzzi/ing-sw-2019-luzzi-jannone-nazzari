@@ -25,8 +25,7 @@ public class MoveAction implements Action{
     return gson.toJson(this);
   }
 
-  @Override
-  public MoveAction deserialize(String json) {
+  public static MoveAction deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, MoveAction.class);
   }

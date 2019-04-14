@@ -27,8 +27,7 @@ public class ShootAction implements Action {
     return gson.toJson(this);
   }
 
-  @Override
-  public ShootAction deserialize(String json) {
+  public static ShootAction deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, ShootAction.class);
   }

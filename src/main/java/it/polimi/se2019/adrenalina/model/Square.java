@@ -114,8 +114,8 @@ public class Square extends Observable implements Target {
     return gson.toJson(this);
   }
 
-  public AmmoCard deserialize(String json) {
+  public static Square deserialize(String json) {
     Gson gson = new Gson();
-    return gson.fromJson(json, AmmoCard.class);
+    return gson.fromJson(json, Square.class);
   }
 }

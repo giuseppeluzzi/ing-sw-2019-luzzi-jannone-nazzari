@@ -13,8 +13,7 @@ public class PlayerDeathEvent implements Event {
     this.killer = killer;
   }
 
-  @Override
-  public PlayerDeathEvent deserialize(String json) {
+  public static PlayerDeathEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerDeathEvent.class);
   }

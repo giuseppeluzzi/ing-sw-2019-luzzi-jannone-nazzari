@@ -11,8 +11,7 @@ public class KillShotEvent implements Event {
     this.kill = kill;
   }
 
-  @Override
-  public KillShotEvent deserialize(String json) {
+  public static KillShotEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, KillShotEvent.class);
   }

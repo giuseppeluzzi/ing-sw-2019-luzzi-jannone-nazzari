@@ -19,8 +19,7 @@ public class PlayerCollectWeaponEvent implements Event {
     this.square = square;
   }
 
-  @Override
-  public PlayerCollectWeaponEvent deserialize(String json) {
+  public static PlayerCollectWeaponEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerCollectWeaponEvent.class);
   }

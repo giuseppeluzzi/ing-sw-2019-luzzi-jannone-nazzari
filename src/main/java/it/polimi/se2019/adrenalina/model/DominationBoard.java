@@ -63,13 +63,14 @@ public class DominationBoard extends Board {
     return true;
   }
 
+  @Override
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
 
-  public Player deserialize(String json) {
+  public static DominationBoard deserialize(String json) {
     Gson gson = new Gson();
-    return gson.fromJson(json, Player.class);
+    return gson.fromJson(json, DominationBoard.class);
   }
 }

@@ -18,8 +18,7 @@ public class PlayerAttackEvent implements Event {
     this.effect = effect;
   }
 
-  @Override
-  public PlayerAttackEvent deserialize(String json) {
+  public static PlayerAttackEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerAttackEvent.class);
   }

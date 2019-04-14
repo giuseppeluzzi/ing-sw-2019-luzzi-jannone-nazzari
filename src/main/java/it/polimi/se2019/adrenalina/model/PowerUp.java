@@ -41,6 +41,4 @@ public abstract class PowerUp {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
-
-  public abstract PowerUp deserialize(String json);
 }

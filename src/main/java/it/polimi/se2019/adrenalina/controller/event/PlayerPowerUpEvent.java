@@ -14,8 +14,7 @@ public class PlayerPowerUpEvent implements Event {
     this.powerUp = powerUp;
   }
 
-  @Override
-  public PlayerPowerUpEvent deserialize(String json) {
+  public static PlayerPowerUpEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerPowerUpEvent.class);
   }

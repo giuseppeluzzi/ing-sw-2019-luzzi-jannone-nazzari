@@ -11,8 +11,7 @@ public class PlayerUpdateEvent implements Event {
     this.player = player;
   }
 
-  @Override
-  public PlayerUpdateEvent deserialize(String json) {
+  public static PlayerUpdateEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerUpdateEvent.class);
   }

@@ -6,6 +6,9 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class defining a single player
+ */
 public class Player extends Observable implements Target {
   // TODO: powerUps and weapon should have a remove*() method (whith which parameter?)
   private final String name;
@@ -25,6 +28,11 @@ public class Player extends Observable implements Target {
 
   private final boolean publicCopy;
 
+  /**
+   * Constructor
+   * @param name String containing an user selected name, must be not null
+   * @param color Color of the player chosen for a single game
+   */
   public Player(String name, PlayerColor color) {
     this.name = name;
     this.color = color;
@@ -43,6 +51,12 @@ public class Player extends Observable implements Target {
     publicCopy = false;
   }
 
+  /**
+   * Copy constructor
+   * @param player Player object that has to be copied
+   * @param publicCopy boolean value indicating if the copy should be private or public.
+   * If true a public copy will be made containg only public informations
+   */
   public Player(Player player, boolean publicCopy) {
     this.publicCopy = publicCopy;
     name = player.name;
@@ -125,6 +139,11 @@ public class Player extends Observable implements Target {
     return new ArrayList<>(damages);
   }
 
+  /**
+   * Add damages received by a specific player
+   * @param player Color of the player that inflicted damages
+   * @exception IllegalStateException thrown if a player already received 12 damages
+   */
   public void addDamage(PlayerColor player) {
     if (damages.size() >= 12) {
       throw new IllegalStateException("Player is already dead");
@@ -136,10 +155,16 @@ public class Player extends Observable implements Target {
     return new ArrayList<>(tags);
   }
 
+  /**
+   * Add tags received by a specific player
+   * @param player Color of the player that gave tags
+   * @exception IllegalStateException thrown if a player already has 3 tags of the specified color
+   */
   public void addTag(PlayerColor player) {
-    if (tags.stream().filter(tag -> tag == player).count() < 3) {
-      tags.add(player);
+    if (tags.stream().filter(tag -> tag == player).count() > 3) {
+      throw new IllegalStateException("Player already has 3 tags of this color");
     }
+    tags.add(player);
   }
 
   public List<PowerUp> getPowerUps() {
@@ -147,6 +172,11 @@ public class Player extends Observable implements Target {
     return new ArrayList<>();
   }
 
+  /**
+   * Add a powerup to the list of available powerups
+   * @param powerup chosen powerup
+   * @exception IllegalStateException thrown if a player already has 3 powerups available
+   */
   public void addPowerUp(PowerUp powerup) {
     if (powerUps.size() >= 3) {
       throw new IllegalStateException("Player already has 3 powerUps");
@@ -163,6 +193,11 @@ public class Player extends Observable implements Target {
     return output;
   }
 
+  /**
+   * Add a weapon to the list of available weapon
+   * @param weapon chosen weapon
+   * @exception IllegalStateException thrown if a player already has 3 weapon available
+   */
   public void addWeapon(Weapon weapon) {
     if (weapons.size() >= 3) {
       throw new IllegalStateException("Player already has 3 weapons");
@@ -186,16 +221,26 @@ public class Player extends Observable implements Target {
     return publicCopy;
   }
 
+  public int getPowerUpCount() {
+    return powerUpCount;
+  }
+
+  /**
+   * Create json serialization of a Player object
+   * @return String
+   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
 
-  public Player deserialize(String json) {
+  /**
+   * Create Player object from json formatted String
+   * @param json json input String
+   * @return Player
+   */
+  public static Player deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, Player.class);
-  }
-  public int getPowerUpCount() {
-    return powerUpCount;
   }
 }

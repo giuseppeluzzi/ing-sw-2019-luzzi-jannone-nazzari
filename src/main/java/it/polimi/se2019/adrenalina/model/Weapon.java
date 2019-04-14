@@ -8,6 +8,9 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class defining a single weapon
+ */
 public class Weapon extends Observable {
   private final AmmoColor baseCost;
   private boolean loaded;
@@ -64,6 +67,9 @@ public class Weapon extends Observable {
     return name;
   }
 
+  /**
+   * Remove all data of previous shot targets
+   */
   public void clearTargetHistory() {
     targetHistory.clear();
   }
@@ -100,6 +106,9 @@ public class Weapon extends Observable {
     return output;
   }
 
+  /**
+   * Remove all data of previous selected effects
+   */
   public void clearSelectedEffects() {
     selectedEffects.clear();
   }
@@ -108,13 +117,22 @@ public class Weapon extends Observable {
     return cost.get(color);
   }
 
+  /**
+   * Create json serialization of a Weapon object
+   * @return String
+   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
 
-  public Player deserialize(String json) {
+  /**
+   * Create Weapon object from json formatted String
+   * @param json json input String
+   * @return Weapon
+   */
+  public static Weapon deserialize(String json) {
     Gson gson = new Gson();
-    return gson.fromJson(json, Player.class);
+    return gson.fromJson(json, Weapon.class);
   }
 }

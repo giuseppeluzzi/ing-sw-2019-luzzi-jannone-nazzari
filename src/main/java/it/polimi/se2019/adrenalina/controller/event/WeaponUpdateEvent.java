@@ -16,8 +16,7 @@ public class WeaponUpdateEvent implements Event {
     this.remove = remove;
   }
 
-  @Override
-  public WeaponUpdateEvent deserialize(String json) {
+  public static WeaponUpdateEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, WeaponUpdateEvent.class);
   }

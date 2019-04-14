@@ -44,8 +44,7 @@ public class SelectAction implements Action {
     return gson.toJson(this);
   }
 
-  @Override
-  public SelectAction deserialize(String json) {
+  public static SelectAction deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, SelectAction.class);
   }

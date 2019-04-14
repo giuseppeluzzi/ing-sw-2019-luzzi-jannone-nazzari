@@ -14,8 +14,7 @@ public class SpawnPointDamageEvent implements Event {
     this.ammoColor = ammoColor;
   }
 
-  @Override
-  public SpawnPointDamageEvent deserialize(String json) {
+  public static SpawnPointDamageEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, SpawnPointDamageEvent.class);
   }

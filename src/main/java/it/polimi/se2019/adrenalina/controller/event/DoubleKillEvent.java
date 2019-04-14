@@ -23,8 +23,7 @@ public class DoubleKillEvent implements Event {
     return gson.toJson(jsonElement);
   }
 
-  @Override
-  public DoubleKillEvent deserialize(String json) {
+  public static DoubleKillEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, DoubleKillEvent.class);
   }

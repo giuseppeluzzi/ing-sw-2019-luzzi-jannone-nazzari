@@ -18,12 +18,10 @@ public class Newton extends PowerUp {
     return true;
   }
 
-  @Override
-  public Newton deserialize(String json) {
+  public static Newton deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, Newton.class);
   }
-
 }
 
 

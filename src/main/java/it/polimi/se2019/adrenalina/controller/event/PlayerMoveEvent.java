@@ -14,8 +14,7 @@ public class PlayerMoveEvent implements Event {
     this.newLocation = newLocation;
   }
 
-  @Override
-  public PlayerMoveEvent deserialize(String json) {
+  public static PlayerMoveEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerMoveEvent.class);
   }

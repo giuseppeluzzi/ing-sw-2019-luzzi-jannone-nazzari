@@ -20,8 +20,7 @@ public class PlayerConnectEvent implements Event {
     return domination;
   }
 
-  @Override
-  public PlayerConnectEvent deserialize(String json) {
+  public static PlayerConnectEvent deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerConnectEvent.class);
   }

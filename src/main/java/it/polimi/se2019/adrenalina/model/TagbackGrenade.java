@@ -18,8 +18,7 @@ public class TagbackGrenade extends PowerUp {
     return true;
   }
 
-  @Override
-  public TagbackGrenade deserialize(String json) {
+  public static TagbackGrenade deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, TagbackGrenade.class);
   }
