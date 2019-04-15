@@ -88,7 +88,7 @@ public class Effect {
   }
 
   public void addOptionalMoveAction(OptionalMoveAction action) {
-    // this type of action needs to be executed at the begin and at the end
+    // this type of action needs to be performed as first or as last.
     actions.add(0, action);
     actions.add(action);
   }

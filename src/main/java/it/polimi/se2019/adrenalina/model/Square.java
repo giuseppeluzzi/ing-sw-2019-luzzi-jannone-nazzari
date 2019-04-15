@@ -48,7 +48,11 @@ public class Square extends Observable implements Target {
     borders.put(Direction.SOUTH, square.getEdge(Direction.SOUTH));
     borders.put(Direction.WEST, square.getEdge(Direction.WEST));
 
-    weapons = square.getWeapons();
+    weapons = new ArrayList<>();
+    for (Weapon weapon : weapons) {
+      weapons.add(new Weapon(weapon));
+    }
+
     ammoCard = square.ammoCard;
     spawnPoint = square.spawnPoint;
   }

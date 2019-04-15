@@ -17,6 +17,8 @@ public abstract class PowerUp {
 
   public abstract boolean canUse();
 
+  public abstract PowerUpType powerUpType();
+
   public AmmoColor getColor() {
     return color;
   }

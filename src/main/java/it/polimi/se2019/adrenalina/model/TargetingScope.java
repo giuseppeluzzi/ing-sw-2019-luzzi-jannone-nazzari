@@ -18,6 +18,11 @@ public class TargetingScope extends PowerUp {
     return true;
   }
 
+  @Override
+  public PowerUpType powerUpType() {
+    return PowerUpType.TARGETING_SCOPE;
+  }
+
   public static TargetingScope deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, TargetingScope.class);

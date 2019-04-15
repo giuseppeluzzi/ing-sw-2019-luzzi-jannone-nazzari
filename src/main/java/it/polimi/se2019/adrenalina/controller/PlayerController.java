@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPowerUpEvent;
+import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -22,25 +23,28 @@ public class PlayerController implements Observer {
   }
 
   /**
-   * Creates a player and adds him to the board, a
-   * @param name player's name
-   * @param color player's color
-   * @return the player created
-   * @throws IllegalArgumentException if already exists a player with this name
+   * Instances a new player with a name and color and adds it to the board.
+   * @param name the player's name.
+   * @param color the player's color.
+   * @return the player instance.
+   * @throws IllegalArgumentException thrown if the name is already used by
+   * another player in this board.
    */
   public Player createPlayer(String name, PlayerColor color) throws IllegalArgumentException {
     for (Player player: boardController.getBoard().getPlayers()) {
       if (player.getName().equalsIgnoreCase(name)) {
-        throw new IllegalArgumentException("Already exists another player with this name in this board");
+        throw new IllegalArgumentException("This name is already used by another player in this board");
       }
     }
     Player player = new Player(name, color);
     try {
       boardController.addPlayer(player);
     } catch (FullBoardException e) {
-      Log.severe("Tried to add a player to a full match, unexpected!");
+      Log.severe("Tried to add a player to a full board");
     } catch (PlayingBoardException e) {
-      Log.severe("Tried to add a new player to a playing board, unexpected!");
+      Log.severe("Tried to add a new player to a playing board");
+    } catch (EndedGameException e) {
+      Log.severe("Tried to add a player to an ended game");
     }
     return player;
   }

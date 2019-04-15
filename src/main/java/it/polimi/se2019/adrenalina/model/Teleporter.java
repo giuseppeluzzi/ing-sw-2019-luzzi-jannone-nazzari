@@ -18,6 +18,11 @@ public class Teleporter extends PowerUp {
     return true;
   }
 
+  @Override
+  public PowerUpType powerUpType() {
+    return PowerUpType.TELEPORTER;
+  }
+
   public static Teleporter deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, Teleporter.class);

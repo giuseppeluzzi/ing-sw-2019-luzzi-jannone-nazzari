@@ -28,7 +28,7 @@ public class Configuration {
         File file = new File(Configuration.class.getResource("/config.json").getFile());
         json = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
       } catch (IOException e) {
-        Log.severe("Configuration not found!");
+        Log.severe("Configuration file not found!");
         System.exit(0);
       }
       Gson gson = new Gson();

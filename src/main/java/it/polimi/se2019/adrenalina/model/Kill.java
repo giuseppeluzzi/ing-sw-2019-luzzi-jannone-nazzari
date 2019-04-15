@@ -3,16 +3,16 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 
 /**
- * Class defining a Kill
+ * Class defining a Kill.
  */
 public class Kill {
   private final PlayerColor color;
   private final boolean overKill;
 
   /**
-   * Class constructor
-   * @param color color of the player
-   * @param overKill defines if overKill was achieved
+   * Class constructor.
+   * @param color color of the killer.
+   * @param overKill determines if there was an overKill.
    */
   public Kill(PlayerColor color, boolean overKill) {
     this.color = color;
@@ -20,9 +20,8 @@ public class Kill {
   }
 
   /**
-   * Copy constructor
-   * @param kill kill to be copied, has to be not null
-   * @exception IllegalArgumentException thrown if kill argument is null
+   * Copy constructor, creates an exact copy of a Kill.
+   * @param kill the kill to be cloned, has to be not null.
    */
   public Kill(Kill kill) {
     if (kill == null) {
@@ -40,20 +39,11 @@ public class Kill {
     return overKill;
   }
 
-  /**
-   * Create json serialization of an Kill object
-   * @return String
-   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
 
-  /**
-   * Create Kill object from json formatted String
-   * @param json json input String
-   * @return Kill
-   */
   public static Kill deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, Kill.class);

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class describing a Board during a Domination match.
- * Three different List represent the different spawn points damages
+ * A Board during a Domination match.
+ * The damages to each spawn point are contained in three lists.
  */
 public class DominationBoard extends Board {
   private final List<PlayerColor> blueDamages;
@@ -20,11 +20,12 @@ public class DominationBoard extends Board {
   }
 
   /**
-   * Copy constructor
-   * @param dominationBoard DominationBoard object that has to be copied, can't be null
-   * @param publicCopy boolean value indicating if the copy should be private or public.
-   * If true a public copy will be made containg only public informations
-   * @exception IllegalArgumentException thrown if dominationBoard is null
+   * Copy constructor, creates an exact copy of a DominationBoard.
+   * @param dominationBoard the DominationBoard to be cloned, has to be not
+   * null.
+   * @param publicCopy if true, a public copy of the DominationBoard will be
+   * created instead of a clone. The public copy will not contain players'
+   * private information.
    */
   public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
     // TODO: try/catch with specific exception message
@@ -66,11 +67,6 @@ public class DominationBoard extends Board {
     return true;
   }
 
-  /**
-   * Create DominationBoard object from json formatted String
-   * @param json json input String
-   * @return DominationBoard
-   */
   public static DominationBoard deserialize(String json) {
     Gson gson = new Gson();
     return gson.fromJson(json, DominationBoard.class);

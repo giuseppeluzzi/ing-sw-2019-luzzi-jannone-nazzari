@@ -46,9 +46,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Adds a client to an existing board or to a new board, per game-mode
-   * @param client client to be added
-   * @throws RemoteException in case of network problems with rmi
+   * Adds a client to an existing board or to a new board, per game mode.
+   * @param client client to be added.
+   * @throws RemoteException in case of network problems with RMI.
    */
   @Override
   public void addClient(ClientInterface client) throws RemoteException {
@@ -65,9 +65,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Finds a game in lobby, with a free spot for a player and in a certain game-mode
-   * @param domination if the game must be in domination mode
-   * @return a board controller or null if doesn't exists a free board
+   * Finds a game in LOBBY with a free spot for a player and with a certain
+   * game mode selected.
+   * @param domination determines if the game should be in domination mode.
+   * @return a board controller or null no free boards exist.
    */
   public BoardController getPendingGame(boolean domination) {
     for (BoardController game: games) {
@@ -81,7 +82,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Stops the server pinging
+   * Stops the server pinging.
    */
   private void stopPinging() {
     running = false;

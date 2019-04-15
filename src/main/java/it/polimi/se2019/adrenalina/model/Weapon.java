@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Class defining a single weapon
+ * Class defining a weapon.
  */
 public class Weapon extends Observable {
   private static Weapon instance;
@@ -44,9 +44,25 @@ public class Weapon extends Observable {
     name = weapon.name;
     loaded = weapon.loaded;
 
-    targetHistory = weapon.getTargetHistory();
-    effects = weapon.getEffects();
-    selectedEffects = weapon.getSelectedEffects();
+    targetHistory = new ArrayList<>();
+    for (Target target : weapon.targetHistory) {
+      if (target.isPlayer()) {
+        targetHistory.add(new Player((Player) target, true));
+      } else {
+        targetHistory.add(new Square((Square) target));
+      }
+    }
+
+    effects = new ArrayList<>();
+    for (Effect effect : weapon.effects) {
+      effects.add(new Effect(effect));
+    }
+
+    selectedEffects = new ArrayList<>();
+    for (Effect effect : weapon.selectedEffects) {
+      selectedEffects.add(new Effect(effect));
+    }
+
     cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
@@ -71,7 +87,7 @@ public class Weapon extends Observable {
   }
 
   /**
-   * Remove all data of previous shot targets
+   * Clear data of previous targets.
    */
   public void clearTargetHistory() {
     targetHistory.clear();
@@ -94,7 +110,7 @@ public class Weapon extends Observable {
   }
 
   /**
-   * Remove all data of previous selected effects
+   * Clear data of previously selected effects.
    */
   public void clearSelectedEffects() {
     selectedEffects.clear();
@@ -104,21 +120,12 @@ public class Weapon extends Observable {
     return cost.get(color);
   }
 
-  /**
-   * Create json serialization of a Weapon object
-   * @return String
-   */
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
     return gson.toJson(this);
   }
 
-  /**
-   * Create Weapon object from json formatted String
-   * @param json json input String
-   * @return Weapon
-   */
   public static Weapon deserialize(String json) {
     Gson gson = new Gson();
     Weapon weapon = gson.fromJson(json, Weapon.class);
