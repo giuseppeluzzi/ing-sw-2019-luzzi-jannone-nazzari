@@ -148,11 +148,7 @@ public class Board extends Observable {
   }
 
   public List<Player> getPlayers() {
-    List<Player> output = new ArrayList<>();
-    for (Player player : players) {
-      output.add(player);
-    }
-    return output;
+    return new ArrayList<>(players);
   }
 
   public void addWeapon(Weapon weapon) {
@@ -173,19 +169,11 @@ public class Board extends Observable {
   }
 
   public List<Weapon> getWeapons() {
-    List<Weapon> output = new ArrayList<>();
-    for (Weapon weapon : weapons) {
-      output.add(new Weapon(weapon));
-    }
-    return output;
+    return new ArrayList<>(weapons);
   }
 
   public List<Weapon> getUsedWeapons() {
-    List<Weapon> output = new ArrayList<>();
-    for (Weapon weapon : usedWeapons) {
-      output.add(new Weapon(weapon));
-    }
-    return output;
+    return new ArrayList<>(usedWeapons);
   }
 
   public void addPowerUp(PowerUp powerup) {
@@ -206,13 +194,11 @@ public class Board extends Observable {
   }
 
   public List<PowerUp> getPowerUps() {
-    // TODO: powerUps is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(powerUps);
   }
 
   public List<PowerUp> getUsedPowerUps() {
-    // TODO: usedPowerUps is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(usedPowerUps);
   }
 
   public void addDoubleKill(Player player) {
@@ -220,11 +206,7 @@ public class Board extends Observable {
   }
 
   public List<Player> getDoubleKills() {
-    List<Player> output = new ArrayList<>();
-    for (Player player : doubleKills) {
-      output.add(new Player(player, false));
-    }
-    return output;
+    return new ArrayList<>(doubleKills);
   }
 
   public void addKillShot(Kill kill) {
@@ -232,11 +214,7 @@ public class Board extends Observable {
   }
 
   public List<Kill> getKillShots() {
-    List<Kill> output = new ArrayList<>();
-    for (Kill kill : killShots) {
-      output.add(new Kill(kill));
-    }
-    return output;
+    return new ArrayList<>(killShots);
   }
 
   public long getTurnStartTime() {

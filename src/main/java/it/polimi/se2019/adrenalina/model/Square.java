@@ -95,11 +95,7 @@ public class Square extends Observable implements Target {
   }
 
   public List<Weapon> getWeapons() {
-    List<Weapon> output = new ArrayList<>();
-    for (Weapon weapon : weapons) {
-      output.add(new Weapon(weapon));
-    }
-    return output;
+    return new ArrayList<>(weapons);
   }
 
   public void addWeapon(Weapon weapon) {

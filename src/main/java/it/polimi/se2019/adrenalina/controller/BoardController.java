@@ -53,11 +53,10 @@ public class BoardController implements Runnable {
       if (board.getPlayers().contains(player)) {
         player.setStatus(PlayerStatus.PLAYING);
       } else {
-        throw new PlayingBoardException("Board isn't in lobby status ");
+        throw new PlayingBoardException("Board isn't in lobby status");
       }
     }
   }
-
 
   /**
    * Removes a player from a board

@@ -62,6 +62,7 @@ public class PlayerTest {
   @Test
   public void testCopyConstructor() {
     Player player = new Player("test", PlayerColor.GREEN);
+    player.setSquare(new Square(1, 2, PlayerColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
     Player player2 = new Player(player, false);
 
     assertEquals(player.getName(), player2.getName());

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Server extends UnicastRemoteObject implements ServerInterface {
   private static final int PING_INTERVAL = 500;
 
-  private static final long serialVersionUID = -8473577041428305191L;
+  private static final long serialVersionUID = 1666613338633244401L;
   private final ArrayList<BoardController> games;
   private final ArrayList<ClientInterface> clients;
 

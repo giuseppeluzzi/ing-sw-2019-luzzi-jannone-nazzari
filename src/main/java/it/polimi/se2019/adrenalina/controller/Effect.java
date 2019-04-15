@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.NotExpose;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,8 @@ public class Effect {
   private final int costBlue;
   private final int costYellow;
   private final String name;
-  private Effect requiredEffect;
-  private final Weapon weapon;
+  @NotExpose private Effect requiredEffect;
+  @NotExpose private Weapon weapon;
   private final List<Action> actions;
   private final List<Effect> subEffects;
 
@@ -70,20 +71,16 @@ public class Effect {
   }
 
   public List<Effect> getSubEffects() {
-    List<Effect> output = new ArrayList<>();
-    for (Effect effect : subEffects) {
-      output.add(new Effect(effect));
-    }
-    return output;
+    return new ArrayList<>(subEffects);
   }
 
   public void addSubEffect(Effect effect) {
     subEffects.add(effect);
+    effect.setRequiredEffect(this);
   }
 
   public List<Action> getActions() {
-    // TODO: actions is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(actions);
   }
 
   public void addAction(Action action) {
@@ -94,5 +91,13 @@ public class Effect {
     // this type of action needs to be executed at the begin and at the end
     actions.add(0, action);
     actions.add(action);
+  }
+
+  public void reconcileDeserialization(Weapon ofWeapon, Effect parentEffect) {
+    weapon = ofWeapon;
+    requiredEffect = parentEffect;
+    for (Effect effect: parentEffect.subEffects) {
+      effect.reconcileDeserialization(ofWeapon, this);
+    }
   }
 }

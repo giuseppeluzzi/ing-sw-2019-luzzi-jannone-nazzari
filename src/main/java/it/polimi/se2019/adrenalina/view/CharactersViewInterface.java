@@ -9,19 +9,19 @@ import java.util.List;
 
 public interface CharactersViewInterface {
 
-  public List<Player> getPlayers();
+  List<Player> getPlayers();
 
-  public void addPlayer(Player player);
+  void addPlayer(Player player);
 
-  public void setSelected(Player player);
+  void setSelected(Player player);
 
-  public void removeSelected();
+  void removeSelected();
 
-  public void update(PlayerDeathEvent event);
+  void update(PlayerDeathEvent event);
 
-  public void update(PlayerSpawnEvent event);
+  void update(PlayerSpawnEvent event);
 
-  public void update(PlayerMoveEvent event);
+  void update(PlayerMoveEvent event);
 
-  public void update(Event event);
+  void update(Event event);
 }

@@ -85,7 +85,13 @@ public class Player extends Observable implements Target {
     for (AmmoColor ammoColor : AmmoColor.values()) {
       ammo.put(ammoColor, player.getAmmo(ammoColor));
     }
-    square = player.getSquare();
+
+    if (player.square == null) {
+      square = null;
+    } else {
+      square = new Square(player.square);
+    }
+
     points = player.points;
     deaths = player.deaths;
     frenzy = player.frenzy;
@@ -103,7 +109,7 @@ public class Player extends Observable implements Target {
   }
 
   public Square getSquare() {
-    return new Square(square);
+    return square;
   }
 
   public void setSquare(Square square) {
@@ -172,7 +178,7 @@ public class Player extends Observable implements Target {
 
   public List<PowerUp> getPowerUps() {
     // TODO: powerUps is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(powerUps);
   }
 
   /**
@@ -189,11 +195,7 @@ public class Player extends Observable implements Target {
   }
 
   public List<Weapon> getWeapons() {
-    List<Weapon> output = new ArrayList<>();
-    for (Weapon weapon : weapons) {
-      output.add(new Weapon(weapon));
-    }
-    return output;
+    return new ArrayList<>(weapons);
   }
 
   /**

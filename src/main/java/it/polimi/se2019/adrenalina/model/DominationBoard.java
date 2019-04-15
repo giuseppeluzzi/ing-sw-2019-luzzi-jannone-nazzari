@@ -42,11 +42,7 @@ public class DominationBoard extends Board {
   }
 
   public List<PlayerColor> getBlueDamages() {
-    List<PlayerColor> output = new ArrayList<>();
-    for (PlayerColor color : blueDamages) {
-      output.add(color);
-    }
-    return output;
+    return new ArrayList<>(blueDamages);
   }
 
   public void addRedDamage(PlayerColor color) {
@@ -54,11 +50,7 @@ public class DominationBoard extends Board {
   }
 
   public List<PlayerColor> getRedDamages() {
-    List<PlayerColor> output = new ArrayList<>();
-    for (PlayerColor color : redDamages) {
-      output.add(color);
-    }
-    return output;
+    return new ArrayList<>(redDamages);
   }
 
   public void addYellowDamage(PlayerColor color) {
@@ -66,11 +58,7 @@ public class DominationBoard extends Board {
   }
 
   public List<PlayerColor> getYellowDamages() {
-    List<PlayerColor> output = new ArrayList<>();
-    for (PlayerColor color : yellowDamages) {
-      output.add(color);
-    }
-    return output;
+    return new ArrayList<>(yellowDamages);
   }
 
   @Override
