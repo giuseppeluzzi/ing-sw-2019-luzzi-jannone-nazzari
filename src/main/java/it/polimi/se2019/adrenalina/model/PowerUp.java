@@ -18,13 +18,14 @@ public abstract class PowerUp {
 
   public abstract boolean canUse();
 
+  public abstract PowerUpType powerUpType();
+
   public AmmoColor getColor() {
     return color;
   }
 
   public List<Action> getActions() {
-    // TODO: actions is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(actions);
   }
 
   public void addAction(Action action) {

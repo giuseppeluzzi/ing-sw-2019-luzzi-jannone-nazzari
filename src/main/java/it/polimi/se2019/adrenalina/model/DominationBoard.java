@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class describing a Board during a Domination match.
- * Three different List represent the different spawn points damages
+ * A Board during a Domination match.
+ * The damages to each spawn point are contained in three lists.
  */
 public class DominationBoard extends Board {
   private final List<PlayerColor> blueDamages;
@@ -20,11 +20,12 @@ public class DominationBoard extends Board {
   }
 
   /**
-   * Copy constructor
-   * @param dominationBoard DominationBoard object that has to be copied, can't be null
-   * @param publicCopy boolean value indicating if the copy should be private or public.
-   * If true a public copy will be made containg only public informations
-   * @exception IllegalArgumentException thrown if dominationBoard is null
+   * Copy constructor, creates an exact copy of a DominationBoard.
+   * @param dominationBoard the DominationBoard to be cloned, has to be not
+   * null.
+   * @param publicCopy if true, a public copy of the DominationBoard will be
+   * created instead of a clone. The public copy will not contain players'
+   * private information.
    */
   public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
     // TODO: try/catch with specific exception message
@@ -42,11 +43,7 @@ public class DominationBoard extends Board {
   }
 
   public List<PlayerColor> getBlueDamages() {
-    List<PlayerColor> output = new ArrayList<>();
-    for (PlayerColor color : blueDamages) {
-      output.add(color);
-    }
-    return output;
+    return new ArrayList<>(blueDamages);
   }
 
   public void addRedDamage(PlayerColor color) {
@@ -54,11 +51,7 @@ public class DominationBoard extends Board {
   }
 
   public List<PlayerColor> getRedDamages() {
-    List<PlayerColor> output = new ArrayList<>();
-    for (PlayerColor color : redDamages) {
-      output.add(color);
-    }
-    return output;
+    return new ArrayList<>(redDamages);
   }
 
   public void addYellowDamage(PlayerColor color) {
@@ -66,11 +59,7 @@ public class DominationBoard extends Board {
   }
 
   public List<PlayerColor> getYellowDamages() {
-    List<PlayerColor> output = new ArrayList<>();
-    for (PlayerColor color : yellowDamages) {
-      output.add(color);
-    }
-    return output;
+    return new ArrayList<>(yellowDamages);
   }
 
   @Override

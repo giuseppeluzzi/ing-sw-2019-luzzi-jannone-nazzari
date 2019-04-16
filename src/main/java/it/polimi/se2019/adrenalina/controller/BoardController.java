@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -36,12 +37,18 @@ public class BoardController implements Runnable {
   }
 
   /**
-   * Adds a new (existing) player to a board in lobby (playing) status
-   * @param player player to be added
-   * @throws FullBoardException if the board already has 5 players
-   * @throws PlayingBoardException if the player is new and the match isn't in lobby status
+   * Adds a new player to a board in LOBBY status or a returning
+   * player (who had previously disconnected) to a board where a game
+   * is in progress.
+   * @param player the player to be added.
+   * @throws FullBoardException thrown if the board already has 5 players.
+   * @throws PlayingBoardException thrown if the status of the board is not
+   * LOBBY (a game is already in progress or ended) and the player does not
+   * belong to that game.
+   * @throws EndedGameException thrown if this board hosts a game which has
+   * already ended.
    */
-  void addPlayer(Player player) throws FullBoardException, PlayingBoardException {
+  void addPlayer(Player player) throws FullBoardException, PlayingBoardException, EndedGameException {
     if (board.getStatus() == BoardStatus.LOBBY) {
       if (board.getPlayers().size() < 5) {
         board.addPlayer(player);
@@ -49,19 +56,21 @@ public class BoardController implements Runnable {
       } else {
         throw new FullBoardException();
       }
+    } else if (board.getStatus() == BoardStatus.END) {
+      throw new EndedGameException();
     } else {
       if (board.getPlayers().contains(player)) {
         player.setStatus(PlayerStatus.PLAYING);
       } else {
-        throw new PlayingBoardException("Board isn't in lobby status ");
+        throw new PlayingBoardException("Board isn't in LOBBY status");
       }
     }
   }
 
-
   /**
-   * Removes a player from a board
-   * @param player to be removed
+   * Removes a player from a board in LOBBY status or sets the player's
+   * status to DISCONNECTED if the game on that board is already in progress.
+   * @param player the player to be removed.
    */
   void removePlayer(Player player) {
     if (board.getStatus() == BoardStatus.LOBBY) {

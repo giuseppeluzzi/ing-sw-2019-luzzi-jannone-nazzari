@@ -1,16 +1,19 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Class defining a single weapon
+ * Class defining a weapon.
  */
 public class Weapon extends Observable {
+  private static Weapon instance;
   private final AmmoColor baseCost;
   private boolean loaded;
   private final String name;
@@ -21,6 +24,7 @@ public class Weapon extends Observable {
 
   public Weapon(int costRed, int costBlue, int costYellow,
       AmmoColor baseCost, String name) {
+    instance = this;
     this.baseCost = baseCost;
     this.name = name;
     loaded = true;
@@ -40,9 +44,25 @@ public class Weapon extends Observable {
     name = weapon.name;
     loaded = weapon.loaded;
 
-    targetHistory = weapon.getTargetHistory();
-    effects = weapon.getEffects();
-    selectedEffects = weapon.getSelectedEffects();
+    targetHistory = new ArrayList<>();
+    for (Target target : weapon.targetHistory) {
+      if (target.isPlayer()) {
+        targetHistory.add(new Player((Player) target, true));
+      } else {
+        targetHistory.add(new Square((Square) target));
+      }
+    }
+
+    effects = new ArrayList<>();
+    for (Effect effect : weapon.effects) {
+      effects.add(new Effect(effect));
+    }
+
+    selectedEffects = new ArrayList<>();
+    for (Effect effect : weapon.selectedEffects) {
+      selectedEffects.add(new Effect(effect));
+    }
+
     cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
@@ -67,30 +87,18 @@ public class Weapon extends Observable {
   }
 
   /**
-   * Remove all data of previous shot targets
+   * Clear data of previous targets.
    */
   public void clearTargetHistory() {
     targetHistory.clear();
   }
 
   public List<Target> getTargetHistory() {
-    List<Target> output = new ArrayList<>();
-    for (Target target : targetHistory) {
-      if (target.isPlayer()) {
-        output.add(new Player((Player) target, true));
-      } else {
-        output.add(new Square((Square) target));
-      }
-    }
-    return output;
+    return new ArrayList<>(targetHistory);
   }
 
   public List<Effect> getEffects() {
-    List<Effect> output = new ArrayList<>();
-    for (Effect effect : effects) {
-      output.add(new Effect(effect));
-    }
-    return output;
+    return new ArrayList<>(effects);
   }
 
   public void addEffect(Effect effect) {
@@ -98,15 +106,11 @@ public class Weapon extends Observable {
   }
 
   public List<Effect> getSelectedEffects() {
-    List<Effect> output = new ArrayList<>();
-    for (Effect effect : selectedEffects) {
-      output.add(new Effect(effect));
-    }
-    return output;
+    return new ArrayList<>(selectedEffects);
   }
 
   /**
-   * Remove all data of previous selected effects
+   * Clear data of previously selected effects.
    */
   public void clearSelectedEffects() {
     selectedEffects.clear();
@@ -116,12 +120,9 @@ public class Weapon extends Observable {
     return cost.get(color);
   }
 
-  /**
-   * Create json serialization of a Weapon object
-   * @return String
-   */
   public String serialize() {
-    Gson gson = new Gson();
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
     return gson.toJson(this);
   }
 
@@ -136,6 +137,10 @@ public class Weapon extends Observable {
       throw new IllegalArgumentException("Argument json can't be null");
     }
     Gson gson = new Gson();
-    return gson.fromJson(json, Weapon.class);
+    Weapon weapon = gson.fromJson(json, Weapon.class);
+    for (Effect effect: weapon.effects) {
+      effect.reconcileDeserialization(weapon, null);
+    }
+    return weapon;
   }
 }

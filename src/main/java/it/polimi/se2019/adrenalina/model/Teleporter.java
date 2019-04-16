@@ -25,6 +25,11 @@ public class Teleporter extends PowerUp {
     return true;
   }
 
+  @Override
+  public PowerUpType powerUpType() {
+    return PowerUpType.TELEPORTER;
+  }
+
   /**
    * Create Teleporter object from json formatted String
    * @param json json input String

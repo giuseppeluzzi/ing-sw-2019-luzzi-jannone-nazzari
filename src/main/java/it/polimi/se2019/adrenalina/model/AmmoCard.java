@@ -4,20 +4,18 @@ import com.google.gson.Gson;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
-/**
- * Class defining an ammunition card
- */
 public class AmmoCard {
   private final HashMap<AmmoColor, Integer> ammo;
   private final int powerUp;
 
   /**
-   * Class constructor
-   * @param red number of red ammo
-   * @param blue  number of blue ammo
-   * @param yellow  number of yellow ammo
-   * @param powerUp number of powerup
-   * @throws InvalidParameterException exception thrown if sum of parameters is different than 3
+   * Class constructor.
+   * @param red number of red ammos.
+   * @param blue  number of blue ammos.
+   * @param yellow  number of yellow ammos.
+   * @param powerUp number of powerups.
+   * @throws InvalidParameterException thrown if the sum of parameters is
+   * different than 3.
    */
   public AmmoCard(int red, int blue, int yellow, int powerUp) throws InvalidParameterException {
     if (red + blue + yellow + powerUp != 3) {
@@ -31,13 +29,12 @@ public class AmmoCard {
   }
 
   /**
-   * Copy constructor, create an exact copy of ammoCard parameter
-   * @param ammoCard card to be copied, has to be not null
-   * @exception IllegalArgumentException exception thrown if ammoCard is null
+   * Copy constructor, creates an exact copy of an ammoCard.
+   * @param ammoCard the ammoCard to be cloned, has to be not null.
    */
   public AmmoCard(AmmoCard ammoCard) {
     if (ammoCard == null) {
-      throw new IllegalArgumentException("Argument ammoCard can't be null");
+      throw new IllegalArgumentException("Argument ammoCard cannot be null");
     }
     powerUp = ammoCard.powerUp;
     ammo = new HashMap<>();
@@ -54,10 +51,6 @@ public class AmmoCard {
     return powerUp;
   }
 
-  /**
-   * Create json serialization of an AmmoCard object
-   * @return String
-   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);

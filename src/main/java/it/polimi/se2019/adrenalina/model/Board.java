@@ -5,9 +5,6 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class defining the game board
- */
 public class Board extends Observable {
   private final Square[][] grid;
   private BoardStatus status;
@@ -47,15 +44,15 @@ public class Board extends Observable {
   }
 
   /**
-   * Copy constructor
-   * @param board Board object that has to be copied, can't be null
-   * @param publicCopy boolean value indicating if the copy should be private or public.
-   * If true a public copy will be made containg only public informations
-   * @exception IllegalArgumentException thrown if board argument is null
+   * Copy constructor, creates an exact copy of a Board.
+   * @param board the Board to be cloned, has to be not null.
+   * @param publicCopy if true, a public copy of the Board will be created
+   * instead of a clone. The public copy will not contain players' private
+   * information.
    */
   public Board(Board board, boolean publicCopy) {
     if (board == null) {
-      throw new IllegalArgumentException("Argument board can't be null");
+      throw new IllegalArgumentException("Argument board cannot be null");
     }
     this.publicCopy = publicCopy;
     publicCopyHasWeapons = board.hasWeapons();
@@ -63,26 +60,60 @@ public class Board extends Observable {
     grid = new Square[3][4];
     for (int x = 0; x < 3; x++) {
       for (int y = 0; y < 4; y++) {
-        grid[x][y] = board.getSquare(x, y);
+        grid[x][y] = new Square(board.grid[x][y]);
       }
     }
 
-    players = board.getPlayers();
-
-    if (publicCopy) {
-      weapons = new ArrayList<>();
-      usedWeapons = new ArrayList<>();
-      powerUps = new ArrayList<>();
-      usedPowerUps = new ArrayList<>();
-    } else {
-      weapons = board.getWeapons();
-      usedWeapons = board.getUsedWeapons();
-      powerUps = board.getPowerUps();
-      usedPowerUps = board.getUsedPowerUps();
+    players = new ArrayList<>();
+    for (Player player : board.players) {
+      players.add(new Player(player, publicCopy));
     }
 
-    doubleKills = board.getDoubleKills();
-    killShots = board.getKillShots();
+    weapons = new ArrayList<>();
+    usedWeapons = new ArrayList<>();
+    powerUps = new ArrayList<>();
+    usedPowerUps = new ArrayList<>();
+
+    if (! publicCopy) {
+      for (Weapon weapon : board.weapons) {
+        weapons.add(new Weapon(weapon));
+      }
+      for (Weapon weapon : board.usedWeapons) {
+        usedWeapons.add(new Weapon(weapon));
+      }
+      for (PowerUp powerUp : board.powerUps) {
+        if (powerUp.powerUpType() == PowerUpType.TAGBACK_GRANADE) {
+          powerUps.add(new TagbackGrenade((TagbackGrenade) powerUp));
+        } else if (powerUp.powerUpType() == PowerUpType.TARGETING_SCOPE) {
+          powerUps.add(new TargetingScope((TargetingScope) powerUp));
+        } else if (powerUp.powerUpType() == PowerUpType.TELEPORTER) {
+          powerUps.add(new Teleporter((Teleporter) powerUp));
+        } else if (powerUp.powerUpType() == PowerUpType.NEWTON) {
+          powerUps.add(new Newton((Newton) powerUp));
+        }
+      }
+      for (PowerUp powerUp : board.usedPowerUps) {
+        if (powerUp.powerUpType() == PowerUpType.TAGBACK_GRANADE) {
+          usedPowerUps.add(new TagbackGrenade((TagbackGrenade) powerUp));
+        } else if (powerUp.powerUpType() == PowerUpType.TARGETING_SCOPE) {
+          usedPowerUps.add(new TargetingScope((TargetingScope) powerUp));
+        } else if (powerUp.powerUpType() == PowerUpType.TELEPORTER) {
+          usedPowerUps.add(new Teleporter((Teleporter) powerUp));
+        } else if (powerUp.powerUpType() == PowerUpType.NEWTON) {
+          usedPowerUps.add(new Newton((Newton) powerUp));
+        }
+      }
+    }
+
+    doubleKills = new ArrayList<>();
+    for (Player player : board.doubleKills) {
+      doubleKills.add(new Player(player, publicCopy));
+    }
+
+    killShots = new ArrayList<>();
+    for (Kill kill : board.killShots) {
+      killShots.add(new Kill(kill));
+    }
 
     status = board.status;
     finalFrenzyActive = board.finalFrenzyActive;
@@ -92,11 +123,12 @@ public class Board extends Observable {
   }
 
   /**
-   * Insert given square in the board
-   * @param x x coordinate
-   * @param y y coordinate
-   * @param square inserted square
-   * @exception IllegalArgumentException thrown if x or y are not within the size of the grid
+   * Adds a square to the board.
+   * @param x x coordinate.
+   * @param y y coordinate.
+   * @param square Square to add.
+   * @throws IllegalArgumentException thrown if x or y are not within the size
+   * of the board.
    */
   public void setSquare(int x, int y, Square square) {
     if (x < 0 ||  x > 2 || y < 0 || y > 3) {
@@ -106,17 +138,18 @@ public class Board extends Observable {
   }
 
   /**
-   * Get specific square
-   * @param x x coordinate
-   * @param y y coordinate
-   * @return square found at the specified location
-   * @exception IllegalArgumentException thrown if x or y are not within the size of the grid
+   * Retrieves a square from the board given its coordinates.
+   * @param x x coordinate.
+   * @param y y coordinate.
+   * @return the requested Square.
+   * @throws IllegalArgumentException thrown if x or y are not within the size
+   * of the board.
    */
   public Square getSquare(int x, int y) {
     if (x < 0 ||  x > 2 || y < 0 || y > 3) {
       throw new IllegalArgumentException("Invalid square coordinates");
     }
-    return new Square(grid[x][y]);
+    return grid[x][y];
   }
 
   public PlayerColor getCurrentPlayer() {
@@ -148,11 +181,7 @@ public class Board extends Observable {
   }
 
   public List<Player> getPlayers() {
-    List<Player> output = new ArrayList<>();
-    for (Player player : players) {
-      output.add(player);
-    }
-    return output;
+    return new ArrayList<>(players);
   }
 
   public void addWeapon(Weapon weapon) {
@@ -160,9 +189,11 @@ public class Board extends Observable {
   }
 
   /**
-   * Use a weapon and moves it from weapons list to usedWeapons list
-   * @param weapon weapon to be used
-   * @exception IllegalArgumentException thrown if weapon argument is not in weapons list
+   * Marks a weapon as used by moving it from the weapons list to the
+   * usedWeapons list.
+   * @param weapon weapon to be marked as used.
+   * @throws IllegalArgumentException thrown if weapon is not in the weapons
+   * list.
    */
   public void useWeapon(Weapon weapon) {
     if (! weapons.contains(weapon)) {
@@ -173,19 +204,11 @@ public class Board extends Observable {
   }
 
   public List<Weapon> getWeapons() {
-    List<Weapon> output = new ArrayList<>();
-    for (Weapon weapon : weapons) {
-      output.add(new Weapon(weapon));
-    }
-    return output;
+    return new ArrayList<>(weapons);
   }
 
   public List<Weapon> getUsedWeapons() {
-    List<Weapon> output = new ArrayList<>();
-    for (Weapon weapon : usedWeapons) {
-      output.add(new Weapon(weapon));
-    }
-    return output;
+    return new ArrayList<>(usedWeapons);
   }
 
   public void addPowerUp(PowerUp powerup) {
@@ -193,26 +216,26 @@ public class Board extends Observable {
   }
 
   /**
-   * Use a powerup and moves it from powerUps list to usedPowerUps list
-   * @param powerup powerup to be used
-   * @exception IllegalArgumentException thrown if powerup argument is not in powerup list
+   * Marks a powerUp as used by moving it from the powerUps list to the
+   * usedPowerUps list.
+   * @param powerUp the powerUp to be marked as used.
+   * @throws IllegalArgumentException thrown if powerUp is not in the powerUps
+   * list.
    */
-  public void usePowerUp(PowerUp powerup) {
-    if (! powerUps.contains(powerup)) {
+  public void usePowerUp(PowerUp powerUp) {
+    if (! powerUps.contains(powerUp)) {
       throw new IllegalArgumentException("PowerUp not present");
     }
-    powerUps.remove(powerup);
-    usedPowerUps.add(powerup);
+    powerUps.remove(powerUp);
+    usedPowerUps.add(powerUp);
   }
 
   public List<PowerUp> getPowerUps() {
-    // TODO: powerUps is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(powerUps);
   }
 
   public List<PowerUp> getUsedPowerUps() {
-    // TODO: usedPowerUps is mutable
-    return new ArrayList<>();
+    return new ArrayList<>(usedPowerUps);
   }
 
   public void addDoubleKill(Player player) {
@@ -220,11 +243,7 @@ public class Board extends Observable {
   }
 
   public List<Player> getDoubleKills() {
-    List<Player> output = new ArrayList<>();
-    for (Player player : doubleKills) {
-      output.add(new Player(player, false));
-    }
-    return output;
+    return new ArrayList<>(doubleKills);
   }
 
   public void addKillShot(Kill kill) {
@@ -232,11 +251,7 @@ public class Board extends Observable {
   }
 
   public List<Kill> getKillShots() {
-    List<Kill> output = new ArrayList<>();
-    for (Kill kill : killShots) {
-      output.add(new Kill(kill));
-    }
-    return output;
+    return new ArrayList<>(killShots);
   }
 
   public long getTurnStartTime() {
@@ -267,10 +282,9 @@ public class Board extends Observable {
   }
 
   /**
-   * Return a Player object of a specified color
-   * @param color player color
-   * @return Player
-   * @exception IllegalArgumentException thrown if there's no player of the specified color
+   * Retrieves a player by its color.
+   * @throws IllegalArgumentException thrown if there are no players of the
+   * specified color.
    */
   public Player getPlayerByColor(PlayerColor color) {
     for (Player player : players) {
@@ -285,10 +299,6 @@ public class Board extends Observable {
     players.remove(getPlayerByColor(color));
   }
 
-  /**
-   * Create json serialization of a Board object
-   * @return String
-   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);

@@ -23,11 +23,7 @@ public class PlayerDashboardsView extends Observable implements PlayerDashboards
 
   @Override
   public List<Player> getPlayers() {
-    List<Player> output = new ArrayList<>();
-    for (Player player : players) {
-      output.add(new Player(player, true));
-    }
-    return output;
+    return new ArrayList<>(players);
   }
 
   @Override
