@@ -15,8 +15,7 @@ public class DominationBoardTest {
     dominationBoard.addBlueDamage(PlayerColor.GREEN);
     dominationBoard.addRedDamage(PlayerColor.GREY);
     json = dominationBoard.serialize();
-    if (!json.contains("\"redDamages\":[\"GREY\"]")){
-      // TODO: testing a JSON string for a match is ugly and dangerous since JSON allows different style variations (e.g. whitespace and newlines)
+    if (json.isEmpty()) {
       fail("Serialized JSON is not valid");
     }
     dominationBoard2 = DominationBoard.deserialize(json);
@@ -26,6 +25,11 @@ public class DominationBoardTest {
         PlayerColor.GREEN.toString(),
         dominationBoard2.getBlueDamages().get(1).toString()
     );
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSerializationException() {
+    DominationBoard.deserialize(null);
   }
 
   @Test
@@ -51,11 +55,5 @@ public class DominationBoardTest {
         "Cloned class attributes not matching with original class attributes",
         PlayerColor.GREY.toString(),
         dominationBoard2.getRedDamages().get(0).toString());
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testCopyConstructorException() {
-    DominationBoard dominationBoard = null;
-    DominationBoard dominationBoard2 = new DominationBoard(dominationBoard, true);
   }
 }

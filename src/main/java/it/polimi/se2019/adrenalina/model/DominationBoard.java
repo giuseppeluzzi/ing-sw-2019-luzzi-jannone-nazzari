@@ -30,9 +30,6 @@ public class DominationBoard extends Board {
   public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
     // TODO: try/catch with specific exception message
     super(dominationBoard, publicCopy);
-    if (dominationBoard == null) {
-      throw new IllegalArgumentException("Argument dominationBoard can't be null");
-    }
     blueDamages = dominationBoard.getBlueDamages();
     redDamages = dominationBoard.getRedDamages();
     yellowDamages = dominationBoard.getYellowDamages();

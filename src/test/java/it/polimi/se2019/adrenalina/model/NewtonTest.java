@@ -21,8 +21,7 @@ public class NewtonTest {
     Newton newton2;
     String json = newton.serialize();
 
-    if (!json.contains("\"color\":\"RED\"")) {
-      // TODO: testing a JSON string for a match is ugly and dangerous since JSON allows different style variations (e.g. whitespace and newlines)
+    if (json.isEmpty()) {
       fail("Serialized JSON is not valid");
     }
     newton2 = Newton.deserialize(json);
@@ -30,5 +29,10 @@ public class NewtonTest {
         "Deserialized class attributes not matching with actual class attributes",
         newton.getColor().toString(),
         newton2.getColor().toString());
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSerializationException() {
+    Newton.deserialize(null);
   }
 }

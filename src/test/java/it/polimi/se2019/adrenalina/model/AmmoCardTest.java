@@ -41,6 +41,11 @@ public class AmmoCardTest {
         AmmoCard.deserialize(json).getPowerUp());
   }
 
+  @Test (expected = IllegalArgumentException.class)
+  public void testSerializationException() {
+    AmmoCard.deserialize(null);
+  }
+
   @Test
   public void testCopyConstructor() {
     AmmoCard ammoCard = new AmmoCard(1,1,1,0);
@@ -53,7 +58,7 @@ public class AmmoCardTest {
         ammoCard2.getAmmo(AmmoColor.RED));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test (expected = IllegalArgumentException.class)
   public void testCopyConstructorException() {
     AmmoCard ammoCard = null;
     AmmoCard ammoCard2 = new AmmoCard(ammoCard);

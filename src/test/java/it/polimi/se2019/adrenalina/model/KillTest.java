@@ -30,8 +30,7 @@ public class KillTest {
     String json;
 
     json = kill.serialize();
-    if (!json.contains("\"color\":\"GREEN\"")) {
-      // TODO: testing a JSON string for a match is ugly and dangerous since JSON allows different style variations (e.g. whitespace and newlines)
+    if (json.isEmpty()) {
       fail("Serialized JSON is not valid");
     }
     kill2 = Kill.deserialize(json);
@@ -39,5 +38,10 @@ public class KillTest {
         "Deserialized class attributes not matching with actual class attributes",
         kill.getPlayerColor().toString(),
         kill2.getPlayerColor().toString());
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSerializationException() {
+    Kill.deserialize(null);
   }
 }

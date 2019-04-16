@@ -33,6 +33,7 @@ public class PlayerTest {
       for (int i = 0; i < 3; i++) {
         player.addTag(PlayerColor.BLUE);
       }
+      player.addTag(PlayerColor.YELLOW);
     } catch (IllegalStateException e) {
       fail("IllegalStateException thrown unnecessarily");
     }
@@ -101,8 +102,7 @@ public class PlayerTest {
     player.addTag(PlayerColor.GREEN);
     json = player.serialize();
 
-    if (!json.contains("\"name\":\"test\"")){
-      // TODO: testing a JSON string for a match is ugly and dangerous since JSON allows different style variations (e.g. whitespace and newlines)
+    if (json.isEmpty()){
       fail("Serialized JSON is not valid");
     }
 
@@ -118,16 +118,32 @@ public class PlayerTest {
         player2.getWeapons().get(0).getName());
   }
 
+  @Test (expected = IllegalArgumentException.class)
+  public void testSerializationException() {
+    Player.deserialize(null);
+  }
+
   @Test
   public void testCopyConstructor() {
     Player player = new Player("test", PlayerColor.GREEN);
     player.setSquare(new Square(1, 2, PlayerColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+    player.addPowerUp(new Newton(AmmoColor.YELLOW));
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1");
+    weapon1.setLoaded(false);
+    player.addWeapon(weapon1);
+    player.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2"));
     Player player2 = new Player(player, false);
+    Player player3 = new Player(player, true);
 
     assertEquals(
         "Cloned class attributes not matching with original class attributes",
         player.getName(),
         player2.getName());
+
+    assertTrue(
+        "Non-public copy of Player contains private attributes",
+        player3.getPowerUps().isEmpty()
+    );
   }
 
   @Test(expected = IllegalArgumentException.class)

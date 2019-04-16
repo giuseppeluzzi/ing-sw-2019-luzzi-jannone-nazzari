@@ -19,6 +19,14 @@ public class BoardTest {
       }
     }
     board.addPlayer(player);
+    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1"));
+    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2"));
+    board.addPowerUp(new Newton(AmmoColor.YELLOW));
+    board.addPowerUp(new Newton(AmmoColor.BLUE));
+    board.useWeapon(board.getWeapons().get(0));
+    board.usePowerUp(board.getPowerUps().get(0));
+    board.addKillShot(new Kill(PlayerColor.YELLOW, true));
+    board.addDoubleKill(player);
     board2 = new Board(board, false);
     board3 = new Board(board, true);
 
@@ -48,9 +56,27 @@ public class BoardTest {
   }
 
   @Test (expected = IllegalArgumentException.class)
-  public void testSetSquareException() {
+  public void testSetSquareException1() {
     Board board = new Board();
     board.setSquare(3, 3, null);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSetSquareException2() {
+    Board board = new Board();
+    board.setSquare(-1, -1, null);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSetSquareException3() {
+    Board board = new Board();
+    board.setSquare(0, 4, null);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSetSquareException4() {
+    Board board = new Board();
+    board.setSquare(0, -1, null);
   }
 
   @Test
@@ -65,9 +91,27 @@ public class BoardTest {
   }
 
   @Test (expected = IllegalArgumentException.class)
-  public void testGetSquareException() {
+  public void testGetSquareException1() {
     Board board = new Board();
-    board.setSquare(1, -1, null);
+    board.getSquare(3, 3);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testGetSquareException2() {
+    Board board = new Board();
+    board.getSquare(-1, -1);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testGetSquareException3() {
+    Board board = new Board();
+    board.getSquare(0, 4);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testGetSquareException4() {
+    Board board = new Board();
+    board.getSquare(0, -1);
   }
 
   @Test
@@ -148,5 +192,10 @@ public class BoardTest {
         "Deserialized class attributes not matching with actual class attributes",
         "test",
         Board.deserialize(json).getPlayers().get(0).getName());
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSerializationException() {
+    Board.deserialize(null);
   }
 }

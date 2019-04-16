@@ -91,6 +91,10 @@ public class Weapon extends Observable {
     targetHistory.clear();
   }
 
+  public void updateTargetHistory(Target target) {
+    targetHistory.add(target);
+  }
+
   public List<Target> getTargetHistory() {
     return new ArrayList<>(targetHistory);
   }
@@ -101,6 +105,13 @@ public class Weapon extends Observable {
 
   public void addEffect(Effect effect) {
     effects.add(effect);
+  }
+
+  public void setSelectedEffect(Effect effect) {
+    if (! effects.contains(effect)) {
+      throw new IllegalArgumentException("This weapon does not have that effect");
+    }
+    selectedEffects.add(effect);
   }
 
   public List<Effect> getSelectedEffects() {
