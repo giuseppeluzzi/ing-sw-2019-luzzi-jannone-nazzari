@@ -25,6 +25,11 @@ public class TagbackGrenade extends PowerUp {
     return true;
   }
 
+  @Override
+  public TagbackGrenade copy() {
+    return new TagbackGrenade(this);
+  }
+
   /**
    * Create TagbackGreande object from json formatted String
    * @param json json input String

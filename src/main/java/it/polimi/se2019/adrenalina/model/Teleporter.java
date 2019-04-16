@@ -26,8 +26,8 @@ public class Teleporter extends PowerUp {
   }
 
   @Override
-  public PowerUpType powerUpType() {
-    return PowerUpType.TELEPORTER;
+  public Teleporter copy() {
+    return new Teleporter(this);
   }
 
   /**

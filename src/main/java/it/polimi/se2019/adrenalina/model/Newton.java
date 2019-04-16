@@ -25,6 +25,11 @@ public class Newton extends PowerUp {
     return true;
   }
 
+  @Override
+  public Newton copy() {
+    return new Newton(this);
+  }
+
   /**
    * Create Newton object from json formatted String
    * @param json json input String

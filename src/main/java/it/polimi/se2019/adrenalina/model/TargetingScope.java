@@ -25,6 +25,11 @@ public class TargetingScope extends PowerUp {
     return true;
   }
 
+  @Override
+  public TargetingScope copy() {
+    return new TargetingScope(this);
+  }
+
   /**
    * Create TargetingScope object from json formatted String
    * @param json json input String

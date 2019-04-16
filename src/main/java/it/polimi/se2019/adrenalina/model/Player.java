@@ -74,15 +74,7 @@ public class Player extends Observable implements Target {
 
     if (! publicCopy) {
       for (PowerUp powerUp : player.powerUps) {
-        if (powerUp.powerUpType() == PowerUpType.TAGBACK_GRANADE) {
-          powerUps.add(new TagbackGrenade((TagbackGrenade) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.TARGETING_SCOPE) {
-          powerUps.add(new TargetingScope((TargetingScope) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.TELEPORTER) {
-          powerUps.add(new Teleporter((Teleporter) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.NEWTON) {
-          powerUps.add(new Newton((Newton) powerUp));
-        }
+        powerUps.add(powerUp.copy());
       }
     }
 

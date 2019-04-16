@@ -17,7 +17,7 @@ public class AmmoCard {
    * @throws InvalidParameterException thrown if the sum of parameters is
    * different than 3.
    */
-  public AmmoCard(int red, int blue, int yellow, int powerUp) throws InvalidParameterException {
+  public AmmoCard(int red, int blue, int yellow, int powerUp) {
     if (red + blue + yellow + powerUp != 3) {
       throw new InvalidParameterException("AmmoCard has three slots");
     }

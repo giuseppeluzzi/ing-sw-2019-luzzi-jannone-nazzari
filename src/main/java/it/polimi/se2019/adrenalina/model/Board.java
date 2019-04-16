@@ -82,26 +82,10 @@ public class Board extends Observable {
         usedWeapons.add(new Weapon(weapon));
       }
       for (PowerUp powerUp : board.powerUps) {
-        if (powerUp.powerUpType() == PowerUpType.TAGBACK_GRANADE) {
-          powerUps.add(new TagbackGrenade((TagbackGrenade) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.TARGETING_SCOPE) {
-          powerUps.add(new TargetingScope((TargetingScope) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.TELEPORTER) {
-          powerUps.add(new Teleporter((Teleporter) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.NEWTON) {
-          powerUps.add(new Newton((Newton) powerUp));
-        }
+        powerUps.add(powerUp.copy());
       }
       for (PowerUp powerUp : board.usedPowerUps) {
-        if (powerUp.powerUpType() == PowerUpType.TAGBACK_GRANADE) {
-          usedPowerUps.add(new TagbackGrenade((TagbackGrenade) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.TARGETING_SCOPE) {
-          usedPowerUps.add(new TargetingScope((TargetingScope) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.TELEPORTER) {
-          usedPowerUps.add(new Teleporter((Teleporter) powerUp));
-        } else if (powerUp.powerUpType() == PowerUpType.NEWTON) {
-          usedPowerUps.add(new Newton((Newton) powerUp));
-        }
+        usedPowerUps.add(powerUp.copy());
       }
     }
 

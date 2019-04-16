@@ -10,7 +10,6 @@ import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PlayerColor;
-import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
@@ -30,7 +29,7 @@ public class PlayerController implements Observer {
    * @throws IllegalArgumentException thrown if the name is already used by
    * another player in this board.
    */
-  public Player createPlayer(String name, PlayerColor color) throws IllegalArgumentException {
+  public Player createPlayer(String name, PlayerColor color) {
     for (Player player: boardController.getBoard().getPlayers()) {
       if (player.getName().equalsIgnoreCase(name)) {
         throw new IllegalArgumentException("This name is already used by another player in this board");
