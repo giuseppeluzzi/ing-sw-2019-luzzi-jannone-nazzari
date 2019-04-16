@@ -13,7 +13,6 @@ import java.util.List;
  * Class defining a weapon.
  */
 public class Weapon extends Observable {
-  private static Weapon instance;
   private final AmmoColor baseCost;
   private boolean loaded;
   private final String name;
@@ -24,7 +23,6 @@ public class Weapon extends Observable {
 
   public Weapon(int costRed, int costBlue, int costYellow,
       AmmoColor baseCost, String name) {
-    instance = this;
     this.baseCost = baseCost;
     this.name = name;
     loaded = true;

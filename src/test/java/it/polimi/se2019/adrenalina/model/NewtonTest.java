@@ -9,8 +9,10 @@ public class NewtonTest {
   public void testCopyConstructor() {
     Newton newton = new Newton(AmmoColor.RED);
     Newton newton2 = new Newton(newton);
-
-    assertEquals(newton.getColor(), newton2.getColor());
+    assertEquals(
+        "Cloned class attributes not matching with original class attributes",
+        newton.getColor(),
+        newton2.getColor());
   }
 
   @Test
@@ -20,9 +22,13 @@ public class NewtonTest {
     String json = newton.serialize();
 
     if (!json.contains("\"color\":\"RED\"")) {
-      fail();
+      // TODO: testing a JSON string for a match is ugly and dangerous since JSON allows different style variations (e.g. whitespace and newlines)
+      fail("Serialized JSON is not valid");
     }
     newton2 = Newton.deserialize(json);
-    assertEquals(newton.getColor().toString(), newton2.getColor().toString());
+    assertEquals(
+        "Deserialized class attributes not matching with actual class attributes",
+        newton.getColor().toString(),
+        newton2.getColor().toString());
   }
 }

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class DominationBoardTest {
-  // TODO: complete test suite
   @Test
   public void testSerialization(){
     DominationBoard dominationBoard = new DominationBoard();
@@ -17,14 +16,16 @@ public class DominationBoardTest {
     dominationBoard.addRedDamage(PlayerColor.GREY);
     json = dominationBoard.serialize();
     if (!json.contains("\"redDamages\":[\"GREY\"]")){
-      fail();
+      // TODO: testing a JSON string for a match is ugly and dangerous since JSON allows different style variations (e.g. whitespace and newlines)
+      fail("Serialized JSON is not valid");
     }
     dominationBoard2 = DominationBoard.deserialize(json);
 
-    if (!dominationBoard2.getBlueDamages().get(1).toString().equals(PlayerColor.GREEN.toString())){
-      fail();
-    }
-    assertTrue(true);
+    assertEquals(
+        "Deserialized class attributes not matching with actual class attributes",
+        PlayerColor.GREEN.toString(),
+        dominationBoard2.getBlueDamages().get(1).toString()
+    );
   }
 
   @Test
@@ -44,9 +45,12 @@ public class DominationBoardTest {
 
     dominationBoard2 = new DominationBoard(dominationBoard, true);
     if (dominationBoard2 == null) {
-      fail("Null pointer");
+      fail("Board returned from copy constructor is null");
     }
-    assertEquals(PlayerColor.GREY.toString(), dominationBoard2.getRedDamages().get(0).toString());
+    assertEquals(
+        "Cloned class attributes not matching with original class attributes",
+        PlayerColor.GREY.toString(),
+        dominationBoard2.getRedDamages().get(0).toString());
   }
 
   @Test(expected = IllegalArgumentException.class)

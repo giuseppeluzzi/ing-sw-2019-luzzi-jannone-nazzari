@@ -11,7 +11,6 @@ public abstract class PowerUp {
   private final List<Action> actions;
 
   protected PowerUp(AmmoColor color) {
-
     this.color = color;
     actions = new ArrayList<>();
   }

@@ -11,7 +11,10 @@ public class KillTest {
     Kill kill2;
 
     kill2 = new Kill(kill);
-    assertEquals(kill.isOverKill(), kill2.isOverKill());
+    assertEquals(
+        "Cloned class attributes not matching with original class attributes",
+        kill.isOverKill(),
+        kill2.isOverKill());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -27,10 +30,14 @@ public class KillTest {
     String json;
 
     json = kill.serialize();
-    if (!json.contains("\"color\":\"GREEN\"")){
-      fail();
+    if (!json.contains("\"color\":\"GREEN\"")) {
+      // TODO: testing a JSON string for a match is ugly and dangerous since JSON allows different style variations (e.g. whitespace and newlines)
+      fail("Serialized JSON is not valid");
     }
     kill2 = Kill.deserialize(json);
-    assertEquals(kill.getPlayerColor().toString(), kill2.getPlayerColor().toString());
+    assertEquals(
+        "Deserialized class attributes not matching with actual class attributes",
+        kill.getPlayerColor().toString(),
+        kill2.getPlayerColor().toString());
   }
 }

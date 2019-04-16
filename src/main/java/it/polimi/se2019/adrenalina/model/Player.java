@@ -175,7 +175,7 @@ public class Player extends Observable implements Target {
    * specified color.
    */
   public void addTag(PlayerColor player) {
-    if (tags.stream().filter(tag -> tag == player).count() > 3) {
+    if (tags.stream().filter(tag -> tag == player).count() >= 3) {
       throw new IllegalStateException("Player already has 3 tags of this color");
     }
     tags.add(player);

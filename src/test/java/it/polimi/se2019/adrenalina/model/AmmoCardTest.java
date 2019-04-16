@@ -14,9 +14,12 @@ public class AmmoCardTest {
     try {
       ammoCard = new AmmoCard(1,2,0,0);
     } catch (InvalidParameterException e) {
-      fail();
+      fail("InvalidParameterException thrown unnecessarily");
     }
-    assertEquals(2, ammoCard.getAmmo(AmmoColor.BLUE));
+    assertEquals(
+        "Blue ammo number not matching with constructor parameters",
+        2,
+        ammoCard.getAmmo(AmmoColor.BLUE));
   }
 
   @Test(expected = InvalidParameterException.class)
@@ -30,9 +33,12 @@ public class AmmoCardTest {
     String json = ammoCard.serialize();
 
     if (json.isEmpty()) {
-      fail();
+      fail("JSON resulting from serialization is empty");
     }
-    assertEquals(1, AmmoCard.deserialize(json).getPowerUp());
+    assertEquals(
+        "Deserialized class attributes not matching with actual class attributes",
+        1,
+        AmmoCard.deserialize(json).getPowerUp());
   }
 
   @Test
@@ -41,7 +47,10 @@ public class AmmoCardTest {
     AmmoCard ammoCard2;
 
     ammoCard2 = new AmmoCard(ammoCard);
-    assertEquals(ammoCard.getAmmo(AmmoColor.RED), ammoCard2.getAmmo(AmmoColor.RED));
+    assertEquals(
+        "Cloned class attributes not matching with original class attributes",
+        ammoCard.getAmmo(AmmoColor.RED),
+        ammoCard2.getAmmo(AmmoColor.RED));
   }
 
   @Test(expected = IllegalArgumentException.class)
