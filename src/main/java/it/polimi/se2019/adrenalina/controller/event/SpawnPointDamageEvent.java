@@ -15,6 +15,9 @@ public class SpawnPointDamageEvent implements Event {
   }
 
   public static SpawnPointDamageEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, SpawnPointDamageEvent.class);
   }

@@ -2,11 +2,18 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 
+/**
+ * Class defining a Targeting Scoper powerup card
+ */
 public class TargetingScope extends PowerUp {
   public TargetingScope(AmmoColor color) {
     super(color);
   }
 
+  /**
+   * Copy constructor
+   * @param powerup TargetingScope object that has to be copied, can't be null
+   */
   public TargetingScope(TargetingScope powerup) {
     // TODO: copy actions
     super(powerup.getColor());
@@ -18,7 +25,16 @@ public class TargetingScope extends PowerUp {
     return true;
   }
 
+  /**
+   * Create TargetingScope object from json formatted String
+   * @param json json input String
+   * @return TargetingScope
+   * @exception IllegalArgumentException thrown if argument json is null
+   */
   public static TargetingScope deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, TargetingScope.class);
   }

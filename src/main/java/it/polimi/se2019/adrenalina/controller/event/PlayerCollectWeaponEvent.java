@@ -19,6 +19,9 @@ public class PlayerCollectWeaponEvent implements Event {
   }
 
   public static PlayerCollectWeaponEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerCollectWeaponEvent.class);
   }

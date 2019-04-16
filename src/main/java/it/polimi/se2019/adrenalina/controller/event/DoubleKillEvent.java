@@ -24,6 +24,9 @@ public class DoubleKillEvent implements Event {
   }
 
   public static DoubleKillEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, DoubleKillEvent.class);
   }

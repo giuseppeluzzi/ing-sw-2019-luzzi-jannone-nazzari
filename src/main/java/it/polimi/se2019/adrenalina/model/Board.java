@@ -296,10 +296,14 @@ public class Board extends Observable {
 
   /**
    * Create Board object from json formatted String
-   * @param json json input String
+   * @param json json input String, can't be null
    * @return Board
+   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static Board deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, Board.class);
   }

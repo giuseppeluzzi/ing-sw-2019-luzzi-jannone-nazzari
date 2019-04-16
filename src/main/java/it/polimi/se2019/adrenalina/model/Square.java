@@ -115,6 +115,9 @@ public class Square extends Observable implements Target {
   }
 
   public static Square deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, Square.class);
   }

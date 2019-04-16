@@ -22,6 +22,9 @@ public class PlayerChatEvent implements Event{
   }
 
   public static PlayerChatEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerChatEvent.class);
   }

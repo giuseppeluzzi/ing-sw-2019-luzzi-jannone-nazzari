@@ -15,6 +15,9 @@ public class PlayerPowerUpEvent implements Event {
   }
 
   public static PlayerPowerUpEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerPowerUpEvent.class);
   }

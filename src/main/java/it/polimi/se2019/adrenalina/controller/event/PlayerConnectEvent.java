@@ -21,6 +21,9 @@ public class PlayerConnectEvent implements Event {
   }
 
   public static PlayerConnectEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerConnectEvent.class);
   }

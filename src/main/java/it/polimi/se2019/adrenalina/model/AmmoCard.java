@@ -67,8 +67,12 @@ public class AmmoCard {
    * Create AmmoCard object from json formatted String
    * @param json json input String
    * @return AmmoCard
+   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static AmmoCard deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, AmmoCard.class);
   }

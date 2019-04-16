@@ -23,6 +23,9 @@ public class AmmoCardUpdateEvent implements Event {
   }
 
   public static AmmoCardUpdateEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, AmmoCardUpdateEvent.class);
   }

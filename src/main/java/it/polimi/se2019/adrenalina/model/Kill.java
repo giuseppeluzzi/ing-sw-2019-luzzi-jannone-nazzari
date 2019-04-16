@@ -53,8 +53,12 @@ public class Kill {
    * Create Kill object from json formatted String
    * @param json json input String
    * @return Kill
+   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static Kill deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, Kill.class);
   }

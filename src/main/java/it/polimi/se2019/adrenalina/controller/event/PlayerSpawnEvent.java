@@ -19,6 +19,9 @@ public class PlayerSpawnEvent implements Event {
   }
 
   public static PlayerSpawnEvent deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, PlayerSpawnEvent.class);
   }

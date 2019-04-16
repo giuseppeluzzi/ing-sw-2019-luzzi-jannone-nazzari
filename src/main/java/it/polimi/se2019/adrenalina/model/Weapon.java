@@ -129,8 +129,12 @@ public class Weapon extends Observable {
    * Create Weapon object from json formatted String
    * @param json json input String
    * @return Weapon
+   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static Weapon deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, Weapon.class);
   }

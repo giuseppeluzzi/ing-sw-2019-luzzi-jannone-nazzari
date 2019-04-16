@@ -241,8 +241,12 @@ public class Player extends Observable implements Target {
    * Create Player object from json formatted String
    * @param json json input String
    * @return Player
+   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static Player deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
     Gson gson = new Gson();
     return gson.fromJson(json, Player.class);
   }
