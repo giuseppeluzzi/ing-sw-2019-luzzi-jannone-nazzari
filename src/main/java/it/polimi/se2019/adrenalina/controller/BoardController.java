@@ -4,10 +4,8 @@ import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.BoardStatus;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.PlayerStatus;
 
 public class BoardController implements Runnable {
   private final Board board;

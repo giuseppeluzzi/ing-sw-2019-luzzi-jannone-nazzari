@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.controller.BorderType;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.HashMap;

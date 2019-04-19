@@ -3,9 +3,9 @@ package it.polimi.se2019.adrenalina.network;
 import static java.lang.Thread.sleep;
 
 import it.polimi.se2019.adrenalina.controller.BoardController;
-import it.polimi.se2019.adrenalina.model.BoardStatus;
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

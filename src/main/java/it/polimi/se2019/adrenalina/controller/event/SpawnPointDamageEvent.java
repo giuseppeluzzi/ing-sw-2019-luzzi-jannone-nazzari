@@ -2,7 +2,7 @@ package it.polimi.se2019.adrenalina.controller.event;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import it.polimi.se2019.adrenalina.model.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.model.Player;
 
 public class SpawnPointDamageEvent implements Event {

@@ -9,7 +9,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class Client extends UnicastRemoteObject implements ClientInterface{
+public class Client extends UnicastRemoteObject implements ClientInterface {
   private static final long serialVersionUID = -2824559728518448567L;
 
   private final String name;

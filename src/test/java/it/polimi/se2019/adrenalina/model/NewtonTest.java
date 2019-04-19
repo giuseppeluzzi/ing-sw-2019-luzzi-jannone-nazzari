@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import static org.junit.Assert.*;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import org.junit.Test;
 
 public class NewtonTest {

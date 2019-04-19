@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.model;
+package it.polimi.se2019.adrenalina.controller;
 
 /**
  * Enumeration of all Border types

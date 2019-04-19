@@ -12,7 +12,7 @@ import it.polimi.se2019.adrenalina.controller.MoveAction;
 import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.SelectAction;
 import it.polimi.se2019.adrenalina.controller.ShootAction;
-import it.polimi.se2019.adrenalina.model.ActionType;
+import it.polimi.se2019.adrenalina.controller.ActionType;
 import java.lang.reflect.Type;
 
 public class JsonEffectDeserializer implements JsonDeserializer<Effect> {

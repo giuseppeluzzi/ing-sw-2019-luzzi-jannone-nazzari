@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.model.ActionType;
 
 public class OptionalMoveAction implements Action {
   private final int target;
@@ -42,9 +41,14 @@ public class OptionalMoveAction implements Action {
   }
 
   @Override
-  public boolean equals(Action action) {
-    return action.getActionType() == ActionType.OPTIONAL_MOVE
-        && ((OptionalMoveAction) action).target == target
-        && ((OptionalMoveAction) action).destination == destination;
+  public boolean equals(Object object) {
+    return object instanceof Action && ((Action) object).getActionType() == ActionType.OPTIONAL_MOVE
+        && ((OptionalMoveAction) object).target == target
+        && ((OptionalMoveAction) object).destination == destination;
+  }
+
+  @Override
+  public int hashCode() {
+    return target * destination * type.ordinal();
   }
 }

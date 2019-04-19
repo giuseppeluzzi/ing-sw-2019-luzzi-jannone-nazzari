@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.controller;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerReloadEvent;
-import it.polimi.se2019.adrenalina.model.AmmoColor;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;

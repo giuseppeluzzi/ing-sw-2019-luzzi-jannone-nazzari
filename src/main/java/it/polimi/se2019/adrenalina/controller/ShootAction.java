@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.model.ActionType;
 
 public class ShootAction implements Action {
   private final int target;
@@ -48,10 +47,15 @@ public class ShootAction implements Action {
   }
 
   @Override
-  public boolean equals(Action action) {
-    return action.getActionType() == ActionType.SHOOT
-        && ((ShootAction) action).target == target
-        && ((ShootAction) action).damages == damages
-        && ((ShootAction) action).tag == tag;
+  public boolean equals(Object object) {
+    return object instanceof Action && ((Action) object).getActionType() == ActionType.SHOOT
+        && ((ShootAction) object).target == target
+        && ((ShootAction) object).damages == damages
+        && ((ShootAction) object).tag == tag;
+  }
+
+  @Override
+  public int hashCode() {
+    return target * damages * tag * type.ordinal();
   }
 }

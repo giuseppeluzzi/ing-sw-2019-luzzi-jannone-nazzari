@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;

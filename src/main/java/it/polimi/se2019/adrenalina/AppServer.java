@@ -4,7 +4,7 @@ import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.SelectAction;
 import it.polimi.se2019.adrenalina.controller.ShootAction;
-import it.polimi.se2019.adrenalina.model.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Server;
 import it.polimi.se2019.adrenalina.network.ServerSocket;

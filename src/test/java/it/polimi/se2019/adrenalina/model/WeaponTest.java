@@ -3,9 +3,13 @@ package it.polimi.se2019.adrenalina.model;
 import static org.junit.Assert.*;
 
 import it.polimi.se2019.adrenalina.controller.Action;
+import it.polimi.se2019.adrenalina.controller.ActionType;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.MoveAction;
 import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SelectAction;
 import it.polimi.se2019.adrenalina.controller.ShootAction;
 import org.junit.Test;

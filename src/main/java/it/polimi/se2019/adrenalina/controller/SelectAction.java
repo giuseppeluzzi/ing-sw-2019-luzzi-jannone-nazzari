@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.model.ActionType;
 import it.polimi.se2019.adrenalina.model.Target;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,13 +74,18 @@ public class SelectAction implements Action {
   }
 
   @Override
-  public boolean equals(Action action) {
-    return action.getActionType() == ActionType.SELECT
-        && ((SelectAction) action).visible == visible
-        && ((SelectAction) action).differentFrom == differentFrom
-        && ((SelectAction) action).from == from
-        && ((SelectAction) action).minDistance == minDistance
-        && ((SelectAction) action).maxDistance == maxDistance
-        && ((SelectAction) action).target == target;
+  public boolean equals(Object object) {
+    return object instanceof Action && ((Action) object).getActionType() == ActionType.SELECT
+        && ((SelectAction) object).visible == visible
+        && ((SelectAction) object).differentFrom == differentFrom
+        && ((SelectAction) object).from == from
+        && ((SelectAction) object).minDistance == minDistance
+        && ((SelectAction) object).maxDistance == maxDistance
+        && ((SelectAction) object).target == target;
+  }
+
+  @Override
+  public int hashCode() {
+    return differentFrom * from * minDistance * maxDistance * target * type.ordinal();
   }
 }

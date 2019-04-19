@@ -23,7 +23,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   private PrintWriter printWriter;
   private BufferedReader bufferedReader;
 
-
   public VirtualClientSocket(Server server, Socket clientSocket) {
     this.clientSocket = clientSocket;
     this.server = server;
