@@ -96,8 +96,10 @@ public class Effect {
   public void reconcileDeserialization(Weapon ofWeapon, Effect parentEffect) {
     weapon = ofWeapon;
     requiredEffect = parentEffect;
-    for (Effect effect: parentEffect.subEffects) {
-      effect.reconcileDeserialization(ofWeapon, this);
+    if (parentEffect != null) {
+      for (Effect effect : parentEffect.subEffects) {
+        effect.reconcileDeserialization(ofWeapon, this);
+      }
     }
   }
 }

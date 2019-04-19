@@ -6,7 +6,7 @@ import it.polimi.se2019.adrenalina.model.ActionType;
 public class MoveAction implements Action{
   private final int target;
   private final int destination;
-  protected final ActionType type;
+  private final ActionType type;
 
   public MoveAction(int target, int destination) {
     this.target = target;
@@ -37,8 +37,14 @@ public class MoveAction implements Action{
     return target;
   }
 
-
   public int getDestination() {
     return destination;
+  }
+
+  @Override
+  public boolean equals(Action action) {
+    return action.getActionType() == ActionType.MOVE
+        && ((MoveAction) action).target == target
+        && ((MoveAction) action).destination == destination;
   }
 }

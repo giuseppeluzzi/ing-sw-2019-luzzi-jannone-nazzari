@@ -6,4 +6,6 @@ public interface Action {
   ActionType getActionType();
 
   String serialize();
+
+  boolean equals(Action action);
 }

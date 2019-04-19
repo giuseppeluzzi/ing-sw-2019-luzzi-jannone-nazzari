@@ -2,7 +2,9 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class Weapon extends Observable {
   private final List<Effect> effects;
   private final List<Effect> selectedEffects;
   private final HashMap<AmmoColor, Integer> cost;
+  // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
       AmmoColor baseCost, String name) {
@@ -145,11 +148,17 @@ public class Weapon extends Observable {
     if (json == null) {
       throw new IllegalArgumentException("Argument json can't be null");
     }
-    Gson gson = new Gson();
+    GsonBuilder builder = new GsonBuilder();
+    JsonDeserializer<Effect> effectJsonDeserializer = new JsonEffectDeserializer();
+    builder.registerTypeAdapter(Effect.class, effectJsonDeserializer);
+
+    Gson gson = builder.create();
     Weapon weapon = gson.fromJson(json, Weapon.class);
+
     for (Effect effect: weapon.effects) {
       effect.reconcileDeserialization(weapon, null);
     }
+
     return weapon;
   }
 }

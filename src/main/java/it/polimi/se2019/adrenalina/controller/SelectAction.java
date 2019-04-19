@@ -73,4 +73,15 @@ public class SelectAction implements Action {
   public boolean isVisible() {
     return visible;
   }
+
+  @Override
+  public boolean equals(Action action) {
+    return action.getActionType() == ActionType.SELECT
+        && ((SelectAction) action).visible == visible
+        && ((SelectAction) action).differentFrom == differentFrom
+        && ((SelectAction) action).from == from
+        && ((SelectAction) action).minDistance == minDistance
+        && ((SelectAction) action).maxDistance == maxDistance
+        && ((SelectAction) action).target == target;
+  }
 }

@@ -31,7 +31,7 @@ public class AppServer {
     Log.info(weapon.serialize());
 
 
-    Log.info(Weapon.deserialize(weapon.serialize()).getEffects().get(0).getSubEffects().get(0).getName());
+    Log.info(""+Weapon.deserialize(weapon.serialize()).getEffects().get(0).getSubEffects().size());
 
     // Verify if the configuration exists
     Configuration.getInstance();

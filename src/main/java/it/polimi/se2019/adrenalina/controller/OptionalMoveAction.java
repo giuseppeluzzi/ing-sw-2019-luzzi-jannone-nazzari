@@ -6,13 +6,11 @@ import it.polimi.se2019.adrenalina.model.ActionType;
 public class OptionalMoveAction implements Action {
   private final int target;
   private final int destination;
-  private final boolean used;
   private final ActionType type;
 
-  public OptionalMoveAction(int target, int destination, boolean used) {
+  public OptionalMoveAction(int target, int destination) {
     this.target = target;
     this.destination = destination;
-    this.used = used;
     type = ActionType.OPTIONAL_MOVE;
   }
 
@@ -43,7 +41,10 @@ public class OptionalMoveAction implements Action {
     return destination;
   }
 
-  public boolean isUsed() {
-    return used;
+  @Override
+  public boolean equals(Action action) {
+    return action.getActionType() == ActionType.OPTIONAL_MOVE
+        && ((OptionalMoveAction) action).target == target
+        && ((OptionalMoveAction) action).destination == destination;
   }
 }

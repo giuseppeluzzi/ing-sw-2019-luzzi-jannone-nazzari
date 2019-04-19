@@ -2,7 +2,12 @@ package it.polimi.se2019.adrenalina.model;
 
 import static org.junit.Assert.*;
 
+import it.polimi.se2019.adrenalina.controller.Action;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.controller.MoveAction;
+import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.SelectAction;
+import it.polimi.se2019.adrenalina.controller.ShootAction;
 import org.junit.Test;
 
 public class WeaponTest {
@@ -24,7 +29,10 @@ public class WeaponTest {
   @Test
   public void testSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    // TODO: fix reconcileDeserializazion & uncomment this: weapon.addEffect(new Effect("test", weapon, 0, 1, 2));
+    Effect base = new Effect("test", weapon, 0, 1, 2);
+    base.addAction(new SelectAction(0, 1, 0, 0, 0, true));
+
+    weapon.addEffect(base);
     String json = weapon.serialize();
 
     if (json.isEmpty()) {
@@ -34,6 +42,89 @@ public class WeaponTest {
         "Deserialized class attributes not matching with actual class attributes",
         2,
         Weapon.deserialize(json).getCost(AmmoColor.YELLOW));
+  }
+
+  @Test
+  public void testEffectSerialization() {
+    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
+    Effect base = new Effect("test", weapon, 0, 1, 2);
+    base.addAction(new SelectAction(0, 1, 0, 0, 0, true));
+    base.addAction(new ShootAction(1, 2, 1));
+    base.addAction(new MoveAction(2, 0));
+    base.addAction(new OptionalMoveAction(2, 0));
+
+    Effect bis = new Effect("test_bis", weapon, 1, 0, 0);
+    bis.addAction(new SelectAction(0, 1, 0, 0, 0, true));
+    bis.addAction(new ShootAction(1, 2, 1));
+    bis.addAction(new MoveAction(2, 0));
+    bis.addAction(new OptionalMoveAction(2, 0));
+
+    base.addSubEffect(bis);
+    weapon.addEffect(base);
+    String json = weapon.serialize();
+
+    if (json.isEmpty()) {
+      fail("JSON resulting from serialization is empty");
+    }
+
+    assertEquals(
+        "Deserialized class attributes not matching with actual class attributes",
+        2,
+        Weapon.deserialize(json).getCost(AmmoColor.YELLOW));
+
+    assertEquals("Deserialized weapon effects not matching with actual weapon effects",
+        1,
+        Weapon.deserialize(json).getEffects().size());
+
+    assertEquals("Deserialized weapon effect actions not matching",
+        4,
+        Weapon.deserialize(json).getEffects().get(0).getActions().size());
+
+    assertEquals("Deserialized weapon subeffects not matching with actual weapon subeffects",
+        1,
+        Weapon.deserialize(json).getEffects().get(0).getSubEffects().size());
+
+    assertEquals("Deserialized weapon subeffect actions not matching",
+        4,
+        Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().size());
+
+    assertEquals("Deserialized weapon effect action not matching",
+        ActionType.SELECT,
+        Weapon.deserialize(json).getEffects().get(0).getActions().get(0).getActionType());
+    assertEquals("Deserialized weapon effect action not matching",
+        ActionType.SHOOT,
+        Weapon.deserialize(json).getEffects().get(0).getActions().get(1).getActionType());
+    assertEquals("Deserialized weapon effect action not matching",
+        ActionType.MOVE,
+        Weapon.deserialize(json).getEffects().get(0).getActions().get(2).getActionType());
+    assertEquals("Deserialized weapon effect action not matching",
+        ActionType.OPTIONAL_MOVE,
+        Weapon.deserialize(json).getEffects().get(0).getActions().get(3).getActionType());
+
+    assertEquals("Deserialized weapon subeffect action not matching",
+        ActionType.SELECT,
+        Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(0).getActionType());
+    assertEquals("Deserialized weapon subeffect action not matching",
+        ActionType.SHOOT,
+        Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(1).getActionType());
+    assertEquals("Deserialized weapon subeffect action not matching",
+        ActionType.MOVE,
+        Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(2).getActionType());
+    assertEquals("Deserialized weapon subeffect action not matching",
+        ActionType.OPTIONAL_MOVE,
+        Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(3).getActionType());
+
+    int effectIndex = 0;
+    for (Action action: Weapon.deserialize(json).getEffects().get(0).getActions()) {
+      assertTrue("Deserialized action not matching", base.getActions().get(effectIndex).equals(action));
+      effectIndex++;
+    }
+
+    int subIndex = 0;
+    for (Action action: Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions()) {
+      assertTrue("Deserialized action not matching", bis.getActions().get(subIndex).equals(action));
+      subIndex++;
+    }
   }
 
   @Test (expected = IllegalArgumentException.class)

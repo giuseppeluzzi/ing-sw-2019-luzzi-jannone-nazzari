@@ -46,4 +46,12 @@ public class ShootAction implements Action {
   public int getTag() {
     return tag;
   }
+
+  @Override
+  public boolean equals(Action action) {
+    return action.getActionType() == ActionType.SHOOT
+        && ((ShootAction) action).target == target
+        && ((ShootAction) action).damages == damages
+        && ((ShootAction) action).tag == tag;
+  }
 }
