@@ -35,7 +35,6 @@ public class Teleporter extends PowerUp {
    * Create Teleporter object from json formatted String
    * @param json json input String
    * @return Teleporter
-   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static Teleporter deserialize(String json) {
     if (json == null) {

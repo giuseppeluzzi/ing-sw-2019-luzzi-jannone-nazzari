@@ -128,7 +128,7 @@ public class Board extends Observable {
    * @param x x coordinate.
    * @param y y coordinate.
    * @return the requested Square.
-   * @throws IllegalArgumentException thrown if x or y are not within the size
+   * @throws   IllegalArgumentException thrown if x or y are not within the size
    * of the board.
    */
   public Square getSquare(int x, int y) {
@@ -178,7 +178,7 @@ public class Board extends Observable {
    * Marks a weapon as used by moving it from the weapons list to the
    * usedWeapons list.
    * @param weapon weapon to be marked as used.
-   * @throws IllegalArgumentException thrown if weapon is not in the weapons
+   * @throws  IllegalArgumentException thrown if weapon is not in the weapons
    * list.
    */
   public void useWeapon(Weapon weapon) {
@@ -205,7 +205,7 @@ public class Board extends Observable {
    * Marks a powerUp as used by moving it from the powerUps list to the
    * usedPowerUps list.
    * @param powerUp the powerUp to be marked as used.
-   * @throws IllegalArgumentException thrown if powerUp is not in the powerUps
+   * @exception  IllegalArgumentException thrown if powerUp is not in the powerUps
    * list.
    */
   public void usePowerUp(PowerUp powerUp) {
@@ -269,7 +269,7 @@ public class Board extends Observable {
 
   /**
    * Retrieves a player by its color.
-   * @throws IllegalArgumentException thrown if there are no players of the
+   * @throws  IllegalArgumentException thrown if there are no players of the
    * specified color.
    */
   public Player getPlayerByColor(PlayerColor color) {
@@ -294,7 +294,6 @@ public class Board extends Observable {
    * Create Board object from json formatted String
    * @param json json input String, can't be null
    * @return Board
-   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static Board deserialize(String json) {
     if (json == null) {

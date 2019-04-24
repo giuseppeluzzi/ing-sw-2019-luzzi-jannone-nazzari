@@ -35,7 +35,6 @@ public class TargetingScope extends PowerUp {
    * Create TargetingScope object from json formatted String
    * @param json json input String
    * @return TargetingScope
-   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static TargetingScope deserialize(String json) {
     if (json == null) {

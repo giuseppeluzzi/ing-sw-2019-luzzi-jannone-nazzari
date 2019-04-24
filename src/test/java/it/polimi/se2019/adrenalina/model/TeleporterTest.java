@@ -5,41 +5,41 @@ import static org.junit.Assert.*;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import org.junit.Test;
 
-public class NewtonTest {
+public class TeleporterTest {
   @Test
   public void testCopyConstructor() {
-    Newton newton = new Newton(AmmoColor.RED);
-    Newton newton2 = new Newton(newton);
+    Teleporter teleporter = new Teleporter(AmmoColor.RED);
+    Teleporter teleporter2 = new Teleporter(teleporter);
     assertEquals(
         "Cloned class attributes not matching with original class attributes",
-        newton.getColor(),
-        newton2.getColor());
+        teleporter.getColor(),
+        teleporter2.getColor());
   }
 
   @Test(expected = NullPointerException.class)
   public void testCopyConstructorException() {
-    Newton newton = null;
-    Newton newton2 = new Newton(newton);
+    Teleporter teleporter = null;
+    Teleporter teleporter2 = new Teleporter(teleporter);
   }
 
   @Test
   public void testSerialization() {
-    Newton newton = new Newton(AmmoColor.RED);
-    Newton newton2;
-    String json = newton.serialize();
+    Teleporter teleporter = new Teleporter(AmmoColor.RED);
+    Teleporter teleporter2;
+    String json = teleporter.serialize();
 
     if (json.isEmpty()) {
       fail("Serialized JSON is not valid");
     }
-    newton2 = Newton.deserialize(json);
+    teleporter2 = Teleporter.deserialize(json);
     assertEquals(
         "Deserialized class attributes not matching with actual class attributes",
-        newton.getColor().toString(),
-        newton2.getColor().toString());
+        teleporter.getColor().toString(),
+        teleporter2.getColor().toString());
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void testSerializationException() {
-    Newton.deserialize(null);
+    Teleporter.deserialize(null);
   }
 }

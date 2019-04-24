@@ -5,41 +5,41 @@ import static org.junit.Assert.*;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import org.junit.Test;
 
-public class NewtonTest {
+public class TargetingScopeTest {
   @Test
   public void testCopyConstructor() {
-    Newton newton = new Newton(AmmoColor.RED);
-    Newton newton2 = new Newton(newton);
+    TargetingScope targetingScope = new TargetingScope(AmmoColor.RED);
+    TargetingScope targetingScope2 = new TargetingScope(targetingScope);
     assertEquals(
         "Cloned class attributes not matching with original class attributes",
-        newton.getColor(),
-        newton2.getColor());
+        targetingScope.getColor(),
+        targetingScope2.getColor());
   }
 
   @Test(expected = NullPointerException.class)
   public void testCopyConstructorException() {
-    Newton newton = null;
-    Newton newton2 = new Newton(newton);
+    TargetingScope targetingScope = null;
+    TargetingScope targetingScope2 = new TargetingScope(targetingScope);
   }
 
   @Test
   public void testSerialization() {
-    Newton newton = new Newton(AmmoColor.RED);
-    Newton newton2;
-    String json = newton.serialize();
+    TargetingScope targetingScope = new TargetingScope(AmmoColor.RED);
+    TargetingScope targetingScope2;
+    String json = targetingScope.serialize();
 
     if (json.isEmpty()) {
       fail("Serialized JSON is not valid");
     }
-    newton2 = Newton.deserialize(json);
+    targetingScope2 = TargetingScope.deserialize(json);
     assertEquals(
         "Deserialized class attributes not matching with actual class attributes",
-        newton.getColor().toString(),
-        newton2.getColor().toString());
+        targetingScope.getColor().toString(),
+        targetingScope2.getColor().toString());
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void testSerializationException() {
-    Newton.deserialize(null);
+    TargetingScope.deserialize(null);
   }
 }

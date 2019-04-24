@@ -30,7 +30,7 @@ public class AmmoCard {
   }
 
   /**
-   * Copy constructor, creates an exact copy of an ammoCard.
+   * Copy constructor, creates an exact copy of ammoCard.
    * @param ammoCard the ammoCard to be cloned, has to be not null.
    */
   public AmmoCard(AmmoCard ammoCard) {
@@ -61,7 +61,6 @@ public class AmmoCard {
    * Create AmmoCard object from json formatted String
    * @param json json input String
    * @return AmmoCard
-   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static AmmoCard deserialize(String json) {
     if (json == null) {
