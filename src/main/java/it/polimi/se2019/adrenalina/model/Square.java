@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Square extends Observable implements Target {
 
+
   private final int posX;
   private final int posY;
   private final PlayerColor color;
@@ -39,7 +40,15 @@ public class Square extends Observable implements Target {
     weapons = new ArrayList<>();
   }
 
+  /**
+   * Copy constructor, creates an exact copy of square.
+   * @param square, Square object that has to be copied, can't be null
+   * @exception IllegalArgumentException thrown if square argument is null
+   */
   public Square(Square square) {
+    if (square == null) {
+      throw new IllegalArgumentException("Argument square can't be null");
+    }
     posX = square.posX;
     posY = square.posY;
     color = square.color;
@@ -104,6 +113,11 @@ public class Square extends Observable implements Target {
     return new ArrayList<>(weapons);
   }
 
+  /**
+   * Add a Weapon object to the square, only if it's a spawn point
+   * @param weapon, weapon that will be added
+   * @exception IllegalStateException thrown if selected square is not a spawn point
+   */
   public void addWeapon(Weapon weapon) {
     if (! spawnPoint) {
       throw new IllegalStateException("Square is not a spawnPoint");
@@ -116,6 +130,12 @@ public class Square extends Observable implements Target {
     return gson.toJson(this);
   }
 
+  /**
+   * Create Square object from json formatted String
+   * @param json json input String, can't be null
+   * @return Square
+   * @exception  IllegalArgumentException thrown if argument json is null
+   */
   public static Square deserialize(String json) {
     if (json == null) {
       throw new IllegalArgumentException("Argument json can't be null");

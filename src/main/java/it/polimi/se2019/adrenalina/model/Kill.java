@@ -23,6 +23,7 @@ public class Kill {
   /**
    * Copy constructor, creates an exact copy of a Kill.
    * @param kill the kill to be cloned, has to be not null.
+   *
    */
   public Kill(Kill kill) {
     if (kill == null) {

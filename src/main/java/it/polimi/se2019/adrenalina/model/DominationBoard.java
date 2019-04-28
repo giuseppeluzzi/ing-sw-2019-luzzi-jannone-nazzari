@@ -69,7 +69,6 @@ public class DominationBoard extends Board {
    * Create DominationBoard object from json formatted String
    * @param json json input String
    * @return DominationBoard
-   * @exception IllegalArgumentException thrown if argument json is null
    */
   public static DominationBoard deserialize(String json) {
     if (json == null) {

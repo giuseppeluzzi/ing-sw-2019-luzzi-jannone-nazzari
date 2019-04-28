@@ -50,9 +50,8 @@ public class AmmoCardTest {
   @Test
   public void testCopyConstructor() {
     AmmoCard ammoCard = new AmmoCard(1,1,1,0);
-    AmmoCard ammoCard2;
+    AmmoCard ammoCard2 = new AmmoCard(ammoCard);
 
-    ammoCard2 = new AmmoCard(ammoCard);
     assertEquals(
         "Cloned class attributes not matching with original class attributes",
         ammoCard.getAmmo(AmmoColor.RED),
