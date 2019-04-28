@@ -32,8 +32,8 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
     this.board = board;
     if (this.board != null) {
       board.removeObserver(this);
+      board.addObserver(this);
     }
-    board.addObserver(this);
   }
 
   @Override

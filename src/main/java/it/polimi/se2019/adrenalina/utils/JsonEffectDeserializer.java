@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
 public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
   @Override
   public Effect deserialize(JsonElement jsonElement, Type type,
-      JsonDeserializationContext context) throws JsonParseException {
+      JsonDeserializationContext context) {
     JsonObject jsonObject = jsonElement.getAsJsonObject();
 
     Effect effect = new Effect(

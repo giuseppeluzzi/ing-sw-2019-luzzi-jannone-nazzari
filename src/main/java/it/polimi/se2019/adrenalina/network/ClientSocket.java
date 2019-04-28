@@ -26,7 +26,7 @@ public class ClientSocket implements ClientInterface, Runnable {
   private final String name;
   private final boolean domination;
 
-  private Socket clientSocket;
+  private Socket socket;
 
   private PrintWriter printWriter;
   private BufferedReader bufferedReader;
@@ -44,10 +44,10 @@ public class ClientSocket implements ClientInterface, Runnable {
     playerDashboardsView = new PlayerDashboardsView();
 
     try {
-      clientSocket = new Socket(Configuration.getInstance().getServerIP(), Configuration.getInstance().getSocketPort());
-      OutputStream outputStream = clientSocket.getOutputStream();
+      socket = new Socket(Configuration.getInstance().getServerIP(), Configuration.getInstance().getSocketPort());
+      OutputStream outputStream = socket.getOutputStream();
       printWriter = new PrintWriter(outputStream, true);
-      bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(),
+      bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
           StandardCharsets.UTF_8));
     } catch (IOException e) {
       Log.exception(e);
@@ -83,7 +83,7 @@ public class ClientSocket implements ClientInterface, Runnable {
     try {
       bufferedReader.close();
       printWriter.close();
-      clientSocket.close();
+      socket.close();
     } catch (IOException e) {
       Log.exception(e);
     }
@@ -111,9 +111,9 @@ public class ClientSocket implements ClientInterface, Runnable {
 
   @Override
   public final void run() {
-    if (clientSocket != null) {
+    if (socket != null) {
       try {
-        while (clientSocket.isConnected()) {
+        while (socket.isConnected()) {
           String message = bufferedReader.readLine();
 
           Gson gson = new Gson();

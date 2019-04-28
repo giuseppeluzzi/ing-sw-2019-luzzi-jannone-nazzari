@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import it.polimi.se2019.adrenalina.utils.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,18 +80,7 @@ public class Board extends Observable {
     setObservers(board.getObservers());
 
     if (! publicCopy) {
-      for (Weapon weapon : board.weapons) {
-        weapons.add(new Weapon(weapon));
-      }
-      for (Weapon weapon : board.usedWeapons) {
-        usedWeapons.add(new Weapon(weapon));
-      }
-      for (PowerUp powerUp : board.powerUps) {
-        powerUps.add(powerUp.copy());
-      }
-      for (PowerUp powerUp : board.usedPowerUps) {
-        usedPowerUps.add(powerUp.copy());
-      }
+      copyPrivateAttributes(board);
     }
 
     doubleKills = new ArrayList<>();
@@ -110,6 +98,25 @@ public class Board extends Observable {
     finalFrenzySelected = board.finalFrenzySelected;
     turnStartTime = board.turnStartTime;
     currentPlayer = board.currentPlayer;
+  }
+
+  /**
+   * Copies private attributes as required by the copy constructor.
+   * @param board the Board to be cloned.
+   */
+  private void copyPrivateAttributes(Board board) {
+    for (Weapon weapon : board.weapons) {
+      weapons.add(new Weapon(weapon));
+    }
+    for (Weapon weapon : board.usedWeapons) {
+      usedWeapons.add(new Weapon(weapon));
+    }
+    for (PowerUp powerUp : board.powerUps) {
+      powerUps.add(powerUp.copy());
+    }
+    for (PowerUp powerUp : board.usedPowerUps) {
+      usedPowerUps.add(powerUp.copy());
+    }
   }
 
   /**

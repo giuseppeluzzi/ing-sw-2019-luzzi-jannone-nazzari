@@ -95,7 +95,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
         // TODO: Fix, throws exception with rmi
         //charactersView.addObserver(playerController);
-        //playerDashboardsView.addObserver(playerController);
+        // playerDashboardsView.addObserver(playerController);
       } catch (RemoteException e) {
         Log.exception(e);
       }
@@ -103,7 +103,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       board.addPlayer(player);
       player.setStatus(PlayerStatus.WAITING);
 
-      if (board.getPlayers().size() >= 1) {
+      if (!board.getPlayers().isEmpty()) {
         getActivePlayers().stream().forEach(p -> {
           try {
             boardViews.get(getPlayerClient(p)).startTimer(Configuration.getInstance().getJoinTimeout());

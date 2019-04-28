@@ -56,7 +56,7 @@ public class BoardView extends Observable implements Observer, BoardViewInterfac
             Log.info("Timer", "" + timer);
             timer--;
             try {
-              Thread.sleep(1000);
+              timerLock.wait(1000);
             } catch (InterruptedException e) {
               timerThread.interrupt();
             }
