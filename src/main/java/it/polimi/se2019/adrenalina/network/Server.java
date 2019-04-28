@@ -4,42 +4,48 @@ import static java.lang.Thread.sleep;
 
 import it.polimi.se2019.adrenalina.controller.BoardController;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
-import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
+import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Server extends UnicastRemoteObject implements ServerInterface {
+  private static final long serialVersionUID = 1666613338633244401L;
   private static final int PING_INTERVAL = 500;
 
-  private static final long serialVersionUID = 1666613338633244401L;
   private final ArrayList<BoardController> games;
-  private final ArrayList<ClientInterface> clients;
-
+  private final HashMap<Player, BoardController> playing;
   private volatile boolean running = true;
 
   public Server() throws RemoteException {
     games = new ArrayList<>();
-    clients = new ArrayList<>();
+    playing = new HashMap<>();
 
     new Thread(() -> {
       while (running) {
-        for (ClientInterface client: clients) {
-          try {
-            client.ping();
-          } catch (RemoteException e) {
-            Log.severe("A client disconnected!");
-            clients.remove(client);
-            // TODO: remove client?
+        for (BoardController game: new ArrayList<>(games)) {
+          for (Entry<Player, ClientInterface> client: game.getClients().entrySet()) {
+            try {
+              client.getValue().ping();
+            } catch (IOException e) {
+              onClientDisconnect(client.getValue());
+            }
           }
-        }
-        try {
-          sleep(PING_INTERVAL);
-        } catch (InterruptedException e) {
-          Log.severe("Server", "Pinging interrupted! Thread stopped.");
-          Thread.currentThread().interrupt();
+          try {
+            sleep(PING_INTERVAL);
+          } catch (InterruptedException e) {
+            Log.severe("Server", "Pinging interrupted! Thread stopped.");
+            Thread.currentThread().interrupt();
+          }
         }
       }
     }).start();
@@ -52,7 +58,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
    */
   @Override
   public void addClient(ClientInterface client) throws RemoteException {
-    clients.add(client);
     Log.info("Server", "New client connected! (Name: " + client.getName() + " - Domination: " + client.isDomination() + ")");
 
     BoardController game = getPendingGame(client.isDomination());
@@ -60,8 +65,22 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
       game = new BoardController(client.isDomination());
       games.add(game);
     }
+
     Player player = game.getPlayerController().createPlayer(client.getName(),
         PlayerColor.values()[game.getBoard().getPlayers().size()]);
+    game.setPlayerClient(player, client);
+
+    try {
+      game.addPlayer(player);
+    } catch (FullBoardException e) {
+      Log.severe("Tried to add a player to a full board");
+    } catch (PlayingBoardException e) {
+      Log.severe("Tried to add a new player to a playing board");
+    } catch (EndedGameException e) {
+      Log.severe("Tried to add a player to an ended game");
+    }
+
+    playing.put(player, game);
   }
 
   /**
@@ -82,10 +101,60 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
+   * Gets a board of a client
+   * @param client client to be found
+   * @return the board in which the client is playing
+   * @throws InvalidPlayerException if the client doesn't exists or isn't playing in any board
+   */
+  @Override
+  public BoardController getGameByClient(ClientInterface client) throws InvalidPlayerException {
+    for (BoardController game: games) {
+      if (game.containsClient(client)) {
+        return game;
+      }
+    }
+    throw new InvalidPlayerException("This client isn't in any board");
+  }
+
+  /**
+   * Gets a board of a player
+   * @param client a client to be found
+   * @return the board in which the player is playing
+   * @throws InvalidPlayerException if the player doesn't exists or isn't playing in any board
+   */
+  @Override
+  public BoardController getGameByPlayer(Player player) throws InvalidPlayerException {
+    if (playing.containsKey(player)) {
+      throw new InvalidPlayerException("This client isn't in any board");
+    }
+    return playing.get(player);
+  }
+
+  /**
    * Stops the server pinging.
    */
   private void stopPinging() {
     running = false;
   }
 
+  /**
+   * Called on client disconnection
+   * @param client disconnected client
+   */
+  public void onClientDisconnect(ClientInterface client) {
+    Log.severe("A client disconnected!");
+    for (BoardController game: games) {
+      if (game.containsClient(client)) {
+        try {
+          Player player = game.getPlayerByClient(client);
+          game.removePlayerClient(player);
+          playing.remove(player);
+          break;
+        } catch (InvalidPlayerException ignored) {
+          // ignored
+        }
+      }
+    }
+    // TODO: remove client?
+  }
 }

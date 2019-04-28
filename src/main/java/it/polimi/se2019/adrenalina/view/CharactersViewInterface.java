@@ -1,27 +1,21 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.utils.RemoteObservable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 
-public interface CharactersViewInterface {
-
-  List<Player> getPlayers();
-
-  void addPlayer(Player player);
-
-  void setSelected(Player player);
-
-  void removeSelected();
-
-  void update(PlayerDeathEvent event);
-
-  void update(PlayerSpawnEvent event);
-
-  void update(PlayerMoveEvent event);
-
-  void update(Event event);
+public interface CharactersViewInterface extends Remote, RemoteObservable {
+  List<Player> getPlayers() throws RemoteException;
+  void addPlayer(Player player) throws RemoteException;
+  void setSelected(Player player) throws RemoteException;
+  void removeSelected() throws RemoteException;
+  void update(PlayerDeathEvent event) throws RemoteException;
+  void update(PlayerSpawnEvent event) throws RemoteException;
+  void update(PlayerMoveEvent event) throws RemoteException;
+  //void update(Event event) throws RemoteException;
 }

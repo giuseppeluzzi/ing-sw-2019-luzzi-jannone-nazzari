@@ -1,29 +1,49 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.KillShotEvent;
 import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
+import it.polimi.se2019.adrenalina.controller.event.TimerSetEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
+import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
+import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 
-public class VirtualBoardViewSocketClient extends BoardView {
+public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
+  private Board board;
+  private final VirtualClientSocket clientSocket;
 
-  protected VirtualBoardViewSocketClient(Board board) {
-    super(board);
+  public VirtualBoardView(VirtualClientSocket clientSocket) {
+    this.clientSocket = clientSocket;
+  }
+
+  @Override
+  public Board getBoard() {
+    return board;
+  }
+
+  @Override
+  public void setBoard(Board board) {
+    this.board = board;
+    if (this.board != null) {
+      board.removeObserver(this);
+    }
+    board.addObserver(this);
   }
 
   @Override
   public void startTimer(int time) {
-    // TODO: show and start the countdown
+    clientSocket.sendEvent(new TimerSetEvent(time));
   }
 
   @Override
-  public void hideTimer(int time) {
-    // TODO: hide and stop the countdown
+  public void hideTimer() {
+    startTimer(0);
   }
 
   @Override

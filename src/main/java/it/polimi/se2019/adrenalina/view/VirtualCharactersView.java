@@ -5,18 +5,42 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
+import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class VirtualCharactersViewSocketClient extends CharactersView {
+public class VirtualCharactersView extends Observable implements CharactersViewInterface, Observer {
+  private final ArrayList<Player> players;
+  private Player selectedPlayer;
+  private final VirtualClientSocket clientSocket;
+
+  public VirtualCharactersView(VirtualClientSocket clientSocket) {
+    this.clientSocket = clientSocket;
+    players = new ArrayList<>();
+  }
+
+  @Override
+  public List<Player> getPlayers() {
+    return new ArrayList<>(players);
+  }
+
+  @Override
+  public void addPlayer(Player player) {
+    players.add(player);
+    player.addObserver(this);
+  }
 
   @Override
   public void setSelected(Player player) {
-    // TODO:
+    selectedPlayer = player;
   }
 
   @Override
   public void removeSelected() {
-    // TODO:
+    selectedPlayer = null;
   }
 
   @Override
@@ -38,5 +62,4 @@ public class VirtualCharactersViewSocketClient extends CharactersView {
   public void update(Event event) {
     throw new WrongMethodTypeException();
   }
-
 }

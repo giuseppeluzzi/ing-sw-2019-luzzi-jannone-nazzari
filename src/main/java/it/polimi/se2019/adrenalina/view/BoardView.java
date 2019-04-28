@@ -8,15 +8,24 @@ import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 
 public class BoardView extends Observable implements Observer, BoardViewInterface {
-  private Board board;
 
-  protected BoardView(Board board) {
-    this.board = board;
+  private Board board;
+  private int timer;
+  private final Object timerLock;
+  private Thread timerThread;
+
+  public BoardView() {
+    timer = 0;
+    timerLock = new Object();
+    synchronized (timerLock) {
+      timerThread = null;
+    }
   }
 
   @Override
@@ -31,12 +40,39 @@ public class BoardView extends Observable implements Observer, BoardViewInterfac
 
   @Override
   public void startTimer(int time) {
-    // TODO: show and start the countdown
+    synchronized (timerLock) {
+      if (timer != 0) {
+        timerThread.interrupt();
+        timerThread = null;
+      }
+      timer = time;
+
+      timerThread = new Thread(() -> {
+        while (true) {
+          synchronized (timerLock) {
+            if (timer <= 0) {
+              break;
+            }
+            Log.info("Timer", "" + timer);
+            timer--;
+            try {
+              Thread.sleep(1000);
+            } catch (InterruptedException e) {
+              timerThread.interrupt();
+            }
+          }
+        }
+      });
+      timerThread.start();
+    }
   }
 
   @Override
-  public void hideTimer(int time) {
-    // TODO: hide and stop the countdown
+  public void hideTimer() {
+    synchronized (timerLock) {
+      timerThread.interrupt();
+      timer = 0;
+    }
   }
 
   @Override

@@ -1,23 +1,52 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Observer;
+import it.polimi.se2019.adrenalina.view.BoardViewInterface;
+import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
+import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
-public class BoardController implements Runnable {
-  private final Board board;
+public class BoardController extends UnicastRemoteObject implements Runnable, Observer {
+  private static final long serialVersionUID = 5651066204312828750L;
+
+  private final transient Board board;
   private final AttackController attackController;
   private final PlayerController playerController;
 
-  public BoardController(boolean domination) {
+  private final HashMap<Player, ClientInterface> clients;
+
+  private final HashMap<ClientInterface, BoardViewInterface> boardViews;
+  private final HashMap<ClientInterface, CharactersViewInterface> charactersViews;
+  private final HashMap<ClientInterface, PlayerDashboardsViewInterface> playerDashboardViews;
+
+  public BoardController(boolean domination) throws RemoteException {
     if (domination) {
       board = new DominationBoard();
     } else {
       board = new Board();
     }
+
+    clients = new HashMap<>();
+    boardViews = new HashMap<>();
+    charactersViews = new HashMap<>();
+    playerDashboardViews = new HashMap<>();
+
     attackController = new AttackController(this);
     playerController = new PlayerController(this);
   }
@@ -46,16 +75,46 @@ public class BoardController implements Runnable {
    * @throws EndedGameException thrown if this board hosts a game which has
    * already ended.
    */
-  void addPlayer(Player player) throws FullBoardException, PlayingBoardException, EndedGameException {
-    if (board.getStatus() == BoardStatus.LOBBY) {
-      if (board.getPlayers().size() < 5) {
-        board.addPlayer(player);
-        player.setStatus(PlayerStatus.WAITING);
-      } else {
+  public void addPlayer(Player player) throws FullBoardException, PlayingBoardException, EndedGameException {
+    if (board.getStatus() == BoardStatus.END) {
+      throw new EndedGameException();
+    } else if (board.getStatus() == BoardStatus.LOBBY) {
+      if (board.getPlayers().size() > 5) {
         throw new FullBoardException();
       }
-    } else if (board.getStatus() == BoardStatus.END) {
-      throw new EndedGameException();
+
+      try {
+        ClientInterface client = clients.get(player);
+        BoardViewInterface boardView = client.getBoardView();
+        CharactersViewInterface charactersView = client.getCharactersView();
+        PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
+
+        boardViews.put(client, boardView);
+        charactersViews.put(client, charactersView);
+        playerDashboardViews.put(client, playerDashboardsView);
+
+        // TODO: Fix, throws exception with rmi
+        //charactersView.addObserver(playerController);
+        //playerDashboardsView.addObserver(playerController);
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+
+      board.addPlayer(player);
+      player.setStatus(PlayerStatus.WAITING);
+
+      if (board.getPlayers().size() >= 1) {
+        getActivePlayers().stream().forEach(p -> {
+          try {
+            boardViews.get(getPlayerClient(p)).startTimer(Configuration.getInstance().getJoinTimeout());
+          } catch (InvalidPlayerException ignored) {
+            //
+          } catch (RemoteException e) {
+            Log.exception(e);
+          }
+        });
+      }
+
     } else {
       if (board.getPlayers().contains(player)) {
         player.setStatus(PlayerStatus.PLAYING);
@@ -75,11 +134,71 @@ public class BoardController implements Runnable {
       board.removePlayer(player.getColor());
     } else {
       player.setStatus(PlayerStatus.DISCONNECTED);
+      removePlayerClient(player);
     }
+  }
+
+  /**
+   * Gets a list of online player of this board
+   * @return a list of Player
+   */
+  public List<Player> getActivePlayers() {
+    return board.getPlayers().stream()
+        .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED)
+        .collect(Collectors.toList());
+  }
+
+  public ClientInterface getPlayerClient(Player player) throws InvalidPlayerException {
+    if (!clients.containsKey(player)) {
+      throw new InvalidPlayerException("This player doesn't exists");
+    }
+    return clients.get(player);
+  }
+
+  public Map<Player, ClientInterface> getClients() {
+    return new HashMap<>(clients);
+  }
+
+  public boolean containsClient(ClientInterface client) {
+    return clients.containsValue(client);
+  }
+
+  public Player getPlayerByClient(ClientInterface client) throws InvalidPlayerException {
+    for (Entry<Player, ClientInterface> c: clients.entrySet()) {
+      if (c.getValue().equals(client)) {
+        return c.getKey();
+      }
+    }
+    throw new InvalidPlayerException("This player doesn't exists");
+  }
+
+  public void setPlayerClient(Player player, ClientInterface client) {
+    clients.put(player, client);
+  }
+
+  public void removePlayerClient(Player player) {
+    clients.remove(player);
+  }
+
+  public void setClientBoardView(ClientInterface client, BoardViewInterface view) {
+    boardViews.put(client, view);
+  }
+
+  public void setClientCharacterView(ClientInterface client, CharactersViewInterface view) {
+    charactersViews.put(client, view);
+  }
+
+  public void setClientDashboardView(ClientInterface client, PlayerDashboardsViewInterface view) {
+    playerDashboardViews.put(client, view);
   }
 
   @Override
   public void run() {
     // TODO: game manager
+  }
+
+  @Override
+  public void update(Event event) {
+    throw new UnsupportedOperationException();
   }
 }

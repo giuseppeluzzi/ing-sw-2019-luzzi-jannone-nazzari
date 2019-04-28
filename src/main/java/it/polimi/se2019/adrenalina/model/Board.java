@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class Board extends Observable {
    * information.
    */
   public Board(Board board, boolean publicCopy) {
+    // TODO: copy observers
     if (board == null) {
       throw new IllegalArgumentException("Argument board cannot be null");
     }
@@ -75,6 +77,8 @@ public class Board extends Observable {
     usedWeapons = new ArrayList<>();
     powerUps = new ArrayList<>();
     usedPowerUps = new ArrayList<>();
+
+    setObservers(board.getObservers());
 
     if (! publicCopy) {
       for (Weapon weapon : board.weapons) {

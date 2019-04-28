@@ -5,18 +5,18 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPowerUpEvent;
-import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
-import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
-import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class PlayerController implements Observer {
+public class PlayerController extends UnicastRemoteObject implements Observer {
+  private static final long serialVersionUID = 5970759489567761611L;
+
   private final BoardController boardController;
 
-  PlayerController(BoardController boardController) {
+  PlayerController(BoardController boardController) throws RemoteException {
     this.boardController = boardController;
   }
 
@@ -34,17 +34,7 @@ public class PlayerController implements Observer {
         throw new IllegalArgumentException("This name is already used by another player in this board");
       }
     }
-    Player player = new Player(name, color);
-    try {
-      boardController.addPlayer(player);
-    } catch (FullBoardException e) {
-      Log.severe("Tried to add a player to a full board");
-    } catch (PlayingBoardException e) {
-      Log.severe("Tried to add a new player to a playing board");
-    } catch (EndedGameException e) {
-      Log.severe("Tried to add a player to an ended game");
-    }
-    return player;
+    return new Player(name, color);
   }
 
   public void update(PlayerMoveEvent event) {

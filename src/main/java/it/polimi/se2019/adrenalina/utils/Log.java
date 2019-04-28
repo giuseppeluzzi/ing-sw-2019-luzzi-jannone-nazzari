@@ -44,6 +44,11 @@ public class Log {
     }
   }
 
+  public static void critical(String message) {
+    logger.log(Level.SEVERE, message);
+    System.exit(0);
+  }
+
   public static void info(String message) {
     logger.info(message);
   }
@@ -58,9 +63,11 @@ public class Log {
 
   public static void exception(RemoteException exception) {
     severe("RMI", exception.getMessage());
+    exception.printStackTrace();
   }
 
   public static void exception(IOException exception) {
     severe("IO", exception.getMessage());
+    exception.printStackTrace();
   }
 }
