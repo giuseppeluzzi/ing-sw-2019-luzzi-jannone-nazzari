@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.utils;
 
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class Observable implements RemoteObservable {
     }
   }
 
-  protected void notifyObservers(Event event) {
+  protected void notifyObservers(Event event) throws RemoteException {
     synchronized (observers) {
       for (Observer observer : observers){
         observer.update(event);

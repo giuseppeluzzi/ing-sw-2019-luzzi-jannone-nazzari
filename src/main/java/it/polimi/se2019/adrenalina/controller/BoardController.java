@@ -93,9 +93,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         charactersViews.put(client, charactersView);
         playerDashboardViews.put(client, playerDashboardsView);
 
-        // TODO: Fix, throws exception with rmi
-        //charactersView.addObserver(playerController);
-        // playerDashboardsView.addObserver(playerController);
+        boardView.addObserver(this);
+        charactersView.addObserver(playerController);
+        playerDashboardsView.addObserver(playerController);
       } catch (RemoteException e) {
         Log.exception(e);
       }
