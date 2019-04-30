@@ -13,7 +13,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   private final BoardController boardController;
 
-  AttackController(BoardController boardController) throws RemoteException {
+  public AttackController(BoardController boardController) throws RemoteException {
     this.boardController = boardController;
   }
 
@@ -28,5 +28,16 @@ public class AttackController extends UnicastRemoteObject implements Observer {
   @Override
   public void update(Event event) {
     throw new WrongMethodTypeException();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof AttackController &&
+        ((AttackController) obj).boardController.equals(boardController);
+  }
+
+  @Override
+  public int hashCode() {
+    return boardController.hashCode();
   }
 }

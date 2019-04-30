@@ -5,6 +5,7 @@ package it.polimi.se2019.adrenalina.controller;
  */
 public enum ActionType {
   SELECT,
+  SELECT_DIRECTION,
   OPTIONAL_MOVE,
   MOVE,
   SHOOT

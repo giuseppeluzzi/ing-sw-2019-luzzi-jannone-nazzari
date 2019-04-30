@@ -201,4 +201,15 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   public void update(Event event) {
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof BoardController &&
+        clients.equals(obj);
+  }
+
+  @Override
+  public int hashCode() {
+    return clients.hashCode();
+  }
 }

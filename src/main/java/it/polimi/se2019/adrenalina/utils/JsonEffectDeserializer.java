@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.MoveAction;
 import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.SelectAction;
+import it.polimi.se2019.adrenalina.controller.SelectDirectionAction;
 import it.polimi.se2019.adrenalina.controller.ShootAction;
 import it.polimi.se2019.adrenalina.controller.ActionType;
 import java.lang.reflect.Type;
@@ -39,6 +40,9 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
               actionObj.get("maxDistance").getAsInt(),
               actionObj.get("differentFrom").getAsInt(),
               actionObj.get("visible").getAsBoolean()));
+          break;
+        case SELECT_DIRECTION:
+          effect.addAction(new SelectDirectionAction());
           break;
         case SHOOT:
           effect.addAction(new ShootAction(
