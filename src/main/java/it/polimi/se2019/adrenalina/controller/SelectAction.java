@@ -14,10 +14,11 @@ public class SelectAction implements Action {
   private final int maxDistance;
   private final int[] differentFrom;
   private final boolean visible;
+  private final boolean optional;
   private final ActionType type;
 
   public SelectAction(int from, int target, int minDistance,
-      int maxDistance, int[] differentFrom, boolean visible) {
+      int maxDistance, int[] differentFrom, boolean visible, boolean optional) {
 
     this.from = from;
     this.target = target;
@@ -25,6 +26,7 @@ public class SelectAction implements Action {
     this.maxDistance = maxDistance;
     this.differentFrom = differentFrom.clone();
     this.visible = visible;
+    this.optional = optional;
     type = ActionType.SELECT;
   }
 
@@ -74,6 +76,10 @@ public class SelectAction implements Action {
 
   public boolean isVisible() {
     return visible;
+  }
+
+  public boolean isOptional() {
+    return optional;
   }
 
   @Override

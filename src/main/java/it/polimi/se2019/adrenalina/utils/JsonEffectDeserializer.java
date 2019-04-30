@@ -39,7 +39,8 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
               actionObj.get("minDistance").getAsInt(),
               actionObj.get("maxDistance").getAsInt(),
               context.deserialize(actionObj.get("differentFrom").getAsJsonArray(), int[].class),
-              actionObj.get("visible").getAsBoolean()));
+              actionObj.get("visible").getAsBoolean(),
+              actionObj.get("optional").getAsBoolean()));
           break;
         case SELECT_DIRECTION:
           effect.addAction(new SelectDirectionAction(actionObj.get("target").getAsInt()));
