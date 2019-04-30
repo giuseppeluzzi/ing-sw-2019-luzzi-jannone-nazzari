@@ -3,24 +3,27 @@ package it.polimi.se2019.adrenalina.controller;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Target;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SelectAction implements Action {
+
   private final int from;
   private final int target;
   private final int minDistance;
   private final int maxDistance;
-  private final int differentFrom;
+  private final int[] differentFrom;
   private final boolean visible;
   private final ActionType type;
+
   public SelectAction(int from, int target, int minDistance,
-      int maxDistance, int differentFrom, boolean visible) {
+      int maxDistance, int[] differentFrom, boolean visible) {
 
     this.from = from;
     this.target = target;
     this.minDistance = minDistance;
     this.maxDistance = maxDistance;
-    this.differentFrom = differentFrom;
+    this.differentFrom = differentFrom.clone();
     this.visible = visible;
     type = ActionType.SELECT;
   }
@@ -65,8 +68,8 @@ public class SelectAction implements Action {
     return maxDistance;
   }
 
-  public int getDifferentFrom() {
-    return differentFrom;
+  public int[] getDifferentFrom() {
+    return differentFrom.clone();
   }
 
   public boolean isVisible() {
@@ -86,6 +89,6 @@ public class SelectAction implements Action {
 
   @Override
   public int hashCode() {
-    return differentFrom * from * minDistance * maxDistance * target * type.ordinal();
+    return differentFrom.length * Arrays.hashCode(differentFrom) * from * minDistance * maxDistance * target * type.ordinal();
   }
 }

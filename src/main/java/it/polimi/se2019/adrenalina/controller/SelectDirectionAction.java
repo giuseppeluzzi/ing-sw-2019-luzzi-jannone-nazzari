@@ -7,9 +7,15 @@ import java.util.List;
 
 public class SelectDirectionAction implements Action {
   private final ActionType type;
+  private final int target;
 
-  public SelectDirectionAction() {
+  public SelectDirectionAction(int target) {
+    this.target = target;
     type = ActionType.SELECT_DIRECTION;
+  }
+
+  public int getTarget() {
+    return target;
   }
 
   @Override
