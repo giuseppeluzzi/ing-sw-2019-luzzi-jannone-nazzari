@@ -34,7 +34,7 @@ public class WeaponTest {
   public void testSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2);
-    base.addAction(new SelectAction(0, 1, 0, 0, 0, true));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, true));
 
     weapon.addEffect(base);
     String json = weapon.serialize();
@@ -52,13 +52,13 @@ public class WeaponTest {
   public void testEffectSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2);
-    base.addAction(new SelectAction(0, 1, 0, 0, 0, true));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, true));
     base.addAction(new ShootAction(1, 2, 1));
     base.addAction(new MoveAction(2, 0));
     base.addAction(new OptionalMoveAction(2, 0));
 
     Effect bis = new Effect("test_bis", weapon, 1, 0, 0);
-    bis.addAction(new SelectAction(0, 1, 0, 0, 0, true));
+    bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, true));
     bis.addAction(new ShootAction(1, 2, 1));
     bis.addAction(new MoveAction(2, 0));
     bis.addAction(new OptionalMoveAction(2, 0));
@@ -120,13 +120,13 @@ public class WeaponTest {
 
     int effectIndex = 0;
     for (Action action: Weapon.deserialize(json).getEffects().get(0).getActions()) {
-      assertTrue("Deserialized action not matching", base.getActions().get(effectIndex).equals(action));
+      assertEquals("Deserialized action not matching", base.getActions().get(effectIndex), action);
       effectIndex++;
     }
 
     int subIndex = 0;
     for (Action action: Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions()) {
-      assertTrue("Deserialized action not matching", bis.getActions().get(subIndex).equals(action));
+      assertEquals("Deserialized action not matching", bis.getActions().get(subIndex), action);
       subIndex++;
     }
   }

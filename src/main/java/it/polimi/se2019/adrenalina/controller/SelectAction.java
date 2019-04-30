@@ -80,7 +80,7 @@ public class SelectAction implements Action {
   public boolean equals(Object object) {
     return object instanceof Action && ((Action) object).getActionType() == ActionType.SELECT
         && ((SelectAction) object).visible == visible
-        && ((SelectAction) object).differentFrom == differentFrom
+        && Arrays.equals(((SelectAction) object).differentFrom, differentFrom)
         && ((SelectAction) object).from == from
         && ((SelectAction) object).minDistance == minDistance
         && ((SelectAction) object).maxDistance == maxDistance
