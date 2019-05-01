@@ -8,5 +8,7 @@ public enum ActionType {
   SELECT_DIRECTION,
   OPTIONAL_MOVE,
   MOVE,
-  SHOOT
+  SHOOT,
+  SHOOT_ROOM,
+  SHOOT_SQUARE
 }

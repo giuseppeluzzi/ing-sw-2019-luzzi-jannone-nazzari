@@ -6,7 +6,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.MoveAction;
 import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
@@ -14,6 +13,8 @@ import it.polimi.se2019.adrenalina.controller.SelectAction;
 import it.polimi.se2019.adrenalina.controller.SelectDirectionAction;
 import it.polimi.se2019.adrenalina.controller.ShootAction;
 import it.polimi.se2019.adrenalina.controller.ActionType;
+import it.polimi.se2019.adrenalina.controller.ShootRoomAction;
+import it.polimi.se2019.adrenalina.controller.ShootSquareAction;
 import java.lang.reflect.Type;
 
 public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
@@ -39,8 +40,10 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
               actionObj.get("minDistance").getAsInt(),
               actionObj.get("maxDistance").getAsInt(),
               context.deserialize(actionObj.get("differentFrom").getAsJsonArray(), int[].class),
+              context.deserialize(actionObj.get("between").getAsJsonArray(), int[].class),
               actionObj.get("visible").getAsBoolean(),
-              actionObj.get("optional").getAsBoolean()));
+              actionObj.get("optional").getAsBoolean(),
+              actionObj.get("useLastDirection").getAsBoolean()));
           break;
         case SELECT_DIRECTION:
           effect.addAction(new SelectDirectionAction(actionObj.get("target").getAsInt()));
@@ -62,6 +65,20 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
           effect.addAction(new OptionalMoveAction(
               actionObj.get("target").getAsInt(),
               actionObj.get("destination").getAsInt()
+          ));
+          break;
+        case SHOOT_ROOM:
+          effect.addAction(new ShootRoomAction(
+              actionObj.get("target").getAsInt(),
+              actionObj.get("damages").getAsInt(),
+              actionObj.get("tag").getAsInt()
+          ));
+          break;
+        case SHOOT_SQUARE:
+          effect.addAction(new ShootSquareAction(
+              actionObj.get("target").getAsInt(),
+              actionObj.get("damages").getAsInt(),
+              actionObj.get("tag").getAsInt()
           ));
           break;
         default:

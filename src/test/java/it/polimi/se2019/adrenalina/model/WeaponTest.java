@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.controller.MoveAction;
 import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SelectAction;
+import it.polimi.se2019.adrenalina.controller.SelectDirectionAction;
 import it.polimi.se2019.adrenalina.controller.ShootAction;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class WeaponTest {
   public void testSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, true, false));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true));
 
     weapon.addEffect(base);
     String json = weapon.serialize();
@@ -52,13 +53,13 @@ public class WeaponTest {
   public void testEffectSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, true, false));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true));
     base.addAction(new ShootAction(1, 2, 1));
     base.addAction(new MoveAction(2, 0));
     base.addAction(new OptionalMoveAction(2, 0));
 
     Effect bis = new Effect("test_bis", weapon, 1, 0, 0);
-    bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, true, false));
+    bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, new int[]{},true, false, true));
     bis.addAction(new ShootAction(1, 2, 1));
     bis.addAction(new MoveAction(2, 0));
     bis.addAction(new OptionalMoveAction(2, 0));
