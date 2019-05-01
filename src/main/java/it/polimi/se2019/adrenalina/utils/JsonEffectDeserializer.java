@@ -43,10 +43,11 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
               context.deserialize(actionObj.get("between").getAsJsonArray(), int[].class),
               actionObj.get("visible").getAsBoolean(),
               actionObj.get("optional").getAsBoolean(),
-              actionObj.get("useLastDirection").getAsBoolean()));
+              actionObj.get("useLastDirection").getAsBoolean(),
+              actionObj.get("differentRoom").getAsBoolean()));
           break;
         case SELECT_DIRECTION:
-          effect.addAction(new SelectDirectionAction(actionObj.get("target").getAsInt()));
+          effect.addAction(new SelectDirectionAction());
           break;
         case SHOOT:
           effect.addAction(new ShootAction(

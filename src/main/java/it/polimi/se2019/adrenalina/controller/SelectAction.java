@@ -17,10 +17,13 @@ public class SelectAction implements Action {
   private final boolean visible;
   private final boolean optional;
   private final boolean useLastDirection;
+  private final boolean differentRoom;
   private final ActionType type;
 
   public SelectAction(int from, int target, int minDistance,
-      int maxDistance, int[] differentFrom, int[] between, boolean visible, boolean optional, boolean useLastDirection) {
+      int maxDistance, int[] differentFrom, int[] between,
+      boolean visible, boolean optional, boolean useLastDirection,
+      boolean differentRoom) {
 
     this.from = from;
     this.target = target;
@@ -31,6 +34,7 @@ public class SelectAction implements Action {
     this.visible = visible;
     this.optional = optional;
     this.useLastDirection = useLastDirection;
+    this.differentRoom = differentRoom;
     type = ActionType.SELECT;
   }
 
@@ -94,6 +98,10 @@ public class SelectAction implements Action {
     return useLastDirection;
   }
 
+  public boolean isDifferentRoom() {
+    return differentRoom;
+  }
+
   @Override
   public boolean equals(Object object) {
     return object instanceof Action && ((Action) object).getActionType() == ActionType.SELECT
@@ -104,6 +112,7 @@ public class SelectAction implements Action {
         && ((SelectAction) object).minDistance == minDistance
         && ((SelectAction) object).maxDistance == maxDistance
         && ((SelectAction) object).target == target
+        && ((SelectAction) object).differentRoom == differentRoom
         && ((SelectAction) object).useLastDirection == useLastDirection;
   }
 

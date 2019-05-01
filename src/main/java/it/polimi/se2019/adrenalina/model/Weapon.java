@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
+import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ import java.util.List;
  */
 public class Weapon extends Observable {
   private final AmmoColor baseCost;
+  @NotExpose
   private boolean loaded;
   private final String name;
+  @NotExpose
   private final List<Target> targetHistory;
   private final List<Effect> effects;
   private final List<Effect> selectedEffects;
