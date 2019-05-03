@@ -2,26 +2,29 @@ package it.polimi.se2019.adrenalina.model;
 
 import static org.junit.Assert.*;
 
-import it.polimi.se2019.adrenalina.controller.Action;
-import it.polimi.se2019.adrenalina.controller.ActionType;
+import it.polimi.se2019.adrenalina.controller.action.Action;
+import it.polimi.se2019.adrenalina.controller.action.ActionType;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.MoveAction;
-import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.action.MoveAction;
+import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SelectAction;
-import it.polimi.se2019.adrenalina.controller.ShootAction;
+import it.polimi.se2019.adrenalina.controller.action.SelectAction;
+import it.polimi.se2019.adrenalina.controller.action.ShootAction;
+import it.polimi.se2019.adrenalina.controller.action.TargetType;
 import org.junit.Test;
 
 public class WeaponTest {
   @Test
   public void testCopyConstructor() {
     Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    weapon1.updateTargetHistory(new Square(0, 0, PlayerColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
-    weapon1.updateTargetHistory(new Player("test", PlayerColor.YELLOW));
+    weapon1.setTargetHistory(1, new Square(0, 0, PlayerColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+    weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW));
+    weapon1.setOptMoveGroups(5);
     weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2));
     weapon1.setSelectedEffect(weapon1.getEffects().get(0));
+    weapon1.setLoaded(false);
     Weapon weapon2 = new Weapon(weapon1);
 
     assertEquals(
@@ -34,7 +37,7 @@ public class WeaponTest {
   public void testSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.PLAYER, false));
 
     weapon.addEffect(base);
     String json = weapon.serialize();
@@ -52,16 +55,16 @@ public class WeaponTest {
   public void testEffectSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.PLAYER, false));
     base.addAction(new ShootAction(1, 2, 1));
     base.addAction(new MoveAction(2, 0));
-    base.addAction(new OptionalMoveAction(2, 0));
+    base.addAction(new OptionalMoveAction(2, 0, 0));
 
     Effect bis = new Effect("test_bis", weapon, 1, 0, 0);
-    bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, new int[]{},true, false, true, false));
+    bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, new int[]{},true, false, true, false, TargetType.PLAYER, false));
     bis.addAction(new ShootAction(1, 2, 1));
     bis.addAction(new MoveAction(2, 0));
-    bis.addAction(new OptionalMoveAction(2, 0));
+    bis.addAction(new OptionalMoveAction(2, 0, 0));
 
     base.addSubEffect(bis);
     weapon.addEffect(base);

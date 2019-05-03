@@ -123,6 +123,8 @@ public class SelectAction implements Action {
         && ((SelectAction) object).maxDistance == maxDistance
         && ((SelectAction) object).target == target
         && ((SelectAction) object).differentRoom == differentRoom
+        && ((SelectAction) object).selectType == selectType
+        && ((SelectAction) object).untilVisible == untilVisible
         && ((SelectAction) object).useLastDirection == useLastDirection;
   }
 

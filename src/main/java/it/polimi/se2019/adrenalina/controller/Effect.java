@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.controller.action.Action;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import java.util.ArrayList;
@@ -43,11 +44,7 @@ public class Effect {
   }
 
   public Effect getRequiredEffect() {
-    if (requiredEffect == null) {
-      return null;
-    } else {
-      return new Effect(requiredEffect);
-    }
+    return requiredEffect;
   }
 
   public Weapon getWeapon() {
@@ -84,12 +81,6 @@ public class Effect {
   }
 
   public void addAction(Action action) {
-    actions.add(action);
-  }
-
-  public void addOptionalMoveAction(OptionalMoveAction action) {
-    // this type of action needs to be performed as first or as last.
-    actions.add(0, action);
     actions.add(action);
   }
 

@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class defining a weapon.
@@ -22,7 +23,8 @@ public class Weapon extends Observable {
   private boolean loaded;
   private final String name;
   @NotExpose
-  private final List<Target> targetHistory;
+  private final HashMap<Integer, Target> targetHistory;
+  private final HashMap<Integer, Boolean> optMoveGroups;
   private final List<Effect> effects;
   private final List<Effect> selectedEffects;
   private final HashMap<AmmoColor, Integer> cost;
@@ -34,7 +36,8 @@ public class Weapon extends Observable {
     this.name = name;
     loaded = true;
 
-    targetHistory = new ArrayList<>();
+    targetHistory = new HashMap<>();
+    optMoveGroups = new HashMap<>();
     effects = new ArrayList<>();
     selectedEffects = new ArrayList<>();
     cost = new HashMap<>();
@@ -49,14 +52,18 @@ public class Weapon extends Observable {
     name = weapon.name;
     loaded = weapon.loaded;
 
-    targetHistory = new ArrayList<>();
-    for (Target target : weapon.targetHistory) {
-      if (target.isPlayer()) {
-        targetHistory.add(new Player((Player) target, true));
+    targetHistory = new HashMap<>();
+    for (Map.Entry<Integer, Target> entry : weapon.targetHistory.entrySet()) {
+      Integer key = entry.getKey();
+      Target value = entry.getValue();
+      if (value.isPlayer()) {
+        targetHistory.put(key, new Player((Player) value, true));
       } else {
-        targetHistory.add(new Square((Square) target));
+        targetHistory.put(key, new Square((Square) value));
       }
     }
+
+    optMoveGroups = new HashMap<>(weapon.optMoveGroups);
 
     effects = new ArrayList<>();
     for (Effect effect : weapon.effects) {
@@ -98,12 +105,20 @@ public class Weapon extends Observable {
     targetHistory.clear();
   }
 
-  public void updateTargetHistory(Target target) {
-    targetHistory.add(target);
+  public Target getTargetHistory(Integer key) {
+    return targetHistory.get(key);
   }
 
-  public List<Target> getTargetHistory() {
-    return new ArrayList<>(targetHistory);
+  public Boolean getOptMoveGroups(Integer key) {
+    return optMoveGroups.get(key);
+  }
+
+  public void setTargetHistory(Integer key, Target value) {
+    targetHistory.put(key, value);
+  }
+
+  public void setOptMoveGroups(Integer key) {
+    optMoveGroups.put(key, true);
   }
 
   public List<Effect> getEffects() {
