@@ -24,8 +24,10 @@ public class Weapon extends Observable {
   private final String name;
   @NotExpose
   private final HashMap<Integer, Target> targetHistory;
+  @NotExpose
   private final HashMap<Integer, Boolean> optMoveGroups;
   private final List<Effect> effects;
+  @NotExpose
   private final List<Effect> selectedEffects;
   private final HashMap<AmmoColor, Integer> cost;
   // TODO: attribute to count if the optionalmoveaction is used

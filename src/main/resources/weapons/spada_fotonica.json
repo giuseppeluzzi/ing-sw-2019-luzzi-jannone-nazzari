@@ -1,0 +1,137 @@
+{
+    "baseCost": "YELLOW",
+    "name": "Spada fotonica",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Effetto base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 3,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": true,
+                    "differentRoom": false,
+                    "selectType": "MOVE_SQUARE",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 0,
+                    "destination": 3,
+                    "group": 0,
+                    "type": "OPTIONAL_MOVE"
+                },
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": 0,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": true,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 2,
+                    "tag": 0,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": [
+                {
+                    "costRed": 0,
+                    "costBlue": 0,
+                    "costYellow": 1,
+                    "name": "Modalità sminuzzare",
+                    "actions": [
+                        {
+                            "from": 0,
+                            "target": 3,
+                            "minDistance": 1,
+                            "maxDistance": 1,
+                            "differentFrom": [],
+                            "between": [],
+                            "visible": true,
+                            "optional": false,
+                            "useLastDirection": true,
+                            "differentRoom": false,
+                            "selectType": "MOVE_SQUARE",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 0,
+                            "destination": 3,
+                            "group": 0,
+                            "type": "OPTIONAL_MOVE"
+                        },
+                        {
+                            "from": 0,
+                            "target": 3,
+                            "minDistance": 0,
+                            "maxDistance": 0,
+                            "differentFrom": [
+                                1
+                            ],
+                            "between": [],
+                            "visible": true,
+                            "optional": false,
+                            "useLastDirection": true,
+                            "differentRoom": false,
+                            "selectType": "ATTACK_TARGET",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 3,
+                            "damages": 2,
+                            "tag": 0,
+                            "type": "SHOOT"
+                        },
+                        {
+                            "from": 0,
+                            "target": 3,
+                            "minDistance": 1,
+                            "maxDistance": 1,
+                            "differentFrom": [],
+                            "between": [],
+                            "visible": true,
+                            "optional": false,
+                            "useLastDirection": true,
+                            "differentRoom": false,
+                            "selectType": "MOVE_SQUARE",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 0,
+                            "destination": 3,
+                            "group": 0,
+                            "type": "OPTIONAL_MOVE"
+                        }
+                    ],
+                    "subEffects": []
+                }
+            ]
+        }
+    ],
+    "cost": {
+        "YELLOW": 0,
+        "RED": 1,
+        "BLUE": 0
+    }
+}

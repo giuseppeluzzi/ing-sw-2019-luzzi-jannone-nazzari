@@ -11,7 +11,9 @@ import it.polimi.se2019.adrenalina.controller.action.MoveAction;
 import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.SelectAction;
+import it.polimi.se2019.adrenalina.controller.action.SelectDirectionAction;
 import it.polimi.se2019.adrenalina.controller.action.ShootAction;
+import it.polimi.se2019.adrenalina.controller.action.ShootSquareAction;
 import it.polimi.se2019.adrenalina.controller.action.TargetType;
 import org.junit.Test;
 

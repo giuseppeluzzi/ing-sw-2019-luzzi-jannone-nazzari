@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable implements RemoteObservable
+public class Observable implements RemoteObservable {
   @NotExpose
   private final List<Observer> observers = new ArrayList<>();
 

@@ -1,0 +1,104 @@
+{
+    "baseCost": "YELLOW",
+    "name": "Onda d'urto",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Modalità base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "from": 0,
+                    "target": 2,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [
+                        1
+                    ],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "from": 0,
+                    "target": 3,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [
+                        1,
+                        2
+                    ],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 1,
+                    "tag": 0,
+                    "type": "SHOOT"
+                },
+                {
+                    "target": 2,
+                    "damages": 1,
+                    "tag": 0,
+                    "type": "SHOOT"
+                },
+                {
+                    "target": 3,
+                    "damages": 1,
+                    "tag": 0,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": []
+        },
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 1,
+            "name": "Modalità tsunami",
+            "actions": [
+                {
+                    "distance": 1,
+                    "target": 1,
+                    "damages": 1,
+                    "tag": 0,
+                    "type": "SHOOT_SQUARE"
+                }
+            ],
+            "subEffects": []
+        }
+    ],
+    "cost": {
+        "YELLOW": 0,
+        "RED": 0,
+        "BLUE": 0
+    }
+}

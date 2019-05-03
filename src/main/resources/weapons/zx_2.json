@@ -1,0 +1,118 @@
+{
+    "baseCost": "YELLOW",
+    "name": "Zx-2",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Modalità base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 1,
+                    "tag": 2,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": []
+        },
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Modalità scanner",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "from": 0,
+                    "target": 2,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [
+                        1
+                    ],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "from": 0,
+                    "target": 3,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [
+                        1,
+                        2
+                    ],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 0,
+                    "tag": 1,
+                    "type": "SHOOT"
+                },
+                {
+                    "target": 2,
+                    "damages": 0,
+                    "tag": 1,
+                    "type": "SHOOT"
+                },
+                {
+                    "target": 3,
+                    "damages": 0,
+                    "tag": 1,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": []
+        }
+    ],
+    "cost": {
+        "YELLOW": 0,
+        "RED": 1,
+        "BLUE": 0
+    }
+}

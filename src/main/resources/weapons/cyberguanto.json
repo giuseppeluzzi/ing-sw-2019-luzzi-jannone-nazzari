@@ -1,0 +1,107 @@
+{
+    "baseCost": "YELLOW",
+    "name": "Cyberguanto",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Modalità base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 0,
+                    "destination": 1,
+                    "type": "MOVE"
+                },
+                {
+                    "target": 1,
+                    "damages": 1,
+                    "tag": 2,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": []
+        },
+        {
+            "costRed": 0,
+            "costBlue": 1,
+            "costYellow": 0,
+            "name": "Modalità cento pugni",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 0,
+                    "destination": 1,
+                    "type": "MOVE"
+                },
+                {
+                    "target": 1,
+                    "damages": 2,
+                    "tag": 0,
+                    "type": "SHOOT"
+                },
+                {
+                    "from": 0,
+                    "target": 3,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": true,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 0,
+                    "destination": 3,
+                    "type": "MOVE"
+                },
+                {
+                    "target": 3,
+                    "damages": 2,
+                    "tag": 0,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": []
+        }
+    ],
+    "cost": {
+        "YELLOW": 0,
+        "RED": 0,
+        "BLUE": 1
+    }
+}
