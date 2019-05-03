@@ -4,16 +4,10 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class ShootRoomAction extends ShootAction {
-  private ActionType type = ActionType.SHOOT_ROOM;
 
   public ShootRoomAction(int target, int damages, int tag) {
     super(target, damages, tag);
     type = ActionType.SHOOT_ROOM;
-  }
-
-  @Override
-  public ActionType getActionType() {
-    return type;
   }
 
   @Override

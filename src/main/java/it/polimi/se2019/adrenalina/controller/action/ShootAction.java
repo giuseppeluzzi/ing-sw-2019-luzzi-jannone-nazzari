@@ -7,7 +7,7 @@ public class ShootAction implements Action {
   private int target;
   private int damages;
   private int tag;
-  private ActionType type = ActionType.SHOOT;
+  ActionType type = ActionType.SHOOT;
 
   public ShootAction(int target, int damages, int tag) {
     this.target = target;

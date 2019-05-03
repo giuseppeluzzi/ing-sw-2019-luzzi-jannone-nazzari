@@ -96,6 +96,14 @@ public class SelectAction implements Action {
     return between.clone();
   }
 
+  public TargetType getSelectType() {
+    return selectType;
+  }
+
+  public boolean isUntilVisible() {
+    return untilVisible;
+  }
+
   public boolean isVisible() {
     return visible;
   }

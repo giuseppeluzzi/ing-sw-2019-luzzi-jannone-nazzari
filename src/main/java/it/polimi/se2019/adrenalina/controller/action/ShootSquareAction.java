@@ -4,17 +4,14 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class ShootSquareAction extends ShootAction  {
-  private ActionType type = ActionType.SHOOT_SQUARE;
+  private final int distance;
 
-  public ShootSquareAction(int target, int damages, int tag) {
+  public ShootSquareAction(int target, int damages, int tag, int distance) {
     super(target, damages, tag);
+    this.distance = distance;
     type = ActionType.SHOOT_SQUARE;
   }
 
-  @Override
-  public ActionType getActionType() {
-    return type;
-  }
 
   @Override
   public void execute(Weapon weapon) {
@@ -25,6 +22,10 @@ public class ShootSquareAction extends ShootAction  {
   public String serialize(){
     Gson gson = new Gson();
     return gson.toJson(this);
+  }
+
+  public int getDistance() {
+    return distance;
   }
 
   public static ShootSquareAction deserialize(String json) {
