@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import static org.junit.Assert.*;
 
+import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.Action;
 import it.polimi.se2019.adrenalina.controller.action.ActionType;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
@@ -21,7 +22,7 @@ public class WeaponTest {
   @Test
   public void testCopyConstructor() {
     Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    weapon1.setTargetHistory(1, new Square(0, 0, PlayerColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+    weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
     weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW));
     weapon1.setOptMoveGroups(5);
     weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2));

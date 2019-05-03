@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.BorderType;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ public class Square extends Observable implements Target {
 
   private final int posX;
   private final int posY;
-  private final PlayerColor color;
+  private final SquareColor color;
 
   private boolean spawnPoint;
   private AmmoCard ammoCard;
@@ -20,7 +20,7 @@ public class Square extends Observable implements Target {
   private final HashMap<Direction, BorderType> borders;
   private final List<Weapon> weapons;
 
-  public Square(int posX, int posY, PlayerColor color,
+  public Square(int posX, int posY, SquareColor color,
       BorderType edgeUp, BorderType edgeRight,
       BorderType edgeDown, BorderType edgeLeft) {
 
@@ -81,7 +81,7 @@ public class Square extends Observable implements Target {
     return posY;
   }
 
-  public PlayerColor getColor() {
+  public SquareColor getColor() {
     return color;
   }
 

@@ -2,15 +2,18 @@ package it.polimi.se2019.adrenalina.model;
 
 import static org.junit.Assert.*;
 
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.SquareColor;
+import java.util.ArrayList;
 import org.junit.Test;
 
 public class SquareTest {
   @Test(expected = IllegalStateException.class)
   public void testAddAmmoException() {
-    Square square = new Square(2,1, PlayerColor.GREEN, BorderType.WALL,
+    Square square = new Square(2,1, SquareColor.GREEN, BorderType.WALL,
         BorderType.WALL, BorderType.WALL, BorderType.WALL);
     Weapon weapon = new Weapon(1,2,3, AmmoColor.RED, "test");
     square.setSpawnPoint(false);
@@ -19,7 +22,7 @@ public class SquareTest {
 
   @Test
   public void testSerialization() {
-    Square square = new Square(2,1, PlayerColor.GREEN, BorderType.WALL,
+    Square square = new Square(2,1, SquareColor.GREEN, BorderType.WALL,
         BorderType.WALL, BorderType.WALL, BorderType.WALL);
     String json = square.serialize();
 
@@ -38,7 +41,7 @@ public class SquareTest {
 
   @Test
   public void testCopyConstructor() {
-    Square square = new Square(2,1, PlayerColor.GREEN, BorderType.WALL,
+    Square square = new Square(2,1, SquareColor.GREEN, BorderType.WALL,
         BorderType.WALL, BorderType.WALL, BorderType.WALL);
     Square square2 = new Square(square);
 
