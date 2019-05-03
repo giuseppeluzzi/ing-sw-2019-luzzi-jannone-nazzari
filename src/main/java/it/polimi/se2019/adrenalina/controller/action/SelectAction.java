@@ -1,29 +1,32 @@
-package it.polimi.se2019.adrenalina.controller;
+package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SelectAction implements Action {
 
-  private final int from;
-  private final int target;
-  private final int minDistance;
-  private final int maxDistance;
-  private final int[] differentFrom;
-  private final int[] between;
-  private final boolean visible;
-  private final boolean optional;
-  private final boolean useLastDirection;
-  private final boolean differentRoom;
-  private final ActionType type;
+  private int from;
+  private int target;
+  private int minDistance;
+  private int maxDistance = -1;
+  private int[] differentFrom = {};
+  private int[] between = {};
+  private boolean visible = true;
+  private boolean optional;
+  private boolean useLastDirection;
+  private boolean differentRoom;
+  private TargetType selectType = TargetType.BOTH;
+  private boolean untilVisible;
+  private ActionType type = ActionType.SELECT;
 
   public SelectAction(int from, int target, int minDistance,
       int maxDistance, int[] differentFrom, int[] between,
       boolean visible, boolean optional, boolean useLastDirection,
-      boolean differentRoom) {
+      boolean differentRoom, TargetType selectType, boolean untilVisible) {
 
     this.from = from;
     this.target = target;
@@ -35,12 +38,19 @@ public class SelectAction implements Action {
     this.optional = optional;
     this.useLastDirection = useLastDirection;
     this.differentRoom = differentRoom;
+    this.selectType = selectType;
+    this.untilVisible = untilVisible;
     type = ActionType.SELECT;
   }
 
   @Override
   public ActionType getActionType() {
     return type;
+  }
+
+  @Override
+  public void execute(Weapon weapon) {
+    // TODO: show selection
   }
 
   @Override
@@ -118,7 +128,7 @@ public class SelectAction implements Action {
 
   @Override
   public int hashCode() {
-    return differentFrom.length * Arrays.hashCode(differentFrom) * between.length *
-        Arrays.hashCode(between) * from * minDistance * maxDistance * target * type.ordinal();
+    return differentFrom.length + Arrays.hashCode(differentFrom) + between.length +
+        Arrays.hashCode(between) + from + minDistance + maxDistance + target + type.ordinal();
   }
 }

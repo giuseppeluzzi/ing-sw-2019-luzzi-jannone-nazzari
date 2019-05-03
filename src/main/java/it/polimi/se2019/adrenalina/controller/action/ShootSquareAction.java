@@ -1,9 +1,10 @@
-package it.polimi.se2019.adrenalina.controller;
+package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class ShootSquareAction extends ShootAction  {
-  private final ActionType type;
+  private ActionType type = ActionType.SHOOT_SQUARE;
 
   public ShootSquareAction(int target, int damages, int tag) {
     super(target, damages, tag);
@@ -13,6 +14,11 @@ public class ShootSquareAction extends ShootAction  {
   @Override
   public ActionType getActionType() {
     return type;
+  }
+
+  @Override
+  public void execute(Weapon weapon) {
+    // TODO: shoot every player in the square
   }
 
   @Override
@@ -39,6 +45,6 @@ public class ShootSquareAction extends ShootAction  {
 
   @Override
   public int hashCode() {
-    return getTarget() * getDamages() * getTag() * type.ordinal();
+    return getTarget() + getDamages() + getTag() + type.ordinal();
   }
 }

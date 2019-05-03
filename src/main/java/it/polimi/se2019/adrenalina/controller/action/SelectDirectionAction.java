@@ -1,12 +1,10 @@
-package it.polimi.se2019.adrenalina.controller;
+package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.model.Target;
-import java.util.ArrayList;
-import java.util.List;
+import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class SelectDirectionAction implements Action {
-  private final ActionType type;
+  private ActionType type = ActionType.SELECT_DIRECTION;
 
   public SelectDirectionAction() {
     type = ActionType.SELECT_DIRECTION;
@@ -15,6 +13,11 @@ public class SelectDirectionAction implements Action {
   @Override
   public ActionType getActionType() {
     return type;
+  }
+
+  @Override
+  public void execute(Weapon weapon) {
+    // TODO: show direction selection
   }
 
   @Override

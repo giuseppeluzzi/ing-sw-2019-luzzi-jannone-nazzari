@@ -1,21 +1,29 @@
-package it.polimi.se2019.adrenalina.controller;
+package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class OptionalMoveAction implements Action {
-  private final int target;
-  private final int destination;
-  private final ActionType type;
+  private int target;
+  private int destination;
+  private int group;
+  private ActionType type = ActionType.OPTIONAL_MOVE;
 
-  public OptionalMoveAction(int target, int destination) {
+  public OptionalMoveAction(int target, int destination, int group) {
     this.target = target;
     this.destination = destination;
+    this.group = group;
     type = ActionType.OPTIONAL_MOVE;
   }
 
   @Override
   public ActionType getActionType() {
     return type;
+  }
+
+  @Override
+  public void execute(Weapon weapon) {
+    // TODO: moves a player if the movement isn't used yet (see weapon.optMoveGroups)
   }
 
   @Override
@@ -30,6 +38,10 @@ public class OptionalMoveAction implements Action {
     }
     Gson gson = new Gson();
     return gson.fromJson(json, OptionalMoveAction.class);
+  }
+
+  public int getGroup() {
+    return group;
   }
 
   public int getTarget() {
@@ -49,6 +61,6 @@ public class OptionalMoveAction implements Action {
 
   @Override
   public int hashCode() {
-    return target * destination * type.ordinal();
+    return target + destination + type.ordinal();
   }
 }

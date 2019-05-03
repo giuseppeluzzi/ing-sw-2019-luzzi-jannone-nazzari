@@ -1,12 +1,13 @@
-package it.polimi.se2019.adrenalina.controller;
+package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class ShootAction implements Action {
-  private final int target;
-  private final int damages;
-  private final int tag;
-  private final ActionType type;
+  private int target;
+  private int damages;
+  private int tag;
+  private ActionType type = ActionType.SHOOT;
 
   public ShootAction(int target, int damages, int tag) {
     this.target = target;
@@ -18,6 +19,11 @@ public class ShootAction implements Action {
   @Override
   public ActionType getActionType() {
     return type;
+  }
+
+  @Override
+  public void execute(Weapon weapon) {
+    // TODO: shoot
   }
 
   @Override
@@ -56,6 +62,6 @@ public class ShootAction implements Action {
 
   @Override
   public int hashCode() {
-    return target * damages * tag * type.ordinal();
+    return target + damages + tag + type.ordinal();
   }
 }

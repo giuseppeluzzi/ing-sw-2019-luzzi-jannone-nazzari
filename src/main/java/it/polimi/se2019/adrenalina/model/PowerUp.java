@@ -1,9 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.controller.Action;
+import it.polimi.se2019.adrenalina.controller.action.Action;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -7,14 +7,14 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.MoveAction;
-import it.polimi.se2019.adrenalina.controller.OptionalMoveAction;
-import it.polimi.se2019.adrenalina.controller.SelectAction;
-import it.polimi.se2019.adrenalina.controller.SelectDirectionAction;
-import it.polimi.se2019.adrenalina.controller.ShootAction;
-import it.polimi.se2019.adrenalina.controller.ActionType;
-import it.polimi.se2019.adrenalina.controller.ShootRoomAction;
-import it.polimi.se2019.adrenalina.controller.ShootSquareAction;
+import it.polimi.se2019.adrenalina.controller.action.MoveAction;
+import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.action.SelectAction;
+import it.polimi.se2019.adrenalina.controller.action.SelectDirectionAction;
+import it.polimi.se2019.adrenalina.controller.action.ShootAction;
+import it.polimi.se2019.adrenalina.controller.action.ActionType;
+import it.polimi.se2019.adrenalina.controller.action.ShootRoomAction;
+import it.polimi.se2019.adrenalina.controller.action.ShootSquareAction;
 import java.lang.reflect.Type;
 
 public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
@@ -32,59 +32,9 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
 
     for (JsonElement action : jsonObject.get("actions").getAsJsonArray()) {
       JsonObject actionObj = action.getAsJsonObject();
-      switch (ActionType.valueOf(actionObj.get("type").getAsString())) {
-        case SELECT:
-          effect.addAction(new SelectAction(
-              actionObj.get("from").getAsInt(),
-              actionObj.get("target").getAsInt(),
-              actionObj.get("minDistance").getAsInt(),
-              actionObj.get("maxDistance").getAsInt(),
-              context.deserialize(actionObj.get("differentFrom").getAsJsonArray(), int[].class),
-              context.deserialize(actionObj.get("between").getAsJsonArray(), int[].class),
-              actionObj.get("visible").getAsBoolean(),
-              actionObj.get("optional").getAsBoolean(),
-              actionObj.get("useLastDirection").getAsBoolean(),
-              actionObj.get("differentRoom").getAsBoolean()));
-          break;
-        case SELECT_DIRECTION:
-          effect.addAction(new SelectDirectionAction());
-          break;
-        case SHOOT:
-          effect.addAction(new ShootAction(
-              actionObj.get("target").getAsInt(),
-              actionObj.get("damages").getAsInt(),
-              actionObj.get("tag").getAsInt()
-          ));
-          break;
-        case MOVE:
-          effect.addAction(new MoveAction(
-              actionObj.get("target").getAsInt(),
-              actionObj.get("destination").getAsInt()
-          ));
-          break;
-        case OPTIONAL_MOVE:
-          effect.addAction(new OptionalMoveAction(
-              actionObj.get("target").getAsInt(),
-              actionObj.get("destination").getAsInt()
-          ));
-          break;
-        case SHOOT_ROOM:
-          effect.addAction(new ShootRoomAction(
-              actionObj.get("target").getAsInt(),
-              actionObj.get("damages").getAsInt(),
-              actionObj.get("tag").getAsInt()
-          ));
-          break;
-        case SHOOT_SQUARE:
-          effect.addAction(new ShootSquareAction(
-              actionObj.get("target").getAsInt(),
-              actionObj.get("damages").getAsInt(),
-              actionObj.get("tag").getAsInt()
-          ));
-          break;
-        default:
-          Log.severe("Unsupported type of effect action");
-      }
+      effect.addAction(
+          context.deserialize(actionObj,
+              ActionType.valueOf(actionObj.get("type").getAsString()).getActionClass()));
     }
 
     if (jsonObject.has("subEffects")) {
