@@ -1,0 +1,41 @@
+{
+    "baseCost": "BLUE",
+    "name": "Fucile di precisione",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Effetto",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 2,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 3,
+                    "tag": 1,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": []
+        }
+    ],
+    "cost": {
+        "BLUE": 1,
+        "RED": 0,
+        "YELLOW": 1
+    }
+}

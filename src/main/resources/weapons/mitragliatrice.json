@@ -1,0 +1,156 @@
+{
+    "baseCost": "BLUE",
+    "name": "Mitragliatrice",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Effetto base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "from": 0,
+                    "target": 2,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [
+                        1
+                    ],
+                    "between": [],
+                    "visible": true,
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 1,
+                    "tag": 0,
+                    "type": "SHOOT"
+                },
+                {
+                    "target": 2,
+                    "damages": 1,
+                    "tag": 0,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": [
+                {
+                    "costRed": 0,
+                    "costBlue": 0,
+                    "costYellow": 1,
+                    "name": "Colpo focalizzato",
+                    "actions": [
+                        {
+                            "from": 0,
+                            "target": 3,
+                            "minDistance": 0,
+                            "maxDistance": -1,
+                            "differentFrom": [],
+                            "between": [
+                                1,
+                                2
+                            ],
+                            "visible": true,
+                            "optional": false,
+                            "useLastDirection": false,
+                            "differentRoom": false,
+                            "selectType": "ATTACK_TARGET",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 3,
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT"
+                        }
+                    ],
+                    "subEffects": []
+                },
+                {
+                    "costRed": 0,
+                    "costBlue": 1,
+                    "costYellow": 0,
+                    "name": "Tripode di supporto",
+                    "actions": [
+                        {
+                            "from": 0,
+                            "target": 4,
+                            "minDistance": 0,
+                            "maxDistance": -1,
+                            "differentFrom": [
+                                3
+                            ],
+                            "between": [
+                                1,
+                                2
+                            ],
+                            "visible": true,
+                            "optional": true,
+                            "useLastDirection": false,
+                            "differentRoom": false,
+                            "selectType": "ATTACK_TARGET",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "from": 0,
+                            "target": 5,
+                            "minDistance": 0,
+                            "maxDistance": -1,
+                            "differentFrom": [
+                                4
+                            ],
+                            "between": [],
+                            "visible": true,
+                            "optional": true,
+                            "useLastDirection": false,
+                            "differentRoom": false,
+                            "selectType": "ATTACK_TARGET",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 4,
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT"
+                        },
+                        {
+                            "target": 5,
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT"
+                        }
+                    ],
+                    "subEffects": []
+                }
+            ]
+        }
+    ],
+    "cost": {
+        "BLUE": 0,
+        "RED": 1,
+        "YELLOW": 0
+    }
+}

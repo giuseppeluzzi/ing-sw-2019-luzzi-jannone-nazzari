@@ -1,0 +1,74 @@
+{
+    "baseCost": "BLUE",
+    "name": "Distruttore",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Effetto base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": 0,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 2,
+                    "tag": 1,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": [
+                {
+                    "costRed": 1,
+                    "costBlue": 0,
+                    "costYellow": 0,
+                    "name": "Secondo aggancio",
+                    "actions": [
+                        {
+                            "from": 0,
+                            "target": 2,
+                            "minDistance": 0,
+                            "maxDistance": 0,
+                            "differentFrom": [
+                                1
+                            ],
+                            "between": [],
+                            "visible": true,
+                            "optional": false,
+                            "useLastDirection": false,
+                            "differentRoom": false,
+                            "selectType": "ATTACK_TARGET",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 2,
+                            "damages": 0,
+                            "tag": 1,
+                            "type": "SHOOT"
+                        }
+                    ],
+                    "subEffects": []
+                }
+            ]
+        }
+    ],
+    "cost": {
+        "BLUE": 1,
+        "RED": 0,
+        "YELLOW": 0
+    }
+}

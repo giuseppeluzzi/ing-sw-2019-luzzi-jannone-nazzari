@@ -1,0 +1,95 @@
+{
+    "baseCost": "BLUE",
+    "name": "Raggio traente",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Modalità base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "MOVE_SQUARE",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "from": 1,
+                    "target": 2,
+                    "minDistance": 0,
+                    "maxDistance": 2,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": false,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 2,
+                    "destination": 1,
+                    "type": "MOVE"
+                },
+                {
+                    "target": 2,
+                    "damages": 1,
+                    "tag": 0,
+                    "type": "SHOOT"
+                },
+                {
+                    "from": 0,
+                    "target": 3,
+                    "minDistance": 0,
+                    "maxDistance": 2,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": false,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 3,
+                    "destination": 0,
+                    "type": "MOVE"
+                },
+                {
+                    "target": 3,
+                    "damages": 3,
+                    "tag": 0,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": []
+        },
+        {
+            "costRed": 1,
+            "costBlue": 0,
+            "costYellow": 1,
+            "name": "Modalità punitore",
+            "actions": [],
+            "subEffects": []
+        }
+    ],
+    "cost": {
+        "BLUE": 0,
+        "RED": 0,
+        "YELLOW": 0
+    }
+}

@@ -1,0 +1,103 @@
+{
+    "baseCost": "BLUE",
+    "name": "Torpedine",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Effetto base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 2,
+                    "tag": 0,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": [
+                {
+                    "costRed": 0,
+                    "costBlue": 1,
+                    "costYellow": 0,
+                    "name": "Reazione a catena",
+                    "actions": [
+                        {
+                            "from": 1,
+                            "target": 2,
+                            "minDistance": 0,
+                            "maxDistance": -1,
+                            "differentFrom": [],
+                            "between": [],
+                            "visible": true,
+                            "optional": false,
+                            "useLastDirection": false,
+                            "differentRoom": false,
+                            "selectType": "ATTACK_TARGET",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 2,
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT"
+                        }
+                    ],
+                    "subEffects": [
+                        {
+                            "costRed": 0,
+                            "costBlue": 1,
+                            "costYellow": 0,
+                            "name": "Alta tensione",
+                            "actions": [
+                                {
+                                    "from": 2,
+                                    "target": 3,
+                                    "minDistance": 0,
+                                    "maxDistance": -1,
+                                    "differentFrom": [],
+                                    "between": [],
+                                    "visible": true,
+                                    "optional": false,
+                                    "useLastDirection": false,
+                                    "differentRoom": false,
+                                    "selectType": "ATTACK_TARGET",
+                                    "untilVisible": false,
+                                    "type": "SELECT"
+                                },
+                                {
+                                    "target": 3,
+                                    "damages": 2,
+                                    "tag": 0,
+                                    "type": "SHOOT"
+                                }
+                            ],
+                            "subEffects": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cost": {
+        "BLUE": 0,
+        "RED": 1,
+        "YELLOW": 0
+    }
+}

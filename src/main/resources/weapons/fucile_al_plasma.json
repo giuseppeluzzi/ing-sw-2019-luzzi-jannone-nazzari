@@ -1,0 +1,86 @@
+{
+    "baseCost": "BLUE",
+    "name": "Fucile al plasma",
+    "effects": [
+        {
+            "costRed": 0,
+            "costBlue": 0,
+            "costYellow": 0,
+            "name": "Effetto base",
+            "actions": [
+                {
+                    "from": 0,
+                    "target": 1,
+                    "minDistance": 0,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "visible": true,
+                    "optional": false,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "ATTACK_TARGET",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "damages": 2,
+                    "tag": 0,
+                    "type": "SHOOT"
+                }
+            ],
+            "subEffects": [
+                {
+                    "costRed": 0,
+                    "costBlue": 0,
+                    "costYellow": 0,
+                    "name": "Slittamento di fase",
+                    "actions": [
+                        {
+                            "from": 0,
+                            "target": 2,
+                            "minDistance": 1,
+                            "maxDistance": 2,
+                            "differentFrom": [],
+                            "between": [],
+                            "visible": true,
+                            "optional": false,
+                            "useLastDirection": false,
+                            "differentRoom": false,
+                            "selectType": "ATTACK_TARGET",
+                            "untilVisible": false,
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 0,
+                            "destination": 2,
+                            "type": "MOVE"
+                        }
+                    ],
+                    "subEffects": []
+                },
+                {
+                    "costRed": 0,
+                    "costBlue": 1,
+                    "costYellow": 0,
+                    "name": "Colpo sovraccarico",
+                    "actions": [
+                        {
+                            "target": 1,
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT"
+                        }
+                    ],
+                    "subEffects": []
+                }
+            ]
+        }
+    ],
+    "cost": {
+        "BLUE": 0,
+        "RED": 0,
+        "YELLOW": 1
+    }
+}
