@@ -19,7 +19,7 @@ public class SelectAction implements Action {
   private boolean optional;
   private boolean useLastDirection;
   private boolean differentRoom;
-  private TargetType selectType = TargetType.BOTH;
+  private TargetType selectType = TargetType.ATTACK_TARGET;
   private boolean untilVisible;
   private ActionType type = ActionType.SELECT;
 
@@ -50,7 +50,7 @@ public class SelectAction implements Action {
 
   @Override
   public void execute(Weapon weapon) {
-    // TODO: show selection
+    // TODO: show selection, ignore if target in targethistory is alredy setted
   }
 
   @Override
