@@ -1,0 +1,86 @@
+{
+    "effects": [
+        {
+            "costYellow": 0,
+            "costBlue": 0,
+            "costRed": 0,
+            "subEffects": [],
+            "name": "Modalità base",
+            "actions": [
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": -1,
+                    "selectType": "ATTACK_TARGET",
+                    "from": 0,
+                    "differentFrom": [],
+                    "type": "MOVE",
+                    "useLastDirection": false,
+                    "visible": true,
+                    "target": 1,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "tag": 0,
+                    "type": "SHOOT",
+                    "target": 1,
+                    "damages": 1
+                },
+                {
+                    "damages": 0,
+                    "tag": 1,
+                    "type": "SHOOT_SQUARE",
+                    "target": 1,
+                    "distance": 0
+                }
+            ]
+        },
+        {
+            "costYellow": 0,
+            "actions": [
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": -1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "MOVE",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": true,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "damages": 1,
+                    "type": "SHOOT",
+                    "target": 1,
+                    "tag": 0
+                },
+                {
+                    "damages": 0,
+                    "type": "SHOOT_SQUARE",
+                    "target": 1,
+                    "tag": 2
+                }
+            ],
+            "costRed": 1,
+            "name": "Modalità nano-traccianti",
+            "costBlue": 0,
+            "subEffects": []
+        }
+    ],
+    "baseCost": "RED",
+    "observers": [],
+    "name": "Raggio solare",
+    "selectedEffects": [],
+    "cost": {
+        "RED": 0,
+        "BLUE": 0,
+        "YELLOW": 1
+    }
+}

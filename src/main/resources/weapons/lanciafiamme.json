@@ -1,0 +1,119 @@
+{
+    "effects": [
+        {
+            "costYellow": 0,
+            "costBlue": 0,
+            "costRed": 0,
+            "actions": [
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": 1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": null,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": 1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [
+                        0
+                    ],
+                    "from": 1,
+                    "type": "SELECT",
+                    "useLastDirection": true,
+                    "target": 2,
+                    "visible": null,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "damages": 1,
+                    "type": "SHOOT",
+                    "tag": 0,
+                    "target": 1
+                },
+                {
+                    "damages": 1,
+                    "type": "SHOOT",
+                    "tag": 0,
+                    "target": 2
+                }
+            ],
+            "subEffects": [],
+            "name": "Modalità base"
+        },
+        {
+            "costYellow": 2,
+            "subEffects": [],
+            "costRed": 0,
+            "actions": [
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": 1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": null,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": 1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [
+                        0
+                    ],
+                    "from": 1,
+                    "type": "SELECT",
+                    "useLastDirection": true,
+                    "target": 2,
+                    "visible": null,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "tag": 0,
+                    "type": "SHOOT",
+                    "damages": 2,
+                    "target": 1
+                },
+                {
+                    "tag": 0,
+                    "type": "SHOOT",
+                    "damages": 1,
+                    "target": 2
+                }
+            ],
+            "costBlue": 0,
+            "name": "Modalità barbecue"
+        }
+    ],
+    "baseCost": "RED",
+    "observers": [],
+    "name": "Lanciafiamme",
+    "selectedEffects": [],
+    "cost": {
+        "RED": 0,
+        "BLUE": 0,
+        "YELLOW": 0
+    }
+}

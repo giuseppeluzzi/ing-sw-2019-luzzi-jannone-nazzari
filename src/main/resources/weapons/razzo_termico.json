@@ -1,0 +1,43 @@
+{
+    "baseCost": "RED",
+    "effects": [
+        {
+            "costYellow": 0,
+            "actions": [
+                {
+                    "minDistance": 0,
+                    "optional": false,
+                    "maxDistance": -1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": false,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "tag": 0,
+                    "type": "SHOOT",
+                    "target": 1,
+                    "damages": 3
+                }
+            ],
+            "subEffects": [],
+            "name": "Effetto",
+            "costBlue": 0,
+            "costRed": 0
+        }
+    ],
+    "observers": [],
+    "name": "Razzo termico",
+    "selectedEffects": [],
+    "cost": {
+        "RED": 1,
+        "BLUE": 0,
+        "YELLOW": 1
+    }
+}

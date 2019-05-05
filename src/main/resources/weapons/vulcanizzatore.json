@@ -1,0 +1,74 @@
+{
+    "effects": [
+        {
+            "costYellow": 0,
+            "subEffects": [],
+            "name": "Modalità base",
+            "actions": [
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": -1,
+                    "selectType": "ATTACK_ROOM",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": true,
+                    "untilVisible": false,
+                    "differentRoom": true,
+                    "between": []
+                },
+                {
+                    "target": 1,
+                    "type": "SHOOT_ROOM",
+                    "damages": 1,
+                    "tag": 0
+                }
+            ],
+            "costBlue": 0,
+            "costRed": 0
+        },
+        {
+            "costYellow": 0,
+            "subEffects": [],
+            "name": "Modalità fuoco confortevle",
+            "actions": [
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": 1,
+                    "selectType": "ATTACK_SQUARE",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": null,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "tag": 1,
+                    "target": 1,
+                    "type": "SHOOT_SQUARE",
+                    "damages": 1,
+                    "distance": 0
+                }
+            ],
+            "costBlue": 0,
+            "costRed": 0
+        }
+    ],
+    "baseCost": "RED",
+    "observers": [],
+    "name": "Vulcanizzatore",
+    "selectedEffects": [],
+    "cost": {
+        "RED": 0,
+        "BLUE": 1,
+        "YELLOW": 0
+    }
+}

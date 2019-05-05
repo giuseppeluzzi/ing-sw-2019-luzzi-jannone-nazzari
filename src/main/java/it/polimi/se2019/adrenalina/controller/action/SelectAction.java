@@ -15,7 +15,7 @@ public class SelectAction implements Action {
   private int maxDistance = -1;
   private int[] differentFrom = {};
   private int[] between = {};
-  private boolean visible = true;
+  private Boolean visible;
   private boolean optional;
   private boolean useLastDirection;
   private boolean differentRoom;
@@ -25,7 +25,7 @@ public class SelectAction implements Action {
 
   public SelectAction(int from, int target, int minDistance,
       int maxDistance, int[] differentFrom, int[] between,
-      boolean visible, boolean optional, boolean useLastDirection,
+      Boolean visible, boolean optional, boolean useLastDirection,
       boolean differentRoom, TargetType selectType, boolean untilVisible) {
 
     this.from = from;
@@ -104,7 +104,7 @@ public class SelectAction implements Action {
     return untilVisible;
   }
 
-  public boolean isVisible() {
+  public Boolean isVisible() {
     return visible;
   }
 
