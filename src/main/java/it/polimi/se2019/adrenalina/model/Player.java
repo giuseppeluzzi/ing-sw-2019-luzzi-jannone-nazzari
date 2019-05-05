@@ -90,10 +90,7 @@ public class Player extends Observable implements Target {
       }
     }
 
-    ammo = new HashMap<>();
-    for (AmmoColor ammoColor : AmmoColor.values()) {
-      ammo.put(ammoColor, player.getAmmo(ammoColor));
-    }
+    ammo = new HashMap<>(player.ammo);
 
     if (player.square == null) {
       square = null;
