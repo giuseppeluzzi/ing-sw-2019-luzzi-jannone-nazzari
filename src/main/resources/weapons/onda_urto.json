@@ -15,7 +15,7 @@
                     "maxDistance": 1,
                     "differentFrom": [],
                     "between": [],
-                    "visible": true,
+                    "visible": null,
                     "optional": true,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -32,7 +32,7 @@
                         1
                     ],
                     "between": [],
-                    "visible": true,
+                    "visible": null,
                     "optional": true,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -50,7 +50,7 @@
                         2
                     ],
                     "between": [],
-                    "visible": true,
+                    "visible": null,
                     "optional": true,
                     "useLastDirection": false,
                     "differentRoom": false,

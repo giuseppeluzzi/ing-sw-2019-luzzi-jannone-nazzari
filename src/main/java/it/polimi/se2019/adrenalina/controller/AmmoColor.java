@@ -6,5 +6,6 @@ package it.polimi.se2019.adrenalina.controller;
 public enum AmmoColor {
   BLUE,
   RED,
-  YELLOW
+  YELLOW,
+  ANY
 }

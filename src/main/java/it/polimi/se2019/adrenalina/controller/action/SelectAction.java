@@ -15,17 +15,17 @@ public class SelectAction implements Action {
   private int maxDistance = -1;
   private int[] differentFrom = {};
   private int[] between = {};
-  private boolean visible = true;
-  private boolean optional;
-  private boolean useLastDirection;
-  private boolean differentRoom;
+  private Boolean visible = null;
+  private boolean optional = false;
+  private boolean useLastDirection = false;
+  private boolean differentRoom = false;
   private TargetType selectType = TargetType.ATTACK_TARGET;
-  private boolean untilVisible;
+  private boolean untilVisible = false;
   private ActionType type = ActionType.SELECT;
 
   public SelectAction(int from, int target, int minDistance,
       int maxDistance, int[] differentFrom, int[] between,
-      boolean visible, boolean optional, boolean useLastDirection,
+      Boolean visible, boolean optional, boolean useLastDirection,
       boolean differentRoom, TargetType selectType, boolean untilVisible) {
 
     this.from = from;
@@ -104,7 +104,7 @@ public class SelectAction implements Action {
     return untilVisible;
   }
 
-  public boolean isVisible() {
+  public Boolean isVisible() {
     return visible;
   }
 
