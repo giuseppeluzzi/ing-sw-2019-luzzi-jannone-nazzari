@@ -1,0 +1,134 @@
+{
+    "effects": [
+        {
+            "costYellow": 0,
+            "subEffects": [
+                {
+                    "costYellow": 0,
+                    "subEffects": [],
+                    "name": "Buco nero",
+                    "actions": [
+                        {
+                            "minDistance": 0,
+                            "optional": false,
+                            "maxDistance": 1,
+                            "selectType": "ATTACK_TARGET",
+                            "differentFrom": [
+                                0,
+                                2
+                            ],
+                            "from": 1,
+                            "type": "SELECT",
+                            "useLastDirection": false,
+                            "target": 3,
+                            "visible": null,
+                            "untilVisible": false,
+                            "differentRoom": false,
+                            "between": []
+                        },
+                        {
+                            "minDistance": 0,
+                            "optional": true,
+                            "maxDistance": 1,
+                            "selectType": "ATTACK_TARGET",
+                            "differentFrom": [
+                                0,
+                                2,
+                                3
+                            ],
+                            "from": 1,
+                            "type": "SELECT",
+                            "useLastDirection": false,
+                            "target": 4,
+                            "visible": null,
+                            "untilVisible": false,
+                            "differentRoom": false,
+                            "between": []
+                        },
+                        {
+                            "target": 3,
+                            "destination": 1,
+                            "type": "MOVE"
+                        },
+                        {
+                            "target": 4,
+                            "destination": 1,
+                            "type": "MOVE"
+                        },
+                        {
+                            "target": 3,
+                            "type": "SHOOT",
+                            "damages": 1,
+                            "tag": 0
+                        },
+                        {
+                            "target": 4,
+                            "type": "SHOOT",
+                            "damages": 1,
+                            "tag": 0
+                        }
+                    ],
+                    "costBlue": 0,
+                    "costRed": 1
+                }
+            ],
+            "name": "Effetto base",
+            "actions": [
+                {
+                    "minDistance": 1,
+                    "optional": false,
+                    "maxDistance": -1,
+                    "selectType": "MOVE_SQUARE",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": true,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "minDistance": 0,
+                    "optional": false,
+                    "maxDistance": 1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [
+                        0
+                    ],
+                    "from": 1,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 2,
+                    "visible": null,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "target": 2,
+                    "destination": 1,
+                    "type": "MOVE"
+                },
+                {
+                    "target": 2,
+                    "type": "SHOOT",
+                    "damages": 2,
+                    "tag": 0
+                }
+            ],
+            "costBlue": 0,
+            "costRed": 0
+        }
+    ],
+    "baseCost": "RED",
+    "observers": [],
+    "name": "Cannone vortex",
+    "selectedEffects": [],
+    "cost": {
+        "RED": 0,
+        "BLUE": 1,
+        "YELLOW": 0
+    }
+}

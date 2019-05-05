@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.SquareColor;
 import org.junit.Test;
 
 public class DominationBoardTest {
@@ -45,7 +46,7 @@ public class DominationBoardTest {
     for (int x = 0; x < 3; x++) {
       for (int y = 0; y < 4; y++) {
         dominationBoard.setSquare(x,y,new Square(1,2,
-            PlayerColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+            SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
       }
     }
 

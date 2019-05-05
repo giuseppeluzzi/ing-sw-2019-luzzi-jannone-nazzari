@@ -1,0 +1,100 @@
+{
+    "baseCost": "RED",
+    "effects": [
+        {
+            "costYellow": 0,
+            "actions": [
+                {
+                    "minDistance": 0,
+                    "optional": false,
+                    "maxDistance": -1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [],
+                    "from": 0,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 1,
+                    "visible": true,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "tag": 0,
+                    "type": "SHOOT",
+                    "target": 1,
+                    "damages": 1
+                },
+                {
+                    "minDistance": 1,
+                    "optional": true,
+                    "maxDistance": 1,
+                    "selectType": "MOVE_SQUARE",
+                    "differentFrom": [],
+                    "from": 1,
+                    "type": "SELECT",
+                    "useLastDirection": false,
+                    "target": 2,
+                    "visible": null,
+                    "untilVisible": false,
+                    "differentRoom": false,
+                    "between": []
+                },
+                {
+                    "group": 0,
+                    "destination": 2,
+                    "type": "OPTIONAL_MOVE",
+                    "target": 1
+                }
+            ],
+            "subEffects": [
+                {
+                    "costYellow": 0,
+                    "actions": [
+                        {
+                            "minDistance": 0,
+                            "optional": false,
+                            "maxDistance": -1,
+                            "selectType": "ATTACK_SQUARE",
+                            "differentFrom": [],
+                            "from": 0,
+                            "type": "SELECT",
+                            "useLastDirection": false,
+                            "target": 3,
+                            "visible": true,
+                            "untilVisible": false,
+                            "differentRoom": false,
+                            "between": []
+                        },
+                        {
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT_SQUARE",
+                            "target": 3,
+                            "distance": 0
+                        },
+                        {
+                            "group": 0,
+                            "destination": 2,
+                            "type": "OPTIONAL_MOVE",
+                            "target": 1
+                        }
+                    ],
+                    "subEffects": [],
+                    "name": "Granata extra",
+                    "costBlue": 0,
+                    "costRed": 1
+                }
+            ],
+            "name": "Effetto base",
+            "costBlue": 0,
+            "costRed": 0
+        }
+    ],
+    "name": "Lanciagranate",
+    "cost": {
+        "RED": 0,
+        "BLUE": 0,
+        "YELLOW": 0
+    }
+}

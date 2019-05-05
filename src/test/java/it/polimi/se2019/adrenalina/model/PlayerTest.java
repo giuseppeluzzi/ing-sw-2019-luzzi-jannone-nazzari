@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.SquareColor;
 import org.junit.Test;
 
 public class PlayerTest {
@@ -129,7 +130,7 @@ public class PlayerTest {
   @Test
   public void testCopyConstructor() {
     Player player = new Player("test", PlayerColor.GREEN);
-    player.setSquare(new Square(1, 2, PlayerColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+    player.setSquare(new Square(1, 2, SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
     player.addPowerUp(new Newton(AmmoColor.YELLOW));
     Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1");
     weapon1.setLoaded(false);
