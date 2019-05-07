@@ -6,6 +6,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Modalità base",
             "actions": [
                 {
@@ -15,7 +16,7 @@
                     "maxDistance": 1,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": false,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -41,6 +42,7 @@
             "costRed": 0,
             "costBlue": 1,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Modalità cento pugni",
             "actions": [
                 {
@@ -50,7 +52,7 @@
                     "maxDistance": 1,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": false,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -76,7 +78,7 @@
                     "maxDistance": 1,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": true,
                     "useLastDirection": true,
                     "differentRoom": false,

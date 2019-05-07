@@ -6,6 +6,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Modalità base",
             "actions": [
                 {
@@ -15,7 +16,7 @@
                     "maxDistance": 1,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": true,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -32,7 +33,7 @@
                         1
                     ],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": true,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -50,7 +51,7 @@
                         2
                     ],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": true,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -83,10 +84,12 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 1,
+            "anyTime": false,
             "name": "Modalità tsunami",
             "actions": [
                 {
                     "distance": 1,
+                    "exclude": [],
                     "target": 1,
                     "damages": 1,
                     "tag": 0,

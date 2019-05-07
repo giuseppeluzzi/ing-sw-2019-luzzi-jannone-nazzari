@@ -25,7 +25,7 @@ public class WeaponTest {
     weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
     weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW));
     weapon1.setOptMoveGroups(5);
-    weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2));
+    weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2, false));
     weapon1.setSelectedEffect(weapon1.getEffects().get(0));
     weapon1.setLoaded(false);
     Weapon weapon2 = new Weapon(weapon1);
@@ -39,7 +39,7 @@ public class WeaponTest {
   @Test
   public void testSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    Effect base = new Effect("test", weapon, 0, 1, 2);
+    Effect base = new Effect("test", weapon, 0, 1, 2, false);
     base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET, false));
 
     weapon.addEffect(base);
@@ -57,13 +57,13 @@ public class WeaponTest {
   @Test
   public void testEffectSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    Effect base = new Effect("test", weapon, 0, 1, 2);
+    Effect base = new Effect("test", weapon, 0, 1, 2, false);
     base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET, false));
     base.addAction(new ShootAction(1, 2, 1));
     base.addAction(new MoveAction(2, 0));
     base.addAction(new OptionalMoveAction(2, 0, 0));
 
-    Effect bis = new Effect("test_bis", weapon, 1, 0, 0);
+    Effect bis = new Effect("test_bis", weapon, 1, 0, 0, false);
     bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, new int[]{},true, false, true, false, TargetType.ATTACK_TARGET, false));
     bis.addAction(new ShootAction(1, 2, 1));
     bis.addAction(new MoveAction(2, 0));
@@ -145,7 +145,7 @@ public class WeaponTest {
   @Test
   public void testSetSelectedEffect() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    weapon.addEffect(new Effect("test", weapon, 0, 1, 2));
+    weapon.addEffect(new Effect("test", weapon, 0, 1, 2, false));
     try {
       weapon.setSelectedEffect(weapon.getEffects().get(0));
     } catch (IllegalArgumentException e) {
@@ -156,7 +156,7 @@ public class WeaponTest {
   @Test (expected = IllegalArgumentException.class)
   public void testSetSelectedEffectException() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    Effect effect = new Effect("test", weapon, 0, 1, 2);
+    Effect effect = new Effect("test", weapon, 0, 1, 2, false);
     weapon.setSelectedEffect(effect);
   }
 }
