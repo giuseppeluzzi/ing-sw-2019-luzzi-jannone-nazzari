@@ -10,18 +10,20 @@ public class Effect {
   private final int costRed;
   private final int costBlue;
   private final int costYellow;
+  private final boolean anyTime;
   private final String name;
   @NotExpose private Effect requiredEffect;
   @NotExpose private Weapon weapon;
   private final List<Action> actions;
   private final List<Effect> subEffects;
 
-  public Effect(String name, Weapon weapon, int costRed, int costBlue, int costYellow) {
+  public Effect(String name, Weapon weapon, int costRed, int costBlue, int costYellow, boolean anyTime) {
     this.name = name;
     this.weapon = weapon;
     this.costRed = costRed;
     this.costBlue = costBlue;
     this.costYellow = costYellow;
+    this.anyTime = anyTime;
 
     requiredEffect = null;
     actions = new ArrayList<>();
@@ -34,6 +36,7 @@ public class Effect {
     costRed = effect.costRed;
     costBlue = effect.costBlue;
     costYellow = effect.costYellow;
+    anyTime = effect.anyTime;
     requiredEffect = effect.getRequiredEffect();
     actions = effect.getActions();
     subEffects = effect.getSubEffects();
@@ -61,6 +64,10 @@ public class Effect {
 
   public int getCostYellow() {
     return costYellow;
+  }
+
+  public boolean isAnyTime() {
+    return anyTime;
   }
 
   public void setRequiredEffect(Effect effect) {

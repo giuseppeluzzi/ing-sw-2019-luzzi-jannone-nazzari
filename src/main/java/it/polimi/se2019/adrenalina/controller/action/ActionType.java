@@ -10,7 +10,8 @@ public enum ActionType {
   MOVE(MoveAction.class),
   SHOOT(ShootAction.class),
   SHOOT_ROOM(ShootRoomAction.class),
-  SHOOT_SQUARE(ShootSquareAction.class);
+  SHOOT_SQUARE(ShootSquareAction.class),
+  COPY_SQUARE(CopySquareAction.class);
 
   private final Class<? extends Action> actionClass;
 

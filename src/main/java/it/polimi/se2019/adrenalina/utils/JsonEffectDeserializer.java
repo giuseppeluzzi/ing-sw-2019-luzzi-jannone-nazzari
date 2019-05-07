@@ -28,7 +28,8 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
         null,
         jsonObject.get("costRed").getAsInt(),
         jsonObject.get("costBlue").getAsInt(),
-        jsonObject.get("costYellow").getAsInt());
+        jsonObject.get("costYellow").getAsInt(),
+        jsonObject.get("anyTime").getAsBoolean());
 
     for (JsonElement action : jsonObject.get("actions").getAsJsonArray()) {
       JsonObject actionObj = action.getAsJsonObject();

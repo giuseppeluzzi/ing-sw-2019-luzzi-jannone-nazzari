@@ -6,6 +6,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Modalità base",
             "actions": [
                 {
@@ -15,7 +16,7 @@
                     "maxDistance": 0,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": false,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -36,6 +37,7 @@
             "costRed": 1,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Modiltà polverizzare",
             "actions": [
                 {
@@ -45,7 +47,7 @@
                     "maxDistance": 0,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": true,
                     "optional": false,
                     "useLastDirection": false,
                     "differentRoom": false,
@@ -70,7 +72,7 @@
                     "optional": false,
                     "useLastDirection": false,
                     "differentRoom": false,
-                    "selectType": "MOVE_SQUARE",
+                    "selectType": "ATTACK_TARGET",
                     "untilVisible": false,
                     "type": "SELECT"
                 },

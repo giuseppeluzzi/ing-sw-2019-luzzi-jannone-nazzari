@@ -6,6 +6,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Modalità base",
             "actions": [
                 {
@@ -36,6 +37,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Modalità scanner",
             "actions": [
                 {

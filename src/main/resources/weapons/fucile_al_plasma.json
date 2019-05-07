@@ -6,6 +6,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Effetto base",
             "actions": [
                 {
@@ -35,6 +36,7 @@
                     "costRed": 0,
                     "costBlue": 0,
                     "costYellow": 0,
+                    "anyTime": true,
                     "name": "Slittamento di fase",
                     "actions": [
                         {
@@ -44,18 +46,18 @@
                             "maxDistance": 2,
                             "differentFrom": [],
                             "between": [],
-                            "visible": true,
-                            "optional": false,
+                            "optional": true,
                             "useLastDirection": false,
                             "differentRoom": false,
-                            "selectType": "ATTACK_TARGET",
+                            "selectType": "MOVE_SQUARE",
                             "untilVisible": false,
                             "type": "SELECT"
                         },
                         {
                             "target": 0,
                             "destination": 2,
-                            "type": "MOVE"
+                            "group": 1,
+                            "type": "OPTIONAL_MOVE"
                         }
                     ],
                     "subEffects": []
@@ -64,6 +66,7 @@
                     "costRed": 0,
                     "costBlue": 1,
                     "costYellow": 0,
+                    "anyTime": false,
                     "name": "Colpo sovraccarico",
                     "actions": [
                         {
@@ -79,8 +82,8 @@
         }
     ],
     "cost": {
-        "BLUE": 0,
+        "YELLOW": 0,
         "RED": 0,
-        "YELLOW": 1
+        "BLUE": 0
     }
 }

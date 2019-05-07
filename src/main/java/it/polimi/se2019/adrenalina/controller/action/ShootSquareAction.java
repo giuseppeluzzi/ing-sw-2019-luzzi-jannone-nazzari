@@ -5,10 +5,12 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class ShootSquareAction extends ShootAction  {
   private final int distance;
+  private final int[] exclude;
 
-  public ShootSquareAction(int target, int damages, int tag, int distance) {
+  public ShootSquareAction(int target, int damages, int tag, int distance, int[] exclude) {
     super(target, damages, tag);
     this.distance = distance;
+    this.exclude = exclude.clone();
     type = ActionType.SHOOT_SQUARE;
   }
 
@@ -36,16 +38,21 @@ public class ShootSquareAction extends ShootAction  {
     return gson.fromJson(json, ShootSquareAction.class);
   }
 
+  public int[] getExclude() {
+    return exclude.clone();
+  }
+
   @Override
   public boolean equals(Object object) {
     return object instanceof Action && ((Action) object).getActionType() == ActionType.SHOOT_SQUARE
         && ((ShootAction) object).getTarget() == getTarget()
         && ((ShootAction) object).getDamages() == getDamages()
+        && ((ShootSquareAction) object).getExclude() == getExclude()
         && ((ShootAction) object).getTag() == getTag();
   }
 
   @Override
   public int hashCode() {
-    return getTarget() + getDamages() + getTag() + type.ordinal();
+    return getTarget() + getDamages() + getTag() + type.ordinal() + getExclude().length;
   }
 }

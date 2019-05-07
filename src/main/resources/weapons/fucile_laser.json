@@ -6,6 +6,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": false,
             "name": "Effetto base",
             "actions": [
                 {
@@ -18,7 +19,7 @@
                     "maxDistance": -1,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": false,
                     "optional": false,
                     "useLastDirection": true,
                     "differentRoom": false,
@@ -39,6 +40,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
+            "anyTime": true,
             "name": "Modalità perforazione",
             "actions": [
                 {
@@ -51,7 +53,7 @@
                     "maxDistance": -1,
                     "differentFrom": [],
                     "between": [],
-                    "visible": null,
+                    "visible": false,
                     "optional": false,
                     "useLastDirection": true,
                     "differentRoom": false,
@@ -68,7 +70,7 @@
                         1
                     ],
                     "between": [],
-                    "visible": null,
+                    "visible": false,
                     "optional": false,
                     "useLastDirection": true,
                     "differentRoom": false,

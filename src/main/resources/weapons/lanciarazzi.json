@@ -1,6 +1,6 @@
 {
-    "baseCost": "YELLOW",
-    "name": "Spada fotonica",
+    "baseCost": "RED",
+    "name": "Lanciarazzi",
     "effects": [
         {
             "costRed": 0,
@@ -12,43 +12,67 @@
                 {
                     "from": 0,
                     "target": 1,
-                    "minDistance": 0,
-                    "maxDistance": 0,
+                    "minDistance": 1,
+                    "maxDistance": -1,
                     "differentFrom": [],
                     "between": [],
                     "visible": true,
                     "optional": false,
-                    "useLastDirection": true,
+                    "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
                     "untilVisible": false,
                     "type": "SELECT"
                 },
                 {
+                    "origin": 1,
+                    "destination": 2,
+                    "type": "COPY_SQUARE"
+                },
+                {
                     "target": 1,
                     "damages": 2,
                     "tag": 0,
                     "type": "SHOOT"
+                },
+                {
+                    "from": 1,
+                    "target": 3,
+                    "minDistance": 1,
+                    "maxDistance": 1,
+                    "differentFrom": [],
+                    "between": [],
+                    "optional": true,
+                    "useLastDirection": false,
+                    "differentRoom": false,
+                    "selectType": "MOVE_SQUARE",
+                    "untilVisible": false,
+                    "type": "SELECT"
+                },
+                {
+                    "target": 1,
+                    "destination": 3,
+                    "type": "MOVE"
                 }
             ],
             "subEffects": [
                 {
                     "costRed": 0,
-                    "costBlue": 0,
+                    "costBlue": 1,
                     "costYellow": 0,
                     "anyTime": true,
-                    "name": "Passo d'ombra",
+                    "name": "Razzi portatili",
                     "actions": [
                         {
                             "from": 0,
-                            "target": 3,
+                            "target": 4,
                             "minDistance": 1,
-                            "maxDistance": 1,
+                            "maxDistance": 2,
                             "differentFrom": [],
                             "between": [],
-                            "visible": true,
+                            "visible": false,
                             "optional": false,
-                            "useLastDirection": true,
+                            "useLastDirection": false,
                             "differentRoom": false,
                             "selectType": "MOVE_SQUARE",
                             "untilVisible": false,
@@ -56,7 +80,7 @@
                         },
                         {
                             "target": 0,
-                            "destination": 3,
+                            "destination": 4,
                             "type": "MOVE"
                         }
                     ],
@@ -67,30 +91,17 @@
                     "costBlue": 0,
                     "costYellow": 1,
                     "anyTime": false,
-                    "name": "Modalità sminuzzare",
+                    "name": "Testata a frammentazione",
                     "actions": [
                         {
-                            "from": 0,
-                            "target": 4,
-                            "minDistance": 0,
-                            "maxDistance": 0,
-                            "differentFrom": [
-                                1
+                            "distance": 0,
+                            "exclude": [
+                                2
                             ],
-                            "between": [],
-                            "visible": true,
-                            "optional": false,
-                            "useLastDirection": true,
-                            "differentRoom": false,
-                            "selectType": "ATTACK_TARGET",
-                            "untilVisible": false,
-                            "type": "SELECT"
-                        },
-                        {
-                            "target": 4,
-                            "damages": 2,
+                            "target": 3,
+                            "damages": 1,
                             "tag": 0,
-                            "type": "SHOOT"
+                            "type": "SHOOT_SQUARE"
                         }
                     ],
                     "subEffects": []
@@ -99,8 +110,8 @@
         }
     ],
     "cost": {
-        "YELLOW": 0,
         "RED": 1,
-        "BLUE": 0
+        "BLUE": 0,
+        "YELLOW": 0
     }
 }
