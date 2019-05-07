@@ -60,9 +60,9 @@ public class Board extends Observable {
     this.publicCopy = publicCopy;
     publicCopyHasWeapons = board.hasWeapons();
 
-    grid = new Square[3][4];
-    for (int x = 0; x < 3; x++) {
-      for (int y = 0; y < 4; y++) {
+    grid = new Square[4][3];
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
         grid[x][y] = new Square(board.grid[x][y]);
       }
     }
@@ -116,6 +116,16 @@ public class Board extends Observable {
     }
     for (PowerUp powerUp : board.usedPowerUps) {
       usedPowerUps.add(powerUp.copy());
+    }
+  }
+
+  public void clearMap() {
+    if (status != BoardStatus.LOBBY) {
+      throw new IllegalStateException("Can't clear the map during a game");
+    }
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
+      }
     }
   }
 

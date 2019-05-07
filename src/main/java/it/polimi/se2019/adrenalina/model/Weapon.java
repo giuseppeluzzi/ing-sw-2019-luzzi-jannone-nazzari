@@ -23,13 +23,13 @@ public class Weapon extends Observable {
   private boolean loaded;
   private final String name;
   @NotExpose
-  private final HashMap<Integer, Target> targetHistory;
+  private final HashMap<Integer, Target> targetHistory = new HashMap<>();
   @NotExpose
-  private final HashMap<Integer, Boolean> optMoveGroups;
-  private final List<Effect> effects;
+  private final HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
+  private final List<Effect> effects = new ArrayList<>();
   @NotExpose
-  private final List<Effect> selectedEffects;
-  private final HashMap<AmmoColor, Integer> cost;
+  private final List<Effect> selectedEffects = new ArrayList<>();
+  private final HashMap<AmmoColor, Integer> cost = new HashMap<>();
   // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
@@ -37,12 +37,6 @@ public class Weapon extends Observable {
     this.baseCost = baseCost;
     this.name = name;
     loaded = true;
-
-    targetHistory = new HashMap<>();
-    optMoveGroups = new HashMap<>();
-    effects = new ArrayList<>();
-    selectedEffects = new ArrayList<>();
-    cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, costRed);
     cost.put(AmmoColor.BLUE, costBlue);
@@ -54,7 +48,6 @@ public class Weapon extends Observable {
     name = weapon.name;
     loaded = weapon.loaded;
 
-    targetHistory = new HashMap<>();
     for (Map.Entry<Integer, Target> entry : weapon.targetHistory.entrySet()) {
       Integer key = entry.getKey();
       Target value = entry.getValue();
@@ -65,19 +58,15 @@ public class Weapon extends Observable {
       }
     }
 
-    optMoveGroups = new HashMap<>(weapon.optMoveGroups);
+    optMoveGroups.putAll(weapon.optMoveGroups);
 
-    effects = new ArrayList<>();
     for (Effect effect : weapon.effects) {
       effects.add(new Effect(effect));
     }
 
-    selectedEffects = new ArrayList<>();
     for (Effect effect : weapon.selectedEffects) {
       selectedEffects.add(new Effect(effect));
     }
-
-    cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
     cost.put(AmmoColor.BLUE, weapon.getCost(AmmoColor.BLUE));

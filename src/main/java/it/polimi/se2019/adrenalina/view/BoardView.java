@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;
@@ -7,25 +8,19 @@ import it.polimi.se2019.adrenalina.controller.event.KillShotEvent;
 import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import java.lang.invoke.WrongMethodTypeException;
 
 public class BoardView extends Observable implements Observer, BoardViewInterface {
 
   private Board board;
-  private int timer;
-  private final Object timerLock;
-  private Thread timerThread;
+  private Timer timer;
 
   public BoardView() {
-    timer = 0;
-    timerLock = new Object();
-    synchronized (timerLock) {
-      timerThread = null;
-    }
+    timer = new Timer();
   }
 
   @Override
@@ -40,39 +35,12 @@ public class BoardView extends Observable implements Observer, BoardViewInterfac
 
   @Override
   public void startTimer(int time) {
-    synchronized (timerLock) {
-      if (timer != 0) {
-        timerThread.interrupt();
-        timerThread = null;
-      }
-      timer = time;
-
-      timerThread = new Thread(() -> {
-        while (true) {
-          synchronized (timerLock) {
-            if (timer <= 0) {
-              break;
-            }
-            Log.info("Timer", "" + timer);
-            timer--;
-            try {
-              timerLock.wait(1000);
-            } catch (InterruptedException e) {
-              timerThread.interrupt();
-            }
-          }
-        }
-      });
-      timerThread.start();
-    }
+    timer.start(time);
   }
 
   @Override
   public void hideTimer() {
-    synchronized (timerLock) {
-      timerThread.interrupt();
-      timer = 0;
-    }
+    timer.stop();
   }
 
   @Override

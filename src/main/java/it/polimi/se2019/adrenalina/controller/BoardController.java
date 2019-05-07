@@ -1,6 +1,9 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.FinalFrenzyToggleEvent;
+import it.polimi.se2019.adrenalina.controller.event.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -8,19 +11,30 @@ import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BoardController extends UnicastRemoteObject implements Runnable, Observer {
   private static final long serialVersionUID = 5651066204312828750L;
@@ -35,7 +49,14 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private final HashMap<ClientInterface, CharactersViewInterface> charactersViews;
   private final HashMap<ClientInterface, PlayerDashboardsViewInterface> playerDashboardViews;
 
+  private final List<GameMap> maps;
+  private int selectedMap;
+
+  private final transient Timer timer;
+  private final Random random;
+
   public BoardController(boolean domination) throws RemoteException {
+
     if (domination) {
       board = new DominationBoard();
     } else {
@@ -46,9 +67,60 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     boardViews = new HashMap<>();
     charactersViews = new HashMap<>();
     playerDashboardViews = new HashMap<>();
+    maps = new ArrayList<>();
+    timer = new Timer();
+    random = new Random();
+
 
     attackController = new AttackController(this);
     playerController = new PlayerController(this);
+
+    loadWeapons();
+    loadMaps();
+  }
+
+  private void loadMaps() {
+    try (Stream<Path> weaponStream = Files.walk(
+        Paths.get(BoardController.class.getResource("/maps").toURI()))) {
+      weaponStream.filter(Files::isRegularFile).filter(Files::isReadable).forEach(this::loadMap);
+    } catch (URISyntaxException | IOException e) {
+      Log.critical("No maps found");
+    }
+    if (maps.isEmpty()) {
+      Log.critical("No maps found");
+    }
+  }
+
+  private void loadMap(Path mapPath) {
+    Gson gson = new Gson();
+    try {
+      String json = new String(Files.readAllBytes(mapPath), StandardCharsets.UTF_8);
+      GameMap gameMap = gson.fromJson(json, GameMap.class);
+      maps.add(gameMap);
+    } catch (IOException e) {
+      Log.critical("Map not found");
+    }
+  }
+
+  private void loadWeapons() {
+    try (Stream<Path> weaponStream = Files.walk(
+        Paths.get(BoardController.class.getResource("/weapons").toURI()))) {
+      weaponStream.filter(Files::isRegularFile).filter(Files::isReadable)
+          .forEach(filePath -> {
+            String json = null;
+            try {
+              json = new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+              Log.severe(filePath.getFileName() + " is an invalid weapon!");
+            }
+            board.addWeapon(Weapon.deserialize(json));
+          });
+    } catch (URISyntaxException | IOException e) {
+      Log.critical("No weapons found");
+    }
+    if (board.getWeapons().isEmpty()) {
+      Log.critical("No weapons found");
+    }
   }
 
   public Board getBoard() {
@@ -75,7 +147,8 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @throws EndedGameException thrown if this board hosts a game which has
    * already ended.
    */
-  public void addPlayer(Player player) throws FullBoardException, PlayingBoardException, EndedGameException {
+  public void addPlayer(Player player) throws FullBoardException,
+      PlayingBoardException, EndedGameException {
     if (board.getStatus() == BoardStatus.END) {
       throw new EndedGameException();
     } else if (board.getStatus() == BoardStatus.LOBBY) {
@@ -83,36 +156,13 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         throw new FullBoardException();
       }
 
-      try {
-        ClientInterface client = clients.get(player);
-        BoardViewInterface boardView = client.getBoardView();
-        CharactersViewInterface charactersView = client.getCharactersView();
-        PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
-
-        boardViews.put(client, boardView);
-        charactersViews.put(client, charactersView);
-        playerDashboardViews.put(client, playerDashboardsView);
-
-        boardView.addObserver(this);
-        charactersView.addObserver(playerController);
-        playerDashboardsView.addObserver(playerController);
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
+      setViews(player);
 
       board.addPlayer(player);
       player.setStatus(PlayerStatus.WAITING);
 
-      if (!board.getPlayers().isEmpty()) {
-        getActivePlayers().stream().forEach(p -> {
-          try {
-            boardViews.get(getPlayerClient(p)).startTimer(Configuration.getInstance().getJoinTimeout());
-          } catch (InvalidPlayerException ignored) {
-            //
-          } catch (RemoteException e) {
-            Log.exception(e);
-          }
-        });
+      if (board.getPlayers().size() >= 3) {
+        startJoinTimer();
       }
 
     } else {
@@ -121,6 +171,65 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       } else {
         throw new PlayingBoardException("Board isn't in LOBBY status");
       }
+    }
+  }
+
+  private void startJoinTimer() {
+    timer.start(Configuration.getInstance().getJoinTimeout(), this::startGame);
+
+    getActivePlayers().stream().forEach(p -> {
+      try {
+        boardViews.get(getPlayerClient(p)).startTimer(Configuration.getInstance().getJoinTimeout());
+      } catch (InvalidPlayerException ignored) {
+        //
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    });
+  }
+
+  public List<GameMap> getValidMaps(int players) {
+    List<GameMap> validMaps = new ArrayList<>();
+    for (GameMap map: new ArrayList<>(maps)) {
+      if (map.getMinPlayers() == 0 || map.getMaxPlayers() == 0 ||
+          players >= map.getMinPlayers() && players <= map.getMaxPlayers()) {
+        validMaps.add(map);
+      }
+    }
+    return validMaps;
+  }
+
+  private void startGame() {
+    if (selectedMap == 0) {
+      List<GameMap> validMaps = getValidMaps(board.getPlayers().size());
+      selectedMap = validMaps.get(random.nextInt(maps.size())).getId();
+    }
+
+    for (GameMap map: new ArrayList<>(maps)) {
+      if (map.getId() != selectedMap) {
+        maps.remove(map);
+      }
+    }
+    Log.info("Selected map #" + selectedMap);
+  }
+
+
+  private void setViews(Player player) {
+    try {
+      ClientInterface client = clients.get(player);
+      BoardViewInterface boardView = client.getBoardView();
+      CharactersViewInterface charactersView = client.getCharactersView();
+      PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
+
+      boardViews.put(client, boardView);
+      charactersViews.put(client, charactersView);
+      playerDashboardViews.put(client, playerDashboardsView);
+
+      boardView.addObserver(this);
+      charactersView.addObserver(playerController);
+      playerDashboardsView.addObserver(playerController);
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 
@@ -200,6 +309,16 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   @Override
   public void update(Event event) {
     throw new UnsupportedOperationException();
+  }
+
+  public void update(FinalFrenzyToggleEvent event) {
+    board.setFinalFrenzySelected(event.isEnabled());
+  }
+
+  public void update(MapSelectionEvent event) {
+    if (event.getMap() >= 1 && event.getMap() <= 4) {
+      selectedMap = event.getMap();
+    }
   }
 
   @Override

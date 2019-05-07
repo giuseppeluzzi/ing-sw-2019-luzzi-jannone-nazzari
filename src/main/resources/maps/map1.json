@@ -1,142 +1,129 @@
-[
-    {
-        "posX": 0,
-        "posY": 0,
-        "color": "BLUE",
-        "spawnPoint": false,
-        "borders": {
-            "EAST": "AIR",
-            "SOUTH": "DOOR",
-            "WEST": "WALL",
-            "NORTH": "WALL"
+{
+    "id": 1,
+    "name": "Mappa 1",
+    "description": "Una mappa",
+    "minPlayers": "3",
+    "maxPlayers": "4",
+    "squares": [
+        {
+            "posX": 0,
+            "posY": 0,
+            "color": "BLUE",
+            "spawnPoint": false,
+            "borders": {
+                "EAST": "AIR",
+                "SOUTH": "DOOR",
+                "WEST": "WALL",
+                "NORTH": "WALL"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 1,
-        "posY": 0,
-        "color": "BLUE",
-        "spawnPoint": false,
-        "borders": {
-            "EAST": "AIR",
-            "SOUTH": "WALL",
-            "WEST": "AIR",
-            "NORTH": "WALL"
+        {
+            "posX": 1,
+            "posY": 0,
+            "color": "BLUE",
+            "spawnPoint": false,
+            "borders": {
+                "EAST": "AIR",
+                "SOUTH": "WALL",
+                "WEST": "AIR",
+                "NORTH": "WALL"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 2,
-        "posY": 0,
-        "color": "BLUE",
-        "spawnPoint": true,
-        "borders": {
-            "EAST": "WALL",
-            "SOUTH": "DOOR",
-            "WEST": "AIR",
-            "NORTH": "WALL"
+        {
+            "posX": 2,
+            "posY": 0,
+            "color": "BLUE",
+            "spawnPoint": true,
+            "borders": {
+                "EAST": "WALL",
+                "SOUTH": "DOOR",
+                "WEST": "AIR",
+                "NORTH": "WALL"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 0,
-        "posY": 1,
-        "color": "RED",
-        "spawnPoint": true,
-        "borders": {
-            "EAST": "AIR",
-            "SOUTH": "WALL",
-            "WEST": "WALL",
-            "NORTH": "DOOR"
+        {
+            "posX": 0,
+            "posY": 1,
+            "color": "RED",
+            "spawnPoint": true,
+            "borders": {
+                "EAST": "AIR",
+                "SOUTH": "WALL",
+                "WEST": "WALL",
+                "NORTH": "DOOR"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 1,
-        "posY": 1,
-        "color": "RED",
-        "spawnPoint": false,
-        "borders": {
-            "EAST": "AIR",
-            "SOUTH": "DOOR",
-            "WEST": "AIR",
-            "NORTH": "WALL"
+        {
+            "posX": 1,
+            "posY": 1,
+            "color": "RED",
+            "spawnPoint": false,
+            "borders": {
+                "EAST": "AIR",
+                "SOUTH": "DOOR",
+                "WEST": "AIR",
+                "NORTH": "WALL"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 2,
-        "posY": 1,
-        "color": "PURPLE",
-        "spawnPoint": false,
-        "borders": {
-            "EAST": "DOOR",
-            "SOUTH": "WALL",
-            "WEST": "AIR",
-            "NORTH": "DOOR"
+        {
+            "posX": 2,
+            "posY": 1,
+            "color": "PURPLE",
+            "spawnPoint": false,
+            "borders": {
+                "EAST": "DOOR",
+                "SOUTH": "WALL",
+                "WEST": "AIR",
+                "NORTH": "DOOR"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 3,
-        "posY": 1,
-        "color": "YELLOW",
-        "spawnPoint": true,
-        "borders": {
-            "EAST": "WALL",
-            "SOUTH": "AIR",
-            "WEST": "DOOR",
-            "NORTH": "WALL"
+        {
+            "posX": 3,
+            "posY": 1,
+            "color": "YELLOW",
+            "spawnPoint": true,
+            "borders": {
+                "EAST": "WALL",
+                "SOUTH": "AIR",
+                "WEST": "DOOR",
+                "NORTH": "WALL"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 1,
-        "posY": 2,
-        "color": "GREY",
-        "spawnPoint": false,
-        "borders": {
-            "EAST": "AIR",
-            "SOUTH": "WALL",
-            "WEST": "WALL",
-            "NORTH": "DOOR"
+        {
+            "posX": 1,
+            "posY": 2,
+            "color": "GREY",
+            "spawnPoint": false,
+            "borders": {
+                "EAST": "AIR",
+                "SOUTH": "WALL",
+                "WEST": "WALL",
+                "NORTH": "DOOR"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 2,
-        "posY": 2,
-        "color": "GREY",
-        "spawnPoint": false,
-        "borders": {
-            "EAST": "DOOR",
-            "SOUTH": "WALL",
-            "WEST": "AIR",
-            "NORTH": "WALL"
+        {
+            "posX": 2,
+            "posY": 2,
+            "color": "GREY",
+            "spawnPoint": false,
+            "borders": {
+                "EAST": "DOOR",
+                "SOUTH": "WALL",
+                "WEST": "AIR",
+                "NORTH": "WALL"
+            }
         },
-        "weapons": [],
-        "observers": []
-    },
-    {
-        "posX": 3,
-        "posY": 2,
-        "color": "YELLOW",
-        "spawnPoint": false,
-        "borders": {
-            "EAST": "WALL",
-            "SOUTH": "WALL",
-            "WEST": "DOOR",
-            "NORTH": "AIR"
-        },
-        "weapons": [],
-        "observers": []
-    }
-]
+        {
+            "posX": 3,
+            "posY": 2,
+            "color": "YELLOW",
+            "spawnPoint": false,
+            "borders": {
+                "EAST": "WALL",
+                "SOUTH": "WALL",
+                "WEST": "DOOR",
+                "NORTH": "AIR"
+            }
+        }
+    ]
+}
