@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
@@ -23,7 +24,23 @@ public class MoveAction implements Action{
 
   @Override
   public void execute(Board board, Weapon weapon) {
-    // TODO: moves a player
+    // TODO: reduce code complexity and improve function
+    Player player = null;
+    if (!weapon.getTargetHistory(target).isPlayer()) {
+      int occurences = 0;
+      for (Player currPlayer : board.getPlayers()) {
+        if (currPlayer.getSquare().equals(weapon.getTargetHistory(target))) {
+          occurences++;
+          player = currPlayer;
+        }
+      }
+      if (occurences > 1 || occurences == 0) {
+        throw new IllegalStateException("More than one player present on selected square");
+      }
+      player.setSquare(weapon.getTargetHistory(destination).getSquare());
+    }
+    player = (Player) weapon.getTargetHistory(target);
+    player.setSquare(weapon.getTargetHistory(destination).getSquare());
   }
 
   @Override

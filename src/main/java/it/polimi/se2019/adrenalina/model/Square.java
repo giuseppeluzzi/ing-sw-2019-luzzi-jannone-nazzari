@@ -125,6 +125,23 @@ public class Square extends Observable implements Target {
     weapons.add(weapon);
   }
 
+  @Override
+  public Square getSquare() {
+    return this;
+  }
+
+  @Override
+  public boolean equals (Object object) {
+    return object instanceof Square
+        && ((Square) object).posX == posX
+        && ((Square) object).posY == posY;
+  }
+
+  @Override
+  public int hashCode() {
+    return posX + posY + color.ordinal();
+  }
+
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);

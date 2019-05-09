@@ -114,6 +114,7 @@ public class Player extends Observable implements Target {
     return name;
   }
 
+  @Override
   public Square getSquare() {
     return square;
   }
