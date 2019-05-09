@@ -29,7 +29,7 @@ public class Board extends Observable {
   private final boolean publicCopyHasWeapons;
 
   public Board() {
-    grid = new Square[3][4];
+    grid = new Square[4][3];
 
     currentPlayer = null;
     status = BoardStatus.LOBBY;
@@ -138,7 +138,7 @@ public class Board extends Observable {
    * of the board.
    */
   public void setSquare(int x, int y, Square square) {
-    if (x < 0 ||  x > 2 || y < 0 || y > 3) {
+    if (x < 0 ||  x > 3 || y < 0 || y > 2) {
       throw new IllegalArgumentException("Invalid square coordinates");
     }
     grid[x][y] = square;

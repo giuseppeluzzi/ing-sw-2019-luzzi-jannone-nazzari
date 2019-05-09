@@ -16,8 +16,8 @@ public class BoardTest {
     Board board3;
     Player player = new Player("test", PlayerColor.GREEN);
 
-    for (int x = 0; x < 3; x++) {
-      for (int y = 0; y < 4; y++) {
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
         board.setSquare(x, y, new Square(1,2,
             SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
       }
@@ -52,7 +52,7 @@ public class BoardTest {
   public void testSetSquare() {
     try {
       Board board = new Board();
-      board.setSquare(0, 3, null);
+      board.setSquare(0, 2, null);
       board.setSquare(2, 0, null);
     } catch (IllegalArgumentException e) {
       fail("IllegalArgumentException thrown unnecessarily");
@@ -87,7 +87,7 @@ public class BoardTest {
   public void testGetSquare() {
     try {
       Board board = new Board();
-      board.getSquare(0, 3);
+      board.getSquare(0, 2);
       board.getSquare(2, 0);
     } catch (IllegalArgumentException e) {
       fail("IllegalArgumentException thrown unnecessarily");

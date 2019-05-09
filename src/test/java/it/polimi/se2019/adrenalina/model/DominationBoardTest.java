@@ -43,8 +43,8 @@ public class DominationBoardTest {
     dominationBoard.addBlueDamage(PlayerColor.PURPLE);
     dominationBoard.addBlueDamage(PlayerColor.GREEN);
     dominationBoard.addRedDamage(PlayerColor.GREY);
-    for (int x = 0; x < 3; x++) {
-      for (int y = 0; y < 4; y++) {
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
         dominationBoard.setSquare(x,y,new Square(1,2,
             SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
       }
