@@ -127,6 +127,16 @@ public class Weapon extends Observable {
     selectedEffects.add(effect);
   }
 
+  public Player getOwner() {
+    if (getTargetHistory(0) == null) {
+      throw new IllegalStateException("Target 0 is missing");
+    }
+    if (!getTargetHistory(0).isPlayer()) {
+      throw new IllegalStateException("Target 0 is  not a player");
+    }
+    return (Player) getTargetHistory(0);
+  }
+
   public List<Effect> getSelectedEffects() {
     return new ArrayList<>(selectedEffects);
   }

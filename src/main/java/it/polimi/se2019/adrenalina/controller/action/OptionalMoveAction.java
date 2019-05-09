@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class OptionalMoveAction implements Action {
@@ -22,7 +23,7 @@ public class OptionalMoveAction implements Action {
   }
 
   @Override
-  public void execute(Weapon weapon) {
+  public void execute(Board board, Weapon weapon) {
     // TODO: moves a player if the movement isn't used yet (see weapon.optMoveGroups)
   }
 

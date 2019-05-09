@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class SelectAction implements Action {
   }
 
   @Override
-  public void execute(Weapon weapon) {
+  public void execute(Board board, Weapon weapon) {
     // TODO: show selection, ignore if target in targethistory is alredy setted
   }
 
