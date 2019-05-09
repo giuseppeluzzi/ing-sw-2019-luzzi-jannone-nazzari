@@ -63,4 +63,20 @@ public class AmmoCardTest {
     AmmoCard ammoCard = null;
     AmmoCard ammoCard2 = new AmmoCard(ammoCard);
   }
+
+  @Test
+  public void testToSTring() {
+    AmmoCard ammoCard1 = new AmmoCard(2, 1, 0, 0);
+    AmmoCard ammoCard2 = new AmmoCard(0, 0, 1, 2);
+    assertEquals(
+        "toString() method returned unexpected value",
+        "RRB",
+        ammoCard1.toString()
+    );
+    assertEquals(
+        "toString() method returned unexpected value",
+        "YPP",
+        ammoCard2.toString()
+    );
+  }
 }

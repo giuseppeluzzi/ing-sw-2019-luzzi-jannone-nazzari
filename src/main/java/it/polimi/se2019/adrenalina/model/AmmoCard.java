@@ -57,6 +57,23 @@ public class AmmoCard {
     return gson.toJson(this);
   }
 
+  public String toString() {
+    StringBuilder out = new StringBuilder(3);
+    for (int i = 0; i < ammo.get(AmmoColor.RED); i++) {
+      out.append("R");
+    }
+    for (int i = 0; i < ammo.get(AmmoColor.BLUE); i++) {
+      out.append("B");
+    }
+    for (int i = 0; i < ammo.get(AmmoColor.YELLOW); i++) {
+      out.append("Y");
+    }
+    for (int i = 0; i < powerUp; i++) {
+      out.append("P");
+    }
+    return out.toString();
+  }
+
   /**
    * Create AmmoCard object from json formatted String
    * @param json json input String
