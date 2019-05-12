@@ -24,22 +24,13 @@ public class MoveAction implements Action{
 
   @Override
   public void execute(Board board, Weapon weapon) {
-    // TODO: reduce code complexity and improve function
-    Player player = null;
     if (!weapon.getTargetHistory(target).isPlayer()) {
-      int occurences = 0;
-      for (Player currPlayer : board.getPlayers()) {
-        if (currPlayer.getSquare().equals(weapon.getTargetHistory(target))) {
-          occurences++;
-          player = currPlayer;
-        }
-      }
-      if (occurences > 1 || occurences == 0) {
+      if (board.getPlayersInSquare(weapon.getTargetHistory(target).getSquare()).size() != 1) {
         throw new IllegalStateException("More than one player present on selected square");
       }
-      player.setSquare(weapon.getTargetHistory(destination).getSquare());
+      getPlayerInSquare.get(0).setSquare(weapon.getTargetHistory(destination).getSquare());
     }
-    player = (Player) weapon.getTargetHistory(target);
+    Player player = (Player) weapon.getTargetHistory(target);
     player.setSquare(weapon.getTargetHistory(destination).getSquare());
   }
 
