@@ -19,7 +19,7 @@ public class BoardTest {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         board.setSquare(x, y, new Square(1,2,
-            SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+            SquareColor.GREEN, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
       }
     }
     board.addPlayer(player);
@@ -52,8 +52,32 @@ public class BoardTest {
   public void testSetSquare() {
     try {
       Board board = new Board();
-      board.setSquare(0, 2, null);
-      board.setSquare(2, 0, null);
+      Square square = new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR);
+      board.setSquare(1, 1, square);
+      board.setSquare(2, 1, new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+      board.setSquare(1, 2, new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+      board.setSquare(0, 1, new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+      board.setSquare(1, 0, new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+
+      assertEquals(
+          "Square navigation failed",
+          SquareColor.GREY,
+          square.getNeighbour(Direction.NORTH).getColor());
+
+      assertEquals(
+          "Square navigation failed",
+          SquareColor.YELLOW,
+          square.getNeighbour(Direction.EAST).getColor());
+
+      assertEquals(
+          "Square navigation failed",
+          SquareColor.BLUE,
+          square.getNeighbour(Direction.SOUTH).getColor());
+
+      assertEquals(
+          "Square navigation failed",
+          SquareColor.PURPLE,
+          square.getNeighbour(Direction.WEST).getColor());
     } catch (IllegalArgumentException e) {
       fail("IllegalArgumentException thrown unnecessarily");
     }
@@ -62,25 +86,31 @@ public class BoardTest {
   @Test (expected = IllegalArgumentException.class)
   public void testSetSquareException1() {
     Board board = new Board();
-    board.setSquare(3, 3, null);
+    board.setSquare(3, 3, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void testSetSquareException2() {
     Board board = new Board();
-    board.setSquare(-1, -1, null);
+    board.setSquare(-1, -1, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void testSetSquareException3() {
     Board board = new Board();
-    board.setSquare(0, 4, null);
+    board.setSquare(0, 4, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void testSetSquareException4() {
     Board board = new Board();
-    board.setSquare(0, -1, null);
+    board.setSquare(0, -1, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSetSquareException5() {
+    Board board = new Board();
+    board.setSquare(0, 0, null);
   }
 
   @Test
@@ -192,10 +222,13 @@ public class BoardTest {
     if (json.isEmpty()) {
       fail("JSON resulting from serialization is empty");
     }
+
+    Board board2 = Board.deserialize(json);
+
     assertEquals(
-        "Deserialized class attributes not matching with actual class attributes",
+        "Deserialized player attributes not matching with actual player attributes",
         "test",
-        Board.deserialize(json).getPlayers().get(0).getName());
+        board2.getPlayers().get(0).getName());
   }
 
   @Test (expected = IllegalArgumentException.class)

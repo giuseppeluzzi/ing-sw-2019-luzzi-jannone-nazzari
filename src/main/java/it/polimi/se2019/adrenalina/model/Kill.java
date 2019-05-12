@@ -2,11 +2,12 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import java.io.Serializable;
 
 /**
  * Class defining a Kill.
  */
-public class Kill {
+public class Kill implements Serializable {
   private final PlayerColor color;
   private final boolean overKill;
 

@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Class defining a single player.
  */
-public class Player extends Observable implements Target {
+public class Player extends Observable implements Target, Serializable {
   // TODO: powerUps and weapon should have a remove*() method (whith which parameter?)
   private final String name;
   private final PlayerColor color;

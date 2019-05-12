@@ -3,10 +3,11 @@ package it.polimi.se2019.adrenalina.controller;
 import it.polimi.se2019.adrenalina.controller.action.Action;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Effect {
+public class Effect implements Serializable {
   private final int costRed;
   private final int costBlue;
   private final int costYellow;

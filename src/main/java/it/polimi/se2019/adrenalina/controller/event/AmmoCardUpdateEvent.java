@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Square;
+import java.io.Serializable;
 
-public class AmmoCardUpdateEvent implements Event {
+public class AmmoCardUpdateEvent implements Event, Serializable {
   private final Square square;
   private final AmmoCard ammoCard;
 

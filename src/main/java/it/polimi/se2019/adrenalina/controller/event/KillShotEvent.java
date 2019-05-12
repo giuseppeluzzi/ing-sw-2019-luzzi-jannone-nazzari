@@ -3,8 +3,9 @@ package it.polimi.se2019.adrenalina.controller.event;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Kill;
+import java.io.Serializable;
 
-public class KillShotEvent implements Event {
+public class KillShotEvent implements Event, Serializable {
   private final Kill kill;
 
   public KillShotEvent(Kill kill) {

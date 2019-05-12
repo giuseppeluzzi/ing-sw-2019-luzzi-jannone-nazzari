@@ -15,7 +15,6 @@
                     "useLastDirection": false,
                     "target": 1,
                     "visible": true,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },
@@ -36,7 +35,6 @@
                     "useLastDirection": false,
                     "target": 2,
                     "visible": null,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },
@@ -62,7 +60,6 @@
                             "useLastDirection": false,
                             "target": 3,
                             "visible": true,
-                            "untilVisible": false,
                             "differentRoom": false,
                             "between": []
                         },

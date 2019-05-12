@@ -16,13 +16,12 @@
                     "useLastDirection": false,
                     "target": 1,
                     "visible": null,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },
                 {
                     "minDistance": 1,
-                    "optional": false,
+                    "optional": true,
                     "maxDistance": 1,
                     "selectType": "ATTACK_TARGET",
                     "differentFrom": [
@@ -33,7 +32,6 @@
                     "useLastDirection": true,
                     "target": 2,
                     "visible": null,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },
@@ -69,7 +67,6 @@
                     "useLastDirection": false,
                     "target": 1,
                     "visible": null,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },
@@ -86,7 +83,6 @@
                     "useLastDirection": true,
                     "target": 2,
                     "visible": null,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },

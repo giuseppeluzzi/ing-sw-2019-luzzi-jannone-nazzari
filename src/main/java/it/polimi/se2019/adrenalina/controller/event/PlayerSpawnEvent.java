@@ -5,8 +5,9 @@ import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Square;
+import java.io.Serializable;
 
-public class PlayerSpawnEvent implements Event {
+public class PlayerSpawnEvent implements Event, Serializable {
   private final Player player;
   private final Square spawnLocation;
   private final PowerUp tossedPowerUp;

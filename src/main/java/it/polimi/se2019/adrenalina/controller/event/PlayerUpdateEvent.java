@@ -3,8 +3,9 @@ package it.polimi.se2019.adrenalina.controller.event;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Player;
+import java.io.Serializable;
 
-public class PlayerUpdateEvent implements Event {
+public class PlayerUpdateEvent implements Event, Serializable {
   private final Player player;
 
   public PlayerUpdateEvent(Player player) {

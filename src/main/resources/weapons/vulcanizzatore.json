@@ -16,7 +16,6 @@
                     "useLastDirection": false,
                     "target": 1,
                     "visible": true,
-                    "untilVisible": false,
                     "differentRoom": true,
                     "between": []
                 },
@@ -33,7 +32,7 @@
         {
             "costYellow": 0,
             "subEffects": [],
-            "name": "Modalità fuoco confortevle",
+            "name": "Modalità fuoco confortevole",
             "actions": [
                 {
                     "minDistance": 1,
@@ -46,7 +45,6 @@
                     "useLastDirection": false,
                     "target": 1,
                     "visible": null,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },

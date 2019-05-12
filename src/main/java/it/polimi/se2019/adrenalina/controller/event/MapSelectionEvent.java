@@ -2,8 +2,9 @@ package it.polimi.se2019.adrenalina.controller.event;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import java.io.Serializable;
 
-public class MapSelectionEvent implements Event {
+public class MapSelectionEvent implements Event, Serializable {
   private final int map;
 
   public MapSelectionEvent(int map) {

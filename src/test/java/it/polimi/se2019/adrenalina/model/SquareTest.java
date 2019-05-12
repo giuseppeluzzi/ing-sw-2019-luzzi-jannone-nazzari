@@ -48,6 +48,9 @@ public class SquareTest {
 
     assertEquals("Deserialized class attributes not matching with actual class attributes",
         2, Square.deserialize(json).getPosX());
+
+    assertEquals("Deserialized class attributes not matching with actual class attributes",
+        1, Square.deserialize(json).getPosY());
   }
 
   @Test (expected = IllegalArgumentException.class)

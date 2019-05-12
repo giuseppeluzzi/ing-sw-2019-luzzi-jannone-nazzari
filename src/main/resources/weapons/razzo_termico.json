@@ -15,7 +15,6 @@
                     "useLastDirection": false,
                     "target": 1,
                     "visible": false,
-                    "untilVisible": false,
                     "differentRoom": false,
                     "between": []
                 },

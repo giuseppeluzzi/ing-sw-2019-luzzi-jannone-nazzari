@@ -8,7 +8,6 @@ import it.polimi.se2019.adrenalina.controller.event.KillShotEvent;
 import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;

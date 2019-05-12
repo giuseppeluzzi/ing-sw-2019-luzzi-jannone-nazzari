@@ -5,8 +5,9 @@ import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import java.io.Serializable;
 
-public class PlayerCollectWeaponEvent implements Event {
+public class PlayerCollectWeaponEvent implements Event, Serializable {
   private final Player player;
   private final Weapon weapon;
   private final Square square;

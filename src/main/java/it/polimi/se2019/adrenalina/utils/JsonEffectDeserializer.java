@@ -7,14 +7,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.action.MoveAction;
-import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
-import it.polimi.se2019.adrenalina.controller.action.SelectAction;
-import it.polimi.se2019.adrenalina.controller.action.SelectDirectionAction;
-import it.polimi.se2019.adrenalina.controller.action.ShootAction;
 import it.polimi.se2019.adrenalina.controller.action.ActionType;
-import it.polimi.se2019.adrenalina.controller.action.ShootRoomAction;
-import it.polimi.se2019.adrenalina.controller.action.ShootSquareAction;
 import java.lang.reflect.Type;
 
 public class JsonEffectDeserializer implements JsonDeserializer<Effect> {

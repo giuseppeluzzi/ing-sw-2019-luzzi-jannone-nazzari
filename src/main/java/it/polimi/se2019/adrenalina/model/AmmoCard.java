@@ -2,10 +2,11 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
-public class AmmoCard {
+public class AmmoCard implements Serializable {
   private final HashMap<AmmoColor, Integer> ammo;
   private final int powerUp;
 

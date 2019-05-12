@@ -4,15 +4,17 @@ import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Square extends Observable implements Target {
+public class Square extends Observable implements Target, Serializable {
 
   private final int posX;
   private final int posY;
   private final SquareColor color;
+  private transient HashMap<Direction, Square> neighbours;
 
   private boolean spawnPoint;
   private AmmoCard ammoCard;
@@ -36,6 +38,7 @@ public class Square extends Observable implements Target {
     borders.put(Direction.EAST, edgeRight);
     borders.put(Direction.SOUTH, edgeDown);
     borders.put(Direction.WEST, edgeLeft);
+    neighbours = new HashMap<>();
 
     weapons = new ArrayList<>();
   }
@@ -58,6 +61,8 @@ public class Square extends Observable implements Target {
     borders.put(Direction.EAST, square.getEdge(Direction.EAST));
     borders.put(Direction.SOUTH, square.getEdge(Direction.SOUTH));
     borders.put(Direction.WEST, square.getEdge(Direction.WEST));
+
+    neighbours = new HashMap<>(square.neighbours);
 
     weapons = new ArrayList<>();
     for (Weapon weapon : weapons) {
@@ -113,6 +118,16 @@ public class Square extends Observable implements Target {
     return new ArrayList<>(weapons);
   }
 
+  public Square getNeighbour(Direction direction) {
+    return neighbours.get(direction);
+  }
+
+  public void setNeighbour(Direction direction, Square square) {
+    if (square == null) {
+      throw new IllegalArgumentException("Argument square cannot be null");
+    }
+    neighbours.put(direction, square);
+  }
 
   /**
    * Verify if a square is visible
@@ -210,6 +225,8 @@ public class Square extends Observable implements Target {
       throw new IllegalArgumentException("Argument json can't be null");
     }
     Gson gson = new Gson();
-    return gson.fromJson(json, Square.class);
+    Square square = gson.fromJson(json, Square.class);
+    square.neighbours = new HashMap<>();
+    return square;
   }
 }

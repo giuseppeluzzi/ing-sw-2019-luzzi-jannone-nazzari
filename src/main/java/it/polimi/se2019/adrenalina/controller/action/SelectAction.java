@@ -6,13 +6,14 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SelectAction implements Action {
+public class SelectAction implements Action, Serializable {
 
   private int from;
   private int target;
@@ -51,6 +52,28 @@ public class SelectAction implements Action {
     return type;
   }
 
+  private void blacklist(List<Target> targets, int[] differentFrom, Weapon weapon) {
+    if (differentFrom.length > 0) {
+      for (int targetIndex : differentFrom) {
+        targets.remove(weapon.getTargetHistory(targetIndex));
+      }
+    }
+  }
+
+  private void whitelist(List<Target> targets, int[] between, Weapon weapon) {
+    if (between.length > 0) {
+      List<Target> allowed = new ArrayList<>();
+      for (int targetIndex : between) {
+        allowed.add(weapon.getTargetHistory(targetIndex));
+      }
+      for (Target targ : new ArrayList<>(targets)) {
+        if (! allowed.contains(targ)) {
+          targets.remove(targ);
+        }
+      }
+    }
+  }
+
   @Override
   public void execute(Board board, Weapon weapon) {
     // TODO: show selection, ignore if target in targethistory is alredy setted
@@ -63,24 +86,10 @@ public class SelectAction implements Action {
     Target fromTarget = weapon.getTargetHistory(from);
 
     // differentFrom
-    if (differentFrom.length > 0) {
-      for (int targetIndex : differentFrom) {
-        targets.remove(weapon.getTargetHistory(targetIndex));
-      }
-    }
+    blacklist(targets, differentFrom, weapon);
 
     // between
-    if (between.length > 0) {
-      List<Target> allowed = new ArrayList<>();
-      for (int targetIndex : between) {
-        allowed.add(weapon.getTargetHistory(targetIndex));
-      }
-      for (Target target : new ArrayList<>(targets)) {
-        if (! allowed.contains(target)) {
-          targets.remove(target);
-        }
-      }
-    }
+    whitelist(targets, between, weapon);
 
     Stream<Target> targetStream = targets.stream();
 

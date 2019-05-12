@@ -21,7 +21,6 @@
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
-                    "untilVisible": false,
                     "type": "SELECT"
                 },
                 {
@@ -36,7 +35,6 @@
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "MOVE_SQUARE",
-                    "untilVisible": false,
                     "type": "SELECT"
                 },
                 {
@@ -72,7 +70,6 @@
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
-                    "untilVisible": false,
                     "type": "SELECT"
                 },
                 {

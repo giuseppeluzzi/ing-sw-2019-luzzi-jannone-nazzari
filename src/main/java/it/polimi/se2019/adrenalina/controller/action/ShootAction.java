@@ -3,8 +3,9 @@ package it.polimi.se2019.adrenalina.controller.action;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import java.io.Serializable;
 
-public class ShootAction implements Action {
+public class ShootAction implements Action, Serializable {
   private int target;
   private int damages;
   private int tag;

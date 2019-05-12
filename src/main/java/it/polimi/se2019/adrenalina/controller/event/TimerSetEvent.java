@@ -2,8 +2,9 @@ package it.polimi.se2019.adrenalina.controller.event;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import java.io.Serializable;
 
-public class TimerSetEvent implements Event {
+public class TimerSetEvent implements Event, Serializable {
   private final int timer;
 
   public TimerSetEvent(int timer) {

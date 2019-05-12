@@ -3,10 +3,9 @@ package it.polimi.se2019.adrenalina.controller.action;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
-public class MoveAction implements Action{
+public class MoveAction implements Action {
   private int target;
   private int destination;
   private ActionType type = ActionType.MOVE;
@@ -28,7 +27,7 @@ public class MoveAction implements Action{
       if (board.getPlayersInSquare(weapon.getTargetHistory(target).getSquare()).size() != 1) {
         throw new IllegalStateException("More than one player present on selected square");
       }
-      getPlayerInSquare.get(0).setSquare(weapon.getTargetHistory(destination).getSquare());
+      board.getPlayersInSquare(weapon.getTargetHistory(target).getSquare()).get(0).setSquare(weapon.getTargetHistory(destination).getSquare());
     }
     Player player = (Player) weapon.getTargetHistory(target);
     player.setSquare(weapon.getTargetHistory(destination).getSquare());

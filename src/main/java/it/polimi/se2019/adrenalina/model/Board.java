@@ -2,12 +2,14 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
+import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board extends Observable {
+public class Board extends Observable implements Serializable {
   private final Square[][] grid;
   private BoardStatus status;
   private boolean finalFrenzyActive;
@@ -131,16 +133,50 @@ public class Board extends Observable {
   }
 
   /**
-   * Adds a square to the board.
+   * Adds a square to the board. Besides adding it to the grid, it sets {@code east}, {@code west},
+   * {@code north} and {@code south} attributes and it also changes its neighbour squares
+   * accordingly.
    * @param x x coordinate.
    * @param y y coordinate.
-   * @param square Square to add.
+   * @param square Square to add, must not be null.
    * @throws IllegalArgumentException thrown if x or y are not within the size
    * of the board.
    */
   public void setSquare(int x, int y, Square square) {
     if (x < 0 ||  x > 3 || y < 0 || y > 2) {
       throw new IllegalArgumentException("Invalid square coordinates");
+    }
+    if (square == null) {
+      throw new IllegalArgumentException("Square parameter must not be null");
+    }
+    Square neighbour;
+    if (x > 0 && square.getEdge(Direction.WEST) != BorderType.WALL) {
+      neighbour = getSquare(x - 1, y);
+      if (neighbour != null) {
+       neighbour.setNeighbour(Direction.EAST, square);
+       square.setNeighbour(Direction.WEST, neighbour);
+      }
+    }
+    if (x < 3 && square.getEdge(Direction.EAST) != BorderType.WALL) {
+      neighbour = getSquare(x + 1, y);
+      if (neighbour != null) {
+        neighbour.setNeighbour(Direction.WEST, square);
+        square.setNeighbour(Direction.EAST, neighbour);
+      }
+    }
+    if (y > 0 && square.getEdge(Direction.NORTH) != BorderType.WALL) {
+      neighbour = getSquare(x, y - 1);
+      if (neighbour != null) {
+        neighbour.setNeighbour(Direction.SOUTH, square);
+        square.setNeighbour(Direction.NORTH, neighbour);
+      }
+    }
+    if (y < 2 && square.getEdge(Direction.SOUTH) != BorderType.WALL) {
+      neighbour = getSquare(x, y + 1);
+      if (neighbour != null) {
+        neighbour.setNeighbour(Direction.NORTH, square);
+        square.setNeighbour(Direction.SOUTH, neighbour);
+      }
     }
     grid[x][y] = square;
   }
@@ -154,7 +190,7 @@ public class Board extends Observable {
    * of the board.
    */
   public Square getSquare(int x, int y) {
-    if (x < 0 ||  x > 2 || y < 0 || y > 3) {
+    if (x < 0 ||  x > 3 || y < 0 || y > 2) {
       throw new IllegalArgumentException("Invalid square coordinates");
     }
     return grid[x][y];
@@ -319,6 +355,24 @@ public class Board extends Observable {
     throw new IllegalArgumentException("No such player");
   }
 
+  /**
+   * Retrieves a list of player in a specified Square.
+   * @param square the square to consider, which must not be null.
+   * @return the list of players.
+   */
+  public List<Player> getPlayersInSquare(Square square) {
+    if (square == null) {
+      throw new IllegalArgumentException("Argument square cannot be null");
+    }
+    List<Player> output = new ArrayList<>();
+    for (Player player : players) {
+      if (player.getSquare() == square) {
+        output.add(player);
+      }
+    }
+    return output;
+  }
+
   public void removePlayer(PlayerColor color) {
     players.remove(getPlayerByColor(color));
   }
@@ -338,6 +392,21 @@ public class Board extends Observable {
       throw new IllegalArgumentException("Argument json can't be null");
     }
     Gson gson = new Gson();
-    return gson.fromJson(json, Board.class);
+    Board board = gson.fromJson(json, Board.class);
+    for (Square square : board.getSquares()) {
+      if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL && board.getSquare(square.getPosX() - 1, square.getPosY()) != null) {
+        square.setNeighbour(Direction.WEST, board.getSquare(square.getPosX() - 1, square.getPosY()));
+      }
+      if (square.getPosX() < 3 && square.getEdge(Direction.EAST) != BorderType.WALL && board.getSquare(square.getPosX() + 1, square.getPosY()) != null) {
+        square.setNeighbour(Direction.EAST, board.getSquare(square.getPosX() + 1, square.getPosY()));
+      }
+      if (square.getPosY() > 0 && square.getEdge(Direction.NORTH) != BorderType.WALL && board.getSquare(square.getPosX(), square.getPosY() - 1) != null) {
+        square.setNeighbour(Direction.NORTH, board.getSquare(square.getPosX(), square.getPosY() - 1));
+      }
+      if (square.getPosY() < 2 && square.getEdge(Direction.SOUTH) != BorderType.WALL && board.getSquare(square.getPosX(), square.getPosY() + 1) != null) {
+        square.setNeighbour(Direction.SOUTH, board.getSquare(square.getPosX(), square.getPosY() + 1));
+      }
+    }
+    return board;
   }
 }

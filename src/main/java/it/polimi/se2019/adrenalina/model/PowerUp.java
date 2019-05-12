@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.action.Action;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PowerUp {
+public abstract class PowerUp implements Serializable {
   private final AmmoColor color;
   private final List<Action> actions;
 

@@ -3,9 +3,9 @@ package it.polimi.se2019.adrenalina.controller.action;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import java.util.Arrays;
+import java.io.Serializable;
 
-public class CopySquareAction implements Action {
+public class CopySquareAction implements Action, Serializable {
 
   private final int origin;
   private final int destination;
@@ -24,7 +24,7 @@ public class CopySquareAction implements Action {
 
   @Override
   public void execute(Board board, Weapon weapon) {
-    // TODO: excecution
+    weapon.setTargetHistory(destination, weapon.getTargetHistory(origin).getSquare());
   }
 
   @Override

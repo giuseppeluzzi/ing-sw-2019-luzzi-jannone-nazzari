@@ -21,7 +21,6 @@
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
-                    "untilVisible": false,
                     "type": "SELECT"
                 },
                 {
@@ -46,7 +45,6 @@
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "MOVE_SQUARE",
-                    "untilVisible": false,
                     "type": "SELECT"
                 },
                 {
@@ -75,7 +73,6 @@
                             "useLastDirection": false,
                             "differentRoom": false,
                             "selectType": "MOVE_SQUARE",
-                            "untilVisible": false,
                             "type": "SELECT"
                         },
                         {
@@ -96,12 +93,18 @@
                         {
                             "distance": 0,
                             "exclude": [
-                                2
+                                1
                             ],
-                            "target": 3,
+                            "target": 2,
                             "damages": 1,
                             "tag": 0,
                             "type": "SHOOT_SQUARE"
+                        },
+                        {
+                            "target": 1,
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT"
                         }
                     ],
                     "subEffects": []

@@ -3,8 +3,9 @@ package it.polimi.se2019.adrenalina.controller.action;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import java.io.Serializable;
 
-public class SelectDirectionAction implements Action {
+public class SelectDirectionAction implements Action, Serializable {
   private ActionType type = ActionType.SELECT_DIRECTION;
 
   public SelectDirectionAction() {

@@ -5,8 +5,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.model.Player;
+import java.io.Serializable;
 
-public class PlayerAttackEvent implements Event {
+public class PlayerAttackEvent implements Event, Serializable {
   private final Player player;
   private final Player target;
   private final Effect effect;
