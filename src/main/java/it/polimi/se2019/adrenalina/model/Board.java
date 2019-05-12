@@ -125,6 +125,7 @@ public class Board extends Observable {
     }
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
+        // TODO
       }
     }
   }
@@ -149,7 +150,7 @@ public class Board extends Observable {
    * @param x x coordinate.
    * @param y y coordinate.
    * @return the requested Square.
-   * @throws   IllegalArgumentException thrown if x or y are not within the size
+   * @throws IllegalArgumentException thrown if x or y are not within the size
    * of the board.
    */
   public Square getSquare(int x, int y) {
@@ -157,6 +158,22 @@ public class Board extends Observable {
       throw new IllegalArgumentException("Invalid square coordinates");
     }
     return grid[x][y];
+  }
+
+  /**
+   * Retrieves a list of square of the current map
+   * @return a list of Square
+   */
+  public List<Square> getSquares() {
+    List<Square> squares = new ArrayList<>();
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
+        if (grid[x][y] != null) {
+          squares.add(grid[x][y]);
+        }
+      }
+    }
+    return squares;
   }
 
   public PlayerColor getCurrentPlayer() {

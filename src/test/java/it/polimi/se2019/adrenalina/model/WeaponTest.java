@@ -40,7 +40,7 @@ public class WeaponTest {
   public void testSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2, false);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET, false));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET));
 
     weapon.addEffect(base);
     String json = weapon.serialize();
@@ -58,13 +58,13 @@ public class WeaponTest {
   public void testEffectSerialization() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     Effect base = new Effect("test", weapon, 0, 1, 2, false);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET, false));
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET));
     base.addAction(new ShootAction(1, 2, 1));
     base.addAction(new MoveAction(2, 0));
     base.addAction(new OptionalMoveAction(2, 0, 0));
 
     Effect bis = new Effect("test_bis", weapon, 1, 0, 0, false);
-    bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, new int[]{},true, false, true, false, TargetType.ATTACK_TARGET, false));
+    bis.addAction(new SelectAction(0, 1, 0, 0,  new int[]{}, new int[]{},true, false, true, false, TargetType.ATTACK_TARGET));
     bis.addAction(new ShootAction(1, 2, 1));
     bis.addAction(new MoveAction(2, 0));
     bis.addAction(new OptionalMoveAction(2, 0, 0));

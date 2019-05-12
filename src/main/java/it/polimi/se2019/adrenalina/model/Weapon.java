@@ -18,18 +18,22 @@ import java.util.Map;
  * Class defining a weapon.
  */
 public class Weapon extends Observable {
+
   private final AmmoColor baseCost;
   @NotExpose
   private boolean loaded;
   private final String name;
-  @NotExpose
-  private final HashMap<Integer, Target> targetHistory = new HashMap<>();
+  private final HashMap<AmmoColor, Integer> cost = new HashMap<>();
   @NotExpose
   private final HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
   private final List<Effect> effects = new ArrayList<>();
+
+  // Usage information
+  @NotExpose
+  private final HashMap<Integer, Target> targetHistory = new HashMap<>();
   @NotExpose
   private final List<Effect> selectedEffects = new ArrayList<>();
-  private final HashMap<AmmoColor, Integer> cost = new HashMap<>();
+  private Direction lastUsageDirection = null;
   // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
@@ -150,6 +154,14 @@ public class Weapon extends Observable {
 
   public int getCost(AmmoColor color) {
     return cost.get(color);
+  }
+
+  public Direction getLastUsageDirection() {
+    return lastUsageDirection;
+  }
+
+  public void setLastUsageDirection(Direction lastUsageDirection) {
+    this.lastUsageDirection = lastUsageDirection;
   }
 
   public String serialize() {

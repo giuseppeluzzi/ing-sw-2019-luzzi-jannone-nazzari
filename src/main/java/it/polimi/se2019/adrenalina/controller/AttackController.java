@@ -19,6 +19,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerAttackEvent event) {
     // TODO: invoked when a player attacks a target with a weapon-effect; if the target is a spawnpoint, the domination board should be notified
+    // TODO: get real player from the copy
   }
 
   public void update(PlayerReloadEvent event) {

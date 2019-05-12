@@ -2,13 +2,13 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Square extends Observable implements Target {
-
 
   private final int posX;
   private final int posY;
@@ -111,6 +111,58 @@ public class Square extends Observable implements Target {
 
   public List<Weapon> getWeapons() {
     return new ArrayList<>(weapons);
+  }
+
+
+  /**
+   * Verify if a square is visible
+   * @param square a square to be checked
+   * @return visibility condition
+   */
+  public boolean isVisible(Square square) {
+    // TODO: is square visible from this?
+    return true;
+  }
+
+  /**
+   * Calculate the distance from a specific square
+   * @param square a specific square
+   * @return distance from the square
+   */
+  public int getDistance(Square square) {
+    return Math.abs(posX - square.posX) + Math.abs(posY - square.posY);
+  }
+
+  /**
+   * Calculate the cardinal direction between two squares
+   * @param square another square
+   * @return direction between the squares
+   * @throws InvalidSquareException if the squares are equal or if the squares aren't aligned to a
+   * cardinal direction
+   */
+  public Direction getCardinalDirection(Square square) throws InvalidSquareException {
+    int diffX = posX - square.posX;
+    int diffY = posY - square.posY;
+
+    if (diffX == 0 && diffY == 0) {
+      throw new InvalidSquareException("Must be a different square");
+    }
+
+    if (diffX == 0) {
+      if (diffY < 0) {
+        return Direction.NORTH;
+      } else {
+        return Direction.SOUTH;
+      }
+    }
+    if (diffY == 0) {
+      if (diffX < 0) {
+        return Direction.EAST;
+      } else {
+        return Direction.WEST;
+      }
+    }
+    throw new InvalidSquareException("Square is not on a cardinal direction");
   }
 
   /**
