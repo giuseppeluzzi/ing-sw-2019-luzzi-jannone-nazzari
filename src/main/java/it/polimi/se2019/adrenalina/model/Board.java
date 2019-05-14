@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class describes a game board.
+ */
 public class Board extends Observable implements Serializable {
   private final Square[][] grid;
   private BoardStatus status;
@@ -32,6 +35,9 @@ public class Board extends Observable implements Serializable {
   private final boolean publicCopy;
   private final boolean publicCopyHasWeapons;
 
+  /**
+   * Class constructor. Creates an empty Board to which objects have to be added.
+   */
   public Board() {
     grid = new Square[4][3];
 
@@ -51,10 +57,10 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Copy constructor, creates an exact copy of a Board.
-   * @param board the Board to be cloned, has to be not null.
+   * @param board the Board to be cloned, has to be not null
    * @param publicCopy if true, a public copy of the Board will be created
    * instead of a clone. The public copy will not contain players' private
-   * information.
+   * information
    */
   public Board(Board board, boolean publicCopy) {
     // TODO: copy observers
@@ -123,6 +129,7 @@ public class Board extends Observable implements Serializable {
     }
   }
 
+  // TODO: documentation
   public void clearMap() {
     if (status != BoardStatus.LOBBY) {
       throw new IllegalStateException("Can't clear the map during a game");
@@ -138,11 +145,11 @@ public class Board extends Observable implements Serializable {
    * Adds a square to the board. Besides adding it to the grid, it sets {@code east}, {@code west},
    * {@code north} and {@code south} attributes and it also changes its neighbour squares
    * accordingly.
-   * @param x x coordinate.
-   * @param y y coordinate.
-   * @param square Square to add, must not be null.
+   * @param x x coordinate
+   * @param y y coordinate
+   * @param square Square to add, must not be null
    * @throws IllegalArgumentException thrown if x or y are not within the size
-   * of the board.
+   * of the board
    */
   public void setSquare(int x, int y, Square square) {
     if (x < 0 ||  x > 3 || y < 0 || y > 2) {
@@ -185,11 +192,11 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Retrieves a square from the board given its coordinates.
-   * @param x x coordinate.
-   * @param y y coordinate.
-   * @return the requested Square.
+   * @param x x coordinate
+   * @param y y coordinate
+   * @return the requested Square
    * @throws IllegalArgumentException thrown if x or y are not within the size
-   * of the board.
+   * of the board
    */
   public Square getSquare(int x, int y) {
     if (x < 0 ||  x > 3 || y < 0 || y > 2) {
@@ -199,7 +206,7 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Retrieves a list of square of the current map
+   * Retrieves a list of squares in the current map.
    * @return a list of Square
    */
   public List<Square> getSquares() {
@@ -214,48 +221,84 @@ public class Board extends Observable implements Serializable {
     return squares;
   }
 
+  /**
+   * Returns the player who is currently playing its turn.
+   * @return the Player currently playing
+   */
   public PlayerColor getCurrentPlayer() {
     return currentPlayer;
   }
 
+  /**
+   * Sets the player who is currently playing its turn.
+   * @param player the Player to set
+   */
   public void setCurrentPlayer(PlayerColor player) {
     currentPlayer = player;
   }
 
+  /**
+   * Returns whether the current game mode is "Final Frenzy".
+   * @return true if the current game mode is "Final Frenzy", false otherwise
+   */
   public boolean isFinalFrenzyActive() {
     return finalFrenzyActive;
   }
 
+  /**
+   * Sets or unsets the current game mode to "Final Frenzy".
+   * @param finalFrenzyActive true if the game mode has to be set to "Final Frenzy", false otherwhise
+   */
   public void setFinalFrenzyActive(boolean finalFrenzyActive) {
     this.finalFrenzyActive = finalFrenzyActive;
   }
 
+  /**
+   * Returns whether the current game is set up to use "Final Frenzy" mode at the end.
+   * @return true if the game is set up to use "Final Frenzy" mode at the end, false otherwise
+   */
   public boolean isFinalFrenzySelected() {
     return finalFrenzySelected;
   }
 
+  /**
+   * Sets up the current game to use "Final Frenzy" mode at the end.
+   * @param finalFrenzySelected true if the game shoud use "Final Frenzy" mode at the end, false
+   * otherwise
+   */
   public void setFinalFrenzySelected(boolean finalFrenzySelected) {
     this.finalFrenzySelected = finalFrenzySelected;
   }
 
+  /**
+   * Adds a player to the board.
+   * @param player the player to add
+   */
   public void addPlayer(Player player) {
     players.add(player);
   }
 
+  /**
+   * Returns a List of Players currently in the Board.
+   * @return a List of Players currently in the Board.
+   */
   public List<Player> getPlayers() {
     return new ArrayList<>(players);
   }
 
+  /**
+   * Adds a Weapon to the board.
+   * @param weapon the Weapon to add
+   */
   public void addWeapon(Weapon weapon) {
     weapons.add(weapon);
   }
 
   /**
-   * Marks a weapon as used by moving it from the weapons list to the
+   * Marks a Weapon as used by moving it from the weapons list to the
    * usedWeapons list.
-   * @param weapon weapon to be marked as used.
-   * @throws  IllegalArgumentException thrown if weapon is not in the weapons
-   * list.
+   * @param weapon Weapon to be marked as used
+   * @throws  IllegalArgumentException thrown if weapon is not in the Board
    */
   public void useWeapon(Weapon weapon) {
     if (! weapons.contains(weapon)) {
@@ -265,14 +308,26 @@ public class Board extends Observable implements Serializable {
     usedWeapons.add(weapon);
   }
 
+  /**
+   * Returns a List of Weapons in the Board.
+   * @return a List of Weapons in the Board
+   */
   public List<Weapon> getWeapons() {
     return new ArrayList<>(weapons);
   }
 
+  /**
+   * Returns a List of used Weapons.
+   * @return a List of used Weapons.
+   */
   public List<Weapon> getUsedWeapons() {
     return new ArrayList<>(usedWeapons);
   }
 
+  /**
+   * Adds a powerUp to the Board.
+   * @param powerup the powerUp to add to the Board
+   */
   public void addPowerUp(PowerUp powerup) {
     powerUps.add(powerup);
   }
@@ -280,9 +335,8 @@ public class Board extends Observable implements Serializable {
   /**
    * Marks a powerUp as used by moving it from the powerUps list to the
    * usedPowerUps list.
-   * @param powerUp the powerUp to be marked as used.
-   * @exception  IllegalArgumentException thrown if powerUp is not in the powerUps
-   * list.
+   * @param powerUp the powerUp to be marked as used
+   * @exception  IllegalArgumentException thrown if powerUp is not in the Board
    */
   public void usePowerUp(PowerUp powerUp) {
     if (! powerUps.contains(powerUp)) {
@@ -292,50 +346,101 @@ public class Board extends Observable implements Serializable {
     usedPowerUps.add(powerUp);
   }
 
+  /**
+   * Returns a List of powerUps in the Board.
+   * @return a List of powerUps in the Board
+   */
   public List<PowerUp> getPowerUps() {
     return new ArrayList<>(powerUps);
   }
 
+  /**
+   * Returns a List of used powerUps in the Board.
+   * @return a List of used powerUps in the Board
+   */
   public List<PowerUp> getUsedPowerUps() {
     return new ArrayList<>(usedPowerUps);
   }
 
+  /**
+   * Adds a doubleKill to the Board.
+   * @param player the Player who scored the doubleKill
+   */
   public void addDoubleKill(Player player) {
     doubleKills.add(player);
   }
 
+  /**
+   * Returns a list of doubleKills in the Board.
+   * @return a list of doubleKills in the Board
+   */
   public List<Player> getDoubleKills() {
     return new ArrayList<>(doubleKills);
   }
 
+  /**
+   * Adds a killShot to the killshot track.
+   * @param kill the killShot to add
+   */
   public void addKillShot(Kill kill) {
     killShots.add(kill);
   }
 
+  /**
+   * Returns a list of doubleKills in the killshot track.
+   * @return a list of doubleKills in the killshot track
+   */
   public List<Kill> getKillShots() {
     return new ArrayList<>(killShots);
   }
 
+  /**
+   * Returns the timestamp at which the current turn started.
+   * @return the timestamp at which the current turn started
+   */
   public long getTurnStartTime() {
     return turnStartTime;
   }
 
+  /**
+   * Sets the timestamp at which the current turn started.
+   * @param turnStartTime the timestamp to set
+   */
   public void setTurnStartTime(long turnStartTime) {
     this.turnStartTime = turnStartTime;
   }
 
+  /**
+   * Returns whether the Board is a DominationBoard. Always true in the children class
+   * {@code DominationBoard}, always false here.
+   * @return true, since this is a normal Board and not a DominationBoard
+   */
   public boolean isDominationBoard() {
     return false;
   }
 
+  /**
+   * Returns the current status of the Board.
+   * @return the current Status of the Board
+   */
   public BoardStatus getStatus() {
     return status;
   }
 
+  /**
+   * Sets the current Status of the Board.
+   * @param status the Status to set
+   */
   public void setStatus(BoardStatus status) {
     this.status = status;
   }
 
+  /**
+   * Returns whether the board has any Weapons left in the stack. This method works even if this
+   * object is the publicCopy of a board (and thus has no Weapons saved into it), thanks to the
+   * {@code publicCopyHasWeapons} attribute.
+   * @return true if the board has any weapons left in the stack, false otherwise
+   */
   public boolean hasWeapons() {
     if (publicCopy) {
       return publicCopyHasWeapons;
@@ -345,8 +450,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Retrieves a player by its color.
-   * @throws  IllegalArgumentException thrown if there are no players of the
-   * specified color.
+   * @throws IllegalArgumentException thrown if there are no players of the specified color
    */
   public Player getPlayerByColor(PlayerColor color) {
     for (Player player : players) {
@@ -357,10 +461,18 @@ public class Board extends Observable implements Serializable {
     throw new IllegalArgumentException("No such player");
   }
 
+  /**
+   * Removes the player of a given color.
+   * @param color the color of the player to remove
+   */
   public void removePlayer(PlayerColor color) {
     players.remove(getPlayerByColor(color));
   }
 
+  /**
+   * Gson serialization.
+   * @return JSON string containing serialized object
+   */
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
@@ -368,9 +480,10 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Create Board object from json formatted String
-   * @param json json input String, can't be null
-   * @return Board
+   * Creates Board object from a JSON serialized object. This method also sets each Square's
+   * neighbours and Players to the correct state.
+   * @param json JSON input String
+   * @return Board object
    */
   public static Board deserialize(String json) {
     if (json == null) {
@@ -379,6 +492,12 @@ public class Board extends Observable implements Serializable {
     Gson gson = new Gson();
     Board board = gson.fromJson(json, Board.class);
     for (Square square : board.getSquares()) {
+      square.resetPlayers();
+      for (Player player : board.players) {
+        if (player.getSquare() != null) {
+          player.getSquare().addPlayer(player);
+        }
+      }
       square.resetNeighbours();
       if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL && board.getSquare(square.getPosX() - 1, square.getPosY()) != null) {
         square.setNeighbour(Direction.WEST, board.getSquare(square.getPosX() - 1, square.getPosY()));

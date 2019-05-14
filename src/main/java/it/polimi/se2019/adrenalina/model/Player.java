@@ -166,16 +166,23 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   /**
-   * Adds a new damage to a player.
+   * Adds a new damage to a player including damages given by tags and, possibly, inflicts death.
    * @param player color of the player that inflicted the damage.
-   * @throws IllegalStateException thrown if a player has already received 12
-   * damages, thus is dead.
    */
-  public void addDamage(PlayerColor player) {
-    if (damages.size() >= 12) {
-      throw new IllegalStateException("Player is already dead");
+  @Override
+  public void addDamages(PlayerColor player, int num) {
+    for (int i = 0; i < num; i++) {
+      damages.add(player);
     }
-    damages.add(player);
+    for (PlayerColor tag : tags) {
+      if (tag == player) {
+        damages.add(player);
+        tags.remove(tag);
+      }
+    }
+    if (damages.size() >= 12) {
+      // TODO handle death, both in normal and domination mode
+    }
   }
 
   public List<PlayerColor> getTags() {
@@ -183,16 +190,17 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   /**
-   * Adds a new tag to a player.
+   * Adds a new tag to a player if that player does not already have 3 tags from its attacker.
    * @param player color of the player that gave the tag.
-   * @throws IllegalStateException thrown if a player already has 3 tags of the
-   * specified color.
    */
-  public void addTag(PlayerColor player) {
-    if (tags.stream().filter(tag -> tag == player).count() >= 3) {
-      throw new IllegalStateException("Player already has 3 tags of this color");
+  @Override
+  public void addTags(PlayerColor player, int num) {
+    for (int i = 0; i < num; i++) {
+      if (tags.stream().filter(tag -> tag == player).count() >= 3) {
+        break;
+      }
+      tags.add(player);
     }
-    tags.add(player);
   }
 
   public List<PowerUp> getPowerUps() {

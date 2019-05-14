@@ -1,9 +1,14 @@
 package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import java.io.Serializable;
+import it.polimi.se2019.adrenalina.utils.Log;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShootSquareAction extends ShootAction {
 
@@ -21,7 +26,24 @@ public class ShootSquareAction extends ShootAction {
 
   @Override
   public void execute(Board board, Weapon weapon) {
-    // TODO: shoot every player in the square
+    List<Player> playersToExclude = new ArrayList<>();
+    for (int player : exclude) {
+      try {
+        playersToExclude.add(weapon.getTargetHistory(player).getPlayer());
+      } catch (InvalidSquareException e) {
+        Log.severe("ShootSquareAction: one of the targets in exclude[] is not a player; ignoring it");
+      }
+    }
+    for (Square square : board.getSquares()) {
+      if (weapon.getTargetHistory(getTarget()).getSquare().getDistance(square) == distance) {
+        for (Player player : square.getPlayers()) {
+          if (! playersToExclude.contains(player)) {
+            player.addDamages(weapon.getOwner().getColor(), getDamages());
+            player.addTags(weapon.getOwner().getColor(), getTag());
+          }
+        }
+      }
+    }
   }
 
   @Override

@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import java.io.Serializable;
 
 /**
- * Class defining a Kill.
+ * Class describing a Kill.
  */
 public class Kill implements Serializable {
   private final PlayerColor color;
@@ -14,7 +14,7 @@ public class Kill implements Serializable {
   /**
    * Class constructor.
    * @param color color of the killer.
-   * @param overKill determines if there was an overKill.
+   * @param overKill determines if there was an overKill
    */
   public Kill(PlayerColor color, boolean overKill) {
     this.color = color;
@@ -23,8 +23,7 @@ public class Kill implements Serializable {
 
   /**
    * Copy constructor, creates an exact copy of a Kill.
-   * @param kill the kill to be cloned, has to be not null.
-   *
+   * @param kill the kill to be cloned, has to be not null
    */
   public Kill(Kill kill) {
     if (kill == null) {
@@ -34,24 +33,35 @@ public class Kill implements Serializable {
     overKill = kill.overKill;
   }
 
+  /**
+   * Returns the color of the killer.
+   * @return the color of the killer
+   */
   public PlayerColor getPlayerColor() {
     return color;
   }
 
+  /**
+   * Returns whether this is an overKill.
+   * @return true if this is an overKill, false otherwhise.
+   */
   public boolean isOverKill() {
     return overKill;
   }
 
+  /**
+   * Gson serialization.
+   * @return JSON string containing serialized object
+   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
 
   /**
-   * Create Kill object from json formatted String
-   * @param json json input String
-   * @return Kill
-   * @exception IllegalArgumentException thrown if argument json is null
+   * Creates a Kill object from a JSON serialized object.
+   * @param json JSON input String
+   * @return Kill object
    */
   public static Kill deserialize(String json) {
     if (json == null) {

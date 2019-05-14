@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.BorderType;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class Square extends Observable implements Target, Serializable {
 
+  private static final long serialVersionUID = -4261049664345567097L;
   private final int posX;
   private final int posY;
   private final SquareColor color;
@@ -47,6 +49,7 @@ public class Square extends Observable implements Target, Serializable {
 
     neighbours = new HashMap<>();
     weapons = new ArrayList<>();
+    players = new ArrayList<>();
   }
 
   /**
@@ -77,6 +80,7 @@ public class Square extends Observable implements Target, Serializable {
 
     ammoCard = square.ammoCard;
     spawnPoint = square.spawnPoint;
+    players = new ArrayList<>(square.players);
   }
 
   @Override
@@ -150,6 +154,10 @@ public class Square extends Observable implements Target, Serializable {
     }
   }
 
+  public void resetPlayers() {
+    players = new ArrayList<>();
+  }
+
   public List<Player> getPlayers() {
     return new ArrayList<>(players);
   }
@@ -160,6 +168,16 @@ public class Square extends Observable implements Target, Serializable {
 
   public void removePlayer(Player player) {
     players.remove(player);
+  }
+
+  @Override
+  public void addDamages(PlayerColor player, int num) {
+    // TODO handle damages by adding flags to tracciato mortale
+  }
+
+  @Override
+  public void addTags(PlayerColor player, int num) {
+    // Do nothing: squares don't care about tags
   }
 
   /**
@@ -261,6 +279,7 @@ public class Square extends Observable implements Target, Serializable {
     Gson gson = new Gson();
     Square square = gson.fromJson(json, Square.class);
     square.neighbours = new HashMap<>();
+    square.players = new ArrayList<>();
     return square;
   }
 }
