@@ -1,9 +1,11 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -378,7 +380,8 @@ public class Board extends Observable implements Serializable {
   }
 
   public String serialize() {
-    Gson gson = new Gson();
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
     return gson.toJson(this);
   }
 
@@ -394,6 +397,7 @@ public class Board extends Observable implements Serializable {
     Gson gson = new Gson();
     Board board = gson.fromJson(json, Board.class);
     for (Square square : board.getSquares()) {
+      square.resetNeighbours();
       if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL && board.getSquare(square.getPosX() - 1, square.getPosY()) != null) {
         square.setNeighbour(Direction.WEST, board.getSquare(square.getPosX() - 1, square.getPosY()));
       }

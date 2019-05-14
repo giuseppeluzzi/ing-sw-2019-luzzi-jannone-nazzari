@@ -217,6 +217,11 @@ public class BoardTest {
     Board board = new Board();
     Player player = new Player("test", PlayerColor.YELLOW);
     board.addPlayer(player);
+    board.setSquare(1, 1, new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+    board.setSquare(2, 1, new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+    board.setSquare(1, 2, new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+    board.setSquare(0, 1, new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
+    board.setSquare(1, 0, new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR));
     String json = board.serialize();
 
     if (json.isEmpty()) {
@@ -229,6 +234,31 @@ public class BoardTest {
         "Deserialized player attributes not matching with actual player attributes",
         "test",
         board2.getPlayers().get(0).getName());
+
+    assertEquals(
+        "Deserialized Square navigation failed",
+        SquareColor.RED,
+        board2.getSquare(1, 1).getColor());
+
+    assertEquals(
+        "Deserialized Square navigation failed",
+        SquareColor.GREY,
+        board2.getSquare(1, 1).getNeighbour(Direction.NORTH).getColor());
+
+    assertEquals(
+        "Deserialized Square navigation failed",
+        SquareColor.YELLOW,
+        board2.getSquare(1, 1).getNeighbour(Direction.EAST).getColor());
+
+    assertEquals(
+        "Deserialized Square navigation failed",
+        SquareColor.BLUE,
+        board2.getSquare(1, 1).getNeighbour(Direction.SOUTH).getColor());
+
+    assertEquals(
+        "Deserialized Square navigation failed",
+        SquareColor.PURPLE,
+        board2.getSquare(1, 1).getNeighbour(Direction.WEST).getColor());
   }
 
   @Test (expected = IllegalArgumentException.class)

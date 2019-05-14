@@ -1,8 +1,11 @@
 package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+import it.polimi.se2019.adrenalina.utils.NotExpose;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +17,8 @@ public class Square extends Observable implements Target, Serializable {
   private final int posX;
   private final int posY;
   private final SquareColor color;
-  private transient HashMap<Direction, Square> neighbours;
+  @NotExpose
+  private HashMap<Direction, Square> neighbours;
 
   private boolean spawnPoint;
   private AmmoCard ammoCard;
@@ -38,8 +42,8 @@ public class Square extends Observable implements Target, Serializable {
     borders.put(Direction.EAST, edgeRight);
     borders.put(Direction.SOUTH, edgeDown);
     borders.put(Direction.WEST, edgeLeft);
-    neighbours = new HashMap<>();
 
+    neighbours = new HashMap<>();
     weapons = new ArrayList<>();
   }
 
@@ -129,6 +133,10 @@ public class Square extends Observable implements Target, Serializable {
     neighbours.put(direction, square);
   }
 
+  public void resetNeighbours() {
+    neighbours = new HashMap<>();
+  }
+
   /**
    * Verify if a square is visible
    * @param square a square to be checked
@@ -210,7 +218,8 @@ public class Square extends Observable implements Target, Serializable {
   }
 
   public String serialize() {
-    Gson gson = new Gson();
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
     return gson.toJson(this);
   }
 
