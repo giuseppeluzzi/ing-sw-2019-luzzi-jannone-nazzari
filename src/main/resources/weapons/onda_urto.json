@@ -87,7 +87,7 @@
                 {
                     "distance": 1,
                     "exclude": [],
-                    "target": 1,
+                    "target": 0,
                     "damages": 1,
                     "tag": 0,
                     "type": "SHOOT_SQUARE"
