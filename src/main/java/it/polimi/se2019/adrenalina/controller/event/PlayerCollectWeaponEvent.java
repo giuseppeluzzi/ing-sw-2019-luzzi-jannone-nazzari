@@ -1,49 +1,37 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import java.io.Serializable;
 
-public class PlayerCollectWeaponEvent implements Event, Serializable {
-  private final Player player;
-  private final Weapon weapon;
-  private final Square square;
+public class PlayerCollectWeaponEvent implements Event {
 
-  public PlayerCollectWeaponEvent(Player player, Weapon weapon,
-      Square square) {
-    this.player = player;
-    this.weapon = weapon;
-    this.square = square;
+  private static final long serialVersionUID = -4228677364669070987L;
+  private final PlayerColor playerColor;
+  private final String weaponName;
+  private final int squareX;
+  private final int squareY;
+
+  public PlayerCollectWeaponEvent(PlayerColor playerColor, String weaponName, int squareX,
+      int squareY) {
+    this.playerColor = playerColor;
+    this.weaponName = weaponName;
+    this.squareX = squareX;
+    this.squareY = squareY;
   }
 
-  public static PlayerCollectWeaponEvent deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, PlayerCollectWeaponEvent.class);
+  public PlayerColor getPlayerColor() {
+    return playerColor;
   }
 
-  @Override
-  public String serialize() {
-    Gson gson = new Gson();
-    JsonElement jsonElement = gson.toJsonTree(this);
-    jsonElement.getAsJsonObject().addProperty("eventType", EventType.PLAYER_COLLECT_WEAPON_EVENT.toString());
-    return gson.toJson(jsonElement);
+  public String getWeaponName() {
+    return weaponName;
   }
 
-  public Player getPlayer() {
-    return player;
+  public int getSquareX() {
+    return squareX;
   }
 
-  public Weapon getWeapon() {
-    return weapon;
-  }
-
-  public Square getSquare() {
-    return square;
+  public int getSquareY() {
+    return squareY;
   }
 }

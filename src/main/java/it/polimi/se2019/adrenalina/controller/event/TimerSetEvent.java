@@ -2,9 +2,10 @@ package it.polimi.se2019.adrenalina.controller.event;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import java.io.Serializable;
 
-public class TimerSetEvent implements Event, Serializable {
+public class TimerSetEvent implements Event {
+
+  private static final long serialVersionUID = 113909288118601962L;
   private final int timer;
 
   public TimerSetEvent(int timer) {
@@ -19,16 +20,7 @@ public class TimerSetEvent implements Event, Serializable {
     return gson.fromJson(json, TimerSetEvent.class);
   }
 
-  @Override
-  public String serialize() {
-    Gson gson = new Gson();
-    JsonElement jsonElement = gson.toJsonTree(this);
-    jsonElement.getAsJsonObject().addProperty("eventType", EventType.TIMER_SET_EVENT.toString());
-    return gson.toJson(jsonElement);
-  }
-
   public int getTimer() {
     return timer;
   }
-
 }

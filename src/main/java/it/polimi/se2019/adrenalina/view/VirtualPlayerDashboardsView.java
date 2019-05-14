@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.event.Event;
-import it.polimi.se2019.adrenalina.controller.event.PlayerUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -38,11 +37,6 @@ public class VirtualPlayerDashboardsView extends Observable implements PlayerDas
   @Override
   public void switchToFinalFrenzy(Player player) {
     // TODO: change dashboard to final frenzy mode
-  }
-
-  @Override
-  public void update(PlayerUpdateEvent event) {
-    // TODO: update the status of the player dashboard
   }
 
   @Override

@@ -1,44 +1,30 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.Weapon;
-import java.io.Serializable;
+public class WeaponUpdateEvent implements Event {
 
-public class WeaponUpdateEvent implements Event, Serializable {
-  private final Square square;
-  private final Weapon weapon;
+  private static final long serialVersionUID = 7227880409446405882L;
+  private final int squareX;
+  private final int squareY;
+  private final String weaponName;
   private final boolean remove;
 
-  public WeaponUpdateEvent(Square square, Weapon weapon, boolean remove) {
-    this.square = square;
-    this.weapon = weapon;
+  public WeaponUpdateEvent(int squareX, int squareY, String weaponName, boolean remove) {
+    this.squareX = squareX;
+    this.squareY = squareY;
+    this.weaponName = weaponName;
     this.remove = remove;
   }
 
-  public static WeaponUpdateEvent deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, WeaponUpdateEvent.class);
+  public int getSquareX() {
+    return squareX;
   }
 
-  @Override
-  public String serialize() {
-    Gson gson = new Gson();
-    JsonElement jsonElement = gson.toJsonTree(this);
-    jsonElement.getAsJsonObject().addProperty("eventType", EventType.WEAPON_UPDATE_EVENT.toString());
-    return gson.toJson(jsonElement);
+  public int getSquareY() {
+    return squareY;
   }
 
-  public Square getSquare() {
-    return square;
-  }
-
-  public Weapon getWeapon() {
-    return weapon;
+  public String getWeaponName() {
+    return weaponName;
   }
 
   public boolean isRemove() {

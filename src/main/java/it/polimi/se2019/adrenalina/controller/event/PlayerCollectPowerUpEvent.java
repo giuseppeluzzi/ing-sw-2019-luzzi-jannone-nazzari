@@ -1,38 +1,22 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.PowerUp;
-import java.io.Serializable;
 
-public class PlayerCollectPowerUpEvent implements Event, Serializable {
-  private final Player player;
+public class PlayerCollectPowerUpEvent implements Event {
+
+  private static final long serialVersionUID = 5677407302226017103L;
+  private final PlayerColor playerColor;
   private final PowerUp powerUp;
 
-  public PlayerCollectPowerUpEvent(Player player, PowerUp powerUp) {
-    this.player = player;
+  public PlayerCollectPowerUpEvent(PlayerColor playerColor,
+      PowerUp powerUp) {
+    this.playerColor = playerColor;
     this.powerUp = powerUp;
   }
 
-  public static PlayerCollectPowerUpEvent deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, PlayerCollectPowerUpEvent.class);
-  }
-
-  @Override
-  public String serialize() {
-    Gson gson = new Gson();
-    JsonElement jsonElement = gson.toJsonTree(this);
-    jsonElement.getAsJsonObject().addProperty("eventType", EventType.PLAYER_COLLECT_POWERUP_EVENT.toString());
-    return gson.toJson(jsonElement);
-  }
-
-  public Player getPlayer() {
-    return player;
+  public PlayerColor getPlayerColor() {
+    return playerColor;
   }
 
   public PowerUp getPowerUp() {

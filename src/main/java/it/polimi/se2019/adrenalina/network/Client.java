@@ -4,8 +4,8 @@ import static java.lang.Thread.sleep;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersView;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
@@ -39,7 +39,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
           Configuration.getInstance().getRmiPort());
       ServerInterface server = (ServerInterface) registry.lookup("MyServer");
 
-      boardView = new BoardView();
+      boardView = new TUIBoardView();
       charactersView = new CharactersView();
       playerDashboardsView = new PlayerDashboardsView();
 

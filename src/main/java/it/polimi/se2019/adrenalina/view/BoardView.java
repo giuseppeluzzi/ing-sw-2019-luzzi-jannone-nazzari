@@ -13,17 +13,16 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
+import java.io.Serializable;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.List;
 
-public abstract class BoardView extends Observable implements Observer, BoardViewInterface {
+public abstract class BoardView extends Observable implements Observer, BoardViewInterface,
+    Serializable {
 
+  private static final long serialVersionUID = 2545732483334205102L;
   private Board board;
-  private final Timer timer;
-
-  protected BoardView() {
-    timer = new Timer();
-  }
+  private final Timer timer = new Timer();
 
   @Override
   public Board getBoard() {

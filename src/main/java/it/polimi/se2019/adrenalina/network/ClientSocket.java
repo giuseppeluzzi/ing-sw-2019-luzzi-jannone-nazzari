@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
 import it.polimi.se2019.adrenalina.controller.event.TimerSetEvent;
+import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
@@ -39,7 +40,7 @@ public class ClientSocket implements ClientInterface, Runnable {
     this.name = name;
     this.domination = domination;
 
-    boardView = new BoardView();
+    boardView = new TUIBoardView();
     charactersView = new CharactersView();
     playerDashboardsView = new PlayerDashboardsView();
 

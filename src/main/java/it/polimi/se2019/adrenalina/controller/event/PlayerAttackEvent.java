@@ -1,49 +1,37 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.model.Player;
-import java.io.Serializable;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 
-public class PlayerAttackEvent implements Event, Serializable {
-  private final Player player;
-  private final Player target;
-  private final Effect effect;
+public class PlayerAttackEvent implements Event {
 
-  public PlayerAttackEvent(Player player, Player target,
-      Effect effect) {
-    this.player = player;
-    this.target = target;
-    this.effect = effect;
+  private static final long serialVersionUID = 6891117586381121872L;
+  private final PlayerColor playerColor;
+  private final PlayerColor targetColor;
+  private final String weaponName;
+  private final String effectName;
+
+  public PlayerAttackEvent(PlayerColor playerColor,
+      PlayerColor targetColor, String weaponName, String effectName) {
+    this.playerColor = playerColor;
+    this.targetColor = targetColor;
+    this.weaponName = weaponName;
+    this.effectName = effectName;
   }
 
-  public static PlayerAttackEvent deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, PlayerAttackEvent.class);
+  public PlayerColor getPlayerColor() {
+    return playerColor;
   }
 
-  @Override
-  public String serialize() {
-    Gson gson = new Gson();
-    JsonElement jsonElement = gson.toJsonTree(this);
-    jsonElement.getAsJsonObject().addProperty("eventType", EventType.PLAYER_ATTACK_EVENT.toString());
-    return gson.toJson(jsonElement);
+  public PlayerColor getTargetColor() {
+    return targetColor;
   }
 
-  public Player getPlayer() {
-    return player;
+  public String getWeaponName() {
+    return weaponName;
   }
 
-  public Player getTarget() {
-    return target;
-  }
-
-  public Effect getEffect() {
-    return effect;
+  public String getEffectName() {
+    return effectName;
   }
 }

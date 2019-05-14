@@ -1,14 +1,19 @@
 package it.polimi.se2019.adrenalina.utils;
 
-public class Timer {
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
+public class Timer implements Serializable {
+
+  private static final long serialVersionUID = -1689799953239659194L;
   private volatile int timerSeconds;
-  private final Object timerLock;
+  private final Object timerLock = new Object();
   private Thread timerThread;
 
   public Timer() {
     timerSeconds = 0;
-    timerLock = new Object();
     timerThread = null;
   }
 
@@ -72,6 +77,17 @@ public class Timer {
       if (timerThread != null) {
         timerThread.interrupt();
       }
+    }
+  }
+
+  private void writeObject(ObjectOutputStream out) throws IOException {
+    out.defaultWriteObject();
+  }
+
+  private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    in.defaultReadObject();
+    synchronized (timerLock) {
+      timerThread = null;
     }
   }
 }

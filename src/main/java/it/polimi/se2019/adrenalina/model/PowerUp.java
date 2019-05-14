@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PowerUp implements Serializable {
+
+  private static final long serialVersionUID = 8948751912601215729L;
   private final AmmoColor color;
   private final List<Action> actions;
 

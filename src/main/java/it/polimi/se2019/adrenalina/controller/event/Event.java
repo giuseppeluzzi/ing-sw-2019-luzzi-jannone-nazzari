@@ -1,5 +1,15 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
-public interface Event {
-  String serialize();
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import java.io.Serializable;
+
+public interface Event extends Serializable {
+
+  default String serialize() {
+    Gson gson = new Gson();
+    JsonElement jsonElement = gson.toJsonTree(this);
+    jsonElement.getAsJsonObject().addProperty("eventType", EventType.getEventTypeByClass(getClass()).toString());
+    return gson.toJson(jsonElement);
+  }
 }
