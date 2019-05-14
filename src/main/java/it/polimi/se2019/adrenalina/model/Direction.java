@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
 /**
- * Enumeration of all four cardinal directions
+ * Enumeration of the four cardinal directions.
  */
 public enum Direction {
   NORTH,
