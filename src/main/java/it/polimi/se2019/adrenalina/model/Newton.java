@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 
 /**
- * Class defining a Newton powerup card
+ * Class describing a Newton powerUp card.
  */
 public class Newton extends PowerUp {
   public Newton(AmmoColor color) {
@@ -12,30 +12,34 @@ public class Newton extends PowerUp {
   }
 
   /**
-   * Copy constructor
-   * @param powerup Newton object that has to be copied, can't be null
+   * Copy constructor, creates an exact copy of a Newton.
+   * @param powerup Newton object to be cloned, has to be not null
    */
   public Newton(Newton powerup) {
     // TODO: copy actions
     super(powerup.getColor());
   }
 
+  // TODO: documentation
   @Override
   public boolean canUse(){
     //TODO: implement function
     return true;
   }
 
+  /**
+   * Returns an exact copy of this object.
+   * @return an exact copy of this object
+   */
   @Override
   public Newton copy() {
     return new Newton(this);
   }
 
   /**
-   * Create Newton object from json formatted String
-   * @param json json input String
-   * @return Newton
-   * @exception IllegalArgumentException thrown if argument json is null
+   * Creates Newton object from a JSON serialized object.
+   * @param json JSON input String
+   * @return Netwon object
    */
   public static Newton deserialize(String json) {
     if (json == null) {
@@ -45,7 +49,3 @@ public class Newton extends PowerUp {
     return gson.fromJson(json, Newton.class);
   }
 }
-
-
-
-

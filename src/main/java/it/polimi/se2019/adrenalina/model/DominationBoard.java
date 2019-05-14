@@ -23,10 +23,10 @@ public class DominationBoard extends Board {
   /**
    * Copy constructor, creates an exact copy of a DominationBoard.
    * @param dominationBoard the DominationBoard to be cloned, has to be not
-   * null.
+   * null
    * @param publicCopy if true, a public copy of the DominationBoard will be
    * created instead of a clone. The public copy will not contain players'
-   * private information.
+   * private information
    */
   public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
     // TODO: try/catch with specific exception message
@@ -36,39 +36,68 @@ public class DominationBoard extends Board {
     yellowDamages = dominationBoard.getYellowDamages();
   }
 
+  /**
+   * Adds a blue damage to the Board.
+   * @param color the color of the Player who scored the damage.
+   */
   public void addBlueDamage(PlayerColor color) {
     blueDamages.add(color);
   }
 
+  /**
+   * Returns a List of Players who scored blue damages.
+   * @return a List of Players who scored blue damages
+   */
   public List<PlayerColor> getBlueDamages() {
     return new ArrayList<>(blueDamages);
   }
 
+  /**
+   * Adds a red damage to the Board.
+   * @param color the color of the Player who scored the damage.
+   */
   public void addRedDamage(PlayerColor color) {
     redDamages.add(color);
   }
 
+  /**
+   * Returns a List of Players who scored red damages.
+   * @return a List of Players who scored red damages
+   */
   public List<PlayerColor> getRedDamages() {
     return new ArrayList<>(redDamages);
   }
 
+  /**
+   * Adds a yellow damage to the Board.
+   * @param color the color of the Player who scored the damage.
+   */
   public void addYellowDamage(PlayerColor color) {
     yellowDamages.add(color);
   }
 
+  /**
+   * Returns a List of Players who scored yellow damages.
+   * @return a List of Players who scored yellow damages
+   */
   public List<PlayerColor> getYellowDamages() {
     return new ArrayList<>(yellowDamages);
   }
 
+  /**
+   * Returns whether the Board is a DominationBoard. Always true here, always false in the parent
+   * class {@code Board}.
+   * @return false, since this is a DominationBoard and not a normal Board
+   */
   @Override
   public boolean isDominationBoard() {
     return true;
   }
 
   /**
-   * Create DominationBoard object from json formatted String
-   * @param json json input String
-   * @return DominationBoard
+   * Creates DominationBoard object from a JSON serialized object.
+   * @param json JSON input String
+   * @return DominationBoard object
    */
   public static DominationBoard deserialize(String json) {
     if (json == null) {
