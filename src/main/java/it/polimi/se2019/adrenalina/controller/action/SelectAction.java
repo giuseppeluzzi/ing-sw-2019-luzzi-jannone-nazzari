@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SelectAction implements Action, Serializable {
+public class SelectAction implements Action {
 
+  private static final long serialVersionUID = -1712202363884739599L;
   private int from;
   private int target;
   private int minDistance;

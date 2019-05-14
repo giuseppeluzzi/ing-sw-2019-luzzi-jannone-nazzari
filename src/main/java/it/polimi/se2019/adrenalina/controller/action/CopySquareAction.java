@@ -5,8 +5,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.io.Serializable;
 
-public class CopySquareAction implements Action, Serializable {
+public class CopySquareAction implements Action {
 
+  private static final long serialVersionUID = 8092881078549035801L;
   private final int origin;
   private final int destination;
   private final ActionType type;

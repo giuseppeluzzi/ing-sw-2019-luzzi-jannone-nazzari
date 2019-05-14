@@ -5,7 +5,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.io.Serializable;
 
-public class ShootAction implements Action, Serializable {
+public class ShootAction implements Action {
+
+  private static final long serialVersionUID = 3519195918261269154L;
   private int target;
   private int damages;
   private int tag;

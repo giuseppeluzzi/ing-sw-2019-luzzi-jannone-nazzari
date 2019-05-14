@@ -5,7 +5,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.io.Serializable;
 
-public class SelectDirectionAction implements Action, Serializable {
+public class SelectDirectionAction implements Action {
+
+  private static final long serialVersionUID = 9176126026908579498L;
   private ActionType type = ActionType.SELECT_DIRECTION;
 
   public SelectDirectionAction() {

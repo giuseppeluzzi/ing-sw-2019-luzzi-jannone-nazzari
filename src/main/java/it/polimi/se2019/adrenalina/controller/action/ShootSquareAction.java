@@ -5,7 +5,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.io.Serializable;
 
-public class ShootSquareAction extends ShootAction implements Serializable {
+public class ShootSquareAction extends ShootAction {
+
+  private static final long serialVersionUID = 2321520813151230768L;
   private final int distance;
   private final int[] exclude;
 

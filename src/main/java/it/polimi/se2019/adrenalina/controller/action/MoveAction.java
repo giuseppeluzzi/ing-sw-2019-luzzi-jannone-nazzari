@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class MoveAction implements Action {
+  
   private int target;
   private int destination;
   private ActionType type = ActionType.MOVE;
