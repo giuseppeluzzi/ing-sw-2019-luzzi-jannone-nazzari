@@ -121,7 +121,11 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   public void setSquare(Square square) {
+    if (this.square != null) {
+      this.square.removePlayer(this);
+    }
     this.square = square;
+    square.addPlayer(this);
   }
 
   public PlayerColor getColor() {
@@ -154,6 +158,11 @@ public class Player extends Observable implements Target, Serializable {
 
   public List<PlayerColor> getDamages() {
     return new ArrayList<>(damages);
+  }
+
+  @Override
+  public Player getPlayer() {
+    return this;
   }
 
   /**

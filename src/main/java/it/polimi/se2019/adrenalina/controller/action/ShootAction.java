@@ -27,7 +27,7 @@ public class ShootAction implements Action {
 
   @Override
   public void execute(Board board, Weapon weapon) {
-    // TODO: shoot
+
   }
 
   @Override

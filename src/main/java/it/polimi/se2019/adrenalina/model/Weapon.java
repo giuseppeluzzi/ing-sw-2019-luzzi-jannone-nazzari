@@ -20,6 +20,7 @@ import java.util.Map;
  */
 public class Weapon extends Observable implements Serializable {
 
+  private static final long serialVersionUID = -5264181345540286103L;
   private final AmmoColor baseCost;
   @NotExpose
   private boolean loaded;
@@ -105,15 +106,20 @@ public class Weapon extends Observable implements Serializable {
     return targetHistory.get(key);
   }
 
-  public Boolean getOptMoveGroups(Integer key) {
-    return optMoveGroups.get(key);
-  }
-
   public void setTargetHistory(Integer key, Target value) {
     targetHistory.put(key, value);
   }
 
-  public void setOptMoveGroups(Integer key) {
+  public Boolean isGroupMoveUsed(Integer key) {
+    return optMoveGroups.get(key);
+  }
+
+  /**
+   * Whenever an optional move action is executed an entry with values "true, group_id" is created
+   * and no more move actions of that group can be executed
+   * @param key group id of executed move action
+   */
+  public void setGroupMoveUsed(Integer key) {
     optMoveGroups.put(key, true);
   }
 

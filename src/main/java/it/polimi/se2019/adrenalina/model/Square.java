@@ -19,6 +19,8 @@ public class Square extends Observable implements Target, Serializable {
   private final SquareColor color;
   @NotExpose
   private HashMap<Direction, Square> neighbours;
+  @NotExpose
+  private List<Player> players;
 
   private boolean spawnPoint;
   private AmmoCard ammoCard;
@@ -135,6 +137,29 @@ public class Square extends Observable implements Target, Serializable {
 
   public void resetNeighbours() {
     neighbours = new HashMap<>();
+  }
+
+  @Override
+  public Player getPlayer() throws InvalidSquareException {
+    if (getPlayers().size() == 1) {
+      return getPlayers().get(0);
+    } else if (getPlayers().isEmpty()) {
+      return null;
+    } else{
+      throw new InvalidSquareException("In this exception there is more than one player");
+    }
+  }
+
+  public List<Player> getPlayers() {
+    return new ArrayList<>(players);
+  }
+
+  public void addPlayer(Player player) {
+    players.add(player);
+  }
+
+  public void removePlayer(Player player) {
+    players.remove(player);
   }
 
   /**

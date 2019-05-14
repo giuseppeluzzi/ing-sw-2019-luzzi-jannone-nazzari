@@ -1,11 +1,14 @@
 package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import java.io.Serializable;
+import it.polimi.se2019.adrenalina.utils.Log;
 
-public class OptionalMoveAction implements Action, Serializable {
+public class OptionalMoveAction implements Action {
+
+  private static final long serialVersionUID = -6483684905618211881L;
   private int target;
   private int destination;
   private int group;
@@ -23,9 +26,22 @@ public class OptionalMoveAction implements Action, Serializable {
     return type;
   }
 
+  /**
+   * An optional move action is executed only if no other move actions of the same group were
+   * previously executed and a valid target has been selected
+   * @param board board parameter
+   * @param weapon weapon parameter
+   */
   @Override
   public void execute(Board board, Weapon weapon) {
-    // TODO: moves a player if the movement isn't used yet (see weapon.optMoveGroups)
+    if (!weapon.isGroupMoveUsed(group) && weapon.getTargetHistory(target) != null) {
+      try {
+        weapon.getTargetHistory(target).getPlayer()
+            .setSquare(weapon.getTargetHistory(destination).getSquare());
+      } catch (InvalidSquareException e) {
+        Log.debug("Too many players in selected square");
+      }
+    }
   }
 
   @Override

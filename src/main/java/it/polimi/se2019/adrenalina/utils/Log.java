@@ -44,9 +44,19 @@ public class Log {
     }
   }
 
+  public static void debug(String tag, String message) {
+    if (logger.isLoggable(Level.FINEST)) {
+      logger.log(Level.FINEST, LOG_FORMAT, new Object[] {tag.toLowerCase(Locale.ENGLISH), message});
+    }
+  }
+
   public static void critical(String message) {
     logger.log(Level.SEVERE, message);
     System.exit(0);
+  }
+
+  public static void debug(String message) {
+    System.out.println(message);
   }
 
   public static void print(String message) {

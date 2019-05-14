@@ -1,12 +1,15 @@
 package it.polimi.se2019.adrenalina.controller.action;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
 
 public class MoveAction implements Action {
-  
+
+  private static final long serialVersionUID = -2545135795207731324L;
   private int target;
   private int destination;
   private ActionType type = ActionType.MOVE;
@@ -24,14 +27,15 @@ public class MoveAction implements Action {
 
   @Override
   public void execute(Board board, Weapon weapon) {
-    if (!weapon.getTargetHistory(target).isPlayer()) {
-      if (board.getPlayersInSquare(weapon.getTargetHistory(target).getSquare()).size() != 1) {
-        throw new IllegalStateException("More than one player present on selected square");
+
+    if (weapon.getTargetHistory(target) != null) {
+      try {
+        weapon.getTargetHistory(target).getPlayer()
+            .setSquare(weapon.getTargetHistory(destination).getSquare());
+      } catch (InvalidSquareException e) {
+        Log.debug("Too many players in selected square");
       }
-      board.getPlayersInSquare(weapon.getTargetHistory(target).getSquare()).get(0).setSquare(weapon.getTargetHistory(destination).getSquare());
     }
-    Player player = (Player) weapon.getTargetHistory(target);
-    player.setSquare(weapon.getTargetHistory(destination).getSquare());
   }
 
   @Override
