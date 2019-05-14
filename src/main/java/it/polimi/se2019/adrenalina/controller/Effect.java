@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Effect implements Serializable {
+
+  private static final long serialVersionUID = 2725086084597119182L;
   private final int costRed;
   private final int costBlue;
   private final int costYellow;

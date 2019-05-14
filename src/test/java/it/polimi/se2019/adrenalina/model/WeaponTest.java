@@ -12,9 +12,7 @@ import it.polimi.se2019.adrenalina.controller.action.MoveAction;
 import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.SelectAction;
-import it.polimi.se2019.adrenalina.controller.action.SelectDirectionAction;
 import it.polimi.se2019.adrenalina.controller.action.ShootAction;
-import it.polimi.se2019.adrenalina.controller.action.ShootSquareAction;
 import it.polimi.se2019.adrenalina.controller.action.TargetType;
 import org.junit.Test;
 
@@ -24,7 +22,7 @@ public class WeaponTest {
     Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
     weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
     weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW));
-    weapon1.setOptMoveGroups(5);
+    weapon1.setGroupMoveUsed(5);
     weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2, false));
     weapon1.setSelectedEffect(weapon1.getEffects().get(0));
     weapon1.setLoaded(false);
