@@ -379,6 +379,10 @@ public class Board extends Observable implements Serializable {
     Gson gson = new Gson();
     Board board = gson.fromJson(json, Board.class);
     for (Square square : board.getSquares()) {
+      square.resetPlayers();
+      for (Player player : board.players) {
+        player.getSquare().addPlayer(player);
+      }
       square.resetNeighbours();
       if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL && board.getSquare(square.getPosX() - 1, square.getPosY()) != null) {
         square.setNeighbour(Direction.WEST, board.getSquare(square.getPosX() - 1, square.getPosY()));

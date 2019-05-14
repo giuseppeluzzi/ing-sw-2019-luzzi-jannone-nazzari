@@ -1,9 +1,12 @@
 package it.polimi.se2019.adrenalina.model;
 
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 
 public interface Target {
   boolean isPlayer();
   Square getSquare();
   Player getPlayer() throws InvalidSquareException;
+  void addDamages(PlayerColor player, int num);
+  void addTags(PlayerColor player, int num);
 }
