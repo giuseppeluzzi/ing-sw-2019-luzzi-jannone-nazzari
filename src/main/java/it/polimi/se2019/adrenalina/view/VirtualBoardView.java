@@ -15,6 +15,7 @@ import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
@@ -66,33 +67,38 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
     // TODO: send selection
   }
 
-  @Override
+  /*@Override
   public void update(WeaponUpdateEvent event) {
-    // TODO: replace a weapon on the board
+    clientSocket.sendEvent(event);
   }
 
   @Override
   public void update(AmmoCardUpdateEvent event) {
-    // TODO: replace an ammo card on the board
+    clientSocket.sendEvent(event);
   }
 
   @Override
   public void update(KillShotEvent event) {
-    // TODO: mark a new killshot
+    clientSocket.sendEvent(event);
   }
 
   @Override
   public void update(DoubleKillEvent event) {
-    // TODO: mark a double kill
+    clientSocket.sendEvent(event);
   }
 
   @Override
   public void update(SpawnPointDamageEvent event) {
-    // TODO: mark a damage to a spawn point (in domination mode)
+    clientSocket.sendEvent(event);
   }
 
   @Override
+  public void update(TimerSetEvent event) {
+    // Not expected
+  }*/
+
+  @Override
   public void update(Event event) {
-    throw new WrongMethodTypeException();
+    clientSocket.sendEvent(event);
   }
 }

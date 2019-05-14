@@ -2,9 +2,11 @@ package it.polimi.se2019.adrenalina.network;
 
 import static java.lang.Thread.sleep;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardController;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -79,6 +81,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     } catch (EndedGameException e) {
       Log.severe("Tried to add a player to an ended game");
     }
+
+    client.getBoardView().update(new SpawnPointDamageEvent(PlayerColor.YELLOW, AmmoColor.RED));
 
     playing.put(player, game);
   }

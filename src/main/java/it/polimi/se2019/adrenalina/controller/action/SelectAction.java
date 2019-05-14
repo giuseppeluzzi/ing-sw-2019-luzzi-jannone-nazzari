@@ -80,7 +80,21 @@ public class SelectAction implements Action {
     // TODO: show selection, ignore if target in targethistory is alredy setted
     Player owner = weapon.getOwner();
     List<Target> targets = new ArrayList<>();
-    targets.addAll(board.getPlayers());
+
+    switch (selectType) {
+      case ATTACK_TARGET:
+        targets.addAll(board.getPlayers());
+        if (board.isDominationBoard()) {
+          // TODO: add spawnpoints
+        }
+        break;
+      case ATTACK_SQUARE:
+      case ATTACK_ROOM:
+      case MOVE_SQUARE:
+        targets.addAll(board.getSquares());
+        break;
+    }
+
     targets.addAll(board.getSquares());
     targets.remove(owner);
 

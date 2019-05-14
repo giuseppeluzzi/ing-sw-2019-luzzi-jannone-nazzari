@@ -65,15 +65,17 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
         Gson gson = new Gson();
         JsonObject json = gson.fromJson(message, JsonObject.class);
 
-        switch (EventType.valueOf(json.get("eventType").getAsString())) {
+        EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
+        Event event = gson.fromJson(message, eventType.getEventClass());
+
+        switch (eventType) {
           case PLAYER_CONNECT_EVENT:
-            PlayerConnectEvent event = gson.fromJson(message, PlayerConnectEvent.class);
-            name = event.getPlayerName();
-            domination = event.isDomination();
+            PlayerConnectEvent connectEvent = gson.fromJson(message, PlayerConnectEvent.class);
+            name = connectEvent.getPlayerName();
+            domination = connectEvent.isDomination();
             server.addClient(this);
             game = server.getGameByClient(this);
             break;
-
           default:
             Log.severe("Unexpected server event!");
             break;
