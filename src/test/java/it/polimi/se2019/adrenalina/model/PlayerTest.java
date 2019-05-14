@@ -6,50 +6,38 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import org.junit.Test;
 
 public class PlayerTest {
   @Test
   public void testAddDamage() {
     Player player = new Player("test", PlayerColor.YELLOW);
-    try {
-      for (int i = 0; i < 12; i++) {
-        player.addDamage(PlayerColor.BLUE);
-      }
-    } catch (IllegalStateException e) {
-      fail("IllegalStateException thrown unnecessarily");
-    }
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testAddDamageException() {
-    Player player = new Player("test", PlayerColor.YELLOW);
-
-    for (int i = 0; i < 13; i++) {
-      player.addDamage(PlayerColor.BLUE);
-    }
+    player.addDamages(PlayerColor.BLUE, 2);
+    player.addDamages(PlayerColor.YELLOW, 1);
+    List<PlayerColor> damages = new ArrayList<>();
+    damages.add(PlayerColor.BLUE);
+    damages.add(PlayerColor.BLUE);
+    damages.add(PlayerColor.YELLOW);
+    assertEquals("Damages not matching",
+        damages,
+        player.getDamages());
   }
 
   @Test
   public void testAddTag() {
     Player player = new Player("test", PlayerColor.YELLOW);
-    try {
-      for (int i = 0; i < 3; i++) {
-        player.addTag(PlayerColor.BLUE);
-      }
-      player.addTag(PlayerColor.YELLOW);
-    } catch (IllegalStateException e) {
-      fail("IllegalStateException thrown unnecessarily");
-    }
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testAddTagException() {
-    Player player = new Player("test", PlayerColor.YELLOW);
-
-    for (int i = 0; i < 4; i++) {
-      player.addTag(PlayerColor.BLUE);
-    }
+    player.addTags(PlayerColor.BLUE, 2);
+    player.addTags(PlayerColor.YELLOW, 1);
+    List<PlayerColor> tags = new ArrayList<>();
+    tags.add(PlayerColor.BLUE);
+    tags.add(PlayerColor.BLUE);
+    tags.add(PlayerColor.YELLOW);
+    assertEquals("Tags not matching",
+        tags,
+        player.getTags());
   }
 
   @Test
@@ -102,8 +90,10 @@ public class PlayerTest {
     String json;
 
     player.addWeapon(weapon);
-    player.addDamage(PlayerColor.PURPLE);
-    player.addTag(PlayerColor.GREEN);
+    player.addDamages(PlayerColor.BLUE, 2);
+    player.addDamages(PlayerColor.YELLOW, 1);
+    player.addTags(PlayerColor.BLUE, 2);
+    player.addTags(PlayerColor.YELLOW, 1);
     json = player.serialize();
 
     if (json.isEmpty()){
@@ -120,6 +110,23 @@ public class PlayerTest {
         "Deserialized class attributes not matching with actual class attributes",
         "testWeapon",
         player2.getWeapons().get(0).getName());
+
+    List<PlayerColor> damages = new ArrayList<>();
+    damages.add(PlayerColor.BLUE);
+    damages.add(PlayerColor.BLUE);
+    damages.add(PlayerColor.YELLOW);
+
+    assertEquals("Deserialized damages not matching with actual damages",
+        damages,
+        player.getDamages());
+
+    List<PlayerColor> tags = new ArrayList<>();
+    tags.add(PlayerColor.BLUE);
+    tags.add(PlayerColor.BLUE);
+    tags.add(PlayerColor.YELLOW);
+    assertEquals("Deserialized tags not matching with actual damages",
+        tags,
+        player.getDamages());
   }
 
   @Test (expected = IllegalArgumentException.class)

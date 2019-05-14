@@ -381,7 +381,9 @@ public class Board extends Observable implements Serializable {
     for (Square square : board.getSquares()) {
       square.resetPlayers();
       for (Player player : board.players) {
-        player.getSquare().addPlayer(player);
+        if (player.getSquare() != null) {
+          player.getSquare().addPlayer(player);
+        }
       }
       square.resetNeighbours();
       if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL && board.getSquare(square.getPosX() - 1, square.getPosY()) != null) {
