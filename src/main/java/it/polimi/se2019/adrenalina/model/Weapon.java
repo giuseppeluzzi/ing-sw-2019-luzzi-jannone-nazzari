@@ -79,18 +79,34 @@ public class Weapon extends Observable implements Serializable {
     cost.put(AmmoColor.YELLOW, weapon.getCost(AmmoColor.YELLOW));
   }
 
+  /**
+   * Returns whether the weapon is loaded or not.
+   * @return true if weapon is loaded, false otherwise
+   */
   public boolean isLoaded() {
     return loaded;
   }
 
+  /**
+   * Set if weapon is loaded or not.
+   * @param loaded, true if weapon is loaded, false otherwise
+   */
   public void setLoaded(boolean loaded) {
     this.loaded = loaded;
   }
 
+  /**
+   * Returns the color of the weapon's base cost.
+   * @return baseCost of weapon
+   */
   public AmmoColor getBaseCost() {
     return baseCost;
   }
 
+  /**
+   * Returns the weapon's name.
+   * @return the weapon's name
+   */
   public String getName() {
     return name;
   }
@@ -102,35 +118,62 @@ public class Weapon extends Observable implements Serializable {
     targetHistory.clear();
   }
 
+  /**
+   * Return Target element from targetHistory at index "key".
+   * @param key index of the target requested
+   * @return Target element at specified index
+   */
   public Target getTargetHistory(Integer key) {
     return targetHistory.get(key);
   }
 
+  /**
+   * Insert in targetHistory at index "key" Target "value".
+   * @param key index where Target has to be inserted
+   * @param value Target to be inserted
+   */
   public void setTargetHistory(Integer key, Target value) {
     targetHistory.put(key, value);
   }
 
+  /**
+   * Returns whether any {@code OptionalMoveAction} from group of index "key" has been executed.
+   * @param key group id
+   * @return true if group id "key" has been previously executed, false otherwise
+   */
   public Boolean isGroupMoveUsed(Integer key) {
     return optMoveGroups.get(key);
   }
 
   /**
    * Whenever an optional move action is executed an entry with values "true, group_id" is created
-   * and no more move actions of that group can be executed
+   * and no more move actions of that group can be executed.
    * @param key group id of executed move action
    */
   public void setGroupMoveUsed(Integer key) {
     optMoveGroups.put(key, true);
   }
 
+  /**
+   * Returns list of Effects contained in this weapon.
+   * @return list of Effects
+   */
   public List<Effect> getEffects() {
     return new ArrayList<>(effects);
   }
 
+  /**
+   * Add an Effect to the weapon's list.
+   * @param effect Effect to be added
+   */
   public void addEffect(Effect effect) {
     effects.add(effect);
   }
 
+  /**
+   * Select an Effect and places it in selectedEffects list.
+   * @param effect Effect to be placed in selectedEffets
+   */
   public void setSelectedEffect(Effect effect) {
     if (! effects.contains(effect)) {
       throw new IllegalArgumentException("This weapon does not have that effect");
@@ -138,6 +181,10 @@ public class Weapon extends Observable implements Serializable {
     selectedEffects.add(effect);
   }
 
+  /**
+   * Returns Player owning the weapon, throws an exception otherwise.
+   * @return Player if existing
+   */
   public Player getOwner() {
     if (getTargetHistory(0) == null) {
       throw new IllegalStateException("Target 0 is missing");
@@ -148,6 +195,10 @@ public class Weapon extends Observable implements Serializable {
     return (Player) getTargetHistory(0);
   }
 
+  /**
+   * Returns selectedEffects.
+   * @return list of selected effects
+   */
   public List<Effect> getSelectedEffects() {
     return new ArrayList<>(selectedEffects);
   }
@@ -159,18 +210,35 @@ public class Weapon extends Observable implements Serializable {
     selectedEffects.clear();
   }
 
+  /**
+   * Returns how many ammo of specified AmmoColor must be paid in order to reload the weapon.
+   * @param color color of the ammo
+   * @return how many ammo of specified AmmoColor must be paid
+   */
   public int getCost(AmmoColor color) {
     return cost.get(color);
   }
 
+  /**
+   * Return last direction used from an effect of the weapon.
+   * @return lastUsageDirection
+   */
   public Direction getLastUsageDirection() {
     return lastUsageDirection;
   }
 
+  /**
+   * Set last direction used.
+   * @param lastUsageDirection last direction used
+   */
   public void setLastUsageDirection(Direction lastUsageDirection) {
     this.lastUsageDirection = lastUsageDirection;
   }
 
+  /**
+   * Gson serialization.
+   * @return JSON string containing serialized object
+   */
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
