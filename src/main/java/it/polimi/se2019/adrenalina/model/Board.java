@@ -357,24 +357,6 @@ public class Board extends Observable implements Serializable {
     throw new IllegalArgumentException("No such player");
   }
 
-  /**
-   * Retrieves a list of player in a specified Square.
-   * @param square the square to consider, which must not be null.
-   * @return the list of players.
-   */
-  public List<Player> getPlayersInSquare(Square square) {
-    if (square == null) {
-      throw new IllegalArgumentException("Argument square cannot be null");
-    }
-    List<Player> output = new ArrayList<>();
-    for (Player player : players) {
-      if (player.getSquare() == square) {
-        output.add(player);
-      }
-    }
-    return output;
-  }
-
   public void removePlayer(PlayerColor color) {
     players.remove(getPlayerByColor(color));
   }
