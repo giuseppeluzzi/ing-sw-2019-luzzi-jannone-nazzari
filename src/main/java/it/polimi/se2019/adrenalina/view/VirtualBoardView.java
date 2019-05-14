@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
+import it.polimi.se2019.adrenalina.controller.action.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;
@@ -9,10 +10,12 @@ import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.controller.event.TimerSetEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.util.List;
 
 public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
   private Board board;
@@ -54,8 +57,13 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   }
 
   @Override
-  public void reset() {
-    // TODO: reset the board to the initial state
+  public void showTargetSelect(TargetType type, List<Target> targets) {
+    // TODO: send selection
+  }
+
+  @Override
+  public void showDirectionSelect() {
+    // TODO: send selection
   }
 
   @Override

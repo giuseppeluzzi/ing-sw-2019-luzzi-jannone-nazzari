@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
+import it.polimi.se2019.adrenalina.controller.action.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;
@@ -8,17 +9,19 @@ import it.polimi.se2019.adrenalina.controller.event.KillShotEvent;
 import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.util.List;
 
-public class BoardView extends Observable implements Observer, BoardViewInterface {
+public abstract class BoardView extends Observable implements Observer, BoardViewInterface {
 
   private Board board;
-  private Timer timer;
+  private final Timer timer;
 
-  public BoardView() {
+  protected BoardView() {
     timer = new Timer();
   }
 
@@ -43,14 +46,13 @@ public class BoardView extends Observable implements Observer, BoardViewInterfac
   }
 
   @Override
-  public void showMessage(MessageSeverity severity, String title, String message) {
-    // TODO: show a message
-  }
+  public abstract void showMessage(MessageSeverity severity, String title, String message);
 
   @Override
-  public void reset() {
-    // TODO: reset the board to the initial state
-  }
+  public abstract void showTargetSelect(TargetType type, List<Target> targets);
+
+  @Override
+  public abstract void showDirectionSelect();
 
   @Override
   public void update(WeaponUpdateEvent event) {
