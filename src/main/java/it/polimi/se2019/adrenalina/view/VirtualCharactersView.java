@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualCharactersView extends Observable implements CharactersViewInterface, Observer {
+
   private final ArrayList<Player> players;
   private Player selectedPlayer;
   private final VirtualClientSocket clientSocket;
@@ -46,16 +47,19 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
   @Override
   public void update(PlayerDeathEvent event) {
     // TODO: handle the death of a character
+    clientSocket.sendEvent(event);
   }
 
   @Override
   public void update(PlayerSpawnEvent event) {
     // TODO: handle the respawn of a character
+    clientSocket.sendEvent(event);
   }
 
   @Override
   public void update(PlayerMoveEvent event) {
     // TODO: handle the movement of a character on a board
+    clientSocket.sendEvent(event);
   }
 
   @Override

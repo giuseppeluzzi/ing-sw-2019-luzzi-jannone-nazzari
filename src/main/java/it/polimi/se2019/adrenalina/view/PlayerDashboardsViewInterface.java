@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.rmi.RemoteException;
@@ -10,5 +11,6 @@ public interface PlayerDashboardsViewInterface extends RemoteObservable {
   List<Player> getPlayers() throws RemoteException;
   void reset(Player player) throws RemoteException;
   void switchToFinalFrenzy(Player player) throws RemoteException;
-  //void update(Event event) throws RemoteException;
+
+  void update(Event event) throws RemoteException;
 }

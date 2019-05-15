@@ -15,9 +15,9 @@ public interface CharactersViewInterface extends RemoteObservable {
   void setSelected(Player player) throws RemoteException;
   void removeSelected() throws RemoteException;
 
-  /*void update(PlayerDeathEvent event) throws RemoteException;
+  void update(PlayerDeathEvent event) throws RemoteException;
   void update(PlayerSpawnEvent event) throws RemoteException;
-  void update(PlayerMoveEvent event) throws RemoteException;*/
+  void update(PlayerMoveEvent event) throws RemoteException;
 
   void update(Event event) throws RemoteException;
 }

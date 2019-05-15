@@ -16,6 +16,10 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
       JsonDeserializationContext context) {
     JsonObject jsonObject = jsonElement.getAsJsonObject();
 
+    if (! jsonObject.has("anyTime")) {
+      jsonObject.addProperty("anyTime", false);
+    }
+
     Effect effect = new Effect(
         jsonObject.get("name").getAsString(),
         null,

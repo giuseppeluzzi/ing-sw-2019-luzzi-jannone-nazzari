@@ -23,16 +23,16 @@ public interface BoardViewInterface extends RemoteObservable {
   void hideTimer() throws RemoteException;
 
   void showMessage(MessageSeverity severity, String title, String message) throws RemoteException;
-  void showTargetSelect(TargetType type, List<Target> targets);
-  void showDirectionSelect();
+  void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
+  void showDirectionSelect() throws RemoteException;
 
-  /*void update(WeaponUpdateEvent event) throws RemoteException;
+  void update(WeaponUpdateEvent event) throws RemoteException;
   void update(AmmoCardUpdateEvent event) throws RemoteException;
   void update(KillShotEvent event) throws RemoteException;
   void update(DoubleKillEvent event) throws RemoteException;
   void update(SpawnPointDamageEvent event) throws RemoteException;
 
-  void update(TimerSetEvent event) throws RemoteException;*/
+  void update(TimerSetEvent event) throws RemoteException;
 
   void update(Event event) throws RemoteException;
 }

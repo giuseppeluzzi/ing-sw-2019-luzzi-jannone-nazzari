@@ -14,11 +14,10 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
-import java.lang.invoke.WrongMethodTypeException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
+
   private Board board;
   private final VirtualClientSocket clientSocket;
 
@@ -67,7 +66,7 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
     // TODO: send selection
   }
 
-  /*@Override
+  @Override
   public void update(WeaponUpdateEvent event) {
     clientSocket.sendEvent(event);
   }
@@ -95,7 +94,7 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   @Override
   public void update(TimerSetEvent event) {
     // Not expected
-  }*/
+  }
 
   @Override
   public void update(Event event) {
