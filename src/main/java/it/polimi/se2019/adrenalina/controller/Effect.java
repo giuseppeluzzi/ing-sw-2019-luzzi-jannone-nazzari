@@ -94,6 +94,18 @@ public class Effect implements Serializable {
     actions.add(action);
   }
 
+  @Override
+  public boolean equals (Object object) {
+    return object instanceof Effect &&
+        ((Effect) object).name.equals(name) &&
+        ((Effect) object).weapon.getName().equals(weapon.getName());
+  }
+
+  @Override
+  public int hashCode() {
+    return costBlue + costRed + costYellow;
+  }
+
   public void reconcileDeserialization(Weapon ofWeapon, Effect parentEffect) {
     weapon = ofWeapon;
     requiredEffect = parentEffect;

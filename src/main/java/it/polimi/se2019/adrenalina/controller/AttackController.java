@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.controller;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 import java.rmi.RemoteException;
@@ -18,8 +19,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
   }
 
   public void update(PlayerAttackEvent event) {
-    // TODO: invoked when a player attacks a target with a weapon-effect; if the target is a spawnpoint, the domination board should be notified
-    // TODO: get real player from the copy
+    Weapon weapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
+    weapon.executeActionQueue(boardController.getBoard());
   }
 
   public void update(PlayerReloadEvent event) {

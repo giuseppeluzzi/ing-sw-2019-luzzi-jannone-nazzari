@@ -5,12 +5,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.controller.action.Action;
+import it.polimi.se2019.adrenalina.controller.action.ActionType;
+import it.polimi.se2019.adrenalina.controller.action.SelectAction;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +34,8 @@ public class Weapon extends Observable implements Serializable {
   @NotExpose
   private final HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
   private final List<Effect> effects = new ArrayList<>();
+  private Deque<Action> actionsQueue = new ArrayDeque<>();
+  private Integer currentSelectTargetSlot;
 
   // Usage information
   @NotExpose
@@ -233,6 +240,56 @@ public class Weapon extends Observable implements Serializable {
    */
   public void setLastUsageDirection(Direction lastUsageDirection) {
     this.lastUsageDirection = lastUsageDirection;
+  }
+
+  /**
+   * Return currentSelectTargetSlot value.
+   * @return currentSelectTargetSlot
+   */
+  public Integer getCurrentSelectTargetSlot() {
+    return currentSelectTargetSlot;
+  }
+
+  /**
+   * Add all the actions of effect in the queue
+   * @param effect Effect whose actions will be added
+   * @throws IllegalArgumentException thrown if effect has no action
+   */
+  public void enqueue(Effect effect) {
+    if (effect.getActions().isEmpty()) {
+      throw new IllegalArgumentException("effect does not contain any action");
+    }
+    for (Action action : effect.getActions()) {
+      actionsQueue.addLast(action);
+    }
+  }
+
+  /**
+   * All the actions in the queue are executed with LIFO methodology.
+   * @param board Board object, must be passed as the argument of execute method
+   */
+  public void executeActionQueue(Board board) {
+    while ( !actionsQueue.isEmpty()) {
+      Action action = actionsQueue.getFirst();
+      action.execute(board, this);
+      actionsQueue.removeFirst();
+      if (action.getActionType() == ActionType.SELECT) {
+        currentSelectTargetSlot = ((SelectAction) action).getTarget();
+        break;
+      }
+      if ( action.getActionType() == ActionType.SELECT_DIRECTION) {
+        break;
+      }
+      currentSelectTargetSlot = null;
+    }
+  }
+
+  /**
+   * Returns if actionsQueue is empty
+   * @return true if empty, false otherwhise
+   */
+  public boolean isQueueEmpty() {
+    return actionsQueue.isEmpty();
   }
 
   /**

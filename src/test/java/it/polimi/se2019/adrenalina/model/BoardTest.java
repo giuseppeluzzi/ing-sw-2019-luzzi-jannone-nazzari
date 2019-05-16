@@ -6,6 +6,9 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
+import it.polimi.se2019.adrenalina.utils.Log;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class BoardTest {
@@ -27,7 +30,11 @@ public class BoardTest {
     board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2"));
     board.addPowerUp(new Newton(AmmoColor.YELLOW));
     board.addPowerUp(new Newton(AmmoColor.BLUE));
-    board.useWeapon(board.getWeapons().get(0));
+    try {
+      board.takeWeapon(board.getWeapons().get(0));
+    } catch (InvalidWeaponException e) {
+      Log.debug("No Weapons in board object");
+    }
     board.usePowerUp(board.getPowerUps().get(0));
     board.addKillShot(new Kill(PlayerColor.YELLOW, true));
     board.addDoubleKill(player);
@@ -154,19 +161,24 @@ public class BoardTest {
     Weapon weapon = new Weapon(1, 0, 0, AmmoColor.YELLOW, "test");
     board.addWeapon(weapon);
     try {
-      board.useWeapon(board.getWeapons().get(0));
-    } catch (IllegalArgumentException e) {
-      fail("IllegalArgumentException thrown unnecessarily");
+      board.takeWeapon(board.getWeapons().get(0));
+    } catch (InvalidWeaponException e) {
+      fail("InvalidWeaponException thrown unnecessarily");
     }
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test
   public void testUseWeaponException() {
     Board board = new Board();
     Weapon weapon1 = new Weapon(1, 0, 0, AmmoColor.YELLOW, "test");
     Weapon weapon2 = new Weapon(1, 0, 0, AmmoColor.BLUE, "test2");
     board.addWeapon(weapon1);
-    board.useWeapon(weapon2);
+    try {
+      board.takeWeapon(weapon2);
+      fail("Exception not handled correctly");
+    } catch (InvalidWeaponException e) {
+      Log.debug("No weapon in board object");
+    }
   }
 
   @Test

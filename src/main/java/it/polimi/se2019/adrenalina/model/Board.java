@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
@@ -15,6 +16,8 @@ import java.util.List;
  * This class describes a game board.
  */
 public class Board extends Observable implements Serializable {
+
+  private static final long serialVersionUID = 6249423437530616554L;
   private final Square[][] grid;
   private BoardStatus status;
   private boolean finalFrenzyActive;
@@ -24,7 +27,7 @@ public class Board extends Observable implements Serializable {
   private final List<Player> players;
 
   private final List<Weapon> weapons;
-  private final List<Weapon> usedWeapons;
+  private final List<Weapon> takenWeapons;
 
   private final List<PowerUp> powerUps;
   private final List<PowerUp> usedPowerUps;
@@ -46,7 +49,7 @@ public class Board extends Observable implements Serializable {
     players = new ArrayList<>();
 
     weapons = new ArrayList<>();
-    usedWeapons = new ArrayList<>();
+    takenWeapons = new ArrayList<>();
     powerUps = new ArrayList<>();
     usedPowerUps = new ArrayList<>();
     doubleKills = new ArrayList<>();
@@ -83,7 +86,7 @@ public class Board extends Observable implements Serializable {
     }
 
     weapons = new ArrayList<>();
-    usedWeapons = new ArrayList<>();
+    takenWeapons = new ArrayList<>();
     powerUps = new ArrayList<>();
     usedPowerUps = new ArrayList<>();
 
@@ -118,8 +121,8 @@ public class Board extends Observable implements Serializable {
     for (Weapon weapon : board.weapons) {
       weapons.add(new Weapon(weapon));
     }
-    for (Weapon weapon : board.usedWeapons) {
-      usedWeapons.add(new Weapon(weapon));
+    for (Weapon weapon : board.takenWeapons) {
+      takenWeapons.add(new Weapon(weapon));
     }
     for (PowerUp powerUp : board.powerUps) {
       powerUps.add(powerUp.copy());
@@ -296,16 +299,16 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Marks a Weapon as used by moving it from the weapons list to the
-   * usedWeapons list.
+   * takenWeapons list.
    * @param weapon Weapon to be marked as used
-   * @throws  IllegalArgumentException thrown if weapon is not in the Board
+   * @throws  InvalidWeaponException thrown if weapon is not in the Board
    */
-  public void useWeapon(Weapon weapon) {
+  public void takeWeapon(Weapon weapon) throws InvalidWeaponException {
     if (! weapons.contains(weapon)) {
-      throw new IllegalArgumentException("Weapon not present");
+      throw new InvalidWeaponException("Weapon not present");
     }
     weapons.remove(weapon);
-    usedWeapons.add(weapon);
+    takenWeapons.add(weapon);
   }
 
   /**
@@ -317,12 +320,13 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Returns a List of used Weapons.
-   * @return a List of used Weapons.
+   * Returns a List of taken Weapons.
+   * @return a List of taken Weapons.
    */
-  public List<Weapon> getUsedWeapons() {
-    return new ArrayList<>(usedWeapons);
+  public List<Weapon> getTakenWeapons() {
+    return new ArrayList<>(takenWeapons);
   }
+
 
   /**
    * Adds a powerUp to the Board.
@@ -467,6 +471,21 @@ public class Board extends Observable implements Serializable {
    */
   public void removePlayer(PlayerColor color) {
     players.remove(getPlayerByColor(color));
+  }
+
+  /**
+   * Return a Weapon whose name is the same as the specified one.
+   * @param name Name of the weapon requested
+   * @return Weapon whith name equals to "name", null if weapon does not exist
+   */
+  public Weapon getWeaponByName(String name) {
+    List<Weapon> weapons = getTakenWeapons();
+    for (Weapon weapon : weapons) {
+      if (weapon.getName().equals(name)) {
+        return weapon;
+      }
+    }
+    return null;
   }
 
   /**
