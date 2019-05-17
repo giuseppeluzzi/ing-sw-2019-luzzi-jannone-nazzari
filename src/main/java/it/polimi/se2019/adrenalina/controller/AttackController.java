@@ -3,6 +3,10 @@ package it.polimi.se2019.adrenalina.controller;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
+import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
@@ -10,21 +14,60 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class AttackController extends UnicastRemoteObject implements Observer {
-  private static final long serialVersionUID = -5414473871887210992L;
 
+  private static final long serialVersionUID = -5414473871887210992L;
   private final BoardController boardController;
 
   public AttackController(BoardController boardController) throws RemoteException {
     this.boardController = boardController;
   }
 
+  /**
+   * Event fired when a player uses an effect.
+   * @param event event specifing the effect used
+   */
   public void update(PlayerAttackEvent event) {
     Weapon weapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
+    boardController.getBoard().getPlayerByColor(event.getPlayerColor()).setCurrentWeapon(weapon);
     weapon.executeActionQueue(boardController.getBoard());
   }
 
+  /**
+   * Event fired when a player reloads a weapon.
+   * @param event event specifing the weapon reloaded
+   */
   public void update(PlayerReloadEvent event) {
-    // TODO: invoked when a player reloads a weapon
+    Player player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
+    Weapon weapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
+
+    if (player.hasWeapon(weapon) && player.canReload(weapon)) {
+      for (AmmoColor color : AmmoColor.getValidColor()) {
+        player.setAmmo(color, player.getAmmo(color) - weapon.getCost(color));
+      }
+      player.setAmmo(weapon.getBaseCost(), player.getAmmo(weapon.getBaseCost()) - 1);
+    }
+  }
+
+  /**
+   * Event fired when a player select another player.
+   * @param event event specifing selected target
+   */
+  public void update(SelectPlayerEvent event) {
+    Player player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
+    Player target = boardController.getBoard().getPlayerByColor(event.getSelectedColor());
+    Weapon weapon = player.getCurrentWeapon();
+    weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), target);
+  }
+
+  /**
+   * Event fired when a player select a square.
+   * @param event event specifing selected target
+   */
+  public void update(SelectSquareEvent event) {
+    Player player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
+    Square square = boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY());
+    Weapon weapon = player.getCurrentWeapon();
+    weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), square);
   }
 
   @Override

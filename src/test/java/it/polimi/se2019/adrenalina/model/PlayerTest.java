@@ -7,7 +7,6 @@ import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.junit.Test;
 
@@ -161,5 +160,14 @@ public class PlayerTest {
   public void testCopyConstructorException() {
     Player player = null;
     Player player2 = new Player(player, true);
+  }
+
+  @Test
+  public void testReload() {
+    Player player = new Player("test", PlayerColor.GREEN);
+    Weapon weapon = new Weapon(0,0,1,AmmoColor.BLUE, "test");
+    player.setAmmo(AmmoColor.BLUE, 1);
+    player.setAmmo(AmmoColor.YELLOW, 1);
+    assertTrue(player.canReload(weapon));
   }
 }

@@ -282,6 +282,8 @@ public class Weapon extends Observable implements Serializable {
       }
       currentSelectTargetSlot = null;
     }
+    getOwner().setCurrentWeapon(null);
+    // TODO: Player has completed is turn?
   }
 
   /**

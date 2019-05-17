@@ -14,7 +14,9 @@ import java.util.List;
  * Class defining a single player.
  */
 public class Player extends Observable implements Target, Serializable {
+
   // TODO: powerUps and weapon should have a remove*() method (whith which parameter?)
+  private static final long serialVersionUID = -3827252611045096143L;
   private final String name;
   private final PlayerColor color;
   private Square square;
@@ -29,6 +31,8 @@ public class Player extends Observable implements Target, Serializable {
   private final List<PowerUp> powerUps;
   private final List<Weapon> weapons;
   private final HashMap<AmmoColor, Integer> ammo;
+
+  private Weapon currentWeapon;
 
   private final boolean publicCopy;
 
@@ -52,6 +56,7 @@ public class Player extends Observable implements Target, Serializable {
     ammo.put(AmmoColor.RED, 0);
     ammo.put(AmmoColor.BLUE, 0);
     ammo.put(AmmoColor.YELLOW, 0);
+    currentWeapon = null;
     publicCopy = false;
   }
 
@@ -104,6 +109,7 @@ public class Player extends Observable implements Target, Serializable {
     frenzy = player.frenzy;
     status = player.status;
     powerUpCount = player.powerUpCount;
+    currentWeapon = null;
   }
 
   @Override
@@ -237,6 +243,49 @@ public class Player extends Observable implements Target, Serializable {
     weapons.add(weapon);
   }
 
+  /**
+   * Check if Player has collected a specific weapon.
+   * @param weapon Weapon checked
+   * @return true if the player holds the weapon, false otherwise
+   */
+  public boolean hasWeapon(Weapon weapon) {
+    for (Weapon toCheck : weapons) {
+      if (weapon.equals(toCheck)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Check if Player can pay to reload weapon.
+   * @param weapon Weapon reloading
+   * @return true if possible, false otherwise
+   */
+  public boolean canReload(Weapon weapon) {
+    for (AmmoColor color : AmmoColor.getValidColor()) {
+      if (color == weapon.getBaseCost()) {
+        if (getAmmo(color) < weapon.getCost(color) + 1) {
+          return false;
+        }
+      } else {
+        if (getAmmo(color) < weapon.getCost(color)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Add value to ammoColor entry.
+   * @param ammoColor key
+   * @param value how much will be added
+   */
+  public void setAmmo(AmmoColor ammoColor, int value) {
+    ammo.put(ammoColor, ammo.get(ammoColor) + value);
+  }
+
   public int getAmmo(AmmoColor ammoColor) {
     return ammo.get(ammoColor);
   }
@@ -257,16 +306,27 @@ public class Player extends Observable implements Target, Serializable {
     return powerUpCount;
   }
 
+  public Weapon getCurrentWeapon() {
+    return currentWeapon;
+  }
+
+  public void setCurrentWeapon(Weapon currentWeapon) {
+    this.currentWeapon = currentWeapon;
+  }
+
+  /**
+   * Gson serialization.
+   * @return JSON string containing serialized object
+   */
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
 
   /**
-   * Create Player object from json formatted String
-   * @param json json input String
-   * @return Player
-   * @exception IllegalArgumentException thrown if argument json is null
+   * Creates Player object from a JSON serialized object.
+   * @param json JSON input String
+   * @return Player object
    */
   public static Player deserialize(String json) {
     if (json == null) {
