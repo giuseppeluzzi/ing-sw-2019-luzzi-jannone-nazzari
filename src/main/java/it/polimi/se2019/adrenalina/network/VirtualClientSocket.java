@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.network;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.BoardController;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
@@ -19,14 +20,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.rmi.RemoteException;
 
 public class VirtualClientSocket implements ClientInterface, Runnable {
   private final Socket clientSocket;
   private final Server server;
+
   private String name;
+  private PlayerColor playerColor;
   private boolean domination;
+
   private PrintWriter printWriter;
   private BufferedReader bufferedReader;
 
@@ -35,6 +41,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   private BoardViewInterface boardView;
   private CharactersViewInterface charactersView;
   private PlayerDashboardsViewInterface playerDashboardsView;
+
+  private static final String UPDATE_EVENT_METHOD = "update";
 
   public VirtualClientSocket(Server server, Socket clientSocket) {
     this.clientSocket = clientSocket;
@@ -76,6 +84,25 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
             server.addClient(this);
             game = server.getGameByClient(this);
             break;
+          case PLAYER_ATTACK_EVENT:
+          case PLAYER_RELOAD_EVENT:
+            playerDashboardsView.getClass()
+                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
+                .invoke(playerDashboardsView, event);
+            break;
+          case SELECT_PLAYER_EVENT:
+          case SELECT_SQUARE_EVENT:
+          case SELECT_DIRECTION_EVENT:
+            boardView.getClass()
+                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass()).invoke(boardView, event);
+            break;
+          case PLAYER_MOVE_EVENT:
+          case PLAYER_COLLECT_AMMO_EVENT:
+          case PLAYER_COLLECT_WEAPON_EVENT:
+          case PLAYER_POWERUP_EVENT:
+            charactersView.getClass()
+                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass()).invoke(charactersView, event);
+            break;
           default:
             Log.severe("Unexpected server event!");
             break;
@@ -83,6 +110,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
       }
     } catch (InvalidPlayerException | IOException ignored) {
       server.onClientDisconnect(this);
+    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+      Log.severe("Unexpected server event!");
     }
   }
 
@@ -90,6 +119,16 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   public String getName() {
     // TODO: check if connected
     return name;
+  }
+
+  @Override
+  public PlayerColor getPlayerColor() throws RemoteException {
+    return playerColor;
+  }
+
+  @Override
+  public void setPlayerColor(PlayerColor color) {
+    playerColor = color;
   }
 
   @Override

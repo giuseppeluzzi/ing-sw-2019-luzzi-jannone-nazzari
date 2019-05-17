@@ -21,7 +21,8 @@ public enum EventType {
   MAP_SELECTION_EVENT(MapSelectionEvent.class),
   FINAL_FRENZY_TOGGLE_EVENT(FinalFrenzyToggleEvent.class),
   SELECT_PLAYER_EVENT(SelectPlayerEvent.class),
-  SELECT_SQUARE_EVENT(SelectPlayerEvent.class);
+  SELECT_SQUARE_EVENT(SelectPlayerEvent.class),
+  SELECT_DIRECTION_EVENT(SelectDirectionEvent.class);
 
   private final Class<? extends Event> eventClass;
 
