@@ -479,8 +479,8 @@ public class Board extends Observable implements Serializable {
    * @return Weapon whith name equals to "name", null if weapon does not exist
    */
   public Weapon getWeaponByName(String name) {
-    List<Weapon> weapons = getTakenWeapons();
-    for (Weapon weapon : weapons) {
+    List<Weapon> takenWeapons = getTakenWeapons();
+    for (Weapon weapon : takenWeapons) {
       if (weapon.getName().equals(name)) {
         return weapon;
       }

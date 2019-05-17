@@ -82,7 +82,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void loadMaps() {
     try (Stream<Path> weaponStream = Files.walk(
         Paths.get(BoardController.class.getResource("/maps").toURI()))) {
-      weaponStream.filter(Files::isRegularFile).filter(Files::isReadable).forEach(this::loadMap);
+      weaponStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable).forEach(this::loadMap);
     } catch (URISyntaxException | IOException e) {
       Log.critical("No maps found");
     }
@@ -105,7 +105,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void loadWeapons() {
     try (Stream<Path> weaponStream = Files.walk(
         Paths.get(BoardController.class.getResource("/weapons").toURI()))) {
-      weaponStream.filter(Files::isRegularFile).filter(Files::isReadable)
+      weaponStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable)
           .forEach(filePath -> {
             String json = null;
             try {

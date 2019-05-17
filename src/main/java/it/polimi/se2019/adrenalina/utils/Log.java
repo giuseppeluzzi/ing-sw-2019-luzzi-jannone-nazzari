@@ -56,7 +56,7 @@ public class Log {
   }
 
   public static void debug(String message) {
-    System.out.println(message);
+    logger.warning(message);
   }
 
   public static void print(String message) {

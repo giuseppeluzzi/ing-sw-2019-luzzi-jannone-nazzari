@@ -14,10 +14,11 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
   @Override
   public Effect deserialize(JsonElement jsonElement, Type type,
       JsonDeserializationContext context) {
+    String anyTime = "anyTime";
     JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-    if (! jsonObject.has("anyTime")) {
-      jsonObject.addProperty("anyTime", false);
+    if (! jsonObject.has(anyTime)) {
+      jsonObject.addProperty(anyTime, false);
     }
 
     Effect effect = new Effect(
@@ -26,7 +27,7 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
         jsonObject.get("costRed").getAsInt(),
         jsonObject.get("costBlue").getAsInt(),
         jsonObject.get("costYellow").getAsInt(),
-        jsonObject.get("anyTime").getAsBoolean());
+        jsonObject.get(anyTime).getAsBoolean());
 
     for (JsonElement action : jsonObject.get("actions").getAsJsonArray()) {
       JsonObject actionObj = action.getAsJsonObject();
