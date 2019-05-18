@@ -30,7 +30,7 @@ public class Board extends Observable implements Serializable {
   private final List<Weapon> takenWeapons;
 
   private final List<PowerUp> powerUps;
-  private final List<PowerUp> usedPowerUps;
+  private final List<PowerUp> takenPowerUps;
 
   private final List<Player> doubleKills;
   private final List<Kill> killShots;
@@ -51,7 +51,7 @@ public class Board extends Observable implements Serializable {
     weapons = new ArrayList<>();
     takenWeapons = new ArrayList<>();
     powerUps = new ArrayList<>();
-    usedPowerUps = new ArrayList<>();
+    takenPowerUps = new ArrayList<>();
     doubleKills = new ArrayList<>();
     killShots = new ArrayList<>();
     publicCopy = false;
@@ -88,7 +88,7 @@ public class Board extends Observable implements Serializable {
     weapons = new ArrayList<>();
     takenWeapons = new ArrayList<>();
     powerUps = new ArrayList<>();
-    usedPowerUps = new ArrayList<>();
+    takenPowerUps = new ArrayList<>();
 
     setObservers(board.getObservers());
 
@@ -127,8 +127,8 @@ public class Board extends Observable implements Serializable {
     for (PowerUp powerUp : board.powerUps) {
       powerUps.add(powerUp.copy());
     }
-    for (PowerUp powerUp : board.usedPowerUps) {
-      usedPowerUps.add(powerUp.copy());
+    for (PowerUp powerUp : board.takenPowerUps) {
+      takenPowerUps.add(powerUp.copy());
     }
   }
 
@@ -337,17 +337,13 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Marks a powerUp as used by moving it from the powerUps list to the
-   * usedPowerUps list.
-   * @param powerUp the powerUp to be marked as used
-   * @exception  IllegalArgumentException thrown if powerUp is not in the Board
+   * Draws a PowerUp and moves it from the powerUps list to the takenPowerUps one.
    */
-  public void usePowerUp(PowerUp powerUp) {
-    if (! powerUps.contains(powerUp)) {
-      throw new IllegalArgumentException("PowerUp not present");
-    }
+  public PowerUp drawPowerUp() {
+    PowerUp powerUp = powerUps.get(0);
     powerUps.remove(powerUp);
-    usedPowerUps.add(powerUp);
+    takenPowerUps.add(powerUp);
+    return powerUp;
   }
 
   /**
@@ -359,11 +355,11 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Returns a List of used powerUps in the Board.
-   * @return a List of used powerUps in the Board
+   * Returns a List of drawn powerUps in the Board.
+   * @return a List of drawn powerUps in the Board
    */
-  public List<PowerUp> getUsedPowerUps() {
-    return new ArrayList<>(usedPowerUps);
+  public List<PowerUp> getTakenPowerUps() {
+    return new ArrayList<>(takenPowerUps);
   }
 
   /**

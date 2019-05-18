@@ -8,7 +8,6 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.Log;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class BoardTest {
@@ -35,7 +34,7 @@ public class BoardTest {
     } catch (InvalidWeaponException e) {
       Log.debug("No Weapons in board object");
     }
-    board.usePowerUp(board.getPowerUps().get(0));
+    board.drawPowerUp();
     board.addKillShot(new Kill(PlayerColor.YELLOW, true));
     board.addDoubleKill(player);
     board2 = new Board(board, false);
@@ -187,19 +186,10 @@ public class BoardTest {
     Newton powerUp = new Newton(AmmoColor.YELLOW);
     board.addPowerUp(powerUp);
     try {
-      board.usePowerUp(board.getPowerUps().get(0));
+      board.drawPowerUp();
     } catch (IllegalArgumentException e) {
       fail("IllegalArgumentException thrown unnecessarily");
     }
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void testUsePowerUpException() {
-    Board board = new Board();
-    Newton powerUp1 = new Newton(AmmoColor.YELLOW);
-    Newton powerUp2 = new Newton(AmmoColor.YELLOW);
-    board.addPowerUp(powerUp1);
-    board.usePowerUp(powerUp2);
   }
 
   @Test

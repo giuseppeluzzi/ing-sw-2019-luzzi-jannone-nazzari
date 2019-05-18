@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
+import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -217,11 +219,11 @@ public class Player extends Observable implements Target, Serializable {
   /**
    * Adds a powerUp to the list of powerUps of this player.
    * @param powerUp collected powerUp.
-   * @throws IllegalStateException thrown if a player already has 3 powerUps.
+   * @throws InvalidPowerUpException thrown if a player already has 3 powerUps.
    */
-  public void addPowerUp(PowerUp powerUp) {
+  public void addPowerUp(PowerUp powerUp) throws InvalidPowerUpException  {
     if (powerUps.size() >= 3) {
-      throw new IllegalStateException("Player already has 3 powerUps");
+      throw new InvalidPowerUpException("Player already has 3 powerUp");
     }
     powerUps.add(powerUp);
     powerUpCount++;
@@ -278,12 +280,17 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   /**
-   * Add value to ammoColor entry.
+   * Add value to ammoColor entry, ammo will be added only up to three unit per color.
    * @param ammoColor key
    * @param value how much will be added
+   * @throws InvalidAmmoException thrown if the future value of ammo is grather than three
    */
-  public void setAmmo(AmmoColor ammoColor, int value) {
-    ammo.put(ammoColor, ammo.get(ammoColor) + value);
+  public void setAmmo(AmmoColor ammoColor, int value) throws InvalidAmmoException {
+    if (ammo.get(ammoColor) <= 3 - value) {
+      ammo.put(ammoColor, ammo.get(ammoColor) + value);
+    } else {
+      throw new InvalidAmmoException("Too many units");
+    }
   }
 
   public int getAmmo(AmmoColor ammoColor) {

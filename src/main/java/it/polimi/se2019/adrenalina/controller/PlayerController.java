@@ -5,6 +5,10 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPowerUpEvent;
+import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
@@ -42,7 +46,25 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   }
 
   public void update(PlayerCollectAmmoEvent event) {
-    // TODO: invoked when a player wants to collect an ammocard
+    Board board = boardController.getBoard();
+    Player player = board.getPlayerByColor(event.getPlayerColor());
+    if (board.getSquare(event.getSquareX(), event.getSquareY()).hasAmmoCard()) {
+      AmmoCard ammoCard = board.getSquare(event.getSquareX(), event.getSquareY()).getAmmoCard();
+      for (AmmoColor color : AmmoColor.getValidColor()) {
+        try {
+          player.setAmmo(color, ammoCard.getAmmo(color));
+        } catch (InvalidAmmoException e) {
+          // TODO: handle exception
+        }
+      }
+      for (int i = 0; i < ammoCard.getPowerUp(); i++) {
+        try {
+          player.addPowerUp(board.drawPowerUp());
+        } catch (InvalidPowerUpException e) {
+          // TODO: handle exception
+        }
+      }
+    }
   }
 
   public void update(PlayerCollectWeaponEvent event) {

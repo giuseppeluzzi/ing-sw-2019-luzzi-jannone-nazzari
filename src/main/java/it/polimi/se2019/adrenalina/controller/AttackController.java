@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -42,9 +43,17 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
     if (player.hasWeapon(weapon) && player.canReload(weapon)) {
       for (AmmoColor color : AmmoColor.getValidColor()) {
-        player.setAmmo(color, player.getAmmo(color) - weapon.getCost(color));
+        try {
+          player.setAmmo(color, player.getAmmo(color) - weapon.getCost(color));
+        } catch (InvalidAmmoException e) {
+          // TODO: handle exception
+        }
       }
-      player.setAmmo(weapon.getBaseCost(), player.getAmmo(weapon.getBaseCost()) - 1);
+      try {
+        player.setAmmo(weapon.getBaseCost(), player.getAmmo(weapon.getBaseCost()) - 1);
+      } catch (InvalidAmmoException e) {
+        // TODO: handle exception
+      }
     }
   }
 

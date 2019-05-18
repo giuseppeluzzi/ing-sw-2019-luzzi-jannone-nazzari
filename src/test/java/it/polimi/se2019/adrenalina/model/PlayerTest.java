@@ -6,6 +6,8 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -46,17 +48,27 @@ public class PlayerTest {
       for (int i = 0; i < 3; i++) {
         player.addPowerUp(new Newton(AmmoColor.YELLOW));
       }
-    } catch (IllegalStateException e) {
+    } catch (InvalidPowerUpException e) {
       fail("IllegalStateException thrown unnecessarily");
     }
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void testAddPowerUpException() {
     Player player = new Player("test", PlayerColor.YELLOW);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 3; i++) {
+      try {
+        player.addPowerUp(new Newton(AmmoColor.RED));
+      } catch (InvalidPowerUpException e) {
+
+      }
+    }
+    try {
       player.addPowerUp(new Newton(AmmoColor.RED));
+      fail("Exception not caught correctly");
+    } catch (InvalidPowerUpException e) {
+
     }
   }
 
@@ -137,7 +149,11 @@ public class PlayerTest {
   public void testCopyConstructor() {
     Player player = new Player("test", PlayerColor.GREEN);
     player.setSquare(new Square(1, 2, SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
-    player.addPowerUp(new Newton(AmmoColor.YELLOW));
+    try {
+      player.addPowerUp(new Newton(AmmoColor.YELLOW));
+    } catch (InvalidPowerUpException e) {
+
+    }
     Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1");
     weapon1.setLoaded(false);
     player.addWeapon(weapon1);
@@ -166,8 +182,12 @@ public class PlayerTest {
   public void testReload() {
     Player player = new Player("test", PlayerColor.GREEN);
     Weapon weapon = new Weapon(0,0,1,AmmoColor.BLUE, "test");
-    player.setAmmo(AmmoColor.BLUE, 1);
-    player.setAmmo(AmmoColor.YELLOW, 1);
+    try {
+      player.setAmmo(AmmoColor.BLUE, 1);
+      player.setAmmo(AmmoColor.YELLOW, 1);
+    } catch (InvalidAmmoException e) {
+
+    }
     assertTrue(player.canReload(weapon));
   }
 }
