@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,12 +65,12 @@ public class SquareTest {
   public void testCopyConstructor() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
         WALL, WALL, WALL);
-    Square square2 = new Square(square);
     square.setSpawnPoint(true);
     if (square.isSpawnPoint()) {
       Weapon weapon = new Weapon(1, 1, 1, AmmoColor.BLUE, "test");
       square.addWeapon(weapon);
     }
+    Square square2 = new Square(square);
     assertEquals("Cloned class attributes not matching with original class attributes",
         square.getColor(), square2.getColor());
   }
@@ -101,6 +102,13 @@ public class SquareTest {
   public void testGetCardinalDirectionException() throws InvalidSquareException {
     Square invalid = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL);
     base.getCardinalDirection(invalid);
+  }
+
+  @Test(expected = InvalidSquareException.class)
+  public void testGetCardinalDirectionSameSquare() throws InvalidSquareException{
+    Square square = new Square(2,2, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    base.getCardinalDirection(square);
   }
 
   @Test
