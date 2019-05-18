@@ -22,6 +22,7 @@ public class Player extends Observable implements Target, Serializable {
   private final String name;
   private final PlayerColor color;
   private Square square;
+  private transient Board board;
   private int points;
   private int deaths;
   private boolean frenzy;
@@ -40,12 +41,14 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Class constructor.
-   * @param name User chosen name, must be not null.
-   * @param color User chosen color.
+   * @param name User chosen name, must be not null
+   * @param color User chosen color
+   * @param board The game board
    */
-  public Player(String name, PlayerColor color) {
+  public Player(String name, PlayerColor color, Board board) {
     this.name = name;
     this.color = color;
+    this.board = board;
     status = PlayerStatus.WAITING;
     frenzy = false;
 
@@ -64,10 +67,10 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Copy constructor, creates an exact clone of a Player.
-   * @param player the Player to be cloned, has to be not null.
+   * @param player the Player to be cloned, has to be not null
    * @param publicCopy if true, a public copy of the Player will be created
    * instead of a clone. The public copy will not contain the player's private
-   * information.
+   * information
    */
   public Player(Player player, boolean publicCopy) {
     // TODO: find error with, see testCopyConstructor for reference
@@ -75,6 +78,7 @@ public class Player extends Observable implements Target, Serializable {
       throw new IllegalArgumentException("Argument player can't be null");
     }
     this.publicCopy = publicCopy;
+    this.board = player.board;
     name = player.name;
     color = player.color;
 
@@ -136,6 +140,10 @@ public class Player extends Observable implements Target, Serializable {
     square.addPlayer(this);
   }
 
+  public Board getBoard() {
+    return board;
+  }
+
   public PlayerColor getColor() {
     return color;
   }
@@ -175,7 +183,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a new damage to a player including damages given by tags and, possibly, inflicts death.
-   * @param player color of the player that inflicted the damage.
+   * @param player color of the player that inflicted the damage
    */
   @Override
   public void addDamages(PlayerColor player, int num) {
@@ -199,7 +207,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a new tag to a player if that player does not already have 3 tags from its attacker.
-   * @param player color of the player that gave the tag.
+   * @param player color of the player that gave the tag
    */
   @Override
   public void addTags(PlayerColor player, int num) {
@@ -218,8 +226,8 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a powerUp to the list of powerUps of this player.
-   * @param powerUp collected powerUp.
-   * @throws InvalidPowerUpException thrown if a player already has 3 powerUps.
+   * @param powerUp collected powerUp
+   * @throws InvalidPowerUpException thrown if a player already has 3 powerUps
    */
   public void addPowerUp(PowerUp powerUp) throws InvalidPowerUpException  {
     if (powerUps.size() >= 3) {
@@ -235,8 +243,8 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a weapon to the list of weapons of this player.
-   * @param weapon collected weapon.
-   * @throws IllegalStateException thrown if a player already has 3 weapons.
+   * @param weapon collected weapon
+   * @throws IllegalStateException thrown if a player already has 3 weapons
    */
   public void addWeapon(Weapon weapon) {
     if (weapons.size() >= 3) {

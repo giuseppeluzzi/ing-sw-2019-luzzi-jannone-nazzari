@@ -11,9 +11,9 @@ public class BoardControllerTest {
   public void testGetMapByPlayerNumber() {
     try {
       BoardController boardController = new BoardController(false);
-      boardController.addPlayer(new Player("P1", PlayerColor.GREEN));
-      boardController.addPlayer(new Player("P2", PlayerColor.BLUE));
-      boardController.addPlayer(new Player("P3", PlayerColor.YELLOW));
+      boardController.addPlayer(new Player("P1", PlayerColor.GREEN, null));
+      boardController.addPlayer(new Player("P2", PlayerColor.BLUE, null));
+      boardController.addPlayer(new Player("P3", PlayerColor.YELLOW, null));
 
       List<GameMap> validMaps = boardController.getValidMaps(3);
       assertEquals(3, validMaps.size());

@@ -17,7 +17,7 @@ import org.junit.Test;
 public class PlayerTest {
   @Test
   public void testAddDamage() {
-    Player player = new Player("test", PlayerColor.YELLOW);
+    Player player = new Player("test", PlayerColor.YELLOW, null);
     player.addDamages(PlayerColor.BLUE, 2);
     player.addDamages(PlayerColor.YELLOW, 1);
     List<PlayerColor> damages = new ArrayList<>();
@@ -31,7 +31,7 @@ public class PlayerTest {
 
   @Test
   public void testAddTag() {
-    Player player = new Player("test", PlayerColor.YELLOW);
+    Player player = new Player("test", PlayerColor.YELLOW, null);
     player.addTags(PlayerColor.BLUE, 2);
     player.addTags(PlayerColor.YELLOW, 1);
     List<PlayerColor> tags = new ArrayList<>();
@@ -45,7 +45,7 @@ public class PlayerTest {
 
   @Test
   public void testAddPowerUp() {
-    Player player = new Player("test", PlayerColor.YELLOW);
+    Player player = new Player("test", PlayerColor.YELLOW, null);
     try {
       for (int i = 0; i < 3; i++) {
         player.addPowerUp(new Newton(AmmoColor.YELLOW));
@@ -57,7 +57,7 @@ public class PlayerTest {
 
   @Test
   public void testAddPowerUpException() {
-    Player player = new Player("test", PlayerColor.YELLOW);
+    Player player = new Player("test", PlayerColor.YELLOW, null);
 
     for (int i = 0; i < 3; i++) {
       try {
@@ -76,7 +76,7 @@ public class PlayerTest {
 
   @Test
   public void testAddWeapon() {
-    Player player = new Player("test", PlayerColor.YELLOW);
+    Player player = new Player("test", PlayerColor.YELLOW, null);
     try {
       for (int i = 0; i < 3; i++) {
         player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon"));
@@ -88,7 +88,7 @@ public class PlayerTest {
 
   @Test(expected = IllegalStateException.class)
   public void testWeaponException() {
-    Player player = new Player("test", PlayerColor.YELLOW);
+    Player player = new Player("test", PlayerColor.YELLOW, null);
 
     for (int i = 0; i < 4; i++) {
       player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon"));
@@ -97,7 +97,7 @@ public class PlayerTest {
 
   @Test
   public void testSerialization() {
-    Player player = new Player("test", PlayerColor.YELLOW);
+    Player player = new Player("test", PlayerColor.YELLOW, null);
     Player player2;
     Weapon weapon = new Weapon(1,2,3,AmmoColor.BLUE, "testWeapon");
     String json;
@@ -149,8 +149,8 @@ public class PlayerTest {
 
   @Test
   public void testCopyConstructor() {
-    Player player = new Player("test", PlayerColor.GREEN);
-    player.setSquare(new Square(1, 2, SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+    Player player = new Player("test", PlayerColor.GREEN, null);
+    player.setSquare(new Square(1, 2, SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
     try {
       player.addPowerUp(new Newton(AmmoColor.YELLOW));
     } catch (InvalidPowerUpException e) {
@@ -182,7 +182,7 @@ public class PlayerTest {
 
   @Test
   public void testReload() {
-    Player player = new Player("test", PlayerColor.GREEN);
+    Player player = new Player("test", PlayerColor.GREEN, null);
     Weapon weapon = new Weapon(0,0,1,AmmoColor.BLUE, "test");
     try {
       player.setAmmo(AmmoColor.BLUE, 1);
@@ -195,11 +195,11 @@ public class PlayerTest {
 
   @Test
   public void testSetSquare() {
-    Player player = new Player("test", PlayerColor.GREEN);
+    Player player = new Player("test", PlayerColor.GREEN, null);
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     Square square2 = new Square(0,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     player.getPlayer().setSquare(square);
     player.getPlayer().setSquare(square2);
     assertEquals(square2, player.getSquare());
@@ -207,7 +207,7 @@ public class PlayerTest {
 
   @Test
   public void testAddDamages() {
-    Player player = new Player("test", PlayerColor.GREEN);
+    Player player = new Player("test", PlayerColor.GREEN, null);
     player.addTags(PlayerColor.GREY, 5);
     player.addDamages(PlayerColor.GREY, 1);
     assertEquals(4, player.getDamages().size());
@@ -215,7 +215,7 @@ public class PlayerTest {
 
   @Test
   public void testHasWeaponReload() {
-    Player player = new Player("test", PlayerColor.GREEN);
+    Player player = new Player("test", PlayerColor.GREEN, null);
     Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test");
     Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test");
     player.addWeapon(weapon);

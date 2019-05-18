@@ -26,14 +26,16 @@ public class Square extends Observable implements Target, Serializable {
 
   private boolean spawnPoint;
   private AmmoCard ammoCard;
+  private transient Board board;
 
   private final HashMap<Direction, BorderType> borders;
   private final List<Weapon> weapons;
 
   public Square(int posX, int posY, SquareColor color,
       BorderType edgeUp, BorderType edgeRight,
-      BorderType edgeDown, BorderType edgeLeft) {
+      BorderType edgeDown, BorderType edgeLeft, Board board) {
 
+    this.board = board;
     this.posX = posX;
     this.posY = posY;
     this.color = color;
@@ -61,6 +63,7 @@ public class Square extends Observable implements Target, Serializable {
     if (square == null) {
       throw new IllegalArgumentException("Argument square can't be null");
     }
+    board = square.board;
     posX = square.posX;
     posY = square.posY;
     color = square.color;
@@ -86,6 +89,10 @@ public class Square extends Observable implements Target, Serializable {
   @Override
   public boolean isPlayer() {
     return false;
+  }
+
+  public Board getBoard() {
+    return board;
   }
 
   public int getPosX() {
