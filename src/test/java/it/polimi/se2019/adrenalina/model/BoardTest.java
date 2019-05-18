@@ -34,7 +34,7 @@ public class BoardTest {
     } catch (InvalidWeaponException e) {
       Log.debug("No Weapons in board object");
     }
-    board.drawPowerUp();
+    board.drawPowerUp(board.getPowerUps().get(0));
     board.addKillShot(new Kill(PlayerColor.YELLOW, true));
     board.addDoubleKill(player);
     board2 = new Board(board, false);
@@ -181,15 +181,24 @@ public class BoardTest {
   }
 
   @Test
-  public void testUsePowerUp() {
+  public void testDrawPowerUp() {
     Board board = new Board();
     Newton powerUp = new Newton(AmmoColor.YELLOW);
     board.addPowerUp(powerUp);
     try {
-      board.drawPowerUp();
+      board.drawPowerUp(powerUp);
     } catch (IllegalArgumentException e) {
       fail("IllegalArgumentException thrown unnecessarily");
     }
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testDrawPowerUpException() {
+    Board board = new Board();
+    Newton powerUp1 = new Newton(AmmoColor.YELLOW);
+    Newton powerUp2 = new Newton(AmmoColor.YELLOW);
+    board.addPowerUp(powerUp1);
+    board.drawPowerUp(powerUp2);
   }
 
   @Test

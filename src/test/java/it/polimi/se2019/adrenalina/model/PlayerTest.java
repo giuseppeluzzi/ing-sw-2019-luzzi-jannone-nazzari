@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.model;
 
+import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.*;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
@@ -8,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -189,5 +191,43 @@ public class PlayerTest {
 
     }
     assertTrue(player.canReload(weapon));
+  }
+
+  @Test
+  public void testSetSquare() {
+    Player player = new Player("test", PlayerColor.GREEN);
+    Square square = new Square(2,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    Square square2 = new Square(0,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    player.getPlayer().setSquare(square);
+    player.getPlayer().setSquare(square2);
+    assertEquals(square2, player.getSquare());
+  }
+
+  @Test
+  public void testAddDamages() {
+    Player player = new Player("test", PlayerColor.GREEN);
+    player.addTags(PlayerColor.GREY, 5);
+    player.addDamages(PlayerColor.GREY, 1);
+    assertEquals(4, player.getDamages().size());
+  }
+
+  @Test
+  public void testHasWeaponReload() {
+    Player player = new Player("test", PlayerColor.GREEN);
+    Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test");
+    Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test");
+    player.addWeapon(weapon);
+    try {
+      player.setAmmo(AmmoColor.BLUE, 1);
+      player.setAmmo(AmmoColor.YELLOW, 1);
+    } catch (InvalidAmmoException e) {
+      fail("Exception not expected");
+    }
+    assertTrue(player.hasWeapon(weapon));
+    assertTrue(player.canReload(weapon));
+    assertFalse(player.hasWeapon(weapon2));
+    assertFalse(player.canReload(weapon2));
   }
 }

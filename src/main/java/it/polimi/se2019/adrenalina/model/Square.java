@@ -132,6 +132,11 @@ public class Square extends Observable implements Target, Serializable {
     return neighbours.get(direction);
   }
 
+  /**
+   * Add a square as neighbour in specified direction.
+   * @param direction direction in which neighbour is placed
+   * @param square neighbour square
+   */
   public void setNeighbour(Direction direction, Square square) {
     if (square == null) {
       throw new IllegalArgumentException("Argument square cannot be null");

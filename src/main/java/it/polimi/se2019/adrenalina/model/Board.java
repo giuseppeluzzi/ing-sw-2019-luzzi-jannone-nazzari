@@ -337,13 +337,17 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Draws a PowerUp and moves it from the powerUps list to the takenPowerUps one.
+   * Marks a powerUp as used by moving it from the powerUps list to the
+   * usedPowerUps list.
+   * @param powerUp the powerUp to be marked as used
+   * @exception  IllegalArgumentException thrown if powerUp is not in the Board
    */
-  public PowerUp drawPowerUp() {
-    PowerUp powerUp = powerUps.get(0);
+  public void drawPowerUp(PowerUp powerUp) {
+    if (! powerUps.contains(powerUp)) {
+      throw new IllegalArgumentException("PowerUp not present");
+    }
     powerUps.remove(powerUp);
     takenPowerUps.add(powerUp);
-    return powerUp;
   }
 
   /**
@@ -475,8 +479,8 @@ public class Board extends Observable implements Serializable {
    * @return Weapon whith name equals to "name", null if weapon does not exist
    */
   public Weapon getWeaponByName(String name) {
-    List<Weapon> takenWeapons = getTakenWeapons();
-    for (Weapon weapon : takenWeapons) {
+    List<Weapon> taken = getTakenWeapons();
+    for (Weapon weapon : taken) {
       if (weapon.getName().equals(name)) {
         return weapon;
       }

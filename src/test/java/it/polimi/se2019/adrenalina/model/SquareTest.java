@@ -2,9 +2,11 @@ package it.polimi.se2019.adrenalina.model;
 
 import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import org.junit.Before;
@@ -63,7 +65,11 @@ public class SquareTest {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
         WALL, WALL, WALL);
     Square square2 = new Square(square);
-
+    square.setSpawnPoint(true);
+    if (square.isSpawnPoint()) {
+      Weapon weapon = new Weapon(1, 1, 1, AmmoColor.BLUE, "test");
+      square.addWeapon(weapon);
+    }
     assertEquals("Cloned class attributes not matching with original class attributes",
         square.getColor(), square2.getColor());
   }
@@ -91,7 +97,7 @@ public class SquareTest {
     }
   }
 
-  @Test (expected = InvalidSquareException.class)
+  @Test(expected = InvalidSquareException.class)
   public void testGetCardinalDirectionException() throws InvalidSquareException {
     Square invalid = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL);
     base.getCardinalDirection(invalid);
@@ -101,5 +107,77 @@ public class SquareTest {
   public void testGetDistance() {
     assertEquals(1, base.getDistance(north));
     assertEquals(2, south.getDistance(north));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExceptionNeighbour()  {
+    Square square = new Square(2,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    square.setNeighbour(Direction.NORTH, null);
+  }
+
+  @Test
+  public void testGetPlayer() {
+    Square square = new Square(2,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    Square square2 = new Square(2,0, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    Player player = new Player("test", PlayerColor.GREEN);
+    square.addPlayer(player);
+
+    try {
+      assertEquals("test", square.getPlayer().getName());
+    } catch (InvalidSquareException e) {
+      fail("Exception not handled");
+    }
+
+    try {
+      assertNull(square2.getPlayer());
+    } catch (InvalidSquareException e) {
+      fail("Exception not handled");
+    }
+  }
+
+  @Test
+  public void testExceptionGetPlayer() {
+    Square square = new Square(2,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    Player player = new Player("test", PlayerColor.GREEN);
+    Player player2 = new Player("test2", PlayerColor.GREEN);
+    square.addPlayer(player);
+    square.addPlayer(player2);
+
+    try {
+      square.getPlayer();
+      fail("Exception not handled correctly");
+    } catch (InvalidSquareException e) {
+
+    }
+  }
+
+  @Test
+  public void testPlayers() {
+    Square square = new Square(2,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    Player player = new Player("test", PlayerColor.GREEN);
+    Player player2 = new Player("test2", PlayerColor.GREEN);
+    square.addPlayer(player);
+    square.addPlayer(player2);
+
+    assertEquals(square.getPlayers().get(0).getName(), player.getName());
+    square.removePlayer(player);
+    assertEquals(square.getPlayers().get(0).getName(), player2.getName());
+  }
+
+  @Test
+  public void testEquals() {
+    Square square = new Square(2,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    Square square2 = new Square(2,1, SquareColor.GREEN, WALL,
+        WALL, WALL, WALL);
+    if (!square.equals(square2)) {
+      fail("equals not working correctly");
+    }
+
   }
 }

@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 import java.rmi.RemoteException;
@@ -59,7 +60,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       }
       for (int i = 0; i < ammoCard.getPowerUp(); i++) {
         try {
-          player.addPowerUp(board.drawPowerUp());
+          PowerUp powerUp = board.getPowerUps().get(0);
+          board.drawPowerUp(powerUp);
+          player.addPowerUp(powerUp);
         } catch (InvalidPowerUpException e) {
           // TODO: handle exception
         }

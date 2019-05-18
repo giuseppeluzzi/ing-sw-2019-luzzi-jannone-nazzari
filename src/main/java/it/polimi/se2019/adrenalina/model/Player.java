@@ -182,7 +182,7 @@ public class Player extends Observable implements Target, Serializable {
     for (int i = 0; i < num; i++) {
       damages.add(player);
     }
-    for (PlayerColor tag : tags) {
+    for (PlayerColor tag : new ArrayList<>(tags)) {
       if (tag == player) {
         damages.add(player);
         tags.remove(tag);
@@ -205,7 +205,7 @@ public class Player extends Observable implements Target, Serializable {
   public void addTags(PlayerColor player, int num) {
     for (int i = 0; i < num; i++) {
       if (tags.stream().filter(tag -> tag == player).count() >= 3) {
-        break;
+        return;
       }
       tags.add(player);
     }
