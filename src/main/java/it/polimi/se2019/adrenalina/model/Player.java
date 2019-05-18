@@ -9,15 +9,21 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class defining a single player.
  */
 public class Player extends Observable implements Target, Serializable {
 
-  // TODO: powerUps and weapon should have a remove*() method (whith which parameter?)
+  // TODO: powerUps and weapon should have a remove*() method (with which parameter?)
   private static final long serialVersionUID = -3827252611045096143L;
   private final String name;
   private final PlayerColor color;
@@ -28,6 +34,8 @@ public class Player extends Observable implements Target, Serializable {
   private boolean frenzy;
   private PlayerStatus status;
   private int powerUpCount;
+  private int killScore; // TODO: this should be updated in Final Frenzy mode
+  private int score;
 
   private final List<PlayerColor> damages;
   private final List<PlayerColor> tags;
@@ -51,6 +59,7 @@ public class Player extends Observable implements Target, Serializable {
     this.board = board;
     status = PlayerStatus.WAITING;
     frenzy = false;
+    killScore = 8;
 
     damages = new ArrayList<>();
     tags = new ArrayList<>();
@@ -172,6 +181,14 @@ public class Player extends Observable implements Target, Serializable {
     this.status = status;
   }
 
+  public int getScore() {
+    return score;
+  }
+
+  public void addScore(int points) {
+    score += points;
+  }
+
   public List<PlayerColor> getDamages() {
     return new ArrayList<>(damages);
   }
@@ -187,18 +204,79 @@ public class Player extends Observable implements Target, Serializable {
    */
   @Override
   public void addDamages(PlayerColor player, int num) {
-    for (int i = 0; i < num; i++) {
+    int maxDamages = 12 - damages.size();
+    for (int i = 0; i < Math.min(num, maxDamages); i++) {
       damages.add(player);
     }
     for (PlayerColor tag : new ArrayList<>(tags)) {
       if (tag == player) {
-        damages.add(player);
+        if (damages.size() < 12) {
+          damages.add(player);
+        }
         tags.remove(tag);
       }
     }
-    if (damages.size() >= 12) {
-      // TODO handle death, both in normal and domination mode
+    if (damages.size() == 12) {
+      board.getPlayerByColor(damages.get(11)).addTags(color, 1);
     }
+  }
+
+  public boolean isDead() {
+    return damages.size() >= 11;
+  }
+
+  /**
+   * Builds an list of unique PlayerColors who damaged this player. The list is ordered based on
+   * the points that each player should get as a reward.
+   * @return the list of PlayerColors
+   */
+  private List<PlayerColor> getPlayerRankings() {
+    List<PlayerColor> output = new ArrayList<>();
+    List<PlayerColor> distinctPlayers = damages.stream().distinct().collect(Collectors.toList());
+    EnumMap<PlayerColor, Integer> damageCount = new EnumMap<>(PlayerColor.class);
+    for (PlayerColor player : distinctPlayers) {
+      damageCount.put(player, Collections.frequency(damages, player));
+    }
+    while (! damageCount.isEmpty()) {
+      int max = Collections.max(damageCount.values());
+      List<PlayerColor> maxPlayers = new ArrayList<>();
+      Set<Map.Entry<PlayerColor, Integer>> entrySet = damageCount.entrySet();
+      for (Map.Entry<PlayerColor, Integer> entry : entrySet) {
+        if (entry.getValue() == max) {
+          maxPlayers.add(entry.getKey());
+          damageCount.remove(entry.getKey());
+        }
+      }
+      maxPlayers.sort(Comparator.comparing(damages::indexOf));
+      output.addAll(maxPlayers);
+    }
+    return output;
+  }
+
+  public void respawn() {
+    if (! isDead()) {
+      throw new IllegalStateException("Player is not dead");
+    }
+    if (! board.isFinalFrenzyActive()) {
+      board.getPlayerByColor(damages.get(0)).addScore(1); // first blood
+    }
+    int awardedScore = killScore;
+    for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
+      board.getPlayerByColor(playerColor).addScore(awardedScore);
+      if (awardedScore > 1) {
+        awardedScore -= 2;
+      }
+    }
+    if (! board.isDominationBoard()) {
+      board.addKillShot(new Kill(damages.get(10), damages.get(11) == damages.get(10)));
+    } else if (damages.get(11) == damages.get(10)) {
+      // TODO: choose a spawnpoint track and put a token there
+    }
+    if (killScore > 1) {
+      killScore -= 2;
+    }
+    damages.clear();
+    // TODO: collect a pwerUp, discard one and actually respawn on the map
   }
 
   public List<PlayerColor> getTags() {
@@ -273,13 +351,13 @@ public class Player extends Observable implements Target, Serializable {
    * @return true if possible, false otherwise
    */
   public boolean canReload(Weapon weapon) {
-    for (AmmoColor color : AmmoColor.getValidColor()) {
-      if (color == weapon.getBaseCost()) {
-        if (getAmmo(color) < weapon.getCost(color) + 1) {
+    for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
+      if (ammoColor == weapon.getBaseCost()) {
+        if (getAmmo(ammoColor) < weapon.getCost(ammoColor) + 1) {
           return false;
         }
       } else {
-        if (getAmmo(color) < weapon.getCost(color)) {
+        if (getAmmo(ammoColor) < weapon.getCost(ammoColor)) {
           return false;
         }
       }
@@ -327,6 +405,10 @@ public class Player extends Observable implements Target, Serializable {
 
   public void setCurrentWeapon(Weapon currentWeapon) {
     this.currentWeapon = currentWeapon;
+  }
+
+  public void setKillScore(int score) {
+    killScore = score;
   }
 
   /**

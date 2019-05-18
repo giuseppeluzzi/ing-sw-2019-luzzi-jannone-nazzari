@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import java.io.Serializable;
 
 public class PlayerCollectWeaponEvent implements Event {
 

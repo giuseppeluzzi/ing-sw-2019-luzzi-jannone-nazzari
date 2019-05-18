@@ -65,7 +65,6 @@ public class SquareTest {
   public void testCopyConstructor() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
         WALL, WALL, WALL, null);
-    Square square2 = new Square(square);
     square.setSpawnPoint(true);
     if (square.isSpawnPoint()) {
       Weapon weapon = new Weapon(1, 1, 1, AmmoColor.BLUE, "test");
@@ -108,7 +107,7 @@ public class SquareTest {
   @Test(expected = InvalidSquareException.class)
   public void testGetCardinalDirectionSameSquare() throws InvalidSquareException{
     Square square = new Square(2,2, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     base.getCardinalDirection(square);
   }
 

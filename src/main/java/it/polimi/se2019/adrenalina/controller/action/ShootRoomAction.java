@@ -5,7 +5,6 @@ import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import java.io.Serializable;
 
 public class ShootRoomAction extends ShootAction {
 
