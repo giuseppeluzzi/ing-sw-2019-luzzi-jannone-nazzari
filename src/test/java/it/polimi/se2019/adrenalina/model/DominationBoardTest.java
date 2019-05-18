@@ -46,7 +46,7 @@ public class DominationBoardTest {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         dominationBoard.setSquare(x,y,new Square(1,2,
-            SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
+            SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
       }
     }
 

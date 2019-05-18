@@ -20,8 +20,8 @@ public class WeaponTest {
   @Test
   public void testCopyConstructor() {
     Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
-    weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL));
-    weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW));
+    weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
+    weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW, null));
     weapon1.setGroupMoveUsed(5);
     weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2, false));
     weapon1.setSelectedEffect(weapon1.getEffects().get(0));

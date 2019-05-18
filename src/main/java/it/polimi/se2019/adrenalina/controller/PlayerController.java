@@ -39,7 +39,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         throw new IllegalArgumentException("This name is already used by another player in this board");
       }
     }
-    return new Player(name, color);
+    return new Player(name, color, boardController.getBoard());
   }
 
   public void update(PlayerMoveEvent event) {

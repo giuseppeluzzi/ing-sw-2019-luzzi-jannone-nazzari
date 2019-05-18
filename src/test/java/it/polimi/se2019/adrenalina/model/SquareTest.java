@@ -22,17 +22,17 @@ public class SquareTest {
 
   @Before
   public void initialize() {
-    base = new Square(2, 2, SquareColor.RED, WALL, WALL, WALL, WALL);
-    north = new Square(2, 3, SquareColor.RED, WALL, WALL, WALL, WALL);
-    south = new Square(2, 1, SquareColor.RED, WALL, WALL, WALL, WALL);
-    west = new Square(1, 2, SquareColor.RED, WALL, WALL, WALL, WALL);
-    east = new Square(3, 2, SquareColor.RED, WALL, WALL, WALL, WALL);
+    base = new Square(2, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+    north = new Square(2, 3, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+    south = new Square(2, 1, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+    west = new Square(1, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+    east = new Square(3, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testAddAmmoException() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     Weapon weapon = new Weapon(1,2,3, AmmoColor.RED, "test");
     square.setSpawnPoint(false);
     square.addWeapon(weapon);
@@ -41,7 +41,7 @@ public class SquareTest {
   @Test
   public void testSerialization() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     String json = square.serialize();
 
     if (json.isEmpty()) {
@@ -63,7 +63,7 @@ public class SquareTest {
   @Test
   public void testCopyConstructor() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     Square square2 = new Square(square);
     square.setSpawnPoint(true);
     if (square.isSpawnPoint()) {
@@ -99,7 +99,7 @@ public class SquareTest {
 
   @Test(expected = InvalidSquareException.class)
   public void testGetCardinalDirectionException() throws InvalidSquareException {
-    Square invalid = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL);
+    Square invalid = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL, null);
     base.getCardinalDirection(invalid);
   }
 
@@ -112,17 +112,17 @@ public class SquareTest {
   @Test(expected = IllegalArgumentException.class)
   public void testExceptionNeighbour()  {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     square.setNeighbour(Direction.NORTH, null);
   }
 
   @Test
   public void testGetPlayer() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     Square square2 = new Square(2,0, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
-    Player player = new Player("test", PlayerColor.GREEN);
+        WALL, WALL, WALL, null);
+    Player player = new Player("test", PlayerColor.GREEN, null);
     square.addPlayer(player);
 
     try {
@@ -141,9 +141,9 @@ public class SquareTest {
   @Test
   public void testExceptionGetPlayer() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
-    Player player = new Player("test", PlayerColor.GREEN);
-    Player player2 = new Player("test2", PlayerColor.GREEN);
+        WALL, WALL, WALL, null);
+    Player player = new Player("test", PlayerColor.GREEN, null);
+    Player player2 = new Player("test2", PlayerColor.GREEN, null);
     square.addPlayer(player);
     square.addPlayer(player2);
 
@@ -158,9 +158,9 @@ public class SquareTest {
   @Test
   public void testPlayers() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
-    Player player = new Player("test", PlayerColor.GREEN);
-    Player player2 = new Player("test2", PlayerColor.GREEN);
+        WALL, WALL, WALL, null);
+    Player player = new Player("test", PlayerColor.GREEN, null);
+    Player player2 = new Player("test2", PlayerColor.GREEN, null);
     square.addPlayer(player);
     square.addPlayer(player2);
 
@@ -172,9 +172,9 @@ public class SquareTest {
   @Test
   public void testEquals() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     Square square2 = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL);
+        WALL, WALL, WALL, null);
     if (!square.equals(square2)) {
       fail("equals not working correctly");
     }
