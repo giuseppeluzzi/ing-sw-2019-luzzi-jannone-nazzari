@@ -30,20 +30,19 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BoardController extends UnicastRemoteObject implements Runnable, Observer {
+
   private static final long serialVersionUID = 5651066204312828750L;
 
   private final transient Board board;
   private final AttackController attackController;
   private final PlayerController playerController;
 
-  private final HashMap<Player, ClientInterface> clients;
+  private final transient List<ClientInterface> clients;
 
   private final HashMap<ClientInterface, BoardViewInterface> boardViews;
   private final HashMap<ClientInterface, CharactersViewInterface> charactersViews;
@@ -63,14 +62,13 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       board = new Board();
     }
 
-    clients = new HashMap<>();
+    clients = new ArrayList<>();
     boardViews = new HashMap<>();
     charactersViews = new HashMap<>();
     playerDashboardViews = new HashMap<>();
     maps = new ArrayList<>();
     timer = new Timer();
     random = new Random();
-
 
     attackController = new AttackController(this);
     playerController = new PlayerController(this);
@@ -79,16 +77,40 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     loadMaps();
   }
 
+  public Board getBoard() {
+    return board;
+  }
+
+  public AttackController getAttackController() {
+    return attackController;
+  }
+
+  public PlayerController getPlayerController() {
+    return playerController;
+  }
+
   private void loadMaps() {
     try (Stream<Path> weaponStream = Files.walk(
         Paths.get(BoardController.class.getResource("/maps").toURI()))) {
-      weaponStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable).forEach(this::loadMap);
+      weaponStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable)
+          .forEach(this::loadMap);
     } catch (URISyntaxException | IOException e) {
       Log.critical("No maps found");
     }
     if (maps.isEmpty()) {
       Log.critical("No maps found");
     }
+  }
+
+  public List<GameMap> getValidMaps(int players) {
+    List<GameMap> validMaps = new ArrayList<>();
+    for (GameMap map : new ArrayList<>(maps)) {
+      if (map.getMinPlayers() == 0 || map.getMaxPlayers() == 0 ||
+          players >= map.getMinPlayers() && players <= map.getMaxPlayers()) {
+        validMaps.add(map);
+      }
+    }
+    return validMaps;
   }
 
   private void loadMap(Path mapPath) {
@@ -123,29 +145,15 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
-  public Board getBoard() {
-    return board;
-  }
-
-  public AttackController getAttackController() {
-    return attackController;
-  }
-
-  public PlayerController getPlayerController() {
-    return playerController;
-  }
-
   /**
-   * Adds a new player to a board in LOBBY status or a returning
-   * player (who had previously disconnected) to a board where a game
-   * is in progress.
+   * Adds a new player to a board in LOBBY status or a returning player (who had previously
+   * disconnected) to a board where a game is in progress.
+   *
    * @param player the player to be added.
    * @throws FullBoardException thrown if the board already has 5 players.
-   * @throws PlayingBoardException thrown if the status of the board is not
-   * LOBBY (a game is already in progress or ended) and the player does not
-   * belong to that game.
-   * @throws EndedGameException thrown if this board hosts a game which has
-   * already ended.
+   * @throws PlayingBoardException thrown if the status of the board is not LOBBY (a game is already
+   * in progress or ended) and the player does not belong to that game.
+   * @throws EndedGameException thrown if this board hosts a game which has already ended.
    */
   public void addPlayer(Player player) throws FullBoardException,
       PlayingBoardException, EndedGameException {
@@ -179,24 +187,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
     getActivePlayers().stream().forEach(p -> {
       try {
-        boardViews.get(getPlayerClient(p)).startTimer(Configuration.getInstance().getJoinTimeout());
-      } catch (InvalidPlayerException ignored) {
-        //
+        boardViews.get(p.getClient()).startTimer(Configuration.getInstance().getJoinTimeout());
       } catch (RemoteException e) {
         Log.exception(e);
       }
     });
-  }
-
-  public List<GameMap> getValidMaps(int players) {
-    List<GameMap> validMaps = new ArrayList<>();
-    for (GameMap map: new ArrayList<>(maps)) {
-      if (map.getMinPlayers() == 0 || map.getMaxPlayers() == 0 ||
-          players >= map.getMinPlayers() && players <= map.getMaxPlayers()) {
-        validMaps.add(map);
-      }
-    }
-    return validMaps;
   }
 
   private void startGame() {
@@ -205,7 +200,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       selectedMap = validMaps.get(random.nextInt(maps.size())).getId();
     }
 
-    for (GameMap map: new ArrayList<>(maps)) {
+    for (GameMap map : new ArrayList<>(maps)) {
       if (map.getId() != selectedMap) {
         maps.remove(map);
       }
@@ -216,7 +211,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   private void setViews(Player player) {
     try {
-      ClientInterface client = clients.get(player);
+      ClientInterface client = player.getClient();
       BoardViewInterface boardView = client.getBoardView();
       CharactersViewInterface charactersView = client.getCharactersView();
       PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
@@ -234,21 +229,24 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Removes a player from a board in LOBBY status or sets the player's
-   * status to DISCONNECTED if the game on that board is already in progress.
+   * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
+   * the game on that board is already in progress.
+   *
    * @param player the player to be removed.
    */
-  void removePlayer(Player player) {
+  public void removePlayer(Player player) throws InvalidPlayerException {
     if (board.getStatus() == BoardStatus.LOBBY) {
       board.removePlayer(player.getColor());
     } else {
       player.setStatus(PlayerStatus.DISCONNECTED);
-      removePlayerClient(player);
+      clients.remove(player.getClient());
+      player.setClient(null);
     }
   }
 
   /**
    * Gets a list of online player of this board
+   *
    * @return a list of Player
    */
   public List<Player> getActivePlayers() {
@@ -257,36 +255,26 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         .collect(Collectors.toList());
   }
 
-  public ClientInterface getPlayerClient(Player player) throws InvalidPlayerException {
-    if (!clients.containsKey(player)) {
-      throw new InvalidPlayerException("This player doesn't exists");
-    }
-    return clients.get(player);
+
+  public List<ClientInterface> getClients() {
+    return new ArrayList<>(clients);
   }
 
-  public Map<Player, ClientInterface> getClients() {
-    return new HashMap<>(clients);
+  public void addClient(ClientInterface client) {
+    clients.add(client);
   }
 
   public boolean containsClient(ClientInterface client) {
-    return clients.containsValue(client);
+    return clients.contains(client);
   }
 
   public Player getPlayerByClient(ClientInterface client) throws InvalidPlayerException {
-    for (Entry<Player, ClientInterface> c: clients.entrySet()) {
-      if (c.getValue().equals(client)) {
-        return c.getKey();
-      }
+    try {
+      board.getPlayerByColor(client.getPlayerColor());
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
     throw new InvalidPlayerException("This player doesn't exists");
-  }
-
-  public void setPlayerClient(Player player, ClientInterface client) {
-    clients.put(player, client);
-  }
-
-  public void removePlayerClient(Player player) {
-    clients.remove(player);
   }
 
   public void setClientBoardView(ClientInterface client, BoardViewInterface view) {

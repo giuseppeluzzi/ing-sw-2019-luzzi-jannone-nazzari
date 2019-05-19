@@ -5,7 +5,9 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
+import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,17 +27,23 @@ public class Player extends Observable implements Target, Serializable {
 
   // TODO: powerUps and weapon should have a remove*() method (with which parameter?)
   private static final long serialVersionUID = -3827252611045096143L;
+
+  public static final int OVERKILL_DEATH = 12;
+  public static final int NORMAL_DEATH = 11;
+
+  private final transient Board board;
+
   private final String name;
   private final PlayerColor color;
   private Square square;
-  private transient Board board;
-  private int points;
+  private PlayerStatus status;
+
   private int deaths;
   private boolean frenzy;
-  private PlayerStatus status;
+
   private int powerUpCount;
-  private int killScore; // TODO: this should be updated in Final Frenzy mode
   private int score;
+  private int killScore; // TODO: this should be updated in Final Frenzy mode
 
   private final List<PlayerColor> damages;
   private final List<PlayerColor> tags;
@@ -44,6 +52,8 @@ public class Player extends Observable implements Target, Serializable {
   private final HashMap<AmmoColor, Integer> ammo;
 
   private Weapon currentWeapon;
+
+  private transient ClientInterface client;
 
   private final boolean publicCopy;
 
@@ -87,7 +97,7 @@ public class Player extends Observable implements Target, Serializable {
       throw new IllegalArgumentException("Argument player can't be null");
     }
     this.publicCopy = publicCopy;
-    this.board = player.board;
+    board = player.board;
     name = player.name;
     color = player.color;
 
@@ -119,7 +129,7 @@ public class Player extends Observable implements Target, Serializable {
       square = new Square(player.square);
     }
 
-    points = player.points;
+    score = player.score;
     deaths = player.deaths;
     frenzy = player.frenzy;
     status = player.status;
@@ -157,14 +167,6 @@ public class Player extends Observable implements Target, Serializable {
     return color;
   }
 
-  public int getPoints() {
-    return points;
-  }
-
-  public void setPoints(int points) {
-    this.points = points;
-  }
-
   public int getDeaths() {
     return deaths;
   }
@@ -193,6 +195,14 @@ public class Player extends Observable implements Target, Serializable {
     return new ArrayList<>(damages);
   }
 
+  public ClientInterface getClient() {
+    return client;
+  }
+
+  public void setClient(ClientInterface client) {
+    this.client = client;
+  }
+
   @Override
   public Player getPlayer() {
     return this;
@@ -200,29 +210,34 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a new damage to a player including damages given by tags and, possibly, inflicts death.
-   * @param player color of the player that inflicted the damage
+   * @param killerColor color of the killer that inflicted the damage
    */
   @Override
-  public void addDamages(PlayerColor player, int num) {
-    int maxDamages = 12 - damages.size();
+  public void addDamages(PlayerColor killerColor, int num) {
+    int maxDamages = OVERKILL_DEATH - damages.size();
     for (int i = 0; i < Math.min(num, maxDamages); i++) {
-      damages.add(player);
+      damages.add(killerColor);
     }
     for (PlayerColor tag : new ArrayList<>(tags)) {
-      if (tag == player) {
-        if (damages.size() < 12) {
-          damages.add(player);
+      if (tag == killerColor) {
+
+        if (damages.size() < OVERKILL_DEATH) {
+          damages.add(killerColor);
         }
         tags.remove(tag);
       }
     }
-    if (damages.size() == 12) {
-      board.getPlayerByColor(damages.get(11)).addTags(color, 1);
+    if (damages.size() == OVERKILL_DEATH) {
+      try {
+        board.getPlayerByColor(damages.get(NORMAL_DEATH)).addTags(color, 1);
+      } catch (InvalidPlayerException ignored) {
+        //
+      }
     }
   }
 
   public boolean isDead() {
-    return damages.size() >= 11;
+    return damages.size() >= NORMAL_DEATH;
   }
 
   /**
@@ -258,18 +273,26 @@ public class Player extends Observable implements Target, Serializable {
       throw new IllegalStateException("Player is not dead");
     }
     if (! board.isFinalFrenzyActive()) {
-      board.getPlayerByColor(damages.get(0)).addScore(1); // first blood
+      try {
+        board.getPlayerByColor(damages.get(0)).addScore(1); // first blood
+      } catch (InvalidPlayerException ignored) {
+        //
+      }
     }
     int awardedScore = killScore;
     for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
-      board.getPlayerByColor(playerColor).addScore(awardedScore);
+      try {
+        board.getPlayerByColor(playerColor).addScore(awardedScore);
+      } catch (InvalidPlayerException ignored) {
+        //
+      }
       if (awardedScore > 1) {
         awardedScore -= 2;
       }
     }
     if (! board.isDominationBoard()) {
-      board.addKillShot(new Kill(damages.get(10), damages.get(11) == damages.get(10)));
-    } else if (damages.get(11) == damages.get(10)) {
+      board.addKillShot(new Kill(damages.get(10), damages.get(NORMAL_DEATH) == damages.get(10)));
+    } else if (damages.get(NORMAL_DEATH) == damages.get(10)) {
       // TODO: choose a spawnpoint track and put a token there
     }
     if (killScore > 1) {
@@ -366,16 +389,16 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   /**
-   * Add value to ammoColor entry, ammo will be added only up to three unit per color.
+   * Set the quantity for an AmmoColor, ammo will be added only up to three unit per color.
    * @param ammoColor key
-   * @param value how much will be added
-   * @throws InvalidAmmoException thrown if the future value of ammo is grather than three
+   * @param value how many ammo will be added
    */
-  public void setAmmo(AmmoColor ammoColor, int value) throws InvalidAmmoException {
-    if (ammo.get(ammoColor) <= 3 - value) {
-      ammo.put(ammoColor, ammo.get(ammoColor) + value);
+  public void setAmmo(AmmoColor ammoColor, int value) {
+    int currentAmmo = ammo.get(ammoColor);
+    if (currentAmmo + value >= 3) {
+      ammo.put(ammoColor, 3);
     } else {
-      throw new InvalidAmmoException("Too many units");
+      ammo.put(ammoColor, currentAmmo + value);
     }
   }
 

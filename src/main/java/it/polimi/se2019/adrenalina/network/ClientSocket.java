@@ -63,11 +63,6 @@ public class ClientSocket extends Client implements Runnable {
   }
 
   @Override
-  public void ping() {
-    // useless
-  }
-
-  @Override
   public void disconnect() {
     try {
       bufferedReader.close();

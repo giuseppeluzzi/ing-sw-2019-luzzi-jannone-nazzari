@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
@@ -84,7 +85,11 @@ public class SelectAction implements Action {
       case ATTACK_TARGET:
         targets.addAll(board.getPlayers());
         if (board.isDominationBoard()) {
-          // TODO: add spawnpoints
+          for (Square square: board.getSquares()) {
+            if (square.isSpawnPoint()) {
+              targets.add(square);
+            }
+          }
         }
         break;
       case ATTACK_SQUARE:

@@ -22,6 +22,7 @@ public class ClientRMI extends Client {
 
   private static final long serialVersionUID = 5097938777989686167L;
   private volatile boolean running = true;
+
   private Player player;
 
   private BoardViewInterface boardView;
@@ -72,11 +73,6 @@ public class ClientRMI extends Client {
   @Override
   public void showMessage(String text) {
     Log.info(text);
-  }
-
-  @Override
-  public void ping() {
-    // useless
   }
 
   @Override

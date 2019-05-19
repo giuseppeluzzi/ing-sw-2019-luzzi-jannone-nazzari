@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -48,23 +49,25 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerCollectAmmoEvent event) {
     Board board = boardController.getBoard();
-    Player player = board.getPlayerByColor(event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return ;
+    }
+
     if (board.getSquare(event.getSquareX(), event.getSquareY()).hasAmmoCard()) {
       AmmoCard ammoCard = board.getSquare(event.getSquareX(), event.getSquareY()).getAmmoCard();
       for (AmmoColor color : AmmoColor.getValidColor()) {
-        try {
-          player.setAmmo(color, ammoCard.getAmmo(color));
-        } catch (InvalidAmmoException e) {
-          // TODO: handle exception
-        }
+        player.setAmmo(color, ammoCard.getAmmo(color));
       }
       for (int i = 0; i < ammoCard.getPowerUp(); i++) {
+        PowerUp powerUp = board.getPowerUps().get(0);
+        board.drawPowerUp(powerUp);
         try {
-          PowerUp powerUp = board.getPowerUps().get(0);
-          board.drawPowerUp(powerUp);
           player.addPowerUp(powerUp);
         } catch (InvalidPowerUpException e) {
-          // TODO: handle exception
+          board.undrawPowerUp(powerUp);
         }
       }
     }

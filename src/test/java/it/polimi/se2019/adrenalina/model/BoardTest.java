@@ -6,13 +6,14 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.Log;
 import org.junit.Test;
 
 public class BoardTest {
   @Test
-  public void testCopyConstructor() {
+  public void testCopyConstructor() throws InvalidPlayerException {
     Board board = new Board();
     Board board2;
     Board board3;
@@ -202,7 +203,7 @@ public class BoardTest {
   }
 
   @Test
-  public void testGetPlayerByColor() {
+  public void testGetPlayerByColor() throws InvalidPlayerException {
     Board board = new Board();
     Player player1 = new Player("test1", PlayerColor.YELLOW, board);
     Player player2 = new Player("test2", PlayerColor.BLUE, board);
@@ -215,8 +216,8 @@ public class BoardTest {
     );
   }
 
-  @Test (expected = IllegalArgumentException.class)
-  public void testGetPlayerByColorException() {
+  @Test (expected = InvalidPlayerException.class)
+  public void testGetPlayerByColorException() throws InvalidPlayerException {
     Board board = new Board();
     Player player = new Player("test", PlayerColor.YELLOW, board);
     board.addPlayer(player);

@@ -5,11 +5,13 @@ import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -327,7 +329,6 @@ public class Board extends Observable implements Serializable {
     return new ArrayList<>(takenWeapons);
   }
 
-
   /**
    * Adds a powerUp to the Board.
    * @param powerup the powerUp to add to the Board
@@ -349,6 +350,22 @@ public class Board extends Observable implements Serializable {
     powerUps.remove(powerUp);
     takenPowerUps.add(powerUp);
   }
+
+  /**
+   * Marks a powerUp as not used by moving it from the takenPowerUps list to the
+   * powerUps list.
+   * @param powerUp the powerUp to be marked as unused
+   * @exception  IllegalArgumentException thrown if powerUp is not in the Board
+   */
+  public void undrawPowerUp(PowerUp powerUp) {
+    if (! takenPowerUps.contains(powerUp)) {
+      throw new IllegalArgumentException("PowerUp not present");
+    }
+    takenPowerUps.remove(powerUp);
+    powerUps.add(powerUp);
+    Collections.shuffle(powerUps);
+  }
+
 
   /**
    * Returns a List of powerUps in the Board.
@@ -454,22 +471,23 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Retrieves a player by its color.
-   * @throws IllegalArgumentException thrown if there are no players of the specified color
+   * @throws InvalidPlayerException thrown if there are no players of the specified color
    */
-  public Player getPlayerByColor(PlayerColor color) {
+  public Player getPlayerByColor(PlayerColor color) throws InvalidPlayerException {
     for (Player player : players) {
       if (player.getColor() == color) {
         return player;
       }
     }
-    throw new IllegalArgumentException("No such player");
+    throw new InvalidPlayerException("No such player");
   }
 
   /**
    * Removes the player of a given color.
    * @param color the color of the player to remove
+   * @throws InvalidPlayerException thrown if there are no players of the specified color
    */
-  public void removePlayer(PlayerColor color) {
+  public void removePlayer(PlayerColor color) throws InvalidPlayerException {
     players.remove(getPlayerByColor(color));
   }
 

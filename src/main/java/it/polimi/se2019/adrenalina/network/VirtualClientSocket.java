@@ -23,7 +23,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.rmi.RemoteException;
 
 public class VirtualClientSocket implements ClientInterface, Runnable {
 
@@ -33,6 +32,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   private String name;
   private PlayerColor playerColor;
   private boolean domination;
+  private Long lastPing;
 
   private PrintWriter printWriter;
   private BufferedReader bufferedReader;
@@ -111,7 +111,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
         }
       }
     } catch (InvalidPlayerException | IOException ignored) {
-      server.onClientDisconnect(this);
+      server.clientDisconnect(this);
     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
       Log.severe("Unexpected server event!");
     }
@@ -153,8 +153,14 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   @Override
   public void ping() {
     if (clientSocket.isClosed() || !clientSocket.isConnected()) {
-      server.onClientDisconnect(this);
+      server.clientDisconnect(this);
     }
+    lastPing = System.currentTimeMillis();
+  }
+
+  @Override
+  public Long getLastPing() {
+    return lastPing;
   }
 
   @Override

@@ -18,9 +18,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class Server extends UnicastRemoteObject implements ServerInterface {
+
   private static final long serialVersionUID = 1666613338633244401L;
   private static final int PING_INTERVAL = 500;
 
@@ -34,23 +34,31 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
     new Thread(() -> {
       while (running) {
-        for (BoardController game: new ArrayList<>(games)) {
-          for (Entry<Player, ClientInterface> client: game.getClients().entrySet()) {
-            try {
-              client.getValue().ping();
-            } catch (IOException e) {
-              onClientDisconnect(client.getValue());
-            }
-          }
-          try {
-            sleep(PING_INTERVAL);
-          } catch (InterruptedException e) {
-            Log.severe("Server", "Pinging interrupted! Thread stopped.");
-            Thread.currentThread().interrupt();
-          }
+        pingAll();
+        try {
+          sleep(PING_INTERVAL);
+        } catch (InterruptedException e) {
+          Log.severe("Server", "Pinging interrupted! Thread stopped.");
+          Thread.currentThread().interrupt();
         }
       }
     }).start();
+  }
+
+  /**
+   * Pings every client in every game
+   */
+  private void pingAll() {
+    for (BoardController game: new ArrayList<>(games)) {
+      for (ClientInterface client: game.getClients()) {
+        try {
+          client.ping();
+          Long lastPing = client.getLastPing();
+        } catch (IOException e) {
+          clientDisconnect(client);
+        }
+      }
+    }
   }
 
   /**
@@ -60,6 +68,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
    */
   @Override
   public void addClient(ClientInterface client) throws RemoteException {
+    pingAll();
     Log.info("Server", "New client connected! (Name: " + client.getName() + " - Domination: " + client.isDomination() + ")");
 
     BoardController game = getPendingGame(client.isDomination());
@@ -67,10 +76,11 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
       game = new BoardController(client.isDomination());
       games.add(game);
     }
+    game.addClient(client);
 
     Player player = game.getPlayerController().createPlayer(client.getName(),
         PlayerColor.values()[game.getBoard().getPlayers().size()]);
-    game.setPlayerClient(player, client);
+    player.setClient(client);
 
     try {
       game.addPlayer(player);
@@ -83,7 +93,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     }
 
     client.getBoardView().update(new SpawnPointDamageEvent(PlayerColor.YELLOW, AmmoColor.RED));
-
     playing.put(player, game);
   }
 
@@ -145,13 +154,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
    * Called on client disconnection
    * @param client disconnected client
    */
-  public void onClientDisconnect(ClientInterface client) {
+  public void clientDisconnect(ClientInterface client) {
     Log.severe("A client disconnected!");
     for (BoardController game: games) {
       if (game.containsClient(client)) {
         try {
           Player player = game.getPlayerByClient(client);
-          game.removePlayerClient(player);
+          Log.info("p name " + player.getName());
+          game.removePlayer(player);
           playing.remove(player);
           break;
         } catch (InvalidPlayerException ignored) {
@@ -159,6 +169,5 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
       }
     }
-    // TODO: remove client?
   }
 }
