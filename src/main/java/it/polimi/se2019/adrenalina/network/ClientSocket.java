@@ -23,24 +23,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-public class ClientSocket implements ClientInterface, Runnable {
+public class ClientSocket extends Client implements Runnable {
 
-  private final String name;
-  private PlayerColor playerColor;
-  private final boolean domination;
+  private static final long serialVersionUID = 5069992236971339205L;
+  private transient Socket socket;
+  private transient PrintWriter printWriter;
+  private transient BufferedReader bufferedReader;
 
-  private Socket socket;
-
-  private PrintWriter printWriter;
-  private BufferedReader bufferedReader;
-
-  private final BoardViewInterface boardView;
-  private final CharactersViewInterface charactersView;
-  private final PlayerDashboardsViewInterface playerDashboardsView;
+  private final transient BoardViewInterface boardView;
+  private final transient CharactersViewInterface charactersView;
+  private final transient PlayerDashboardsViewInterface playerDashboardsView;
 
   public ClientSocket(String name, boolean domination) {
-    this.name = name;
-    this.domination = domination;
+    super(name, domination);
 
     boardView = new TUIBoardView(this);
     charactersView = new CharactersView();
@@ -60,26 +55,6 @@ public class ClientSocket implements ClientInterface, Runnable {
 
     sendEvent(new PlayerConnectEvent(name, domination));
     run();
-  }
-
-  @Override
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public PlayerColor getPlayerColor() {
-    return playerColor;
-  }
-
-  @Override
-  public void setPlayerColor(PlayerColor color) {
-    playerColor = color;
-  }
-
-  @Override
-  public boolean isDomination() {
-    return domination;
   }
 
   @Override

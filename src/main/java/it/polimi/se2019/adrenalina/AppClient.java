@@ -1,12 +1,13 @@
 package it.polimi.se2019.adrenalina;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public class AppClient {
@@ -58,7 +59,8 @@ public class AppClient {
       case '1':
         // RMI
         try {
-          client = new Client(name, domination);
+          client = (ClientInterface) UnicastRemoteObject.exportObject((ClientInterface) new ClientRMI(name, domination), 0);
+
         } catch (RemoteException e) {
           Log.exception(e);
         }

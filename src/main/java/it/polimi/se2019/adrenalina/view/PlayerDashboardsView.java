@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerDashboardsView extends Observable implements PlayerDashboardsViewInterface, Observer {
+
+  private static final long serialVersionUID = -6150690431150041388L;
   private final List<Player> players;
 
   public PlayerDashboardsView() {

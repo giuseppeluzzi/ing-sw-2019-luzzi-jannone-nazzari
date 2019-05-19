@@ -13,6 +13,7 @@ public interface ClientInterface extends Remote {
   PlayerColor getPlayerColor() throws RemoteException;
   void setPlayerColor(PlayerColor color) throws RemoteException;
   boolean isDomination() throws RemoteException;
+  void setDomination(boolean domination) throws RemoteException;
 
   void showMessage(String text) throws RemoteException;
   void ping() throws IOException;

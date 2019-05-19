@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
 
 public class VirtualClientSocket implements ClientInterface, Runnable {
+
   private final Socket clientSocket;
   private final Server server;
 
@@ -101,7 +102,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
           case PLAYER_COLLECT_WEAPON_EVENT:
           case PLAYER_POWERUP_EVENT:
             charactersView.getClass()
-                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass()).invoke(charactersView, event);
+                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
+                .invoke(charactersView, event);
             break;
           default:
             Log.severe("Unexpected server event!");
@@ -122,7 +124,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   }
 
   @Override
-  public PlayerColor getPlayerColor() throws RemoteException {
+  public PlayerColor getPlayerColor() {
     return playerColor;
   }
 
@@ -135,6 +137,11 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   public boolean isDomination() {
     // TODO: check if connected
     return domination;
+  }
+
+  @Override
+  public void setDomination(boolean domination) {
+    this.domination = domination;
   }
 
   @Override
@@ -193,7 +200,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
     return playerDashboardsView;
   }
 
-  public void sendEvent(Event event){
+  public void sendEvent(Event event) {
     printWriter.println(event.serialize());
     printWriter.flush();
   }

@@ -14,9 +14,10 @@ import java.util.List;
 
 public class VirtualCharactersView extends Observable implements CharactersViewInterface, Observer {
 
-  private final ArrayList<Player> players;
+  private static final long serialVersionUID = -6715889122608916050L;
+  private final transient ArrayList<Player> players;
   private Player selectedPlayer;
-  private final VirtualClientSocket clientSocket;
+  private final transient VirtualClientSocket clientSocket;
 
   public VirtualCharactersView(VirtualClientSocket clientSocket) {
     this.clientSocket = clientSocket;

@@ -6,10 +6,11 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface CharactersViewInterface extends RemoteObservable {
+public interface CharactersViewInterface extends RemoteObservable, Serializable {
   List<Player> getPlayers() throws RemoteException;
   void addPlayer(Player player) throws RemoteException;
   void setSelected(Player player) throws RemoteException;

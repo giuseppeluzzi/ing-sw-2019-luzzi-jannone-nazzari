@@ -18,8 +18,7 @@ import java.io.Serializable;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.List;
 
-public abstract class BoardView extends Observable implements Observer, BoardViewInterface,
-    Serializable {
+public abstract class BoardView extends Observable implements Observer, BoardViewInterface {
 
   private static final long serialVersionUID = 2545732483334205102L;
   private Board board;

@@ -12,10 +12,11 @@ import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface BoardViewInterface extends RemoteObservable {
+public interface BoardViewInterface extends RemoteObservable, Serializable {
   Board getBoard() throws RemoteException;
   void setBoard(Board board) throws RemoteException;
 

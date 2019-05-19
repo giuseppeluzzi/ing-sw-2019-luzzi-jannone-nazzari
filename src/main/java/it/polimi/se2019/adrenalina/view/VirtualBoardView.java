@@ -18,8 +18,9 @@ import java.util.List;
 
 public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
 
-  private Board board;
-  private final VirtualClientSocket clientSocket;
+  private static final long serialVersionUID = -4988173252714241460L;
+  private transient Board board;
+  private final transient VirtualClientSocket clientSocket;
 
   public VirtualBoardView(VirtualClientSocket clientSocket) {
     this.clientSocket = clientSocket;

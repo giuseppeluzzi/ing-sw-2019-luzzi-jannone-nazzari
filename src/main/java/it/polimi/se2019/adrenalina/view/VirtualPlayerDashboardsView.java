@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualPlayerDashboardsView extends Observable implements PlayerDashboardsViewInterface, Observer {
-  private final List<Player> players;
-  private final VirtualClientSocket clientSocket;
+
+  private static final long serialVersionUID = 4893523547038046745L;
+  private final transient List<Player> players;
+  private final transient VirtualClientSocket clientSocket;
 
   public VirtualPlayerDashboardsView(VirtualClientSocket clientSocket) {
     this.clientSocket = clientSocket;
