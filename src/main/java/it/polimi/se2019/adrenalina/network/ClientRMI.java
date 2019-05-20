@@ -11,7 +11,6 @@ import it.polimi.se2019.adrenalina.view.CharactersView;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
-import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

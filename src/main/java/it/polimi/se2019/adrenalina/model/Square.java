@@ -280,6 +280,30 @@ public class Square extends Observable implements Target, Serializable {
     return posX + posY + color.ordinal();
   }
 
+  /**
+   * Check if x coordinate is within valid range.
+   * @param x coordinate
+   * @return true if valid, false otherwise
+   */
+  public static boolean isXValid(int x) {
+    if (x >= 0 && x < 4) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Check if y coordinate is within valid range.
+   * @param y coordinate
+   * @return true if valid, false otherwise
+   */
+  public static boolean isYValid(int y) {
+    if (y >= 0 && y < 3) {
+      return true;
+    }
+    return false;
+  }
+
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();

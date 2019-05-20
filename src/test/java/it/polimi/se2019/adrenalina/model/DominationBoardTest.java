@@ -45,7 +45,7 @@ public class DominationBoardTest {
     dominationBoard.addRedDamage(PlayerColor.GREY);
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
-        dominationBoard.setSquare(x,y,new Square(1,2,
+        dominationBoard.setSquare(new Square(x,y,
             SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
       }
     }

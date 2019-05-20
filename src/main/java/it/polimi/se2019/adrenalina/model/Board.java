@@ -150,49 +150,83 @@ public class Board extends Observable implements Serializable {
    * Adds a square to the board. Besides adding it to the grid, it sets {@code east}, {@code west},
    * {@code north} and {@code south} attributes and it also changes its neighbour squares
    * accordingly.
-   * @param x x coordinate
-   * @param y y coordinate
    * @param square Square to add, must not be null
-   * @throws IllegalArgumentException thrown if x or y are not within the size
-   * of the board
+   * @throws IllegalArgumentException thrown if square is null
    */
-  public void setSquare(int x, int y, Square square) {
-    if (x < 0 ||  x > 3 || y < 0 || y > 2) {
-      throw new IllegalArgumentException("Invalid square coordinates");
-    }
+  public void setSquare(Square square) {
     if (square == null) {
       throw new IllegalArgumentException("Square parameter must not be null");
     }
-    Square neighbour;
-    if (x > 0 && square.getEdge(Direction.WEST) != BorderType.WALL) {
-      neighbour = getSquare(x - 1, y);
+    setNorthNeighbour(square, this, true);
+    setEastNeighbour(square, this, true);
+    setSouthNeighbour(square, this, true);
+    setWestNeighbour(square, this, true);
+
+    grid[square.getPosX()][square.getPosY()] = square;
+  }
+
+  /**
+   * Set northern neighbour of a square if it exists.
+   * @param square whose neighbour will be set
+   */
+  private static void setNorthNeighbour(Square square, Board board, boolean reciprocal) {
+    if (square.getPosY() > 0 && square.getEdge(Direction.NORTH) != BorderType.WALL) {
+      Square neighbour = board.getSquare(square.getPosX(), square.getPosY() - 1);
       if (neighbour != null) {
-       neighbour.setNeighbour(Direction.EAST, square);
-       square.setNeighbour(Direction.WEST, neighbour);
-      }
-    }
-    if (x < 3 && square.getEdge(Direction.EAST) != BorderType.WALL) {
-      neighbour = getSquare(x + 1, y);
-      if (neighbour != null) {
-        neighbour.setNeighbour(Direction.WEST, square);
-        square.setNeighbour(Direction.EAST, neighbour);
-      }
-    }
-    if (y > 0 && square.getEdge(Direction.NORTH) != BorderType.WALL) {
-      neighbour = getSquare(x, y - 1);
-      if (neighbour != null) {
-        neighbour.setNeighbour(Direction.SOUTH, square);
+        if (reciprocal) {
+          neighbour.setNeighbour(Direction.SOUTH, square);
+        }
         square.setNeighbour(Direction.NORTH, neighbour);
       }
     }
-    if (y < 2 && square.getEdge(Direction.SOUTH) != BorderType.WALL) {
-      neighbour = getSquare(x, y + 1);
+  }
+
+  /**
+   * Set southern neighbour of a square if it exists.
+   * @param square whose neighbour will be set
+   */
+  private static void setSouthNeighbour(Square square, Board board, boolean reciprocal) {
+    if (square.getPosY() < 2 && square.getEdge(Direction.SOUTH) != BorderType.WALL) {
+      Square neighbour = board.getSquare(square.getPosX(), square.getPosY() + 1);
       if (neighbour != null) {
-        neighbour.setNeighbour(Direction.NORTH, square);
+        if (reciprocal) {
+          neighbour.setNeighbour(Direction.NORTH, square);
+        }
         square.setNeighbour(Direction.SOUTH, neighbour);
       }
     }
-    grid[x][y] = square;
+  }
+
+  /**
+   * Set eastern neighbour of a square if it exists.
+   * @param square whose neighbour will be set
+   */
+  private static void setEastNeighbour(Square square, Board board, boolean reciprocal) {
+    if (square.getPosX() < 3 && square.getEdge(Direction.EAST) != BorderType.WALL) {
+      Square neighbour = board.getSquare(square.getPosX() + 1, square.getPosY());
+      if (neighbour != null) {
+        if (reciprocal) {
+          neighbour.setNeighbour(Direction.WEST, square);
+        }
+        square.setNeighbour(Direction.EAST, neighbour);
+      }
+    }
+  }
+
+  /**
+   * Set western neighbour of a square if it exists.
+   * @param square whose neighbour will be set
+   */
+  private static void setWestNeighbour(Square square, Board board, boolean reciprocal) {
+    if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL) {
+      Square neighbour = board.getSquare(square.getPosX() - 1, square.getPosY());
+      if (neighbour != null) {
+        if (reciprocal) {
+          neighbour.setNeighbour(Direction.EAST, square);
+        }
+        square.setNeighbour(Direction.WEST, neighbour);
+      }
+    }
   }
 
   /**
@@ -204,7 +238,7 @@ public class Board extends Observable implements Serializable {
    * of the board
    */
   public Square getSquare(int x, int y) {
-    if (x < 0 ||  x > 3 || y < 0 || y > 2) {
+    if (!Square.isXValid(x) || !Square.isYValid(y)) {
       throw new IllegalArgumentException("Invalid square coordinates");
     }
     return grid[x][y];
@@ -549,18 +583,10 @@ public class Board extends Observable implements Serializable {
         }
       }
       square.resetNeighbours();
-      if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL && board.getSquare(square.getPosX() - 1, square.getPosY()) != null) {
-        square.setNeighbour(Direction.WEST, board.getSquare(square.getPosX() - 1, square.getPosY()));
-      }
-      if (square.getPosX() < 3 && square.getEdge(Direction.EAST) != BorderType.WALL && board.getSquare(square.getPosX() + 1, square.getPosY()) != null) {
-        square.setNeighbour(Direction.EAST, board.getSquare(square.getPosX() + 1, square.getPosY()));
-      }
-      if (square.getPosY() > 0 && square.getEdge(Direction.NORTH) != BorderType.WALL && board.getSquare(square.getPosX(), square.getPosY() - 1) != null) {
-        square.setNeighbour(Direction.NORTH, board.getSquare(square.getPosX(), square.getPosY() - 1));
-      }
-      if (square.getPosY() < 2 && square.getEdge(Direction.SOUTH) != BorderType.WALL && board.getSquare(square.getPosX(), square.getPosY() + 1) != null) {
-        square.setNeighbour(Direction.SOUTH, board.getSquare(square.getPosX(), square.getPosY() + 1));
-      }
+      setNorthNeighbour(square, board, false);
+      setEastNeighbour(square, board, false);
+      setSouthNeighbour(square, board, false);
+      setWestNeighbour(square, board, false);
     }
     return board;
   }

@@ -14,7 +14,6 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
-import java.io.Serializable;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.List;
 
