@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
@@ -20,7 +20,7 @@ public class ShootSquareAction extends ShootAction {
     super(target, damages, tag);
     this.distance = distance;
     this.exclude = exclude.clone();
-    type = ActionType.SHOOT_SQUARE;
+    type = WeaponActionType.SHOOT_SQUARE;
   }
 
 
@@ -70,7 +70,7 @@ public class ShootSquareAction extends ShootAction {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == ActionType.SHOOT_SQUARE
+    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SHOOT_SQUARE
         && ((ShootAction) object).getTarget() == getTarget()
         && ((ShootAction) object).getDamages() == getDamages()
         && ((ShootSquareAction) object).getExclude() == getExclude()

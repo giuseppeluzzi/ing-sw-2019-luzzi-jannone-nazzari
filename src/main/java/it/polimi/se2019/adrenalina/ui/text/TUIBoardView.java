@@ -2,7 +2,7 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.action.TargetType;
+import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;

@@ -87,23 +87,25 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
             break;
           case PLAYER_ATTACK_EVENT:
           case PLAYER_RELOAD_EVENT:
-            playerDashboardsView.getClass()
-                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
-                .invoke(playerDashboardsView, event);
-            break;
           case SELECT_PLAYER_EVENT:
           case SELECT_SQUARE_EVENT:
-          case SELECT_DIRECTION_EVENT:
-            boardView.getClass()
-                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass()).invoke(boardView, event);
-            break;
-          case PLAYER_MOVE_EVENT:
-          case PLAYER_COLLECT_AMMO_EVENT:
-          case PLAYER_COLLECT_WEAPON_EVENT:
-          case PLAYER_POWERUP_EVENT:
-            charactersView.getClass()
+          case SQUARE_MOVE_SELECTION_EVENT:
+            game.getAttackController().getClass()
                 .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
-                .invoke(charactersView, event);
+                .invoke(game.getAttackController(), event);
+            break;
+          case PLAYER_COLLECT_POWERUP_EVENT:
+          case PLAYER_COLLECT_WEAPON_EVENT:
+          case PLAYER_COLLECT_AMMO_EVENT:
+          case PLAYER_POWERUP_EVENT:
+          case PLAYER_ACTION_SELECTION_EVENT:
+          case PLAYER_DISCARD_POWERUP_EVENT:
+          case PLAYER_PAYMENT_EVENT:
+          case PLAYER_SELECT_WEAPON_EVENT:
+          case PLAYER_SELECT_WEAPON_EFFECT_EVENT:
+            game.getPlayerController().getClass()
+                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
+                .invoke(game.getPlayerController(), event);
             break;
           default:
             Log.severe("Unexpected server event!");

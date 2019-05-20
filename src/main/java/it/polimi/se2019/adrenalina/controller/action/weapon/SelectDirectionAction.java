@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -7,14 +7,14 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 public class SelectDirectionAction implements Action {
 
   private static final long serialVersionUID = 9176126026908579498L;
-  private ActionType type = ActionType.SELECT_DIRECTION;
+  private WeaponActionType type = WeaponActionType.SELECT_DIRECTION;
 
   public SelectDirectionAction() {
-    type = ActionType.SELECT_DIRECTION;
+    type = WeaponActionType.SELECT_DIRECTION;
   }
 
   @Override
-  public ActionType getActionType() {
+  public WeaponActionType getActionType() {
     return type;
   }
 
@@ -40,7 +40,7 @@ public class SelectDirectionAction implements Action {
   @Override
   public boolean equals(Object object) {
     return object instanceof Action &&
-        ((Action) object).getActionType() == ActionType.SELECT_DIRECTION;
+        ((Action) object).getActionType() == WeaponActionType.SELECT_DIRECTION;
   }
 
   @Override

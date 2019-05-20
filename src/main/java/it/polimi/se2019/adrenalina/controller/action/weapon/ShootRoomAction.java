@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
@@ -12,7 +12,7 @@ public class ShootRoomAction extends ShootAction {
 
   public ShootRoomAction(int target, int damages, int tag) {
     super(target, damages, tag);
-    type = ActionType.SHOOT_ROOM;
+    type = WeaponActionType.SHOOT_ROOM;
   }
 
   @Override
@@ -43,7 +43,7 @@ public class ShootRoomAction extends ShootAction {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == ActionType.SHOOT_ROOM
+    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SHOOT_ROOM
         && ((ShootAction) object).getTarget() == getTarget()
         && ((ShootAction) object).getDamages() == getDamages()
         && ((ShootAction) object).getTag() == getTag();

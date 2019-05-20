@@ -2,7 +2,6 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
-import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
@@ -18,7 +17,6 @@ public interface CharactersViewInterface extends RemoteObservable, Serializable 
 
   void update(PlayerDeathEvent event) throws RemoteException;
   void update(PlayerSpawnEvent event) throws RemoteException;
-  void update(PlayerMoveEvent event) throws RemoteException;
 
   void update(Event event) throws RemoteException;
 }

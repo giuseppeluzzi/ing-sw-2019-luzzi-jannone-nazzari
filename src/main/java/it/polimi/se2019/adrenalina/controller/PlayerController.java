@@ -1,11 +1,15 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectAmmoEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerCollectPowerUpEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
-import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerDiscardPowerUpEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPowerUpEvent;
-import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
+import it.polimi.se2019.adrenalina.controller.event.PlayerSelectWeaponEffectEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -18,6 +22,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class PlayerController extends UnicastRemoteObject implements Observer {
+
   private static final long serialVersionUID = 5970759489567761611L;
 
   private final BoardController boardController;
@@ -28,23 +33,21 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   /**
    * Instances a new player with a name and color and adds it to the board.
+   *
    * @param name the player's name.
    * @param color the player's color.
    * @return the player instance.
-   * @throws IllegalArgumentException thrown if the name is already used by
-   * another player in this board.
+   * @throws IllegalArgumentException thrown if the name is already used by another player in this
+   * board.
    */
   public Player createPlayer(String name, PlayerColor color) {
-    for (Player player: boardController.getBoard().getPlayers()) {
+    for (Player player : boardController.getBoard().getPlayers()) {
       if (player.getName().equalsIgnoreCase(name)) {
-        throw new IllegalArgumentException("This name is already used by another player in this board");
+        throw new IllegalArgumentException(
+            "This name is already used by another player in this board");
       }
     }
     return new Player(name, color, boardController.getBoard());
-  }
-
-  public void update(PlayerMoveEvent event) {
-    // TODO: invoked when a player wants to go in a square
   }
 
   public void update(PlayerCollectAmmoEvent event) {
@@ -53,7 +56,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     try {
       player = board.getPlayerByColor(event.getPlayerColor());
     } catch (InvalidPlayerException ignored) {
-      return ;
+      return;
     }
 
     if (board.getSquare(event.getSquareX(), event.getSquareY()).hasAmmoCard()) {
@@ -77,8 +80,32 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     // TODO: invoked when a player wants to collect a weapon
   }
 
+  public void update(PlayerCollectPowerUpEvent event) {
+    // TODO
+  }
+
   public void update(PlayerPowerUpEvent event) {
     // TODO: invoked when a player uses a powerup
+  }
+
+  public void update(PlayerActionSelectionEvent event) {
+    // TODO
+  }
+
+  public void update(PlayerDiscardPowerUpEvent event) {
+    // TODO
+  }
+
+  public void update(PlayerPaymentEvent event) {
+    // TODO
+  }
+
+  public void update(PlayerSelectWeaponEvent event) {
+    // TODO
+  }
+
+  public void update(PlayerSelectWeaponEffectEvent event) {
+    // TODO
   }
 
   @Override

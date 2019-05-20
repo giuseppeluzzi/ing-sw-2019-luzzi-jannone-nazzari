@@ -11,7 +11,6 @@ public enum EventType {
   PLAYER_COLLECT_WEAPON_EVENT(PlayerCollectWeaponEvent.class),
   PLAYER_CONNECT_EVENT(PlayerConnectEvent.class),
   PLAYER_DEATH_EVENT(PlayerDeathEvent.class),
-  PLAYER_MOVE_EVENT(PlayerMoveEvent.class),
   PLAYER_POWERUP_EVENT(PlayerPowerUpEvent.class),
   PLAYER_RELOAD_EVENT(PlayerReloadEvent.class),
   PLAYER_SPAWN_EVENT(PlayerSpawnEvent.class),
@@ -22,7 +21,13 @@ public enum EventType {
   FINAL_FRENZY_TOGGLE_EVENT(FinalFrenzyToggleEvent.class),
   SELECT_PLAYER_EVENT(SelectPlayerEvent.class),
   SELECT_SQUARE_EVENT(SelectPlayerEvent.class),
-  SELECT_DIRECTION_EVENT(SelectDirectionEvent.class);
+  SELECT_DIRECTION_EVENT(SelectDirectionEvent.class),
+  PLAYER_DISCARD_POWERUP_EVENT(PlayerDiscardPowerUpEvent.class),
+  SQUARE_MOVE_SELECTION_EVENT(SquareMoveSelectionEvent.class),
+  PLAYER_SELECT_WEAPON_EVENT(PlayerSelectWeaponEvent.class),
+  PLAYER_ACTION_SELECTION_EVENT(PlayerActionSelectionEvent.class),
+  PLAYER_SELECT_WEAPON_EFFECT_EVENT(PlayerSelectWeaponEffectEvent.class),
+  PLAYER_PAYMENT_EVENT(PlayerPaymentEvent.class);
 
   private final Class<? extends Event> eventClass;
 

@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
-import it.polimi.se2019.adrenalina.controller.action.TargetType;
+import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;

@@ -5,9 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.action.Action;
-import it.polimi.se2019.adrenalina.controller.action.ActionType;
-import it.polimi.se2019.adrenalina.controller.action.SelectAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
+import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
@@ -153,9 +153,9 @@ public class Weapon extends Observable implements Serializable {
   }
 
   /**
-   * Whenever an optional move action is executed an entry with values "true, group_id" is created
+   * Whenever an optional move weaponaction is executed an entry with values "true, group_id" is created
    * and no more move actions of that group can be executed.
-   * @param key group id of executed move action
+   * @param key group id of executed move weaponaction
    */
   public void setGroupMoveUsed(Integer key) {
     optMoveGroups.put(key, true);
@@ -253,11 +253,11 @@ public class Weapon extends Observable implements Serializable {
   /**
    * Add all the actions of effect in the queue
    * @param effect Effect whose actions will be added
-   * @throws IllegalArgumentException thrown if effect has no action
+   * @throws IllegalArgumentException thrown if effect has no weaponaction
    */
   public void enqueue(Effect effect) {
     if (effect.getActions().isEmpty()) {
-      throw new IllegalArgumentException("effect does not contain any action");
+      throw new IllegalArgumentException("effect does not contain any weaponaction");
     }
     for (Action action : effect.getActions()) {
       actionsQueue.addLast(action);
@@ -273,11 +273,11 @@ public class Weapon extends Observable implements Serializable {
       Action action = actionsQueue.getFirst();
       action.execute(board, this);
       actionsQueue.removeFirst();
-      if (action.getActionType() == ActionType.SELECT) {
+      if (action.getActionType() == WeaponActionType.SELECT) {
         currentSelectTargetSlot = ((SelectAction) action).getTarget();
         break;
       }
-      if ( action.getActionType() == ActionType.SELECT_DIRECTION) {
+      if ( action.getActionType() == WeaponActionType.SELECT_DIRECTION) {
         break;
       }
       currentSelectTargetSlot = null;

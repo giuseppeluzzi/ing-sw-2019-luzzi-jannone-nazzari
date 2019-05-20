@@ -119,7 +119,6 @@ public class ClientSocket extends Client implements Runnable {
 
             case PLAYER_DEATH_EVENT:
             case PLAYER_SPAWN_EVENT:
-            case PLAYER_MOVE_EVENT:
               charactersView.getClass().
                   getMethod("update", eventType.getEventClass()).invoke(charactersView, event);
               break;

@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
@@ -11,16 +11,16 @@ public class MoveAction implements Action {
   private static final long serialVersionUID = -2545135795207731324L;
   private int target;
   private int destination;
-  private ActionType type = ActionType.MOVE;
+  private WeaponActionType type = WeaponActionType.MOVE;
 
   public MoveAction(int target, int destination) {
     this.target = target;
     this.destination = destination;
-    type = ActionType.MOVE;
+    type = WeaponActionType.MOVE;
   }
 
   @Override
-  public ActionType getActionType() {
+  public WeaponActionType getActionType() {
     return type;
   }
 
@@ -61,7 +61,7 @@ public class MoveAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == ActionType.MOVE
+    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.MOVE
         && ((MoveAction) object).target == target
         && ((MoveAction) object).destination == destination;
   }

@@ -3,17 +3,17 @@ package it.polimi.se2019.adrenalina.model;
 import static org.junit.Assert.*;
 
 import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.action.Action;
-import it.polimi.se2019.adrenalina.controller.action.ActionType;
+import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.action.MoveAction;
-import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.MoveAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.action.SelectAction;
-import it.polimi.se2019.adrenalina.controller.action.ShootAction;
-import it.polimi.se2019.adrenalina.controller.action.TargetType;
+import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import org.junit.Test;
 
 public class WeaponTest {
@@ -96,41 +96,41 @@ public class WeaponTest {
         4,
         Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().size());
 
-    assertEquals("Deserialized weapon effect action not matching",
-        ActionType.SELECT,
+    assertEquals("Deserialized weapon effect weaponaction not matching",
+        WeaponActionType.SELECT,
         Weapon.deserialize(json).getEffects().get(0).getActions().get(0).getActionType());
-    assertEquals("Deserialized weapon effect action not matching",
-        ActionType.SHOOT,
+    assertEquals("Deserialized weapon effect weaponaction not matching",
+        WeaponActionType.SHOOT,
         Weapon.deserialize(json).getEffects().get(0).getActions().get(1).getActionType());
-    assertEquals("Deserialized weapon effect action not matching",
-        ActionType.MOVE,
+    assertEquals("Deserialized weapon effect weaponaction not matching",
+        WeaponActionType.MOVE,
         Weapon.deserialize(json).getEffects().get(0).getActions().get(2).getActionType());
-    assertEquals("Deserialized weapon effect action not matching",
-        ActionType.OPTIONAL_MOVE,
+    assertEquals("Deserialized weapon effect weaponaction not matching",
+        WeaponActionType.OPTIONAL_MOVE,
         Weapon.deserialize(json).getEffects().get(0).getActions().get(3).getActionType());
 
-    assertEquals("Deserialized weapon subeffect action not matching",
-        ActionType.SELECT,
+    assertEquals("Deserialized weapon subeffect weaponaction not matching",
+        WeaponActionType.SELECT,
         Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(0).getActionType());
-    assertEquals("Deserialized weapon subeffect action not matching",
-        ActionType.SHOOT,
+    assertEquals("Deserialized weapon subeffect weaponaction not matching",
+        WeaponActionType.SHOOT,
         Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(1).getActionType());
-    assertEquals("Deserialized weapon subeffect action not matching",
-        ActionType.MOVE,
+    assertEquals("Deserialized weapon subeffect weaponaction not matching",
+        WeaponActionType.MOVE,
         Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(2).getActionType());
-    assertEquals("Deserialized weapon subeffect action not matching",
-        ActionType.OPTIONAL_MOVE,
+    assertEquals("Deserialized weapon subeffect weaponaction not matching",
+        WeaponActionType.OPTIONAL_MOVE,
         Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(3).getActionType());
 
     int effectIndex = 0;
     for (Action action: Weapon.deserialize(json).getEffects().get(0).getActions()) {
-      assertEquals("Deserialized action not matching", base.getActions().get(effectIndex), action);
+      assertEquals("Deserialized weaponaction not matching", base.getActions().get(effectIndex), action);
       effectIndex++;
     }
 
     int subIndex = 0;
     for (Action action: Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions()) {
-      assertEquals("Deserialized action not matching", bis.getActions().get(subIndex), action);
+      assertEquals("Deserialized weaponaction not matching", bis.getActions().get(subIndex), action);
       subIndex++;
     }
   }

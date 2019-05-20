@@ -2,7 +2,6 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
-import it.polimi.se2019.adrenalina.controller.event.PlayerMoveEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -49,11 +48,6 @@ public class CharactersView extends Observable implements CharactersViewInterfac
   @Override
   public void update(PlayerSpawnEvent event) {
     // TODO: handle the respawn of a character
-  }
-
-  @Override
-  public void update(PlayerMoveEvent event) {
-    // TODO: handle the movement of a character on a board
   }
 
   @Override

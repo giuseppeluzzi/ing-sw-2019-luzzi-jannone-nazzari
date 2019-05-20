@@ -1,9 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.controller.action.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.action.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public abstract class PowerUp implements Serializable {
   }
 
   public void addOptionalMoveAction(OptionalMoveAction action) {
-    // this type of action needs to be executed at the begin and at the end
+    // this type of weaponaction needs to be executed at the begin and at the end
     actions.add(0, action);
     actions.add(action);
   }

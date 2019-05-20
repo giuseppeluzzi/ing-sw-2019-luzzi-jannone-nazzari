@@ -7,7 +7,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.action.ActionType;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import java.lang.reflect.Type;
 
 public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
@@ -33,7 +33,7 @@ public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
       JsonObject actionObj = action.getAsJsonObject();
       effect.addAction(
           context.deserialize(actionObj,
-              ActionType.valueOf(actionObj.get("type").getAsString()).getActionClass()));
+              WeaponActionType.valueOf(actionObj.get("type").getAsString()).getActionClass()));
     }
 
     if (jsonObject.has("subEffects")) {

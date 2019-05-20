@@ -308,6 +308,8 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+
+
   @Override
   public boolean equals(Object obj) {
     return obj instanceof BoardController &&

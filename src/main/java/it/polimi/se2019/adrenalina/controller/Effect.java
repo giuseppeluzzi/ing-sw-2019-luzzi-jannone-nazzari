@@ -1,6 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import it.polimi.se2019.adrenalina.controller.action.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -10,17 +10,17 @@ public class ShootAction implements Action {
   private int target;
   private int damages;
   private int tag;
-  ActionType type = ActionType.SHOOT;
+  WeaponActionType type = WeaponActionType.SHOOT;
 
   public ShootAction(int target, int damages, int tag) {
     this.target = target;
     this.damages = damages;
     this.tag = tag;
-    type = ActionType.SHOOT;
+    type = WeaponActionType.SHOOT;
   }
 
   @Override
-  public ActionType getActionType() {
+  public WeaponActionType getActionType() {
     return type;
   }
 
@@ -58,7 +58,7 @@ public class ShootAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == ActionType.SHOOT
+    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SHOOT
         && ((ShootAction) object).target == target
         && ((ShootAction) object).damages == damages
         && ((ShootAction) object).tag == tag;

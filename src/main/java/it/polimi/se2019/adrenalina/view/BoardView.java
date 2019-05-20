@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
-import it.polimi.se2019.adrenalina.controller.action.TargetType;
+import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;
@@ -14,7 +14,6 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
-import java.io.Serializable;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.List;
 

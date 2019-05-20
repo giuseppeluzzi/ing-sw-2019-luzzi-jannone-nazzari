@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
@@ -27,7 +27,7 @@ public class SelectAction implements Action {
   private boolean useLastDirection = false;
   private boolean differentRoom = false;
   private TargetType selectType = TargetType.ATTACK_TARGET;
-  private ActionType type = ActionType.SELECT;
+  private WeaponActionType type = WeaponActionType.SELECT;
 
   public SelectAction(int from, int target, int minDistance,
       int maxDistance, int[] differentFrom, int[] between,
@@ -45,11 +45,11 @@ public class SelectAction implements Action {
     this.useLastDirection = useLastDirection;
     this.differentRoom = differentRoom;
     this.selectType = selectType;
-    type = ActionType.SELECT;
+    type = WeaponActionType.SELECT;
   }
 
   @Override
-  public ActionType getActionType() {
+  public WeaponActionType getActionType() {
     return type;
   }
 
@@ -212,7 +212,7 @@ public class SelectAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == ActionType.SELECT
+    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SELECT
         && ((SelectAction) object).visible == visible
         && Arrays.equals(((SelectAction) object).differentFrom, differentFrom)
         && Arrays.equals(((SelectAction) object).between, between)

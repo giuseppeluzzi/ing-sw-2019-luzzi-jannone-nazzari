@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.controller.event.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -93,6 +94,10 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     Square square = boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY());
     Weapon weapon = player.getCurrentWeapon();
     weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), square);
+  }
+
+  public void update(SquareMoveSelectionEvent event) {
+    // TODO
   }
 
   @Override

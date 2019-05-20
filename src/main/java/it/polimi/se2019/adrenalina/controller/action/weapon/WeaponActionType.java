@@ -1,9 +1,9 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 /**
  * Enumeration of all different types of possible actions
  */
-public enum ActionType {
+public enum WeaponActionType {
   SELECT(SelectAction.class),
   SELECT_DIRECTION(SelectDirectionAction.class),
   OPTIONAL_MOVE(OptionalMoveAction.class),
@@ -15,7 +15,7 @@ public enum ActionType {
 
   private final Class<? extends Action> actionClass;
 
-  ActionType(Class<? extends Action> actionClass) {
+  WeaponActionType(Class<? extends Action> actionClass) {
     this.actionClass = actionClass;
   }
 

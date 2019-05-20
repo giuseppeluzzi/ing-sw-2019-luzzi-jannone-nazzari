@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.action;
+package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
@@ -12,22 +12,22 @@ public class OptionalMoveAction implements Action {
   private int target;
   private int destination;
   private int group;
-  private ActionType type = ActionType.OPTIONAL_MOVE;
+  private WeaponActionType type = WeaponActionType.OPTIONAL_MOVE;
 
   public OptionalMoveAction(int target, int destination, int group) {
     this.target = target;
     this.destination = destination;
     this.group = group;
-    type = ActionType.OPTIONAL_MOVE;
+    type = WeaponActionType.OPTIONAL_MOVE;
   }
 
   @Override
-  public ActionType getActionType() {
+  public WeaponActionType getActionType() {
     return type;
   }
 
   /**
-   * An optional move action is executed only if no other move actions of the same group were
+   * An optional move weaponaction is executed only if no other move actions of the same group were
    * previously executed and a valid target has been selected
    * @param board board parameter
    * @param weapon weapon parameter
@@ -72,7 +72,7 @@ public class OptionalMoveAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == ActionType.OPTIONAL_MOVE
+    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.OPTIONAL_MOVE
         && ((OptionalMoveAction) object).target == target
         && ((OptionalMoveAction) object).destination == destination;
   }
