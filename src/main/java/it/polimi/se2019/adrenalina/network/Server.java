@@ -50,7 +50,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
    */
   private void pingAll() {
     for (BoardController game: new ArrayList<>(games)) {
-      for (ClientInterface client: game.getClients()) {
+      for (ClientInterface client: game.getClients().keySet()) {
         try {
           client.ping();
           Long lastPing = client.getLastPing();
@@ -155,17 +155,16 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
    * @param client disconnected client
    */
   public void clientDisconnect(ClientInterface client) {
-    Log.severe("A client disconnected!");
     for (BoardController game: games) {
       if (game.containsClient(client)) {
         try {
           Player player = game.getPlayerByClient(client);
-          Log.info("p name " + player.getName());
+          Log.info("server", "A client disconnected! (Name: " + player.getName() + ")");
           game.removePlayer(player);
           playing.remove(player);
           break;
         } catch (InvalidPlayerException ignored) {
-          // ignored
+          //
         }
       }
     }

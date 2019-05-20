@@ -23,6 +23,8 @@ public class ClientRMI extends Client {
   private static final long serialVersionUID = 5097938777989686167L;
   private volatile boolean running = true;
 
+  private transient ServerInterface server;
+
   private Player player;
 
   private BoardViewInterface boardView;
@@ -35,7 +37,7 @@ public class ClientRMI extends Client {
     try {
       Registry registry = LocateRegistry.getRegistry(Configuration.getInstance().getServerIP(),
           Configuration.getInstance().getRmiPort());
-      ServerInterface server = (ServerInterface) registry.lookup("MyServer");
+      server = (ServerInterface) registry.lookup("MyServer");
 
       boardView = new TUIBoardView(this);
       charactersView = new CharactersView();
@@ -45,7 +47,6 @@ public class ClientRMI extends Client {
       UnicastRemoteObject.exportObject(charactersView, 0);
       UnicastRemoteObject.exportObject(playerDashboardsView, 0);
 
-      server.addClient(this);
     } catch (NotBoundException e) {
       Log.severe("RMI", "Object not bound");
       Log.critical("Network error");
@@ -68,6 +69,10 @@ public class ClientRMI extends Client {
     });
 
     pooling.start();
+  }
+
+  public ServerInterface getServer() {
+    return server;
   }
 
   @Override

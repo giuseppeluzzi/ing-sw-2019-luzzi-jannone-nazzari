@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.network;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.Serializable;
 
 public abstract class Client implements ClientInterface, Serializable {
@@ -44,7 +43,6 @@ public abstract class Client implements ClientInterface, Serializable {
 
   @Override
   public void ping() {
-    Log.info("ciaoo");
     lastPing = System.currentTimeMillis();
   }
 

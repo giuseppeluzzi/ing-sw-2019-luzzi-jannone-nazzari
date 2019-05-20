@@ -42,7 +42,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private final AttackController attackController;
   private final PlayerController playerController;
 
-  private final transient List<ClientInterface> clients;
+  private final transient HashMap<ClientInterface, String> clientsName;
 
   private final HashMap<ClientInterface, BoardViewInterface> boardViews;
   private final HashMap<ClientInterface, CharactersViewInterface> charactersViews;
@@ -62,7 +62,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       board = new Board();
     }
 
-    clients = new ArrayList<>();
+    clientsName = new HashMap<>();
     boardViews = new HashMap<>();
     charactersViews = new HashMap<>();
     playerDashboardViews = new HashMap<>();
@@ -235,11 +235,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param player the player to be removed.
    */
   public void removePlayer(Player player) throws InvalidPlayerException {
+    clientsName.remove(player.getClient());
     if (board.getStatus() == BoardStatus.LOBBY) {
       board.removePlayer(player.getColor());
     } else {
       player.setStatus(PlayerStatus.DISCONNECTED);
-      clients.remove(player.getClient());
       player.setClient(null);
     }
   }
@@ -256,25 +256,24 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
 
-  public List<ClientInterface> getClients() {
-    return new ArrayList<>(clients);
+  public HashMap<ClientInterface, String> getClients() {
+    return new HashMap<>(clientsName);
   }
 
   public void addClient(ClientInterface client) {
-    clients.add(client);
-  }
-
-  public boolean containsClient(ClientInterface client) {
-    return clients.contains(client);
-  }
-
-  public Player getPlayerByClient(ClientInterface client) throws InvalidPlayerException {
     try {
-      board.getPlayerByColor(client.getPlayerColor());
+      clientsName.put(client, client.getName());
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    throw new InvalidPlayerException("This player doesn't exists");
+  }
+
+  public boolean containsClient(ClientInterface client) {
+    return clientsName.containsKey(client);
+  }
+
+  public Player getPlayerByClient(ClientInterface client) throws InvalidPlayerException {
+    return board.getPlayerByName(clientsName.get(client));
   }
 
   public void setClientBoardView(ClientInterface client, BoardViewInterface view) {
@@ -312,11 +311,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   @Override
   public boolean equals(Object obj) {
     return obj instanceof BoardController &&
-        clients.equals(obj);
+        clientsName.equals(obj);
   }
 
   @Override
   public int hashCode() {
-    return clients.hashCode();
+    return clientsName.hashCode();
   }
 }

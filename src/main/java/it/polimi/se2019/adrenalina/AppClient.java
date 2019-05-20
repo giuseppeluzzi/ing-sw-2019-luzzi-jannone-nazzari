@@ -59,7 +59,9 @@ public class AppClient {
       case '1':
         // RMI
         try {
-          client = (ClientInterface) UnicastRemoteObject.exportObject((ClientInterface) new ClientRMI(name, domination), 0);
+          ClientRMI clientRMI = new ClientRMI(name, domination);
+          client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
+          clientRMI.getServer().addClient(client);
 
         } catch (RemoteException e) {
           Log.exception(e);

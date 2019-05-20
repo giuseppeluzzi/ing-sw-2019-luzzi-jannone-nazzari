@@ -85,7 +85,7 @@ public class TUIBoardView extends BoardView {
         targetIndex++;
       }
 
-      choosenTarget = scanner.nextLine().charAt(0);
+      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
     } while (choosenTarget == 0 || choosenTarget >= targetIndex);
 
     for (Target target : targets) {
@@ -112,9 +112,10 @@ public class TUIBoardView extends BoardView {
                 target.getSquare().getColor()));
         targetIndex++;
       }
+      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
     } while (choosenTarget < 1 || choosenTarget >= targetIndex);
 
-    return targets.get(targetIndex-1);
+    return targets.get(targetIndex - 1);
   }
 
   private Target selectAttackTarget(List<Target> targets) {
@@ -138,9 +139,10 @@ public class TUIBoardView extends BoardView {
           //
         }
       }
+      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
     } while (choosenTarget < 1 || choosenTarget >= targetIndex);
 
-    return targets.get(targetIndex-1);
+    return targets.get(targetIndex - 1);
   }
 
   @Override
@@ -155,12 +157,12 @@ public class TUIBoardView extends BoardView {
         targetIndex++;
       }
 
-      choosenTarget = scanner.nextLine().charAt(0);
+      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
     } while (choosenTarget == 0 || choosenTarget >= targetIndex);
 
     try {
       notifyObservers(new SelectDirectionEvent(client.getPlayerColor(),
-          Direction.values()[choosenTarget-1]));
+          Direction.values()[choosenTarget - 1]));
     } catch (RemoteException e) {
       Log.exception(e);
     }

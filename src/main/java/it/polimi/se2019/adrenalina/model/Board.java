@@ -483,6 +483,19 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
+   * Retrieves a player by its name.
+   * @throws InvalidPlayerException thrown if there are no players with the specified name
+   */
+  public Player getPlayerByName(String playerName) throws InvalidPlayerException {
+    for (Player player : players) {
+      if (player.getName().equals(playerName)) {
+        return player;
+      }
+    }
+    throw new InvalidPlayerException("No such player");
+  }
+
+  /**
    * Removes the player of a given color.
    * @param color the color of the player to remove
    * @throws InvalidPlayerException thrown if there are no players of the specified color
