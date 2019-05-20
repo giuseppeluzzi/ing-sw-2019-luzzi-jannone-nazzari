@@ -21,7 +21,7 @@ public class BoardTest {
 
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
-        board.setSquare(x, y, new Square(1,2,
+        board.setSquare(new Square(x,y,
             SquareColor.GREEN, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
       }
     }
@@ -60,11 +60,11 @@ public class BoardTest {
     try {
       Board board = new Board();
       Square square = new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board);
-      board.setSquare(1, 1, square);
-      board.setSquare(2, 1, new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-      board.setSquare(1, 2, new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-      board.setSquare(0, 1, new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-      board.setSquare(1, 0, new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+      board.setSquare(square);
+      board.setSquare(new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+      board.setSquare(new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+      board.setSquare(new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+      board.setSquare(new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
 
       assertEquals(
           "Square navigation failed",
@@ -91,33 +91,9 @@ public class BoardTest {
   }
 
   @Test (expected = IllegalArgumentException.class)
-  public void testSetSquareException1() {
+  public void testSetSquareException() {
     Board board = new Board();
-    board.setSquare(3, 3, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void testSetSquareException2() {
-    Board board = new Board();
-    board.setSquare(-1, -1, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void testSetSquareException3() {
-    Board board = new Board();
-    board.setSquare(0, 4, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void testSetSquareException4() {
-    Board board = new Board();
-    board.setSquare(0, -1, new Square(0, 2, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void testSetSquareException5() {
-    Board board = new Board();
-    board.setSquare(0, 0, null);
+    board.setSquare(null);
   }
 
   @Test
@@ -229,11 +205,11 @@ public class BoardTest {
     Board board = new Board();
     Player player = new Player("test", PlayerColor.YELLOW, board);
     board.addPlayer(player);
-    board.setSquare(1, 1, new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(2, 1, new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(1, 2, new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(0, 1, new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(1, 0, new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+    board.setSquare(new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+    board.setSquare(new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+    board.setSquare(new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+    board.setSquare(new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+    board.setSquare(new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
     String json = board.serialize();
 
     if (json.isEmpty()) {

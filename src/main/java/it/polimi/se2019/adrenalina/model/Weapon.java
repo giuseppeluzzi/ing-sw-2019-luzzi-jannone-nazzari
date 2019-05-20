@@ -275,15 +275,14 @@ public class Weapon extends Observable implements Serializable {
       actionsQueue.removeFirst();
       if (action.getActionType() == WeaponActionType.SELECT) {
         currentSelectTargetSlot = ((SelectAction) action).getTarget();
-        break;
       }
-      if ( action.getActionType() == WeaponActionType.SELECT_DIRECTION) {
+      if (action.getActionType() == ActionType.SELECT_DIRECTION || action.getActionType() == ActionType.SELECT) {
         break;
       }
       currentSelectTargetSlot = null;
     }
     getOwner().setCurrentWeapon(null);
-    // TODO: Player has completed is turn?
+    // TODO: Player has completed its turn?
   }
 
   /**

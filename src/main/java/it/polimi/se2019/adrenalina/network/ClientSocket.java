@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.network;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
