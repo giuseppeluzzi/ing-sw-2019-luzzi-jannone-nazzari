@@ -190,6 +190,22 @@ public class PlayerTest {
   }
 
   @Test
+  public void testReloadPowerUp() {
+    Player player = new Player("test", PlayerColor.GREEN, null);
+    Weapon weapon = new Weapon(1,0,1,AmmoColor.BLUE, "test");
+    PowerUp powerUp = new Newton(AmmoColor.RED);
+    player.setAmmo(AmmoColor.BLUE, 1);
+    player.setAmmo(AmmoColor.YELLOW, 1);
+    try {
+      player.addPowerUp(powerUp);
+    } catch (InvalidPowerUpException ignored) {
+      fail("Exception unexpected");
+    }
+    assertTrue(player.canReload(weapon));
+  }
+
+
+  @Test
   public void testSetSquare() {
     Player player = new Player("test", PlayerColor.GREEN, null);
     Square square = new Square(2,1, SquareColor.GREEN, WALL,

@@ -374,19 +374,33 @@ public class Player extends Observable implements Target, Serializable {
    * @return true if possible, false otherwise
    */
   public boolean canReload(Weapon weapon) {
+    EnumMap<AmmoColor, Integer> powerUpAmmo = new EnumMap<>(AmmoColor.class);
+
+    for (PowerUp powerUp : getPowerUps()) {
+      if (powerUpAmmo.containsKey(powerUp.getColor())) {
+        powerUpAmmo.put(powerUp.getColor(), powerUpAmmo.get(powerUp.getColor()) + 1);
+      } else {
+        powerUpAmmo.put(powerUp.getColor(), 1);
+      }
+    }
+
     for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
+      if (!powerUpAmmo.containsKey(ammoColor)) {
+        powerUpAmmo.put(ammoColor, 0);
+      }
       if (ammoColor == weapon.getBaseCost()) {
-        if (getAmmo(ammoColor) < weapon.getCost(ammoColor) + 1) {
+        if (getAmmo(ammoColor) + powerUpAmmo.get(ammoColor) < weapon.getCost(ammoColor) + 1) {
           return false;
         }
       } else {
-        if (getAmmo(ammoColor) < weapon.getCost(ammoColor)) {
+        if (getAmmo(ammoColor) + powerUpAmmo.get(ammoColor) < weapon.getCost(ammoColor)) {
           return false;
         }
       }
     }
     return true;
   }
+
 
   /**
    * Set the quantity for an AmmoColor, ammo will be added only up to three unit per color.
