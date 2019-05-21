@@ -4,7 +4,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 
 public interface Spendable {
 
-  AmmoColor getSpendableColor();
+  AmmoColor getColor();
 
   String getSpendableName();
 

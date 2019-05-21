@@ -4,7 +4,6 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
-import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class PowerUpEffect extends GameAction {
 

@@ -22,7 +22,7 @@ public enum AmmoColor implements Spendable {
   }
 
   @Override
-  public AmmoColor getSpendableColor() {
+  public AmmoColor getColor() {
     return this;
   }
 

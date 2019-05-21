@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class TUIPlayerDashboardView extends PlayerDashboardsView {
+public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = 572470044324855920L;
   private final transient ClientInterface client;
   private final transient Scanner scanner = new Scanner(System.in, "utf-8");
 
-  public TUIPlayerDashboardView(ClientInterface client) {
+  public TUIPlayerDashboardsView(ClientInterface client) {
     this.client = client;
   }
 
@@ -110,11 +110,11 @@ public class TUIPlayerDashboardView extends PlayerDashboardsView {
       if (spendables.get(Integer.parseInt(element)).isPowerUp()) {
         answerPowerUp.add((PowerUp) spendables.get(Integer.parseInt(element)));
       } else {
-        if (spendables.get(Integer.parseInt(element)).getSpendableColor() == AmmoColor.RED) {
+        if (spendables.get(Integer.parseInt(element)).getColor() == AmmoColor.RED) {
           answerRed++;
-        } else if (spendables.get(Integer.parseInt(element)).getSpendableColor() == AmmoColor.BLUE) {
+        } else if (spendables.get(Integer.parseInt(element)).getColor() == AmmoColor.BLUE) {
           answerBlue++;
-        } else if (spendables.get(Integer.parseInt(element)).getSpendableColor() == AmmoColor.YELLOW) {
+        } else if (spendables.get(Integer.parseInt(element)).getColor() == AmmoColor.YELLOW) {
           answerYellow++;
         }
       }
@@ -129,7 +129,7 @@ public class TUIPlayerDashboardView extends PlayerDashboardsView {
 
   private void validatePaymentAnswer(Set<String> answers, List<Spendable> matches, Map<AmmoColor, Integer> costs) {
     for (AmmoColor ammoColor : AmmoColor.values()) {
-      if (answers.stream().filter(x -> matches.get(Integer.parseInt(x)).getSpendableColor()
+      if (answers.stream().filter(x -> matches.get(Integer.parseInt(x)).getColor()
           == ammoColor).count() != costs.get(ammoColor)) {
         break;
       }

@@ -8,7 +8,7 @@ import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
-import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardView;
+import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
@@ -38,7 +38,7 @@ public class ClientSocket extends Client implements Runnable {
 
     boardView = new TUIBoardView(this);
     charactersView = new TUICharactersView(this);
-    playerDashboardsView = new TUIPlayerDashboardView(this);
+    playerDashboardsView = new TUIPlayerDashboardsView(this);
 
     try {
       socket = new Socket(Configuration.getInstance().getServerIP(),

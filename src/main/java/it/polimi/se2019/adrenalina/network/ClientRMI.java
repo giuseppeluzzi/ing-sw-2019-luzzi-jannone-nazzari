@@ -5,11 +5,11 @@ import static java.lang.Thread.sleep;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
+import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
+import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
-import it.polimi.se2019.adrenalina.view.CharactersView;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
-import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -39,8 +39,8 @@ public class ClientRMI extends Client {
       server = (ServerInterface) registry.lookup("MyServer");
 
       boardView = new TUIBoardView(this);
-      charactersView = new CharactersView();
-      playerDashboardsView = new PlayerDashboardsView();
+      charactersView = new TUICharactersView(this);
+      playerDashboardsView = new TUIPlayerDashboardsView(this);
 
       UnicastRemoteObject.exportObject(boardView, 0);
       UnicastRemoteObject.exportObject(charactersView, 0);

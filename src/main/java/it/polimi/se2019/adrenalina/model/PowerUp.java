@@ -29,10 +29,6 @@ public abstract class PowerUp implements Serializable, Spendable, ExecutableObje
 
   public abstract PowerUp copy();
 
-  public AmmoColor getColor() {
-    return color;
-  }
-
   public List<WeaponAction> getActions() {
     return new ArrayList<>(actions);
   }
@@ -48,7 +44,7 @@ public abstract class PowerUp implements Serializable, Spendable, ExecutableObje
   }
 
   @Override
-  public AmmoColor getSpendableColor() {
+  public AmmoColor getColor() {
     return color;
   }
 
