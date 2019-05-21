@@ -11,7 +11,7 @@ public class TagbackGrenade extends PowerUp {
   private static final long serialVersionUID = 8370118473308407561L;
 
   public TagbackGrenade(AmmoColor color) {
-    super(color);
+    super(color, false);
   }
 
   /**
@@ -20,7 +20,8 @@ public class TagbackGrenade extends PowerUp {
    */
   public TagbackGrenade(TagbackGrenade powerup) {
     // TODO: copy actions
-    super(powerup.getColor());
+    // TODO: copy target history
+    super(powerup.getColor(), false);
   }
 
   @Override

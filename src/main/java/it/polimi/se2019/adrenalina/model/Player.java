@@ -337,6 +337,19 @@ public class Player extends Observable implements Target, Serializable {
     powerUpCount++;
   }
 
+  /**
+   * Removes a powerUp from a player.
+   * @param powerUp the powerUp to remove
+   * @throws InvalidPowerUpException thrown if the player does not own that powerUp
+   */
+  public void removePowerUp(PowerUp powerUp) throws InvalidPowerUpException {
+    if (! powerUps.contains(powerUp)) {
+      throw new InvalidPowerUpException("Player does not own this powerUp");
+    }
+    powerUps.remove(powerUp);
+    powerUpCount--;
+  }
+
   public List<Weapon> getWeapons() {
     return new ArrayList<>(weapons);
   }

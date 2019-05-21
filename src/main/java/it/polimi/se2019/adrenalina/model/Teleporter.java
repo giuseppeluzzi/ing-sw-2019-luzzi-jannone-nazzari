@@ -11,7 +11,7 @@ public class Teleporter extends PowerUp {
   private static final long serialVersionUID = -384452700114270235L;
 
   public Teleporter(AmmoColor color) {
-    super(color);
+    super(color, false);
   }
 
   /**
@@ -20,7 +20,8 @@ public class Teleporter extends PowerUp {
    */
   public Teleporter(Teleporter powerup) {
     // TODO: copy actions
-    super(powerup.getColor());
+    // TODO: copy target history
+    super(powerup.getColor(), false);
   }
 
   @Override

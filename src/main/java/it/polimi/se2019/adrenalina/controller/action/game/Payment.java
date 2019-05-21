@@ -8,12 +8,14 @@ public class Payment extends GameAction {
   private final int redCost;
   private final int blueCost;
   private final int yellowCost;
+  private final int any;
 
-  public Payment(Player player, int redCost, int blueCost, int yellowCost) {
+  public Payment(Player player, int redCost, int blueCost, int yellowCost, int any) {
     super(player);
     this.redCost = redCost;
     this.blueCost = blueCost;
     this.yellowCost = yellowCost;
+    this.any = any;
   }
 
   public int getRedCost() {
@@ -26,6 +28,10 @@ public class Payment extends GameAction {
 
   public int getYellowCost() {
     return yellowCost;
+  }
+
+  public int getAny() {
+    return any;
   }
 
   @Override

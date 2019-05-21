@@ -7,7 +7,6 @@ public enum EventType {
   PLAYER_ATTACK_EVENT(PlayerAttackEvent.class),
   PLAYER_CHAT_EVENT(PlayerChatEvent.class),
   PLAYER_COLLECT_AMMO_EVENT(PlayerCollectAmmoEvent.class),
-  PLAYER_COLLECT_POWERUP_EVENT(PlayerCollectPowerUpEvent.class),
   PLAYER_COLLECT_WEAPON_EVENT(PlayerCollectWeaponEvent.class),
   PLAYER_CONNECT_EVENT(PlayerConnectEvent.class),
   PLAYER_DEATH_EVENT(PlayerDeathEvent.class),

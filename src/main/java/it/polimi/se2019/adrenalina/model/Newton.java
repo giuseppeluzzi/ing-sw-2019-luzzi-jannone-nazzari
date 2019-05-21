@@ -11,7 +11,7 @@ public class Newton extends PowerUp {
   private static final long serialVersionUID = 3859349171755429567L;
 
   public Newton(AmmoColor color) {
-    super(color);
+    super(color, false);
   }
 
   /**
@@ -20,7 +20,8 @@ public class Newton extends PowerUp {
    */
   public Newton(Newton powerup) {
     // TODO: copy actions
-    super(powerup.getColor());
+    // TODO: copy target history
+    super(powerup.getColor(), false);
   }
 
   // TODO: documentation

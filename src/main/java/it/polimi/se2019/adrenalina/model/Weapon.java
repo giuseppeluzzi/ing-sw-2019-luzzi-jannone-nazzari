@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Class defining a weapon.
  */
-public class Weapon extends Observable implements Serializable {
+public class Weapon extends Observable implements Serializable, ExecutableObject {
 
   private static final long serialVersionUID = -5264181345540286103L;
   private final AmmoColor baseCost;
@@ -118,27 +118,17 @@ public class Weapon extends Observable implements Serializable {
     return name;
   }
 
-  /**
-   * Clear data of previous targets.
-   */
+  @Override
   public void clearTargetHistory() {
     targetHistory.clear();
   }
 
-  /**
-   * Return Target element from targetHistory at index "key".
-   * @param key index of the target requested
-   * @return Target element at specified index
-   */
+  @Override
   public Target getTargetHistory(Integer key) {
     return targetHistory.get(key);
   }
 
-  /**
-   * Insert in targetHistory at index "key" Target "value".
-   * @param key index where Target has to be inserted
-   * @param value Target to be inserted
-   */
+  @Override
   public void setTargetHistory(Integer key, Target value) {
     targetHistory.put(key, value);
   }
@@ -170,6 +160,20 @@ public class Weapon extends Observable implements Serializable {
   }
 
   /**
+   * Returns an effect based on its name.
+   * @param findName the name of the effect
+   * @return the effect object
+   */
+  public Effect getEffectByName(String findName) {
+    for (Effect effect : effects) {
+      if (effect.getName().equals(findName)) {
+        return effect;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Add an Effect to the weapon's list.
    * @param effect Effect to be added
    */
@@ -188,10 +192,7 @@ public class Weapon extends Observable implements Serializable {
     selectedEffects.add(effect);
   }
 
-  /**
-   * Returns Player owning the weapon, throws an exception otherwise.
-   * @return Player if existing
-   */
+  @Override
   public Player getOwner() {
     if (getTargetHistory(0) == null) {
       throw new IllegalStateException("Target 0 is missing");

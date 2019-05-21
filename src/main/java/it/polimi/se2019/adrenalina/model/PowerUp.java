@@ -4,18 +4,24 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.utils.NotExpose;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public abstract class PowerUp implements Serializable, Spendable {
+public abstract class PowerUp implements Serializable, Spendable, ExecutableObject {
 
   private static final long serialVersionUID = 8948751912601215729L;
   private final AmmoColor color;
   private final List<WeaponAction> actions;
+  private final boolean doesCost;
+  @NotExpose
+  private final HashMap<Integer, Target> targetHistory = new HashMap<>();
 
-  protected PowerUp(AmmoColor color) {
+  protected PowerUp(AmmoColor color, boolean doesCost) {
     this.color = color;
+    this.doesCost = doesCost;
     actions = new ArrayList<>();
   }
 
@@ -37,6 +43,10 @@ public abstract class PowerUp implements Serializable, Spendable {
 
   public abstract String getName();
 
+  public boolean doesCost() {
+    return doesCost;
+  }
+
   @Override
   public AmmoColor getSpendableColor() {
     return color;
@@ -56,5 +66,31 @@ public abstract class PowerUp implements Serializable, Spendable {
   public String serialize(){
     Gson gson = new Gson();
     return gson.toJson(this);
+  }
+
+  @Override
+  public void clearTargetHistory() {
+    targetHistory.clear();
+  }
+
+  @Override
+  public Target getTargetHistory(Integer key) {
+    return targetHistory.get(key);
+  }
+
+  @Override
+  public void setTargetHistory(Integer key, Target value) {
+    targetHistory.put(key, value);
+  }
+
+  @Override
+  public Player getOwner() {
+    if (getTargetHistory(0) == null) {
+      throw new IllegalStateException("Target 0 is missing");
+    }
+    if (!getTargetHistory(0).isPlayer()) {
+      throw new IllegalStateException("Target 0 is  not a player");
+    }
+    return (Player) getTargetHistory(0);
   }
 }
