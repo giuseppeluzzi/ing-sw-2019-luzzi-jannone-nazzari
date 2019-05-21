@@ -11,7 +11,7 @@ public class TargetingScope extends PowerUp {
   private static final long serialVersionUID = -9185952826985193602L;
 
   public TargetingScope(AmmoColor color) {
-    super(color);
+    super(color, true);
   }
 
   /**
@@ -20,7 +20,8 @@ public class TargetingScope extends PowerUp {
    */
   public TargetingScope(TargetingScope powerup) {
     // TODO: copy actions
-    super(powerup.getColor());
+    // TODO: copy target history
+    super(powerup.getColor(), true);
   }
   
   @Override

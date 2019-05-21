@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 
@@ -25,12 +26,11 @@ public class MoveAction implements WeaponAction {
   }
 
   @Override
-  public void execute(Board board, Weapon weapon) {
-
-    if (weapon.getTargetHistory(target) != null) {
+  public void execute(Board board, ExecutableObject object) {
+    if (object.getTargetHistory(target) != null) {
       try {
-        weapon.getTargetHistory(target).getPlayer()
-            .setSquare(weapon.getTargetHistory(destination).getSquare());
+        object.getTargetHistory(target).getPlayer()
+            .setSquare(object.getTargetHistory(destination).getSquare());
       } catch (InvalidSquareException e) {
         Log.debug("Too many players in selected square");
       }

@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
@@ -16,12 +17,12 @@ public class ShootRoomAction extends ShootAction {
   }
 
   @Override
-  public void execute(Board board, Weapon weapon) {
-    SquareColor roomColor = weapon.getTargetHistory(getTarget()).getSquare().getColor();
+  public void execute(Board board, ExecutableObject object) {
+    SquareColor roomColor = object.getTargetHistory(getTarget()).getSquare().getColor();
     for (Player player : board.getPlayers()) {
       if (player.getSquare().getColor() == roomColor) {
-        player.addDamages(weapon.getOwner().getColor(), getDamages());
-        player.addTags(weapon.getOwner().getColor(), getTag());
+        player.addDamages(object.getOwner().getColor(), getDamages());
+        player.addTags(object.getOwner().getColor(), getTag());
       }
     }
   }

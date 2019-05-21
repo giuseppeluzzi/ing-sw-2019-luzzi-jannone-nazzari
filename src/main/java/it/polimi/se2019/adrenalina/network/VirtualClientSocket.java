@@ -94,7 +94,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
                 .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
                 .invoke(game.getAttackController(), event);
             break;
-          case PLAYER_COLLECT_POWERUP_EVENT:
           case PLAYER_COLLECT_WEAPON_EVENT:
           case PLAYER_COLLECT_AMMO_EVENT:
           case PLAYER_POWERUP_EVENT:

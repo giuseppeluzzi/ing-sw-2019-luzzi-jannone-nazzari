@@ -1,18 +1,20 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerSelectWeaponEffectEvent implements Event {
 
   private static final long serialVersionUID = 6708580194992758891L;
   private final PlayerColor playerColor;
   private final String weaponName;
-  private final String effectName;
+  private final List<String> effectNames;
 
-  public PlayerSelectWeaponEffectEvent(PlayerColor playerColor, String weaponName, String effectName) {
+  public PlayerSelectWeaponEffectEvent(PlayerColor playerColor, String weaponName, List<String> effectNames) {
     this.playerColor = playerColor;
     this.weaponName = weaponName;
-    this.effectName = effectName;
+    this.effectNames = new ArrayList<>(effectNames);
   }
 
   public PlayerColor getPlayerColor() {
@@ -23,7 +25,7 @@ public class PlayerSelectWeaponEffectEvent implements Event {
     return weaponName;
   }
 
-  public String getEffectName() {
-    return effectName;
+  public List<String> getEffectNames() {
+    return new ArrayList<>(effectNames);
   }
 }

@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
@@ -53,19 +54,19 @@ public class SelectAction implements WeaponAction {
     return type;
   }
 
-  private void blacklist(List<Target> targets, int[] differentFrom, Weapon weapon) {
+  private void blacklist(List<Target> targets, int[] differentFrom, ExecutableObject object) {
     if (differentFrom.length > 0) {
       for (int targetIndex : differentFrom) {
-        targets.remove(weapon.getTargetHistory(targetIndex));
+        targets.remove(object.getTargetHistory(targetIndex));
       }
     }
   }
 
-  private void whitelist(List<Target> targets, int[] between, Weapon weapon) {
+  private void whitelist(List<Target> targets, int[] between, ExecutableObject object) {
     if (between.length > 0) {
       List<Target> allowed = new ArrayList<>();
       for (int targetIndex : between) {
-        allowed.add(weapon.getTargetHistory(targetIndex));
+        allowed.add(object.getTargetHistory(targetIndex));
       }
       for (Target targ : new ArrayList<>(targets)) {
         if (! allowed.contains(targ)) {
@@ -76,9 +77,9 @@ public class SelectAction implements WeaponAction {
   }
 
   @Override
-  public void execute(Board board, Weapon weapon) {
+  public void execute(Board board, ExecutableObject object) {
     // TODO: show selection, ignore if target in targethistory is alredy setted
-    Player owner = weapon.getOwner();
+    Player owner = object.getOwner();
     List<Target> targets = new ArrayList<>();
 
     switch (selectType) {
@@ -102,13 +103,13 @@ public class SelectAction implements WeaponAction {
     targets.addAll(board.getSquares());
     targets.remove(owner);
 
-    Target fromTarget = weapon.getTargetHistory(from);
+    Target fromTarget = object.getTargetHistory(from);
 
     // differentFrom
-    blacklist(targets, differentFrom, weapon);
+    blacklist(targets, differentFrom, object);
 
     // between
-    whitelist(targets, between, weapon);
+    whitelist(targets, between, object);
 
     Stream<Target> targetStream = targets.stream();
 
@@ -130,7 +131,7 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> {
         try {
           return
-              fromTarget.getSquare().getCardinalDirection(x.getSquare()) == weapon.getLastUsageDirection();
+              fromTarget.getSquare().getCardinalDirection(x.getSquare()) == ((Weapon) object).getLastUsageDirection();
         } catch (InvalidSquareException e) {
           return false;
         }

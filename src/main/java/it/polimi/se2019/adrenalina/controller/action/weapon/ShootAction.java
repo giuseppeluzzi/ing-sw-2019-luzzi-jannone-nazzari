@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
 public class ShootAction implements WeaponAction {
@@ -25,9 +26,9 @@ public class ShootAction implements WeaponAction {
   }
 
   @Override
-  public void execute(Board board, Weapon weapon) {
-    weapon.getTargetHistory(target).addDamages(weapon.getOwner().getColor(), damages);
-    weapon.getTargetHistory(target).addTags(weapon.getOwner().getColor(), tag);
+  public void execute(Board board, ExecutableObject object) {
+    object.getTargetHistory(target).addDamages(object.getOwner().getColor(), damages);
+    object.getTargetHistory(target).addTags(object.getOwner().getColor(), tag);
   }
 
   @Override
