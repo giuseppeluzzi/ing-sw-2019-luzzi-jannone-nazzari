@@ -26,7 +26,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player uses an effect.
-   *
    * @param event event specifing the effect used
    */
   public void update(PlayerAttackEvent event) {
@@ -41,7 +40,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player reloads a weapon.
-   *
    * @param event event specifing the weapon reloaded
    */
   public void update(PlayerReloadEvent event) {
@@ -63,7 +61,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select another player.
-   *
    * @param event event specifing selected target
    */
   public void update(SelectPlayerEvent event) {
@@ -81,7 +78,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select a square.
-   *
    * @param event event specifing selected target
    */
   public void update(SelectSquareEvent event) {
@@ -96,8 +92,18 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), square);
   }
 
+  /**
+   * Event fired when a player moves to a different square.
+   * @param event event specifing selected square
+   */
   public void update(SquareMoveSelectionEvent event) {
-    // TODO
+    Player player;
+    try {
+      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+    player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
   }
 
   @Override

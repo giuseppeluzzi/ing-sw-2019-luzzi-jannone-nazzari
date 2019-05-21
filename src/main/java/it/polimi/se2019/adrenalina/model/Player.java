@@ -373,20 +373,10 @@ public class Player extends Observable implements Target, Serializable {
    * @return true if possible, false otherwise
    */
   public boolean canReload(Weapon weapon) {
-    EnumMap<AmmoColor, Integer> powerUpAmmo = new EnumMap<>(AmmoColor.class);
-
-    for (PowerUp powerUp : getPowerUps()) {
-      if (powerUpAmmo.containsKey(powerUp.getColor())) {
-        powerUpAmmo.put(powerUp.getColor(), powerUpAmmo.get(powerUp.getColor()) + 1);
-      } else {
-        powerUpAmmo.put(powerUp.getColor(), 1);
-      }
-    }
+    EnumMap<AmmoColor, Integer> powerUpAmmo = getPowerUpAmmo();
 
     for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
-      if (!powerUpAmmo.containsKey(ammoColor)) {
-        powerUpAmmo.put(ammoColor, 0);
-      }
+
       if (ammoColor == weapon.getBaseCost()) {
         if (getAmmo(ammoColor) + powerUpAmmo.get(ammoColor) < weapon.getCost(ammoColor) + 1) {
           return false;
@@ -413,6 +403,47 @@ public class Player extends Observable implements Target, Serializable {
     } else {
       ammo.put(ammoColor, currentAmmo + value);
     }
+  }
+
+  /**
+   * Private method, creates an EnumMap associating each AmmoColor to an integer value
+   * representing how many powerUps of that color the player possesses.
+   * @return the EnumMap
+   */
+  private EnumMap<AmmoColor, Integer> getPowerUpAmmo() {
+    EnumMap<AmmoColor, Integer> powerUpAmmo = new EnumMap<>(AmmoColor.class);
+
+    for (PowerUp powerUp : getPowerUps()) {
+      if (powerUpAmmo.containsKey(powerUp.getColor())) {
+        powerUpAmmo.put(powerUp.getColor(), powerUpAmmo.get(powerUp.getColor()) + 1);
+      } else {
+        powerUpAmmo.put(powerUp.getColor(), 1);
+      }
+    }
+
+    for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
+
+      if (!powerUpAmmo.containsKey(ammoColor)) {
+        powerUpAmmo.put(ammoColor, 0);
+      }
+    }
+    return powerUpAmmo;
+  }
+
+  /**
+   * Check if player can collect a specific weapon.
+   * @param weapon weapon to check
+   * @return true if it's possible, false otherwise.
+   */
+  public boolean canCollectWeapon(Weapon weapon) {
+    EnumMap<AmmoColor, Integer> powerUpAmmo = getPowerUpAmmo();
+
+    for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
+      if (getAmmo(ammoColor) + powerUpAmmo.get(ammoColor) < weapon.getCost(ammoColor)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public int getAmmo(AmmoColor ammoColor) {

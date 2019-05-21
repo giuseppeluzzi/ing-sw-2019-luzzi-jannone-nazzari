@@ -276,7 +276,7 @@ public class Weapon extends Observable implements Serializable {
       if (action.getActionType() == WeaponActionType.SELECT) {
         currentSelectTargetSlot = ((SelectAction) action).getTarget();
       }
-      if (action.getActionType() == ActionType.SELECT_DIRECTION || action.getActionType() == ActionType.SELECT) {
+      if (action.isSync()) {
         break;
       }
       currentSelectTargetSlot = null;
