@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 
 public class PickPowerUp extends GameActionAsync {
 
-  protected PickPowerUp(Player player) {
+  public PickPowerUp(Player player) {
     super(player);
   }
 

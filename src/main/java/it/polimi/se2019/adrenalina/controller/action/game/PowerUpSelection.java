@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 
 public class PowerUpSelection extends GameAction {
 
-  protected PowerUpSelection(Player player) {
+  public PowerUpSelection(Player player) {
     super(player);
   }
 

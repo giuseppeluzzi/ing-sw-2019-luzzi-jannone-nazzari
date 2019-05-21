@@ -7,7 +7,7 @@ public class SquareSelection extends GameAction {
 
   private final int maxDistance;
 
-  protected SquareSelection(Player player, int maxDistance) {
+  public SquareSelection(Player player, int maxDistance) {
     super(player);
     this.maxDistance = maxDistance;
   }

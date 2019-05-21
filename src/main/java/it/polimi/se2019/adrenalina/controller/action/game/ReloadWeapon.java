@@ -8,7 +8,7 @@ public class ReloadWeapon extends GameAction {
 
   private final Weapon weapon;
 
-  protected ReloadWeapon(Player player, Weapon weapon) {
+  public ReloadWeapon(Player player, Weapon weapon) {
     super(player);
     this.weapon = weapon;
   }

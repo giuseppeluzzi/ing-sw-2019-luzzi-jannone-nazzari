@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 
 public class SpawnPointTrackSelection extends GameAction {
 
-  protected SpawnPointTrackSelection(Player player) {
+  public SpawnPointTrackSelection(Player player) {
     super(player);
   }
 

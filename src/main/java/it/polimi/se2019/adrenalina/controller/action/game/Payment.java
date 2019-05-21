@@ -9,7 +9,7 @@ public class Payment extends GameAction {
   private final int blueCost;
   private final int yellowCost;
 
-  protected Payment(Player player, int redCost, int blueCost, int yellowCost) {
+  public Payment(Player player, int redCost, int blueCost, int yellowCost) {
     super(player);
     this.redCost = redCost;
     this.blueCost = blueCost;

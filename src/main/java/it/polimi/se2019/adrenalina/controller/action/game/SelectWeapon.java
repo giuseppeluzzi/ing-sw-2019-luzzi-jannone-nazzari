@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 
 public class SelectWeapon extends GameAction {
 
-  protected SelectWeapon(Player player) {
+  public SelectWeapon(Player player) {
     super(player);
   }
 

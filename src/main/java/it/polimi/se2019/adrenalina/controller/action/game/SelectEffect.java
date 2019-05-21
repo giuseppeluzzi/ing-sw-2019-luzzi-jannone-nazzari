@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 
 public class SelectEffect extends GameAction {
 
-  protected SelectEffect(Player player) {
+  public SelectEffect(Player player) {
     super(player);
   }
 
