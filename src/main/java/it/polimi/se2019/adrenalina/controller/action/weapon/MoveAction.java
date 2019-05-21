@@ -6,7 +6,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 
-public class MoveAction implements Action {
+public class MoveAction implements WeaponAction {
 
   private static final long serialVersionUID = -2545135795207731324L;
   private int target;
@@ -61,7 +61,7 @@ public class MoveAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.MOVE
+    return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.MOVE
         && ((MoveAction) object).target == target
         && ((MoveAction) object).destination == destination;
   }

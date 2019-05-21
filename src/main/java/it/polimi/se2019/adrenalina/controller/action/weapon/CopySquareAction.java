@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
-public class CopySquareAction implements Action {
+public class CopySquareAction implements WeaponAction {
 
   private static final long serialVersionUID = 8092881078549035801L;
   private final int origin;
@@ -51,7 +51,7 @@ public class CopySquareAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.COPY_SQUARE
+    return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.COPY_SQUARE
         && ((CopySquareAction) object).origin == origin
         && ((CopySquareAction) object).destination == destination;
   }

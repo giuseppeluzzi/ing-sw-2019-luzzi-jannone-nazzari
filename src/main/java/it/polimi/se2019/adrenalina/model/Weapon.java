@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
@@ -34,7 +34,7 @@ public class Weapon extends Observable implements Serializable {
   @NotExpose
   private final HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
   private final List<Effect> effects = new ArrayList<>();
-  private Deque<Action> actionsQueue = new ArrayDeque<>();
+  private Deque<WeaponAction> actionsQueue = new ArrayDeque<>();
   private Integer currentSelectTargetSlot;
 
   // Usage information
@@ -259,7 +259,7 @@ public class Weapon extends Observable implements Serializable {
     if (effect.getActions().isEmpty()) {
       throw new IllegalArgumentException("effect does not contain any weaponaction");
     }
-    for (Action action : effect.getActions()) {
+    for (WeaponAction action : effect.getActions()) {
       actionsQueue.addLast(action);
     }
   }
@@ -270,7 +270,7 @@ public class Weapon extends Observable implements Serializable {
    */
   public void executeActionQueue(Board board) {
     while ( !actionsQueue.isEmpty()) {
-      Action action = actionsQueue.getFirst();
+      WeaponAction action = actionsQueue.getFirst();
       action.execute(board, this);
       actionsQueue.removeFirst();
       if (action.getActionType() == WeaponActionType.SELECT) {

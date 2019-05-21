@@ -1,6 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ public class Effect implements Serializable {
   private final String name;
   @NotExpose private Effect requiredEffect;
   @NotExpose private Weapon weapon;
-  private final List<Action> actions;
+  private final List<WeaponAction> actions;
   private final List<Effect> subEffects;
 
   public Effect(String name, Weapon weapon, int costRed, int costBlue, int costYellow, boolean anyTime) {
@@ -86,11 +86,11 @@ public class Effect implements Serializable {
     effect.setRequiredEffect(this);
   }
 
-  public List<Action> getActions() {
+  public List<WeaponAction> getActions() {
     return new ArrayList<>(actions);
   }
 
-  public void addAction(Action action) {
+  public void addAction(WeaponAction action) {
     actions.add(action);
   }
 

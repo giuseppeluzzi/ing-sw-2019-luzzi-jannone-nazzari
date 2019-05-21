@@ -70,7 +70,7 @@ public class ShootSquareAction extends ShootAction {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SHOOT_SQUARE
+    return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.SHOOT_SQUARE
         && ((ShootAction) object).getTarget() == getTarget()
         && ((ShootAction) object).getDamages() == getDamages()
         && ((ShootSquareAction) object).getExclude() == getExclude()

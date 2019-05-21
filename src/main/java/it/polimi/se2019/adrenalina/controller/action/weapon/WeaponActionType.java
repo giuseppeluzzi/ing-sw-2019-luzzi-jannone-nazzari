@@ -13,13 +13,13 @@ public enum WeaponActionType {
   SHOOT_SQUARE(ShootSquareAction.class),
   COPY_SQUARE(CopySquareAction.class);
 
-  private final Class<? extends Action> actionClass;
+  private final Class<? extends WeaponAction> actionClass;
 
-  WeaponActionType(Class<? extends Action> actionClass) {
+  WeaponActionType(Class<? extends WeaponAction> actionClass) {
     this.actionClass = actionClass;
   }
 
-  public Class<? extends Action> getActionClass() {
+  public Class<? extends WeaponAction> getActionClass() {
     return actionClass;
   }
 }

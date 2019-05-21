@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
 import java.io.Serializable;
@@ -12,7 +12,7 @@ public abstract class PowerUp implements Serializable {
 
   private static final long serialVersionUID = 8948751912601215729L;
   private final AmmoColor color;
-  private final List<Action> actions;
+  private final List<WeaponAction> actions;
 
   protected PowerUp(AmmoColor color) {
     this.color = color;
@@ -27,11 +27,11 @@ public abstract class PowerUp implements Serializable {
     return color;
   }
 
-  public List<Action> getActions() {
+  public List<WeaponAction> getActions() {
     return new ArrayList<>(actions);
   }
 
-  public void addAction(Action action) {
+  public void addAction(WeaponAction action) {
     actions.add(action);
   }
 

@@ -4,10 +4,15 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.io.Serializable;
 
-public interface Action extends Serializable {
+public interface WeaponAction extends Serializable {
+
   WeaponActionType getActionType();
 
   void execute(Board board, Weapon weapon);
+
+  default boolean isSync() {
+    return false;
+  }
 
   String serialize();
 

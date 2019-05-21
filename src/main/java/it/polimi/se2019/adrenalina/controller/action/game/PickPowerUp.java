@@ -3,7 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 
-public class PickPowerUp extends GameAction {
+public class PickPowerUp extends GameActionAsync {
 
   protected PickPowerUp(Player player) {
     super(player);

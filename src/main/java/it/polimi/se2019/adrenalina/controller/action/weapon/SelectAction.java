@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SelectAction implements Action {
+public class SelectAction implements WeaponAction {
 
   private static final long serialVersionUID = -1712202363884739599L;
   private int from;
@@ -211,8 +211,13 @@ public class SelectAction implements Action {
   }
 
   @Override
+  public boolean isSync() {
+    return true;
+  }
+
+  @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SELECT
+    return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.SELECT
         && ((SelectAction) object).visible == visible
         && Arrays.equals(((SelectAction) object).differentFrom, differentFrom)
         && Arrays.equals(((SelectAction) object).between, between)

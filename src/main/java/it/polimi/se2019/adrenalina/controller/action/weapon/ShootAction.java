@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
-public class ShootAction implements Action {
+public class ShootAction implements WeaponAction {
 
   private static final long serialVersionUID = 3519195918261269154L;
   private int target;
@@ -58,7 +58,7 @@ public class ShootAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SHOOT
+    return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.SHOOT
         && ((ShootAction) object).target == target
         && ((ShootAction) object).damages == damages
         && ((ShootAction) object).tag == tag;

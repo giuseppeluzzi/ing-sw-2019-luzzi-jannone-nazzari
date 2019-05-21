@@ -43,7 +43,7 @@ public class ShootRoomAction extends ShootAction {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action && ((Action) object).getActionType() == WeaponActionType.SHOOT_ROOM
+    return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.SHOOT_ROOM
         && ((ShootAction) object).getTarget() == getTarget()
         && ((ShootAction) object).getDamages() == getDamages()
         && ((ShootAction) object).getTag() == getTag();

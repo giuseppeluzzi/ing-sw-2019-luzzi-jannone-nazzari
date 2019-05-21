@@ -3,7 +3,7 @@ package it.polimi.se2019.adrenalina.model;
 import static org.junit.Assert.*;
 
 import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.action.weapon.Action;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
@@ -123,13 +123,13 @@ public class WeaponTest {
         Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions().get(3).getActionType());
 
     int effectIndex = 0;
-    for (Action action: Weapon.deserialize(json).getEffects().get(0).getActions()) {
+    for (WeaponAction action: Weapon.deserialize(json).getEffects().get(0).getActions()) {
       assertEquals("Deserialized weaponaction not matching", base.getActions().get(effectIndex), action);
       effectIndex++;
     }
 
     int subIndex = 0;
-    for (Action action: Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions()) {
+    for (WeaponAction action: Weapon.deserialize(json).getEffects().get(0).getSubEffects().get(0).getActions()) {
       assertEquals("Deserialized weaponaction not matching", bis.getActions().get(subIndex), action);
       subIndex++;
     }

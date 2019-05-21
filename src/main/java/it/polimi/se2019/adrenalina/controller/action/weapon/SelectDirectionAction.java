@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
-public class SelectDirectionAction implements Action {
+public class SelectDirectionAction implements WeaponAction {
 
   private static final long serialVersionUID = 9176126026908579498L;
   private WeaponActionType type = WeaponActionType.SELECT_DIRECTION;
@@ -24,6 +24,11 @@ public class SelectDirectionAction implements Action {
   }
 
   @Override
+  public boolean isSync() {
+    return true;
+  }
+
+  @Override
   public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
@@ -39,8 +44,8 @@ public class SelectDirectionAction implements Action {
 
   @Override
   public boolean equals(Object object) {
-    return object instanceof Action &&
-        ((Action) object).getActionType() == WeaponActionType.SELECT_DIRECTION;
+    return object instanceof WeaponAction &&
+        ((WeaponAction) object).getActionType() == WeaponActionType.SELECT_DIRECTION;
   }
 
   @Override

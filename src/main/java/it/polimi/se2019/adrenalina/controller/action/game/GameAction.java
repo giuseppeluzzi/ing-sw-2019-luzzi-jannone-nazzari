@@ -16,4 +16,8 @@ public abstract class GameAction {
   }
 
   public abstract void execute(Board board);
+
+  public boolean isSync() {
+    return true;
+  }
 }
