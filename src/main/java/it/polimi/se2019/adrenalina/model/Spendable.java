@@ -7,4 +7,6 @@ public interface Spendable {
   AmmoColor getSpendableColor();
 
   String getSpendableName();
+
+  boolean isPowerUp();
 }

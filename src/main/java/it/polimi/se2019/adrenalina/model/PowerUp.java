@@ -44,7 +44,12 @@ public abstract class PowerUp implements Serializable, Spendable {
 
   @Override
   public String getSpendableName() {
-    return getName();
+    return getName() + " " + color;
+  }
+
+  @Override
+  public boolean isPowerUp() {
+    return true;
   }
 
   public void addOptionalMoveAction(OptionalMoveAction action) {

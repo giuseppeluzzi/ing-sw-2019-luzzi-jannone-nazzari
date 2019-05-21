@@ -10,13 +10,13 @@ import java.lang.invoke.WrongMethodTypeException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharactersView extends Observable implements CharactersViewInterface, Observer {
+public abstract class CharactersView extends Observable implements CharactersViewInterface, Observer {
 
   private static final long serialVersionUID = 3820277997554969634L;
   private final ArrayList<Player> players;
   private Player selectedPlayer;
 
-  public CharactersView() {
+  protected CharactersView() {
     players = new ArrayList<>();
   }
 

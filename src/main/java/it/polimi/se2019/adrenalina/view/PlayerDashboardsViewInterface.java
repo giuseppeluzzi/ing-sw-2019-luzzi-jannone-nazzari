@@ -12,6 +12,7 @@ public interface PlayerDashboardsViewInterface extends RemoteObservable, Seriali
   List<Player> getPlayers() throws RemoteException;
   void reset(Player player) throws RemoteException;
   void switchToFinalFrenzy(Player player) throws RemoteException;
+  void showPaymentOption(int blue, int red, int yellow, int any) throws RemoteException;
 
   void update(Event event) throws RemoteException;
 }

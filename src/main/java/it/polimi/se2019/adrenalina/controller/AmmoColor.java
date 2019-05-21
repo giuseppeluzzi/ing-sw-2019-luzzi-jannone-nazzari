@@ -30,4 +30,9 @@ public enum AmmoColor implements Spendable {
   public String getSpendableName() {
     return "Munizione " + this;
   }
+
+  @Override
+  public boolean isPowerUp() {
+    return false;
+  }
 }

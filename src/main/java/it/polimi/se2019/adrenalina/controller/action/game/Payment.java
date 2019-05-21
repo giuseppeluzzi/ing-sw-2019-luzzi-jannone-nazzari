@@ -2,6 +2,8 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.utils.Log;
+import java.rmi.RemoteException;
 
 public class Payment extends GameAction {
 
@@ -30,6 +32,11 @@ public class Payment extends GameAction {
 
   @Override
   public void execute(Board board) {
-    // TODO
+    try {
+      getPlayer().getClient().getPlayerDashboardsView()
+          .showPaymentOption(blueCost, redCost, yellowCost);
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 }

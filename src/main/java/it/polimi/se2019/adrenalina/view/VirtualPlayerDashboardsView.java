@@ -1,11 +1,13 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,12 @@ public class VirtualPlayerDashboardsView extends Observable implements PlayerDas
   public void switchToFinalFrenzy(Player player) {
     // TODO: change dashboard to final frenzy mode
   }
+
+  @Override
+  public void showPaymentOption(int blue, int red, int yellow, int any) {
+    // TODO: show payment option
+  }
+
 
   @Override
   public void update(Event event) {
