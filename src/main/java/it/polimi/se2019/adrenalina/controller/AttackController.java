@@ -57,6 +57,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       }
       player.setAmmo(weapon.getBaseCost(), player.getAmmo(weapon.getBaseCost()) - 1);
     }
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   /**
@@ -104,6 +106,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       return;
     }
     player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   @Override

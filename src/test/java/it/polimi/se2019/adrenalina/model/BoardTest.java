@@ -32,8 +32,8 @@ public class BoardTest {
     board.addPowerUp(new Newton(AmmoColor.BLUE));
     try {
       board.takeWeapon(board.getWeapons().get(0));
-    } catch (InvalidWeaponException e) {
-      Log.debug("No Weapons in board object");
+    } catch (InvalidWeaponException ignored) {
+      // No Weapons in board object
     }
     board.drawPowerUp(board.getPowerUps().get(0));
     board.addKillShot(new Kill(PlayerColor.YELLOW, true));

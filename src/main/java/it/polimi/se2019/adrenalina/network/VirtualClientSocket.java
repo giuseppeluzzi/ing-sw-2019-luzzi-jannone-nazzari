@@ -85,6 +85,12 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
             server.addClient(this);
             game = server.getGameByClient(this);
             break;
+          case MAP_SELECTION_EVENT:
+          case FINAL_FRENZY_TOGGLE_EVENT:
+            game.getClass()
+                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
+                .invoke(game, event);
+            break;
           case PLAYER_ATTACK_EVENT:
           case PLAYER_RELOAD_EVENT:
           case SELECT_PLAYER_EVENT:
@@ -94,6 +100,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
                 .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
                 .invoke(game.getAttackController(), event);
             break;
+          case PLAYER_NO_COLLECT_EVENT:
           case PLAYER_COLLECT_WEAPON_EVENT:
           case PLAYER_COLLECT_AMMO_EVENT:
           case PLAYER_POWERUP_EVENT:

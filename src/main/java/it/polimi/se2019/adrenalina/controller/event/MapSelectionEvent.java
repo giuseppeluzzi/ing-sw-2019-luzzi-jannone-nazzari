@@ -2,7 +2,7 @@ package it.polimi.se2019.adrenalina.controller.event;
 
 public class MapSelectionEvent implements Event {
 
-  private static final long serialVersionUID = -1952284048993470635L;
+  private static final long serialVersionUID = -8427415116539500528L;
   private final int map;
 
   public MapSelectionEvent(int map) {

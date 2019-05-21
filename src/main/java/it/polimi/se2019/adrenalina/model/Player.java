@@ -33,7 +33,7 @@ public class Player extends Observable implements Target, Serializable {
   private final transient Board board;
 
   private final String name;
-  private final PlayerColor color;
+  private PlayerColor color;
   private Square square;
   private PlayerStatus status;
 
@@ -160,6 +160,10 @@ public class Player extends Observable implements Target, Serializable {
 
   public Board getBoard() {
     return board;
+  }
+
+  public void setColor(PlayerColor playerColor) {
+    color = playerColor;
   }
 
   public PlayerColor getColor() {

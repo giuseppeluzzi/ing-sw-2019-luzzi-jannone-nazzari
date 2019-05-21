@@ -14,6 +14,7 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDiscardPowerUpEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerNoCollectEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSelectWeaponEffectEvent;
@@ -71,6 +72,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     return new Player(name, color, boardController.getBoard());
   }
 
+  public void update(PlayerNoCollectEvent event) {
+    boardController.getTurnController().executeGameActionQueue();
+  }
+
   public void update(PlayerCollectAmmoEvent event) {
     Board board = boardController.getBoard();
     Player player = getPlayerFromBoard(board, event.getPlayerColor());
@@ -93,6 +98,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         }
       }
     }
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerCollectWeaponEvent event) {
@@ -117,6 +124,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       }
       player.addWeapon(collectedWeapon);
     }
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerPowerUpEvent event) {
@@ -130,8 +139,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     for (WeaponAction action : event.getPowerUp().getActions()) {
       actions.add(new PowerUpEffect(player, event.getPowerUp(), action));
     }
-    // TODO: add actions to turn queue
 
+    boardController.getTurnController().addTurnActions(actions);
   }
 
   public void update(PlayerActionSelectionEvent event) {
@@ -163,7 +172,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         actions.add(new PickPowerUp(player));
         break;
     }
-    // TODO: add actions to turn queue
+
+    boardController.getTurnController().addTurnActions(actions);
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerDiscardPowerUpEvent event) {
@@ -178,6 +189,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
     board.undrawPowerUp(event.getPowerUp());
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerPaymentEvent event) {
@@ -202,6 +215,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         board.undrawPowerUp(powerUp);
       }
     }
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerSelectWeaponEvent event) {
@@ -214,6 +229,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (selectedWeapon != null) {
       player.setCurrentWeapon(selectedWeapon);
     }
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerSelectWeaponEffectEvent event) {
@@ -231,8 +248,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
           actions.add(new WeaponEffect(player, weapon, action));
         }
       }
-      // TODO: add actions to turn queue
+
+      boardController.getTurnController().addTurnActions(actions);
     }
+
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   @Override

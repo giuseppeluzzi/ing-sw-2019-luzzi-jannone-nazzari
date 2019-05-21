@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.FinalFrenzyToggleEvent;
 import it.polimi.se2019.adrenalina.controller.event.MapSelectionEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -27,9 +28,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,6 +43,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private static final long serialVersionUID = 5651066204312828750L;
 
   private final transient Board board;
+  private final TurnController turnController;
   private final AttackController attackController;
   private final PlayerController playerController;
 
@@ -70,6 +75,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     timer = new Timer();
     random = new Random();
 
+    turnController = new TurnController(this);
     attackController = new AttackController(this);
     playerController = new PlayerController(this);
 
@@ -81,6 +87,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     return board;
   }
 
+  public TurnController getTurnController() {
+    return turnController;
+  }
+
   public AttackController getAttackController() {
     return attackController;
   }
@@ -89,6 +99,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     return playerController;
   }
 
+  /**
+   * Loads maps from json
+   */
   private void loadMaps() {
     try (Stream<Path> weaponStream = Files.walk(
         Paths.get(BoardController.class.getResource("/maps").toURI()))) {
@@ -102,6 +115,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Returns a set of valid maps for a given number of players
+   * @param players number of players
+   * @return a set of GameMap
+   */
   public List<GameMap> getValidMaps(int players) {
     List<GameMap> validMaps = new ArrayList<>();
     for (GameMap map : new ArrayList<>(maps)) {
@@ -113,6 +131,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     return validMaps;
   }
 
+  /**
+   * Loads a single map from a file
+   * @param mapPath Path of a map
+   */
   private void loadMap(Path mapPath) {
     Gson gson = new Gson();
     try {
@@ -124,6 +146,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Load weapons from json
+   */
   private void loadWeapons() {
     try (Stream<Path> weaponStream = Files.walk(
         Paths.get(BoardController.class.getResource("/weapons").toURI()))) {
@@ -160,7 +185,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     if (board.getStatus() == BoardStatus.END) {
       throw new EndedGameException();
     } else if (board.getStatus() == BoardStatus.LOBBY) {
-      if (board.getPlayers().size() > 5) {
+      if (board.getPlayers().size() >= 5) {
         throw new FullBoardException();
       }
 
@@ -182,8 +207,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Starts a timer both server-side and on each client
+   */
   private void startJoinTimer() {
-    timer.start(Configuration.getInstance().getJoinTimeout(), this::startGame);
+    timer.start(Configuration.getInstance().getJoinTimeout(), this::chooseMap);
 
     getActivePlayers().stream().forEach(p -> {
       try {
@@ -194,7 +222,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     });
   }
 
-  private void startGame() {
+  /**
+   * Verifies is a map is selected otherwise one is selected taking into account the number of
+   * players
+   */
+  private void chooseMap() {
     if (selectedMap == 0) {
       List<GameMap> validMaps = getValidMaps(board.getPlayers().size());
       selectedMap = validMaps.get(random.nextInt(maps.size())).getId();
@@ -208,25 +240,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     Log.info("Selected map #" + selectedMap);
   }
 
-
-  private void setViews(Player player) {
-    try {
-      ClientInterface client = player.getClient();
-      BoardViewInterface boardView = client.getBoardView();
-      CharactersViewInterface charactersView = client.getCharactersView();
-      PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
-
-      boardViews.put(client, boardView);
-      charactersViews.put(client, charactersView);
-      playerDashboardViews.put(client, playerDashboardsView);
-
-      boardView.addObserver(this);
-      charactersView.addObserver(playerController);
-      playerDashboardsView.addObserver(playerController);
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
-  }
 
   /**
    * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
@@ -255,8 +268,30 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         .collect(Collectors.toList());
   }
 
+  /**
+   * Sets needed views (BoardView, CharactersView and PlayerDashboardsView) on a Player
+   * @param player a Player
+   */
+  private void setViews(Player player) {
+    try {
+      ClientInterface client = player.getClient();
+      BoardViewInterface boardView = client.getBoardView();
+      CharactersViewInterface charactersView = client.getCharactersView();
+      PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
 
-  public HashMap<ClientInterface, String> getClients() {
+      boardViews.put(client, boardView);
+      charactersViews.put(client, charactersView);
+      playerDashboardViews.put(client, playerDashboardsView);
+
+      boardView.addObserver(this);
+      charactersView.addObserver(playerController);
+      playerDashboardsView.addObserver(playerController);
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  public Map<ClientInterface, String> getClients() {
     return new HashMap<>(clientsName);
   }
 
@@ -290,12 +325,19 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   @Override
   public void run() {
-    // TODO: game manager
-  }
+    board.setStatus(BoardStatus.MATCH);
+    board.setFinalFrenzyActive(false);
+    board.setCurrentPlayer(null);
 
-  @Override
-  public void update(Event event) {
-    throw new UnsupportedOperationException();
+    Deque<PlayerColor> freeColors = new ArrayDeque<>(board.getFreePlayerColors());
+    for (Player player: board.getPlayers()) {
+      if (player.getColor() == null) {
+        player.setColor(freeColors.pop());
+      }
+    }
+
+    turnController.prepare();
+    turnController.executeGameActionQueue();
   }
 
   public void update(FinalFrenzyToggleEvent event) {
@@ -308,7 +350,22 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  public void update(PlayerColorSelectionEvent event) {
+    if (! board.getFreePlayerColors().contains(event.getNewPlayerColor())) {
+      return ;
+    }
 
+    try {
+      board.getPlayerByColor(event.getPlayerColor()).setColor(event.getNewPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      //
+    }
+  }
+
+  @Override
+  public void update(Event event) {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
   public boolean equals(Object obj) {
