@@ -19,6 +19,6 @@ public class ReloadWeapon extends GameAction {
 
   @Override
   public void execute(Board board) {
-    // TODO
+    weapon.setLoaded(true);
   }
 }

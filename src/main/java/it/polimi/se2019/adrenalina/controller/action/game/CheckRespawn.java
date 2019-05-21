@@ -11,6 +11,10 @@ public class CheckRespawn extends GameActionAsync {
 
   @Override
   public void execute(Board board) {
-    // TODO
+    for (Player player : board.getPlayers()) {
+      if (player.isDead()) {
+        player.respawn();
+      }
+    }
   }
 }
