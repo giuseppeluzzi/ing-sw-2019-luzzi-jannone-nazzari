@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
@@ -8,6 +9,7 @@ import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,11 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
   @Override
   public void removeSelected() {
     selectedPlayer = null;
+  }
+
+  @Override
+  public void showDeath(PlayerColor playerColor) {
+    // TODO: show death
   }
 
   @Override

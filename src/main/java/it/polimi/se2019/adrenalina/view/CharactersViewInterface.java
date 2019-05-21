@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
@@ -14,6 +15,7 @@ public interface CharactersViewInterface extends RemoteObservable, Serializable 
   void addPlayer(Player player) throws RemoteException;
   void setSelected(Player player) throws RemoteException;
   void removeSelected() throws RemoteException;
+  void showDeath(PlayerColor playerColor) throws RemoteException;
 
   void update(PlayerDeathEvent event) throws RemoteException;
   void update(PlayerSpawnEvent event) throws RemoteException;

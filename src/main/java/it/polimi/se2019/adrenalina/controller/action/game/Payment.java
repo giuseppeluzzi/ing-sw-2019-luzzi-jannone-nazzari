@@ -40,7 +40,7 @@ public class Payment extends GameAction {
   public void execute(Board board) {
     try {
       getPlayer().getClient().getPlayerDashboardsView()
-          .showPaymentOption(blueCost, redCost, yellowCost);
+          .showPaymentOption(blueCost, redCost, yellowCost, any);
     } catch (RemoteException e) {
       Log.exception(e);
     }

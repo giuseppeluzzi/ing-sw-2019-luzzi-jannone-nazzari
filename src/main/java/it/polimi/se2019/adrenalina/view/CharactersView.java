@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
@@ -25,6 +26,15 @@ public abstract class CharactersView extends Observable implements CharactersVie
     return new ArrayList<>(players);
   }
 
+  public Player getPlayerByColor(PlayerColor playerColor) {
+    for (Player player : getPlayers()) {
+      if (player.getColor() == playerColor) {
+        return player;
+      }
+    }
+    return null;
+  }
+
   @Override
   public void addPlayer(Player player) {
     players.add(player);
@@ -39,6 +49,9 @@ public abstract class CharactersView extends Observable implements CharactersVie
   public void removeSelected() {
     selectedPlayer = null;
   }
+
+  @Override
+  public abstract void showDeath(PlayerColor playerColor);
 
   @Override
   public void update(PlayerDeathEvent event) {
