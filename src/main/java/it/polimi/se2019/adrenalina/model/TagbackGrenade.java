@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
  * Class defining a Tagback Grenade powerup card
  */
 public class TagbackGrenade extends PowerUp {
+
+  private static final long serialVersionUID = 8370118473308407561L;
+
   public TagbackGrenade(AmmoColor color) {
     super(color);
   }
@@ -29,6 +32,11 @@ public class TagbackGrenade extends PowerUp {
   @Override
   public TagbackGrenade copy() {
     return new TagbackGrenade(this);
+  }
+
+  @Override
+  public String getName() {
+    return "Granata a frammentazione";
   }
 
   /**

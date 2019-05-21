@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
  * Class describing a Newton powerUp card.
  */
 public class Newton extends PowerUp {
+
+  private static final long serialVersionUID = 3859349171755429567L;
+
   public Newton(AmmoColor color) {
     super(color);
   }
@@ -25,6 +28,11 @@ public class Newton extends PowerUp {
   public boolean canUse(){
     //TODO: implement function
     return true;
+  }
+
+  @Override
+  public String getName() {
+    return "Raggio traente";
   }
 
   /**

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PowerUp implements Serializable {
+public abstract class PowerUp implements Serializable, Spendable {
 
   private static final long serialVersionUID = 8948751912601215729L;
   private final AmmoColor color;
@@ -33,6 +33,18 @@ public abstract class PowerUp implements Serializable {
 
   public void addAction(WeaponAction action) {
     actions.add(action);
+  }
+
+  public abstract String getName();
+
+  @Override
+  public AmmoColor getSpendableColor() {
+    return color;
+  }
+
+  @Override
+  public String getSpendableName() {
+    return getName();
   }
 
   public void addOptionalMoveAction(OptionalMoveAction action) {

@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
  * Class defining a Targeting Scoper powerup card
  */
 public class TargetingScope extends PowerUp {
+
+  private static final long serialVersionUID = -9185952826985193602L;
+
   public TargetingScope(AmmoColor color) {
     super(color);
   }
@@ -24,6 +27,11 @@ public class TargetingScope extends PowerUp {
   public boolean canUse(){
     //TODO implement function
     return true;
+  }
+
+  @Override
+  public String getName() {
+    return "Mirino";
   }
 
   @Override

@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
  * Class defining a Teleporter powerup card
  */
 public class Teleporter extends PowerUp {
+
+  private static final long serialVersionUID = -384452700114270235L;
+
   public Teleporter(AmmoColor color) {
     super(color);
   }
@@ -29,6 +32,11 @@ public class Teleporter extends PowerUp {
   @Override
   public Teleporter copy() {
     return new Teleporter(this);
+  }
+
+  @Override
+  public String getName() {
+    return "Teletrasporto";
   }
 
   /**
