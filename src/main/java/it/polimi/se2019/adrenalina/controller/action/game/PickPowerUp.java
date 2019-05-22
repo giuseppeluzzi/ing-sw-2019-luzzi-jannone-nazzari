@@ -16,8 +16,8 @@ public class PickPowerUp extends GameActionAsync {
     PowerUp powerUp = board.getPowerUps().get(0);
     board.drawPowerUp(powerUp);
     try {
-      getPlayer().addPowerUp(powerUp);
-    } catch (InvalidPowerUpException e) {
+      getPlayer().addPowerUp(powerUp, true);
+    } catch (InvalidPowerUpException ignored) {
       // ignore exception
     }
   }

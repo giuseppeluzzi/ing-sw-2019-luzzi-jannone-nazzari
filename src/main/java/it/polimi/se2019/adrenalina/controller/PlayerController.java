@@ -1,8 +1,9 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.controller.action.game.CheckReloadWeapons;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
+import it.polimi.se2019.adrenalina.controller.action.game.ObjectPickup;
 import it.polimi.se2019.adrenalina.controller.action.game.Payment;
-import it.polimi.se2019.adrenalina.controller.action.game.PickPowerUp;
 import it.polimi.se2019.adrenalina.controller.action.game.PowerUpEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectWeapon;
@@ -56,6 +57,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   /**
    * Instances a new player with a name and color and adds it to the board.
+   *
    * @param name the player's name.
    * @param color the player's color.
    * @return the player instance.
@@ -74,6 +76,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerNoCollectEvent event) {
     boardController.getTurnController().executeGameActionQueue();
+    event.getPlayerColor();
   }
 
   public void update(PlayerCollectAmmoEvent event) {
@@ -135,7 +138,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
     List<GameAction> actions = new ArrayList<>();
-    actions.add(new Payment(player, 0, 0,0, event.getPowerUp().doesCost() ? 1 : 0));
+    actions.add(new Payment(player, 0, 0, 0, event.getPowerUp().doesCost() ? 1 : 0));
     for (WeaponAction action : event.getPowerUp().getActions()) {
       actions.add(new PowerUpEffect(player, event.getPowerUp(), action));
     }
@@ -154,23 +157,42 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       case RUN:
         actions.add(new SquareSelection(player, 3));
         break;
-      case WALK_AND_FETCH:
+      case WALK_FETCH:
         actions.add(new SquareSelection(player, 1));
-        actions.add(new PickPowerUp(player));
+        actions.add(new ObjectPickup(player));
+        break;
+      case WALK_FETCH3:
+      case FF_RUN_FETCH:
+        actions.add(new SquareSelection(player, 2));
+        actions.add(new ObjectPickup(player));
         break;
       case SHOOT:
         actions.add(new SelectWeapon(player));
         actions.add(new SelectEffect(player));
         break;
-      case FF_RUN_RELOAD_SHOOT:
+      case SHOOT6:
         actions.add(new SquareSelection(player, 1));
         actions.add(new SelectWeapon(player));
+        actions.add(new SelectEffect(player));
+        break;
+      case FF_RUN:
+        actions.add(new SquareSelection(player, 4));
+        break;
+      case FF_RUN_RELOAD_SHOOT:
+        actions.add(new SquareSelection(player, 1));
+        actions.add(new CheckReloadWeapons(player));
         actions.add(new SelectWeapon(player));
+        actions.add(new SelectEffect(player));
         break;
-      case FF_RUN_AND_FETCH:
+      case FF_WALK_FETCH:
+        actions.add(new SquareSelection(player, 3));
+        actions.add(new ObjectPickup(player));
+        break;
+      case FF_WALK_RELOAD_SHOOT:
         actions.add(new SquareSelection(player, 2));
-        actions.add(new PickPowerUp(player));
-        break;
+        actions.add(new CheckReloadWeapons(player));
+        actions.add(new SelectWeapon(player));
+        actions.add(new SelectEffect(player));
     }
 
     boardController.getTurnController().addTurnActions(actions);
@@ -180,6 +202,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   public void update(PlayerDiscardPowerUpEvent event) {
     Board board = boardController.getBoard();
     Player player = getPlayerFromBoard(board, event.getPlayerColor());
+
     if (player == null) {
       return;
     }
@@ -189,6 +212,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
     board.undrawPowerUp(event.getPowerUp());
+
+    if (board.getTurnCounter() > 1) {
+      player.respawn(event.getPowerUp().getColor());
+    }
 
     boardController.getTurnController().executeGameActionQueue();
   }
@@ -242,7 +269,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     Weapon weapon = board.getWeaponByName(event.getWeaponName());
     if (weapon != null) {
       List<GameAction> actions = new ArrayList<>();
-      actions.add(new Payment(player, weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE), weapon.getCost(AmmoColor.YELLOW), 0));
+      actions.add(new Payment(player, weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE),
+          weapon.getCost(AmmoColor.YELLOW), 0));
       for (String effectName : event.getEffectNames()) {
         for (WeaponAction action : weapon.getEffectByName(effectName).getActions()) {
           actions.add(new WeaponEffect(player, weapon, action));

@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
-import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -11,7 +11,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VirtualPlayerDashboardsView extends Observable implements PlayerDashboardsViewInterface, Observer {
+public class VirtualPlayerDashboardsView extends Observable implements
+    PlayerDashboardsViewInterface, Observer {
 
   private static final long serialVersionUID = 4893523547038046745L;
   private final transient List<Player> players;
@@ -46,6 +47,11 @@ public class VirtualPlayerDashboardsView extends Observable implements PlayerDas
   @Override
   public void showPaymentOption(int blue, int red, int yellow, int any) {
     // TODO: show payment option
+  }
+
+  @Override
+  public void showTurnActionSelection(List<TurnAction> actions) {
+    // TODO
   }
 
 

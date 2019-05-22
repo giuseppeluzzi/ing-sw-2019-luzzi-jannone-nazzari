@@ -97,14 +97,14 @@ public class TurnController {
     addTurnActions(new PickPowerUp(player), new PickPowerUp(player), new PowerUpSelection(player));
   }
 
-  private void addSpawn(Player player) {
+  public void addRespawn(Player player) {
     addTurnActions(new PickPowerUp(player), new PowerUpSelection(player));
   }
 
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
       addTurnActions(new ActionSelection(player), new ActionSelection(player),
-          new CheckRespawn(player));
+          new CheckRespawn(this, player));
       addFirstSpawn(player);
     } else {
       if (boardController.getBoard().isFinalFrenzySelected() &&
@@ -112,7 +112,7 @@ public class TurnController {
         // TODO
       } else {
         addTurnActions(new ActionSelection(player), new ActionSelection(player),
-              new CheckRespawn(player));
+              new CheckRespawn(this, player));
       }
     }
   }

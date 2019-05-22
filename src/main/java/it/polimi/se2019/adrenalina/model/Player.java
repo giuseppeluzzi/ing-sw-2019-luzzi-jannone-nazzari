@@ -271,7 +271,7 @@ public class Player extends Observable implements Target, Serializable {
     return output;
   }
 
-  public void respawn() {
+  public void respawn(AmmoColor spawnColor) {
     if (! isDead()) {
       throw new IllegalStateException("Player is not dead");
     }
@@ -302,7 +302,7 @@ public class Player extends Observable implements Target, Serializable {
       killScore -= 2;
     }
     damages.clear();
-    // TODO: collect a pwerUp, discard one and actually respawn on the map
+    square = board.getSpawnPointSquare(spawnColor);
   }
 
   public List<PlayerColor> getTags() {
@@ -333,8 +333,18 @@ public class Player extends Observable implements Target, Serializable {
    * @param powerUp collected powerUp
    * @throws InvalidPowerUpException thrown if a player already has 3 powerUps
    */
-  public void addPowerUp(PowerUp powerUp) throws InvalidPowerUpException  {
-    if (powerUps.size() >= 3) {
+  public void addPowerUp(PowerUp powerUp) throws InvalidPowerUpException {
+    addPowerUp(powerUp, false);
+  }
+
+  /**
+   * Adds a powerUp to the list of powerUps of this player.
+   * @param powerUp collected powerUp
+   * @param force should ignore the powerup limit
+   * @throws InvalidPowerUpException thrown if a player already has 3 powerUps and force is false
+   */
+  public void addPowerUp(PowerUp powerUp, boolean force) throws InvalidPowerUpException  {
+    if (powerUps.size() >= 3 && !force) {
       throw new InvalidPowerUpException("Player already has 3 powerUp");
     }
     powerUps.add(powerUp);
@@ -385,6 +395,19 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   /**
+   * Check if Player has at least one loaded weapon
+   * @return true if the player holds a loaded weapon, false otherwise
+   */
+  public boolean hasLoadedWeapons() {
+    for (Weapon weapon: weapons) {
+      if (weapon.isLoaded()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Check if Player can pay to reload weapon.
    * @param weapon Weapon reloading
    * @return true if possible, false otherwise
@@ -407,13 +430,12 @@ public class Player extends Observable implements Target, Serializable {
     return true;
   }
 
-
   /**
-   * Set the quantity for an AmmoColor, ammo will be added only up to three unit per color.
+   * Adds the quantity for an AmmoColor, ammo will be added only up to three unit per color.
    * @param ammoColor key
    * @param value how many ammo will be added
    */
-  public void setAmmo(AmmoColor ammoColor, int value) {
+  public void addAmmo(AmmoColor ammoColor, int value) {
     int currentAmmo = ammo.get(ammoColor);
     if (currentAmmo + value >= 3) {
       ammo.put(ammoColor, 3);
@@ -421,6 +443,7 @@ public class Player extends Observable implements Target, Serializable {
       ammo.put(ammoColor, currentAmmo + value);
     }
   }
+
 
   /**
    * Private method, creates an EnumMap associating each AmmoColor to an integer value

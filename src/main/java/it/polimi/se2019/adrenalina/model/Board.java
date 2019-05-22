@@ -2,11 +2,13 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class describes a game board.
@@ -150,6 +153,22 @@ public class Board extends Observable implements Serializable {
         // TODO
       }
     }
+  }
+
+  public Square getSpawnPointSquare(AmmoColor spawnPointColor) {
+    if (spawnPointColor == AmmoColor.ANY) {
+      throw new IllegalArgumentException("spawnPointColor can't be AmmoColor.ANY");
+    }
+
+    for (Square square: getSquares()) {
+      if (square.isSpawnPoint() &&
+          square.getColor() == spawnPointColor.getEquivalentSquareColor()) {
+        return square;
+      }
+    }
+
+    Log.critical("Spawnpoint for " + spawnPointColor + " doesn't exists");
+    return null;
   }
 
   /**
@@ -582,7 +601,7 @@ public class Board extends Observable implements Serializable {
    *
    * @return a set of free PlayerColor
    */
-  public EnumSet<PlayerColor> getFreePlayerColors() {
+  public Set<PlayerColor> getFreePlayerColors() {
     EnumSet<PlayerColor> freeColors = EnumSet.allOf(PlayerColor.class);
     for (Player player: players) {
       if (freeColors.contains(player.getColor())) {

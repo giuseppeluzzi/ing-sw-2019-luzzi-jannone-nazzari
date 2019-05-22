@@ -8,10 +8,24 @@ import java.util.List;
  * Enumeration of all possible colors of an ammo
  */
 public enum AmmoColor implements Spendable {
-  BLUE,
-  RED,
-  YELLOW,
+  BLUE(SquareColor.BLUE),
+  RED(SquareColor.RED),
+  YELLOW(SquareColor.YELLOW),
   ANY;
+
+  private final SquareColor equivalentSquareColor;
+
+  public SquareColor getEquivalentSquareColor() {
+    return equivalentSquareColor;
+  }
+
+  AmmoColor() {
+    equivalentSquareColor = null;
+  }
+
+  AmmoColor(SquareColor equivalentSquareColor) {
+    this.equivalentSquareColor = equivalentSquareColor;
+  }
 
   public static List<AmmoColor> getValidColor() {
     List<AmmoColor> list = new ArrayList<>();
