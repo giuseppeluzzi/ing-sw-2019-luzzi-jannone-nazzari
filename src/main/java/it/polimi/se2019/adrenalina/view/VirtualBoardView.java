@@ -11,9 +11,11 @@ import it.polimi.se2019.adrenalina.controller.event.TimerSetEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
@@ -70,6 +72,10 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   @Override
   public void showSquareSelect(List<Target> targets) {
     // TODO: send selection
+  }
+  
+  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
+
   }
 
   @Override

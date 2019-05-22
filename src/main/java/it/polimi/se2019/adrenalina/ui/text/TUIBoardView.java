@@ -1,8 +1,10 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
+import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
@@ -10,6 +12,7 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
@@ -177,5 +180,29 @@ public class TUIBoardView extends BoardView {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+  }
+  
+  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
+    int targetIndex = 0;
+    int choosenTarget = 0;
+
+    Log.print("Quale arma vuoi acquistare?");
+    do {
+      for (Weapon weapon : weapons) {
+        Log.print(
+            String.format("\t%d) %s%n  Costo: Rosso: %d - Blu: %d - Giallo: %d ",
+                targetIndex,
+                weapon.getName(),
+                weapon.getCost(AmmoColor.RED),
+                weapon.getCost(AmmoColor.BLUE),
+                weapon.getCost(AmmoColor.YELLOW)));
+        targetIndex++;
+      }
+      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (choosenTarget < 1 || choosenTarget >= targetIndex);
+
+    notifyObservers(
+        new PlayerCollectWeaponEvent(client.getPlayerColor(),
+            weapons.get(choosenTarget - 1).getName()));
   }
 }
