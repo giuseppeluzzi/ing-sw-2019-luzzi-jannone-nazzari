@@ -39,30 +39,30 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void showTargetSelect(TargetType type, List<Target> targets) {
-    Target choosenTarget;
+    Target chosenTarget;
 
     try {
       switch (type) {
         case ATTACK_TARGET:
-          choosenTarget = selectAttackTarget(targets);
-          if (choosenTarget.isPlayer()) {
+          chosenTarget = selectAttackTarget(targets);
+          if (chosenTarget.isPlayer()) {
             notifyObservers(new SelectPlayerEvent(client.getPlayerColor(),
-                choosenTarget.getPlayer().getColor()));
+                chosenTarget.getPlayer().getColor()));
           } else {
             notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
-                choosenTarget.getSquare().getPosX(), choosenTarget.getSquare().getPosY()));
+                chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           }
           break;
         case MOVE_SQUARE:
         case ATTACK_SQUARE:
-          choosenTarget = selectSquare(targets);
+          chosenTarget = selectSquare(targets);
           notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
-              choosenTarget.getSquare().getPosX(), choosenTarget.getSquare().getPosY()));
+              chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           break;
         case ATTACK_ROOM:
-          choosenTarget = selectRoom(targets);
+          chosenTarget = selectRoom(targets);
           notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
-              choosenTarget.getSquare().getPosX(), choosenTarget.getSquare().getPosY()));
+              chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           break;
       }
     } catch (RemoteException e) {
@@ -74,7 +74,7 @@ public class TUIBoardView extends BoardView {
 
   private Target selectRoom(List<Target> targets) {
     int targetIndex = 0;
-    int choosenTarget = 0;
+    int chosenTarget = 0;
 
     EnumSet<SquareColor> squareColors = EnumSet.noneOf(SquareColor.class);
 
@@ -89,8 +89,8 @@ public class TUIBoardView extends BoardView {
         targetIndex++;
       }
 
-      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (choosenTarget == 0 || choosenTarget >= targetIndex);
+      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     for (Target target : targets) {
       if (target.getSquare().getColor() == squareColors.toArray()[targetIndex]) {
@@ -103,7 +103,7 @@ public class TUIBoardView extends BoardView {
 
   private Target selectSquare(List<Target> targets) {
     int targetIndex = 0;
-    int choosenTarget = 0;
+    int chosenTarget = 0;
 
     Log.print("Seleziona un quadrato");
     do {
@@ -116,15 +116,15 @@ public class TUIBoardView extends BoardView {
                 target.getSquare().getColor()));
         targetIndex++;
       }
-      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (choosenTarget < 1 || choosenTarget >= targetIndex);
+      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
 
     return targets.get(targetIndex - 1);
   }
 
   private Target selectAttackTarget(List<Target> targets) {
     int targetIndex;
-    int choosenTarget = 0;
+    int chosenTarget = 0;
 
     Log.print("Seleziona un bersaglio");
     do {
@@ -143,8 +143,8 @@ public class TUIBoardView extends BoardView {
           //
         }
       }
-      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (choosenTarget < 1 || choosenTarget >= targetIndex);
+      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
 
     return targets.get(targetIndex - 1);
   }
@@ -152,7 +152,7 @@ public class TUIBoardView extends BoardView {
   @Override
   public void showDirectionSelect() {
     int targetIndex = 0;
-    int choosenTarget = 0;
+    int chosenTarget = 0;
 
     do {
       Log.print("Seleziona una direzione");
@@ -161,12 +161,12 @@ public class TUIBoardView extends BoardView {
         targetIndex++;
       }
 
-      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (choosenTarget == 0 || choosenTarget >= targetIndex);
+      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     try {
       notifyObservers(new SelectDirectionEvent(client.getPlayerColor(),
-          Direction.values()[choosenTarget - 1]));
+          Direction.values()[chosenTarget - 1]));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -181,28 +181,38 @@ public class TUIBoardView extends BoardView {
       Log.exception(e);
     }
   }
-  
-  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
-    int targetIndex = 0;
-    int choosenTarget = 0;
 
-    Log.print("Quale arma vuoi acquistare?");
+  @Override
+  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
+    showWeapons(weapons, "Quale arma vuoi acquistare?", true);
+  }
+
+  public void showWeapons(List<Weapon> weapons, String prompt, boolean showCost) throws RemoteException {
+    Log.print(prompt);
+
+    int targetIndex = 0;
+    int chosenTarget = 0;
+
     do {
       for (Weapon weapon : weapons) {
-        Log.print(
-            String.format("\t%d) %s%n  Costo: Rosso: %d - Blu: %d - Giallo: %d ",
-                targetIndex,
-                weapon.getName(),
-                weapon.getCost(AmmoColor.RED),
-                weapon.getCost(AmmoColor.BLUE),
-                weapon.getCost(AmmoColor.YELLOW)));
+        if (showCost) {
+          Log.print(
+              String.format("\t%d) %s%n  Costo: %d rosso, %d blu, %d giallo",
+                  targetIndex,
+                  weapon.getName(),
+                  weapon.getCost(AmmoColor.RED),
+                  weapon.getCost(AmmoColor.BLUE),
+                  weapon.getCost(AmmoColor.YELLOW)));
+        } else {
+          Log.print(String.format("\t%d) %s", targetIndex, weapon.getName()));
+        }
         targetIndex++;
       }
-      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (choosenTarget < 1 || choosenTarget >= targetIndex);
+      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
 
     notifyObservers(
         new PlayerCollectWeaponEvent(client.getPlayerColor(),
-            weapons.get(choosenTarget - 1).getName()));
+            weapons.get(chosenTarget - 1).getName()));
   }
 }

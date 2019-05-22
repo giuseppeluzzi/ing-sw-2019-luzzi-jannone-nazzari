@@ -138,7 +138,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
     int targetIndex = 0;
-    int choosenTarget = 0;
+    int chosenTarget = 0;
 
     do {
       Log.print("Seleziona un'azione");
@@ -147,11 +147,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
         targetIndex++;
       }
 
-      choosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (choosenTarget == 0 || choosenTarget >= targetIndex);
+      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     try {
-      notifyObservers(new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(choosenTarget)));
+      notifyObservers(new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(chosenTarget)));
     } catch (RemoteException e) {
       Log.exception(e);
     }
