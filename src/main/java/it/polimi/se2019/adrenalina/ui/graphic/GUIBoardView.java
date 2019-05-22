@@ -28,6 +28,10 @@ public class GUIBoardView extends BoardView {
   }
 
   @Override
+  public void showSquareSelect(List<Target> targets) {
+    // TODO
+  }
+  
   public void showBuyableWeapons(List<Weapon> weapons) {
     // TODOo
   }

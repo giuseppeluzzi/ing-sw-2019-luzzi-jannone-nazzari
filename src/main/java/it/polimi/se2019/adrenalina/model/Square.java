@@ -308,6 +308,16 @@ public class Square extends Observable implements Target, Serializable {
     return false;
   }
 
+  public List<Square> getSquaresInRange(int min, int max) {
+    List<Square> output = new ArrayList<>();
+    for (Square square : board.getSquares()) {
+      if (getDistance(square) >= min && getDistance(square) <= max) {
+        output.add(square);
+      }
+    }
+    return output;
+  }
+
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
