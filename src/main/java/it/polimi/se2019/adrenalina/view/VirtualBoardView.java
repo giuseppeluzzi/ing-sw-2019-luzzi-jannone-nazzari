@@ -74,6 +74,7 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
     // TODO: send selection
   }
   
+  @Override
   public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
 
   }

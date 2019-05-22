@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -31,7 +32,7 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   }
 
   @Override
-  public abstract void showPaymentOption(int blue, int red, int yellow, int any);
+  public abstract void showPaymentOption(Buyable item);
 
   @Override
   public abstract void showTurnActionSelection(List<TurnAction> actions);

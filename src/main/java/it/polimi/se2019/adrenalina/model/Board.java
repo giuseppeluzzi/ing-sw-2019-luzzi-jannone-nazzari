@@ -482,6 +482,26 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
+   * Returns a PowerUp whose name and color is the same as the specified one.
+   *
+   * @param powerUpName name of the requested powerup
+   * @param powerUpColor color of the requested powerup
+   * @return PowerUp with name equals to "name" and powerUpColor equals "powerUpColor", null
+   * if PowerUp does not exist
+   */
+  public PowerUp getPowerUpByNameAndColor(String powerUpName, AmmoColor powerUpColor) {
+    List<PowerUp> powerUps = getPowerUps();
+    powerUps.addAll(takenPowerUps);
+
+    for (PowerUp powerUp : powerUps) {
+      if (powerUp.getName().equals(powerUpName) && powerUp.getColor() == powerUpColor) {
+        return powerUp;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Adds a doubleKill to the Board.
    *
    * @param player the Player who scored the doubleKill
@@ -652,14 +672,15 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Return a Weapon whose name is the same as the specified one.
+   * Returns a Weapon whose name is the same as the specified one.
    *
-   * @param name Name of the weapon requested
-   * @return Weapon whith name equals to "name", null if weapon does not exist
+   * @param name name of the weapon requested
+   * @return Weapon with name equals to "name", null if weapon does not exist
    */
   public Weapon getWeaponByName(String name) {
-    List<Weapon> taken = getTakenWeapons();
-    for (Weapon weapon : taken) {
+    List<Weapon> weapons = getWeapons();
+    weapons.addAll(takenWeapons);
+    for (Weapon weapon : weapons) {
       if (weapon.getName().equals(name)) {
         return weapon;
       }

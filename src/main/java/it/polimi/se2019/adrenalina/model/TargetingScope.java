@@ -36,6 +36,14 @@ public class TargetingScope extends PowerUp {
   }
 
   @Override
+  public int getCost(AmmoColor ammoColor) {
+    if (ammoColor == AmmoColor.ANY) {
+      return 1;
+    }
+    return 0;
+  }
+
+  @Override
   public TargetingScope copy() {
     return new TargetingScope(this);
   }

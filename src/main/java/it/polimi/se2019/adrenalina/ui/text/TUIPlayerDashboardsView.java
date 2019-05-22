@@ -2,14 +2,13 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
-import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
@@ -17,7 +16,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +61,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showPaymentOption(int blue, int red, int yellow, int any) {
-
+  public void showPaymentOption(Buyable item) {
     Player player;
     try {
       player = getPlayerByColor(client.getPlayerColor());
@@ -73,22 +70,22 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       return;
     }
 
-    String regex = "/^[0-9,.]*$/";
-    Map<AmmoColor, Integer> costs = new EnumMap<>(AmmoColor.class);
-    costs.put(AmmoColor.BLUE, blue);
-    costs.put(AmmoColor.RED, red);
-    costs.put(AmmoColor.YELLOW, yellow);
-    costs.put(AmmoColor.ANY, any);
     int answerBlue = 0;
     int answerRed = 0;
     int answerYellow = 0;
     int index = 1;
-    List<PowerUp> answerPowerUp = new ArrayList<>();
-    Set<String> answers = null;
+    String inputValidationRegex = "/^[0-9,.]*$/";
 
-    boolean completed = false;
+    Map<AmmoColor, Integer> costs = new EnumMap<>(AmmoColor.class);
+    costs.put(AmmoColor.BLUE, item.getCost(AmmoColor.BLUE));
+    costs.put(AmmoColor.RED, item.getCost(AmmoColor.RED));
+    costs.put(AmmoColor.YELLOW, item.getCost(AmmoColor.YELLOW));
+    costs.put(AmmoColor.ANY, item.getCost(AmmoColor.ANY));
 
     List<Spendable> spendables = setSpendable(player);
+    List<PowerUp> answerPowerUp = new ArrayList<>();
+    Set<String> answers = null;
+    boolean completed = false;
 
     for (Spendable match : spendables) {
       Log.print(String.format("\t%d) %s", index, match.getSpendableName()));
@@ -96,13 +93,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
 
     Log.print(
-        String.format("Devi pagare questa quantità:%n\tRosso: %d - Blu: %d - Giallo: %d - Generico: %d"
-            + "Come preferisci pagare?", red, blue, yellow, any));
+        String.format("Il costo da pagare è:%n\t%d rosso, %d blu, %d giallo, %d qualsiasi colore%n"
+            + "Come preferisci pagare?", item.getCost(AmmoColor.RED), item.getCost(AmmoColor.BLUE), item.getCost(AmmoColor.YELLOW), item.getCost(AmmoColor.ANY)));
 
     do {
       Log.print("Inserisci i numeri scelti separati da virgole");
       String response = scanner.nextLine();
-      if (!response.matches(regex)) {
+      if (!response.matches(inputValidationRegex)) {
         continue;
       }
 
@@ -129,7 +126,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     try {
       notifyObservers(
           new PlayerPaymentEvent(client.getPlayerColor(), answerRed, answerBlue, answerYellow,
-              answerPowerUp));
+              answerPowerUp, item));
     } catch (RemoteException e) {
       Log.exception(e);
     }

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ public interface PlayerDashboardsViewInterface extends RemoteObservable, Seriali
   List<Player> getPlayers() throws RemoteException;
   void reset(Player player) throws RemoteException;
   void switchToFinalFrenzy(Player player) throws RemoteException;
-  void showPaymentOption(int blue, int red, int yellow, int any) throws RemoteException;
+  void showPaymentOption(Buyable item) throws RemoteException;
   void showTurnActionSelection(List<TurnAction> actions) throws RemoteException;
 
   void update(Event event) throws RemoteException;

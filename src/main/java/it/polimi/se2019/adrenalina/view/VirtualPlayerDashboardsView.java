@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -45,15 +46,14 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void showPaymentOption(int blue, int red, int yellow, int any) {
-    // TODO: show payment option
+  public void showPaymentOption(Buyable item) throws RemoteException {
+    //
   }
 
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
     // TODO
   }
-
 
   @Override
   public void update(Event event) {

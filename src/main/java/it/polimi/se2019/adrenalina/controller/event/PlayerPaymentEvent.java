@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +14,16 @@ public class PlayerPaymentEvent implements Event {
   private final int blue;
   private final int yellow;
   private final List<PowerUp> powerUps;
+  private final Buyable item;
 
   public PlayerPaymentEvent(PlayerColor playerColor, int red, int blue, int yellow,
-      List<PowerUp> powerUps) {
+      List<PowerUp> powerUps, Buyable item) {
     this.playerColor = playerColor;
     this.red = red;
     this.blue = blue;
     this.yellow = yellow;
     this.powerUps = new ArrayList<>(powerUps);
+    this.item = item;
   }
 
   public PlayerColor getPlayerColor() {
@@ -41,5 +44,9 @@ public class PlayerPaymentEvent implements Event {
 
   public List<PowerUp> getPowerUps() {
     return new ArrayList<>(powerUps);
+  }
+
+  public Buyable getItem() {
+    return item;
   }
 }

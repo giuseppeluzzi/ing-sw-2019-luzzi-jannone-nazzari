@@ -1,13 +1,18 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
+import it.polimi.se2019.adrenalina.controller.action.game.WeaponEffect;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Buyable;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Effect implements Serializable {
+public class Effect implements Serializable, Buyable {
 
   private static final long serialVersionUID = 2725086084597119182L;
   private final int costRed;
@@ -114,5 +119,32 @@ public class Effect implements Serializable {
         effect.reconcileDeserialization(ofWeapon, this);
       }
     }
+  }
+
+  @Override
+  public int getCost(AmmoColor ammoColor) {
+    switch (ammoColor) {
+      case BLUE:
+        return costBlue;
+      case RED:
+        return costRed;
+      case YELLOW:
+        return costYellow;
+      case ANY:
+        return 0;
+    }
+    return 0;
+  }
+
+  @Override
+  public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
+    Weapon localWeapon = board.getWeaponByName(weapon.getName());
+    List<GameAction> turnActions = new ArrayList<>();
+
+    for (WeaponAction action : localWeapon.getEffectByName(name).getActions()) {
+      turnActions.add(new WeaponEffect(player, localWeapon, action));
+    }
+
+    turnController.addTurnActions(turnActions);
   }
 }

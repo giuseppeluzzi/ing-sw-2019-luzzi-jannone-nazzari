@@ -22,12 +22,10 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerSelectWeaponEffectEven
 import it.polimi.se2019.adrenalina.controller.event.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
-import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
-import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
@@ -113,26 +111,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
 
-    Weapon collectedWeapon = null;
-    for (Square square : board.getSquares()) {
-      for (Weapon weapon : square.getWeapons()) {
-        if (weapon.getName().equals(event.getWeaponName())) {
-          collectedWeapon = weapon;
-          square.removeWeapon(weapon);
-          break;
-        }
-      }
-    }
-
-    if (collectedWeapon != null) {
-      try {
-        board.takeWeapon(collectedWeapon);
-      } catch (InvalidWeaponException ignored) {
-        return;
-      }
-      player.addWeapon(collectedWeapon);
-    }
-
+    boardController.getTurnController().addTurnActions(
+        new Payment(boardController.getTurnController(),
+            player,
+            board.getWeaponByName(event.getWeaponName())));
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -143,7 +125,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
     List<GameAction> actions = new ArrayList<>();
-    actions.add(new Payment(player, 0, 0, 0, event.getPowerUp().doesCost() ? 1 : 0));
+    actions.add(new Payment(boardController.getTurnController(), player, event.getPowerUp()));
     for (WeaponAction action : event.getPowerUp().getActions()) {
       actions.add(new PowerUpEffect(player, event.getPowerUp(), action));
     }
@@ -231,16 +213,20 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   public void update(PlayerPaymentEvent event) {
     Board board = boardController.getBoard();
     Player player = getPlayerFromBoard(board, event.getPlayerColor());
+
     if (player == null) {
       return;
     }
+
     if (player.getAmmo(AmmoColor.BLUE) >= event.getBlue()
         && player.getAmmo(AmmoColor.RED) >= event.getRed()
         && player.getAmmo(AmmoColor.YELLOW) >= event.getYellow()
         && player.getPowerUps().containsAll(event.getPowerUps())) {
+
       player.addAmmo(AmmoColor.BLUE, player.getAmmo(AmmoColor.BLUE) - event.getBlue());
       player.addAmmo(AmmoColor.RED, player.getAmmo(AmmoColor.RED) - event.getRed());
       player.addAmmo(AmmoColor.YELLOW, player.getAmmo(AmmoColor.YELLOW) - event.getYellow());
+
       for (PowerUp powerUp : event.getPowerUps()) {
         try {
           player.removePowerUp(powerUp);
@@ -250,6 +236,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         board.undrawPowerUp(powerUp);
       }
     }
+
+    event.getItem().afterPaymentCompleted(boardController.getTurnController(), board, player);
 
     boardController.getTurnController().executeGameActionQueue();
   }
@@ -277,12 +265,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     Weapon weapon = board.getWeaponByName(event.getWeaponName());
     if (weapon != null) {
       List<GameAction> actions = new ArrayList<>();
-      actions.add(new Payment(player, weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE),
-          weapon.getCost(AmmoColor.YELLOW), 0));
       for (String effectName : event.getEffectNames()) {
-        for (WeaponAction action : weapon.getEffectByName(effectName).getActions()) {
-          actions.add(new WeaponEffect(player, weapon, action));
-        }
+        actions.add(new Payment(boardController.getTurnController(), player, weapon.getEffectByName(effectName)));
       }
 
       boardController.getTurnController().addTurnActions(actions);

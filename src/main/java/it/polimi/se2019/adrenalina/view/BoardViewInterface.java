@@ -14,27 +14,37 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
 public interface BoardViewInterface extends RemoteObservable, Serializable {
+
   Board getBoard() throws RemoteException;
+
   void setBoard(Board board) throws RemoteException;
 
   void startTimer(int time) throws RemoteException;
+
   void hideTimer() throws RemoteException;
 
   void showMessage(MessageSeverity severity, String title, String message) throws RemoteException;
+
   void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
+
   void showDirectionSelect() throws RemoteException;
+
   void showSquareSelect(List<Target> targets) throws RemoteException;
+
   void showBuyableWeapons(List<Weapon> weapons) throws RemoteException;
 
   void update(WeaponUpdateEvent event) throws RemoteException;
+
   void update(AmmoCardUpdateEvent event) throws RemoteException;
+
   void update(KillShotEvent event) throws RemoteException;
+
   void update(DoubleKillEvent event) throws RemoteException;
+
   void update(SpawnPointDamageEvent event) throws RemoteException;
 
   void update(TimerSetEvent event) throws RemoteException;

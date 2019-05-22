@@ -32,6 +32,7 @@ public class GUIBoardView extends BoardView {
     // TODO
   }
   
+  @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
     // TODOo
   }

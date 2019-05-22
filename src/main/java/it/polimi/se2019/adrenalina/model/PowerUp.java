@@ -1,16 +1,17 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class PowerUp implements Serializable, Spendable, ExecutableObject {
+public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
 
   private static final long serialVersionUID = 8948751912601215729L;
   private final AmmoColor color;
@@ -64,7 +65,7 @@ public abstract class PowerUp implements Serializable, Spendable, ExecutableObje
     actions.add(action);
   }
 
-  public String serialize(){
+  public String serialize() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }
@@ -93,5 +94,21 @@ public abstract class PowerUp implements Serializable, Spendable, ExecutableObje
       throw new IllegalStateException("Target 0 is  not a player");
     }
     return (Player) getTargetHistory(0);
+  }
+
+  @Override
+  public int getCost(AmmoColor ammoColor) {
+    return 0;
+  }
+
+  @Override
+  public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
+    PowerUp powerUp = board.getPowerUpByNameAndColor(getName(), color);
+    board.drawPowerUp(powerUp);
+    try {
+      player.addPowerUp(powerUp);
+    } catch (InvalidPowerUpException ignored) {
+
+    }
   }
 }

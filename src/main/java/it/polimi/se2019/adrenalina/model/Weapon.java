@@ -5,9 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
+import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
@@ -23,7 +26,7 @@ import java.util.Map;
 /**
  * Class defining a weapon.
  */
-public class Weapon extends Observable implements Serializable, ExecutableObject {
+public class Weapon extends Observable implements Serializable, ExecutableObject, Buyable {
 
   private static final long serialVersionUID = -5264181345540286103L;
   private final AmmoColor baseCost;
@@ -54,6 +57,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
     cost.put(AmmoColor.RED, costRed);
     cost.put(AmmoColor.BLUE, costBlue);
     cost.put(AmmoColor.YELLOW, costYellow);
+    cost.put(AmmoColor.ANY, 0);
   }
 
   public Weapon(Weapon weapon) {
@@ -84,6 +88,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
     cost.put(AmmoColor.RED, weapon.getCost(AmmoColor.RED));
     cost.put(AmmoColor.BLUE, weapon.getCost(AmmoColor.BLUE));
     cost.put(AmmoColor.YELLOW, weapon.getCost(AmmoColor.YELLOW));
+    cost.put(AmmoColor.ANY, 0);
   }
 
   /**
@@ -223,6 +228,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
    * @param color color of the ammo
    * @return how many ammo of specified AmmoColor must be paid
    */
+  @Override
   public int getCost(AmmoColor color) {
     return cost.get(color);
   }
@@ -326,5 +332,27 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
     }
 
     return weapon;
+  }
+
+  @Override
+  public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
+    Weapon weapon = board.getWeaponByName(name);
+
+    for (Square square : board.getSquares()) {
+      for (Weapon squareWeapon : square.getWeapons()) {
+        if (weapon.name.equals(name)) {
+          square.removeWeapon(weapon);
+          break;
+        }
+      }
+    }
+
+    try {
+      board.takeWeapon(weapon);
+    } catch (InvalidWeaponException ignored) {
+      return;
+    }
+
+    player.addWeapon(weapon);
   }
 }
