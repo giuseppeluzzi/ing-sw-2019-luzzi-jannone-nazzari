@@ -96,8 +96,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
 
     Log.print(
-        String.format("Devi pagare questa quantità:\nq blu: %d, rosso: %d, giallo: %d, generico: %d"
-            + "Come preferisci pagare?", blue, red, yellow, any));
+        String.format("Devi pagare questa quantità:%n\tRosso: %d - Blu: %d - Giallo: %d - Generico: %d"
+            + "Come preferisci pagare?", red, blue, yellow, any));
 
     do {
       Log.print("Inserisci i numeri scelti separati da virgole");
