@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
@@ -35,6 +36,9 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
 
   @Override
   public abstract void showTurnActionSelection(List<TurnAction> actions);
+
+  @Override
+  public abstract void showWeaponSelect(List<Weapon> weapons);
 
   @Override
   public void addPlayer(Player player) {
