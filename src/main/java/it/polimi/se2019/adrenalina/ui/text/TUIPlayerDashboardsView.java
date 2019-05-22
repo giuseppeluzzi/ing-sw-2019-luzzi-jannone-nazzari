@@ -4,11 +4,14 @@ package it.polimi.se2019.adrenalina.ui.text;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.PlayerActionSelectionEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
+import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
@@ -161,6 +164,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
           == ammoColor).count() != costs.get(ammoColor)) {
         break;
       }
+    }
+  }
+
+  @Override
+  public void showWeaponSelect(List<Weapon> weapons) {
+    String weapon = TUIUtils.selectWeapon(weapons, scanner, "Quale arma vuoi usare?", true);
+    try {
+      notifyObservers(new PlayerCollectWeaponEvent(client.getPlayerColor(), weapon));
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 }

@@ -184,35 +184,9 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
-    showWeapons(weapons, "Quale arma vuoi acquistare?", true);
+    String weapon = TUIUtils.selectWeapon(weapons, scanner, "Quale arma vuoi acquistare?", true);
+    notifyObservers(new PlayerCollectWeaponEvent(client.getPlayerColor(), weapon));
   }
 
-  public void showWeapons(List<Weapon> weapons, String prompt, boolean showCost) throws RemoteException {
-    Log.print(prompt);
 
-    int targetIndex = 0;
-    int chosenTarget = 0;
-
-    do {
-      for (Weapon weapon : weapons) {
-        if (showCost) {
-          Log.print(
-              String.format("\t%d) %s%n  Costo: %d rosso, %d blu, %d giallo",
-                  targetIndex,
-                  weapon.getName(),
-                  weapon.getCost(AmmoColor.RED),
-                  weapon.getCost(AmmoColor.BLUE),
-                  weapon.getCost(AmmoColor.YELLOW)));
-        } else {
-          Log.print(String.format("\t%d) %s", targetIndex, weapon.getName()));
-        }
-        targetIndex++;
-      }
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
-
-    notifyObservers(
-        new PlayerCollectWeaponEvent(client.getPlayerColor(),
-            weapons.get(chosenTarget - 1).getName()));
-  }
 }
