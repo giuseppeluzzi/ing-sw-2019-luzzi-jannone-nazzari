@@ -184,8 +184,8 @@ public class PlayerTest {
   public void testReload() {
     Player player = new Player("test", PlayerColor.GREEN, null);
     Weapon weapon = new Weapon(0,0,1,AmmoColor.BLUE, "test");
-    player.setAmmo(AmmoColor.BLUE, 1);
-    player.setAmmo(AmmoColor.YELLOW, 1);
+    player.addAmmo(AmmoColor.BLUE, 1);
+    player.addAmmo(AmmoColor.YELLOW, 1);
     assertTrue(player.canReload(weapon));
   }
 
@@ -194,8 +194,8 @@ public class PlayerTest {
     Player player = new Player("test", PlayerColor.GREEN, null);
     Weapon weapon = new Weapon(1,0,1,AmmoColor.BLUE, "test");
     PowerUp powerUp = new Newton(AmmoColor.RED);
-    player.setAmmo(AmmoColor.BLUE, 1);
-    player.setAmmo(AmmoColor.YELLOW, 1);
+    player.addAmmo(AmmoColor.BLUE, 1);
+    player.addAmmo(AmmoColor.YELLOW, 1);
     try {
       player.addPowerUp(powerUp);
     } catch (InvalidPowerUpException ignored) {
@@ -231,8 +231,8 @@ public class PlayerTest {
     Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test");
     Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test");
     player.addWeapon(weapon);
-    player.setAmmo(AmmoColor.BLUE, 1);
-    player.setAmmo(AmmoColor.YELLOW, 1);
+    player.addAmmo(AmmoColor.BLUE, 1);
+    player.addAmmo(AmmoColor.YELLOW, 1);
     assertTrue(player.hasWeapon(weapon));
     assertTrue(player.canReload(weapon));
     assertFalse(player.hasWeapon(weapon2));

@@ -27,6 +27,7 @@ import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
@@ -89,7 +90,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (board.getSquare(event.getSquareX(), event.getSquareY()).hasAmmoCard()) {
       AmmoCard ammoCard = board.getSquare(event.getSquareX(), event.getSquareY()).getAmmoCard();
       for (AmmoColor color : AmmoColor.getValidColor()) {
-        player.setAmmo(color, ammoCard.getAmmo(color));
+        player.addAmmo(color, ammoCard.getAmmo(color));
       }
       for (int i = 0; i < ammoCard.getPowerUp(); i++) {
         PowerUp powerUp = board.getPowerUps().get(0);
@@ -113,9 +114,13 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
 
     Weapon collectedWeapon = null;
-    for (Weapon weapon : board.getSquare(event.getSquareX(), event.getSquareY()).getWeapons()) {
-      if (weapon.getName().equals(event.getWeaponName())) {
-        collectedWeapon = weapon;
+    for (Square square : board.getSquares()) {
+      for (Weapon weapon : square.getWeapons()) {
+        if (weapon.getName().equals(event.getWeaponName())) {
+          collectedWeapon = weapon;
+          square.removeWeapon(weapon);
+          break;
+        }
       }
     }
 
@@ -180,7 +185,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         break;
       case FF_RUN_RELOAD_SHOOT:
         actions.add(new SquareSelection(player, 1));
-        actions.add(new CheckReloadWeapons(player));
+        actions.add(new CheckReloadWeapons(boardController.getTurnController(), player));
         actions.add(new SelectWeapon(player));
         actions.add(new SelectEffect(player));
         break;
@@ -190,9 +195,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         break;
       case FF_WALK_RELOAD_SHOOT:
         actions.add(new SquareSelection(player, 2));
-        actions.add(new CheckReloadWeapons(player));
+        actions.add(new CheckReloadWeapons(boardController.getTurnController(), player));
         actions.add(new SelectWeapon(player));
         actions.add(new SelectEffect(player));
+        break;
+      default:
+        return;
     }
 
     boardController.getTurnController().addTurnActions(actions);
@@ -230,9 +238,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         && player.getAmmo(AmmoColor.RED) >= event.getRed()
         && player.getAmmo(AmmoColor.YELLOW) >= event.getYellow()
         && player.getPowerUps().containsAll(event.getPowerUps())) {
-      player.setAmmo(AmmoColor.BLUE, player.getAmmo(AmmoColor.BLUE) - event.getBlue());
-      player.setAmmo(AmmoColor.RED, player.getAmmo(AmmoColor.RED) - event.getRed());
-      player.setAmmo(AmmoColor.YELLOW, player.getAmmo(AmmoColor.YELLOW) - event.getYellow());
+      player.addAmmo(AmmoColor.BLUE, player.getAmmo(AmmoColor.BLUE) - event.getBlue());
+      player.addAmmo(AmmoColor.RED, player.getAmmo(AmmoColor.RED) - event.getRed());
+      player.addAmmo(AmmoColor.YELLOW, player.getAmmo(AmmoColor.YELLOW) - event.getYellow());
       for (PowerUp powerUp : event.getPowerUps()) {
         try {
           player.removePowerUp(powerUp);

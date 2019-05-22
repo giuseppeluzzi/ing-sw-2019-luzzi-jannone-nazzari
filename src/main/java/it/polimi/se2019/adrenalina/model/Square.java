@@ -263,6 +263,10 @@ public class Square extends Observable implements Target, Serializable {
     weapons.add(weapon);
   }
 
+  public void removeWeapon(Weapon weapon) {
+    weapons.remove(weapon);
+  }
+
   @Override
   public Square getSquare() {
     return this;

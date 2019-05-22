@@ -53,9 +53,9 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
     if (player.hasWeapon(weapon) && player.canReload(weapon)) {
       for (AmmoColor color : AmmoColor.getValidColor()) {
-        player.setAmmo(color, player.getAmmo(color) - weapon.getCost(color));
+        player.addAmmo(color, player.getAmmo(color) - weapon.getCost(color));
       }
-      player.setAmmo(weapon.getBaseCost(), player.getAmmo(weapon.getBaseCost()) - 1);
+      player.addAmmo(weapon.getBaseCost(), player.getAmmo(weapon.getBaseCost()) - 1);
     }
 
     boardController.getTurnController().executeGameActionQueue();
