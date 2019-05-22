@@ -13,6 +13,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public interface BoardViewInterface extends RemoteObservable, Serializable {
   void showMessage(MessageSeverity severity, String title, String message) throws RemoteException;
   void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
   void showDirectionSelect() throws RemoteException;
+  void showSquareSelect(List<Target> targets) throws RemoteException;
 
   void update(WeaponUpdateEvent event) throws RemoteException;
   void update(AmmoCardUpdateEvent event) throws RemoteException;

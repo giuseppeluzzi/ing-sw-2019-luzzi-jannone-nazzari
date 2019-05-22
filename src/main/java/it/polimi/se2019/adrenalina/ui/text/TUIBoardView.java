@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Direction;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -163,6 +164,16 @@ public class TUIBoardView extends BoardView {
     try {
       notifyObservers(new SelectDirectionEvent(client.getPlayerColor(),
           Direction.values()[choosenTarget - 1]));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  @Override
+  public void showSquareSelect(List<Target> targets) {
+    Square square = (Square) selectSquare(targets);
+    try {
+      notifyObservers(new SelectSquareEvent(client.getPlayerColor(), square.getPosX(), square.getPosY()));
     } catch (RemoteException e) {
       Log.exception(e);
     }

@@ -68,6 +68,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   }
 
   @Override
+  public void showSquareSelect(List<Target> targets) {
+    // TODO: send selection
+  }
+
+  @Override
   public void update(WeaponUpdateEvent event) {
     clientSocket.sendEvent(event);
   }

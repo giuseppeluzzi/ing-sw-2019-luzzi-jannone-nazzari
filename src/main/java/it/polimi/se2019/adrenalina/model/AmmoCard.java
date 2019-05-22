@@ -79,7 +79,7 @@ public class AmmoCard implements Serializable {
   /**
    * Builds and returns a three character string representing a specific ammoCard. Each character
    * can be either 'R' (for a red ammo), 'B' (for a blue ammo), 'Y' (for a yellow ammo), 'P' (for
-   * a powerUp). The order is fixed and is always 'R', 'B', 'Y', 'P'.
+   * a powerUp). The order is fixed and is always 'R', 'B', 'Y', 'P'
    * @return the string representation of the ammoCard
    */
   public String toString() {

@@ -22,4 +22,9 @@ public class GUIBoardView extends BoardView {
   public void showDirectionSelect() {
     // TODO
   }
+
+  @Override
+  public void showSquareSelect(List<Target> targets) {
+    // TODO
+  }
 }
