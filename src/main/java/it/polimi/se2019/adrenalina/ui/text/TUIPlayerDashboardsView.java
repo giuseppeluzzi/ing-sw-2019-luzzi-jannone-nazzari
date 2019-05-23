@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerDiscardPowerUpEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.model.Buyable;
@@ -198,6 +199,29 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     try {
       notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(), chosenEffectsNames));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  @Override
+  public void showPowerUpSelection(List<PowerUp> powerUps) {
+    int targetIndex;
+    int chosenTarget;
+
+    do {
+      targetIndex = 1;
+      Log.print("Seleziona un PowerUp");
+      for (PowerUp powerUp : powerUps) {
+        Log.print("\t" + targetIndex + ") " + powerUp.getName());
+        targetIndex++;
+      }
+
+      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
+    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
+
+    try {
+      notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps.get(chosenTarget)));
     } catch (RemoteException e) {
       Log.exception(e);
     }

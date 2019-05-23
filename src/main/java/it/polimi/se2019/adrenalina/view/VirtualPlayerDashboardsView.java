@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -59,6 +60,11 @@ public class VirtualPlayerDashboardsView extends Observable implements
 
   @Override
   public void showEffectSelection(Weapon weapon) {
+    // TODO
+  }
+
+  @Override
+  public void showPowerUpSelection(List<PowerUp> powerUps) {
     // TODO
   }
 

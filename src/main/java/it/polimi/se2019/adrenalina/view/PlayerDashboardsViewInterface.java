@@ -1,10 +1,10 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
@@ -20,6 +20,7 @@ public interface PlayerDashboardsViewInterface extends RemoteObservable, Seriali
   void showTurnActionSelection(List<TurnAction> actions) throws RemoteException;
   void showWeaponSelection(List<Weapon> weapons) throws RemoteException;
   void showEffectSelection(Weapon weapon) throws RemoteException;
+  void showPowerUpSelection(List<PowerUp> powerUps) throws RemoteException;
 
   void update(Event event) throws RemoteException;
 }
