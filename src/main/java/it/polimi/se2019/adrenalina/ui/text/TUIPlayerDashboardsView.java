@@ -188,7 +188,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     chosenEffects.add(TUIUtils.showEffectSelection(weapon.getEffects(), false));
 
-    while (!chosenEffects.get(chosenEffects.size()-1).getSubEffects().isEmpty()) {
+    while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
       chosenEffects.add(TUIUtils.showEffectSelection(chosenEffects.get(0).getSubEffects(), true));
     }
 

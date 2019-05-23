@@ -84,7 +84,7 @@ public class TUIUtils {
         Log.print("\t" + targetIndex + ") " + effect.getName());
         targetIndex++;
       }
-      chosenIndex = scanner.nextLine().charAt(0);
+      chosenIndex = Character.getNumericValue(scanner.nextLine().charAt(0));
       if (chosenIndex >= 0 && chosenIndex < targetIndex){
         chosenEffect = effects.get(chosenIndex);
       }
