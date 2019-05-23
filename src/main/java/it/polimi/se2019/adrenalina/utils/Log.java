@@ -45,8 +45,8 @@ public class Log {
   }
 
   public static void debug(String tag, String message) {
-    if (logger.isLoggable(Level.FINEST)) {
-      logger.log(Level.FINEST, LOG_FORMAT, new Object[] {tag.toLowerCase(Locale.ENGLISH), message});
+    if (logger.isLoggable(Level.WARNING)) {
+      logger.log(Level.WARNING, LOG_FORMAT, new Object[] {tag.toLowerCase(Locale.ENGLISH), message});
     }
   }
 

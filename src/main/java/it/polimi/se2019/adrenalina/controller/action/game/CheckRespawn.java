@@ -7,15 +7,24 @@ import java.util.ArrayList;
 
 public class CheckRespawn extends GameActionAsync {
 
-  public CheckRespawn(TurnController turnController, Player player) {
+  private final boolean everyPlayer;
+
+  public CheckRespawn(TurnController turnController, Player player, boolean everyPlayer) {
     super(turnController, player);
+    this.everyPlayer = everyPlayer;
   }
 
   @Override
   public void execute(Board board) {
-    for (Player player : board.getPlayers()) {
-      if (player.isDead()) {
-        getTurnController().addRespawn(player);
+    if (everyPlayer) {
+      for (Player player : board.getPlayers()) {
+        if (player.isDead()) {
+          getTurnController().addRespawn(player);
+        }
+      }
+    } else {
+      if (getPlayer().isDead()) {
+        getTurnController().addRespawn(getPlayer());
       }
     }
   }

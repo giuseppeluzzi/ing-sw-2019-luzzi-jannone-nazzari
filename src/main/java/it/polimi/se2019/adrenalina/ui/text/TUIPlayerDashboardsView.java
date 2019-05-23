@@ -153,7 +153,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     try {
-      notifyObservers(new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(chosenTarget)));
+      notifyObservers(new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(chosenTarget - 1)));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -221,7 +221,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     try {
-      notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps.get(chosenTarget)));
+      notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps.get(chosenTarget - 1)));
     } catch (RemoteException e) {
       Log.exception(e);
     }

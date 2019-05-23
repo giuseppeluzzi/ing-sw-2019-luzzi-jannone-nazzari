@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
@@ -106,6 +107,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   @Override
   public void setPlayerColor(PlayerColor color) {
     playerColor = color;
+    sendEvent(new PlayerSetColorEvent(color));
   }
 
   @Override

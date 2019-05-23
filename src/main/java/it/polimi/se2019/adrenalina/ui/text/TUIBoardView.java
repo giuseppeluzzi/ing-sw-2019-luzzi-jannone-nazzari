@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.event.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
+import it.polimi.se2019.adrenalina.controller.event.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -122,7 +123,7 @@ public class TUIBoardView extends BoardView {
       chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
     } while (chosenTarget < 1 || chosenTarget >= targetIndex);
 
-    return targets.get(targetIndex - 1);
+    return targets.get(chosenTarget - 1);
   }
 
   private Target selectAttackTarget(List<Target> targets) {
@@ -180,7 +181,7 @@ public class TUIBoardView extends BoardView {
   public void showSquareSelect(List<Target> targets) {
     Square square = (Square) selectSquare(targets);
     try {
-      notifyObservers(new SelectSquareEvent(client.getPlayerColor(), square.getPosX(), square.getPosY()));
+      notifyObservers(new SquareMoveSelectionEvent(client.getPlayerColor(), square.getPosX(), square.getPosY()));
     } catch (RemoteException e) {
       Log.exception(e);
     }

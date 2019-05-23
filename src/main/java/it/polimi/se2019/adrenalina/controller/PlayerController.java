@@ -27,8 +27,8 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
-import java.lang.invoke.WrongMethodTypeException;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -154,6 +154,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (player == null) {
       return;
     }
+
     List<GameAction> actions = new ArrayList<>();
     switch (event.getTurnAction()) {
       case RUN:
@@ -211,15 +212,21 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (player == null) {
       return;
     }
+
+    PowerUp powerUp = board.getPowerUpByNameAndColor(event.getPowerUp().getName(),
+        event.getPowerUp().getColor());
+
     try {
-      player.removePowerUp(event.getPowerUp());
+      player.removePowerUp(powerUp);
     } catch (InvalidPowerUpException ignored) {
       return;
     }
-    board.undrawPowerUp(event.getPowerUp());
+    board.undrawPowerUp(powerUp);
 
     if (board.getTurnCounter() > 1) {
       player.respawn(event.getPowerUp().getColor());
+    } else {
+      player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
     }
 
     boardController.getTurnController().executeGameActionQueue();
@@ -293,7 +300,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   @Override
   public void update(Event event) {
+    Log.debug("PlayerController", "Ricevuto evento: " + event.getEventType());
     if (registeredEvents.contains(event.getEventType())) {
+      Log.debug("PlayerController", "Inoltrato evento: " + event.getEventType());
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);

@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 import java.lang.reflect.InvocationTargetException;
@@ -117,6 +118,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
+    Log.debug(event.getSquareX()+ "-"+event.getSquareY());
     player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
 
     boardController.getTurnController().executeGameActionQueue();
@@ -124,7 +126,9 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   @Override
   public void update(Event event) {
+    Log.debug("AttackController", "Ricevuto evento: " + event.getEventType());
     if (registeredEvents.contains(event.getEventType())) {
+      Log.debug("AttackController", "Inoltrato evento: " + event.getEventType());
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);
@@ -133,6 +137,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       }
     }
   }
+
   @Override
   public boolean equals(Object obj) {
     return obj instanceof AttackController &&

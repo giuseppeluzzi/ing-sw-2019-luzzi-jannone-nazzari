@@ -44,14 +44,22 @@ public class TurnController implements Serializable {
   }
 
   public void executeGameActionQueue() {
-    while (!turnActionsQueue.isEmpty()) {
-      GameAction gameAction = turnActionsQueue.pop();
+    Log.debug("execute! " + turnActionsQueue.size());
+    GameAction gameAction = null;
+
+    while (! turnActionsQueue.isEmpty()) {
+      gameAction = turnActionsQueue.pop();
+      Log.debug("GA: " + gameAction.getClass().getSimpleName());
       gameAction.execute(boardController.getBoard());
+
       if (gameAction.isSync()) {
         break;
       }
+      gameAction = null;
     }
-    endTurn();
+    if (gameAction == null) {
+      endTurn();
+    }
   }
 
   public void addTurnActions(List<GameAction> gameActions) {
@@ -92,6 +100,7 @@ public class TurnController implements Serializable {
     boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
 
     addGameTurn(currentPlayer);
+    executeGameActionQueue();
   }
 
   private void addFirstSpawn(Player player) {
@@ -105,7 +114,7 @@ public class TurnController implements Serializable {
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
       addTurnActions(new ActionSelection(player), new ActionSelection(player),
-          new CheckRespawn(this, player));
+          new CheckRespawn(this, player, true));
       addFirstSpawn(player);
     } else {
       if (boardController.getBoard().isFinalFrenzySelected() &&
@@ -113,7 +122,7 @@ public class TurnController implements Serializable {
         // TODO
       } else {
         addTurnActions(new ActionSelection(player), new ActionSelection(player),
-              new CheckRespawn(this, player));
+            new CheckRespawn(this, player, true));
       }
     }
   }

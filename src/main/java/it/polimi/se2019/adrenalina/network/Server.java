@@ -81,6 +81,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     Player player = game.getPlayerController().createPlayer(client.getName(),
         PlayerColor.values()[game.getBoard().getPlayers().size()]);
     player.setClient(client);
+    client.setPlayerColor(player.getColor());
 
     try {
       game.addPlayer(player);

@@ -11,9 +11,11 @@ import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.TagbackGrenade;
 import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Teleporter;
@@ -227,7 +229,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       board.addPlayer(player);
       player.setStatus(PlayerStatus.WAITING);
 
-      if (board.getPlayers().size() >= 1) {
+      if (board.getPlayers().size() >= 2) {
         startJoinTimer();
       }
 
@@ -266,9 +268,23 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
 
     for (GameMap map : new ArrayList<>(maps)) {
-      if (map.getId() != selectedMap) {
-        maps.remove(map);
+      if (map.getId() == selectedMap) {
+        for (Square square: map.getSquares()) {
+          Square realSquare = new Square(square.getPosX(),
+              square.getPosY(),
+              square.getColor(),
+              square.getEdge(Direction.NORTH),
+              square.getEdge(Direction.EAST),
+              square.getEdge(Direction.SOUTH),
+              square.getEdge(Direction.WEST),
+              board);
+          if (square.isSpawnPoint()) {
+            realSquare.setSpawnPoint(true);
+          }
+          board.setSquare(realSquare);
+        }
       }
+      maps.remove(map);
     }
     Log.info("Selected map #" + selectedMap);
     run();
@@ -389,16 +405,28 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       return ;
     }
 
+    Player player;
+
     try {
-      board.getPlayerByColor(event.getPlayerColor()).setColor(event.getNewPlayerColor());
+      player = board.getPlayerByColor(event.getPlayerColor());
     } catch (InvalidPlayerException ignored) {
-      //
+      return;
+    }
+
+    player.setColor(event.getNewPlayerColor());
+
+    try {
+      player.getClient().setPlayerColor(event.getNewPlayerColor());
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 
   @Override
   public void update(Event event) {
+    Log.debug("BoardController", "Ricevuto evento: " + event.getEventType());
     if (registeredEvents.contains(event.getEventType())) {
+      Log.debug("BoardController", "Inoltrato evento: " + event.getEventType());
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);

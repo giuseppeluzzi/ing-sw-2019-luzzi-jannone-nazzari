@@ -28,7 +28,8 @@ public enum EventType {
   PLAYER_SELECT_WEAPON_EVENT(PlayerSelectWeaponEvent.class),
   PLAYER_ACTION_SELECTION_EVENT(PlayerActionSelectionEvent.class),
   PLAYER_SELECT_WEAPON_EFFECT_EVENT(PlayerSelectWeaponEffectEvent.class),
-  PLAYER_PAYMENT_EVENT(PlayerPaymentEvent.class);
+  PLAYER_PAYMENT_EVENT(PlayerPaymentEvent.class),
+  PLAYER_SET_COLOR(PlayerSetColorEvent.class);
 
   private final Class<? extends Event> eventClass;
 

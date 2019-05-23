@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -162,7 +163,7 @@ public class Square extends Observable implements Target, Serializable {
     } else if (getPlayers().isEmpty()) {
       return null;
     } else{
-      throw new InvalidSquareException("In this exception there is more than one player");
+      throw new InvalidSquareException("In this square there is more than one player");
     }
   }
 
@@ -290,10 +291,7 @@ public class Square extends Observable implements Target, Serializable {
    * @return true if valid, false otherwise
    */
   public static boolean isXValid(int x) {
-    if (x >= 0 && x < 4) {
-      return true;
-    }
-    return false;
+    return x >= 0 && x < 4;
   }
 
   /**
@@ -302,10 +300,7 @@ public class Square extends Observable implements Target, Serializable {
    * @return true if valid, false otherwise
    */
   public static boolean isYValid(int y) {
-    if (y >= 0 && y < 3) {
-      return true;
-    }
-    return false;
+    return y >= 0 && y < 3;
   }
 
   public List<Square> getSquaresInRange(int min, int max) {

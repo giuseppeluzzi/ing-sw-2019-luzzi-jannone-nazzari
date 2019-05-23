@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
@@ -106,6 +107,11 @@ public class ClientSocket extends Client implements Runnable {
           Event event = gson.fromJson(message, eventType.getEventClass());
 
           switch (eventType) {
+            case PLAYER_SET_COLOR:
+              PlayerSetColorEvent playerSetColorEvent = gson.fromJson(message,
+                  PlayerSetColorEvent.class);
+              setPlayerColor(playerSetColorEvent.getPlayerColor());
+              break;
             case TIMER_SET_EVENT:
             case WEAPON_UPDATE_EVENT:
             case AMMO_CARD_UPDATE_EVENT:

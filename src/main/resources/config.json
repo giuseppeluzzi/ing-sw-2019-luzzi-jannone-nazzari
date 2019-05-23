@@ -1,7 +1,7 @@
 {
   "rmiPort": 1234,
   "serverIP": "127.0.0.1",
-  "joinTimeout": 10,
+  "joinTimeout": 5,
   "powerUpTimeout": 10,
   "turnTimeout": 60,
   "socketPort": 2345
