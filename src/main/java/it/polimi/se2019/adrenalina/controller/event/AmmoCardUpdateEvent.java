@@ -28,4 +28,9 @@ public class AmmoCardUpdateEvent implements Event {
   public AmmoCard getAmmoCard() {
     return ammoCard;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.AMMO_CARD_UPDATE_EVENT;
+  }
 }

@@ -21,4 +21,9 @@ public class PlayerColorSelectionEvent implements Event {
   public PlayerColor getNewPlayerColor() {
     return newPlayerColor;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_COLOR_SELECTION_EVENT;
+  }
 }

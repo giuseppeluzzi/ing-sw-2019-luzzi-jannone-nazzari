@@ -22,4 +22,9 @@ public class PlayerPowerUpEvent implements Event {
   public PowerUp getPowerUp() {
     return powerUp;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_POWERUP_EVENT;
+  }
 }

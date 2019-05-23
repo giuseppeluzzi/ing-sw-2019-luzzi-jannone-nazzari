@@ -12,14 +12,23 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface PlayerDashboardsViewInterface extends RemoteObservable, Serializable {
+
   void addPlayer(Player player) throws RemoteException;
+
   List<Player> getPlayers() throws RemoteException;
+
   void reset(Player player) throws RemoteException;
+
   void switchToFinalFrenzy(Player player) throws RemoteException;
+
   void showPaymentOption(Buyable item) throws RemoteException;
+
   void showTurnActionSelection(List<TurnAction> actions) throws RemoteException;
+
   void showWeaponSelection(List<Weapon> weapons) throws RemoteException;
+
   void showEffectSelection(Weapon weapon) throws RemoteException;
+
   void showPowerUpSelection(List<PowerUp> powerUps) throws RemoteException;
 
   void update(Event event) throws RemoteException;

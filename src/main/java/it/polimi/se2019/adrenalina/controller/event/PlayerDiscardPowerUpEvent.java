@@ -22,4 +22,9 @@ public class PlayerDiscardPowerUpEvent implements Event {
   public PowerUp getPowerUp() {
     return powerUp;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_DISCARD_POWERUP_EVENT;
+  }
 }

@@ -26,4 +26,9 @@ public class PlayerAttackEvent implements Event {
   public String getEffectName() {
     return effectName;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_ATTACK_EVENT;
+  }
 }

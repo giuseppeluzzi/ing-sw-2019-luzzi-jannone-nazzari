@@ -14,4 +14,9 @@ public class PlayerNoCollectEvent implements Event {
   public PlayerColor getPlayerColor() {
     return playerColor;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_NO_COLLECT_EVENT;
+  }
 }

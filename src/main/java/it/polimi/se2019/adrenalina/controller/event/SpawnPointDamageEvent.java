@@ -22,4 +22,9 @@ public class SpawnPointDamageEvent implements Event {
   public AmmoColor getAmmoColor() {
     return ammoColor;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.SPAWN_POINT_DAMAGE_EVENT;
+  }
 }

@@ -26,4 +26,9 @@ public class SelectSquareEvent implements Event {
   public int getSquareY() {
     return squareY;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.SELECT_SQUARE_EVENT;
+  }
 }

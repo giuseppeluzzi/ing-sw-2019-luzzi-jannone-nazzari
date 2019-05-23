@@ -92,7 +92,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
       Log.severe("Tried to add a player to an ended game");
     }
 
-    client.getBoardView().update(new SpawnPointDamageEvent(PlayerColor.YELLOW, AmmoColor.RED));
     playing.put(player, game);
   }
 

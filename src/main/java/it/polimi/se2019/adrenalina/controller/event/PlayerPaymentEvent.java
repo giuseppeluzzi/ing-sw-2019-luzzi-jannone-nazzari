@@ -49,4 +49,9 @@ public class PlayerPaymentEvent implements Event {
   public Buyable getItem() {
     return item;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_PAYMENT_EVENT;
+  }
 }

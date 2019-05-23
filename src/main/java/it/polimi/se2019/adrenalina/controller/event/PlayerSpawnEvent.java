@@ -34,4 +34,9 @@ public class PlayerSpawnEvent implements Event {
   public PowerUp getTossedPowerUp() {
     return tossedPowerUp;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_SPAWN_EVENT;
+  }
 }

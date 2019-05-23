@@ -43,8 +43,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   private CharactersViewInterface charactersView;
   private PlayerDashboardsViewInterface playerDashboardsView;
 
-  private static final String UPDATE_EVENT_METHOD = "update";
-
   public VirtualClientSocket(Server server, Socket clientSocket) {
     this.clientSocket = clientSocket;
     this.server = server;
@@ -77,51 +75,20 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
         EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
         Event event = gson.fromJson(message, eventType.getEventClass());
 
-        switch (eventType) {
-          case PLAYER_CONNECT_EVENT:
-            PlayerConnectEvent connectEvent = gson.fromJson(message, PlayerConnectEvent.class);
-            name = connectEvent.getPlayerName();
-            domination = connectEvent.isDomination();
-            server.addClient(this);
-            game = server.getGameByClient(this);
-            break;
-          case MAP_SELECTION_EVENT:
-          case FINAL_FRENZY_TOGGLE_EVENT:
-            game.getClass()
-                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
-                .invoke(game, event);
-            break;
-          case PLAYER_ATTACK_EVENT:
-          case PLAYER_RELOAD_EVENT:
-          case SELECT_PLAYER_EVENT:
-          case SELECT_SQUARE_EVENT:
-          case SQUARE_MOVE_SELECTION_EVENT:
-            game.getAttackController().getClass()
-                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
-                .invoke(game.getAttackController(), event);
-            break;
-          case PLAYER_NO_COLLECT_EVENT:
-          case PLAYER_COLLECT_WEAPON_EVENT:
-          case PLAYER_COLLECT_AMMO_EVENT:
-          case PLAYER_POWERUP_EVENT:
-          case PLAYER_ACTION_SELECTION_EVENT:
-          case PLAYER_DISCARD_POWERUP_EVENT:
-          case PLAYER_PAYMENT_EVENT:
-          case PLAYER_SELECT_WEAPON_EVENT:
-          case PLAYER_SELECT_WEAPON_EFFECT_EVENT:
-            game.getPlayerController().getClass()
-                .getMethod(UPDATE_EVENT_METHOD, eventType.getEventClass())
-                .invoke(game.getPlayerController(), event);
-            break;
-          default:
-            Log.severe("Unexpected server event!");
-            break;
+        if (eventType == EventType.PLAYER_CONNECT_EVENT) {
+          PlayerConnectEvent connectEvent = gson.fromJson(message, PlayerConnectEvent.class);
+          name = connectEvent.getPlayerName();
+          domination = connectEvent.isDomination();
+          server.addClient(this);
+          game = server.getGameByClient(this);
+        } else {
+          game.update(event);
+          game.getAttackController().update(event);
+          game.getPlayerController().update(event);
         }
       }
     } catch (InvalidPlayerException | IOException ignored) {
       server.clientDisconnect(this);
-    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-      Log.severe("Unexpected server event!");
     }
   }
 

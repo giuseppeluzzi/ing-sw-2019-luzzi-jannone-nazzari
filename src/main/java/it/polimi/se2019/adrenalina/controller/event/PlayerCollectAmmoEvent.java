@@ -26,4 +26,9 @@ public class PlayerCollectAmmoEvent implements Event {
   public int getSquareY() {
     return squareY;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_COLLECT_AMMO_EVENT;
+  }
 }

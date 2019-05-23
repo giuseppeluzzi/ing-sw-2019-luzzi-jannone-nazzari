@@ -431,6 +431,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addPowerUp(PowerUp powerup) {
     powerUps.add(powerup);
+    Collections.shuffle(powerUps);
   }
 
   /**

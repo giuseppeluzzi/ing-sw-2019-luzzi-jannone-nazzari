@@ -21,4 +21,9 @@ public class PlayerDeathEvent implements Event {
   public PlayerColor getKillerColor() {
     return killerColor;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_DEATH_EVENT;
+  }
 }

@@ -23,4 +23,9 @@ public class KillShotEvent implements Event {
   public Kill getKill() {
     return kill;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.KILLSHOT_EVENT;
+  }
 }

@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public interface Event extends Serializable {
 
+  EventType getEventType();
+
   default String serialize() {
     Gson gson = new Gson();
     JsonElement jsonElement = gson.toJsonTree(this);

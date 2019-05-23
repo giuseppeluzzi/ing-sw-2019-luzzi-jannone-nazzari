@@ -12,4 +12,9 @@ public class FinalFrenzyToggleEvent implements Event {
   public boolean isEnabled() {
     return enabled;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.FINAL_FRENZY_TOGGLE_EVENT;
+  }
 }

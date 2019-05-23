@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
@@ -12,16 +13,27 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AttackController extends UnicastRemoteObject implements Observer {
 
   private static final long serialVersionUID = -5414473871887210992L;
   private final BoardController boardController;
 
+  private final Set<EventType> registeredEvents = new HashSet<>();
+
   public AttackController(BoardController boardController) throws RemoteException {
     this.boardController = boardController;
+
+    registeredEvents.add(EventType.PLAYER_ATTACK_EVENT);
+    registeredEvents.add(EventType.PLAYER_RELOAD_EVENT);
+    registeredEvents.add(EventType.SELECT_PLAYER_EVENT);
+    registeredEvents.add(EventType.SELECT_SQUARE_EVENT);
+    registeredEvents.add(EventType.SQUARE_MOVE_SELECTION_EVENT);
   }
 
   /**
@@ -112,9 +124,15 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   @Override
   public void update(Event event) {
-    throw new WrongMethodTypeException();
+    if (registeredEvents.contains(event.getEventType())) {
+      try {
+        getClass().getMethod("update", event.getEventType().getEventClass())
+            .invoke(this, event);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        //
+      }
+    }
   }
-
   @Override
   public boolean equals(Object obj) {
     return obj instanceof AttackController &&

@@ -22,4 +22,9 @@ public class SelectDirectionEvent implements Event {
   public Direction getSelectedDirection() {
     return selectedDirection;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.SELECT_DIRECTION_EVENT;
+  }
 }

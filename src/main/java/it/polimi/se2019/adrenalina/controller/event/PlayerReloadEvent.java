@@ -20,4 +20,9 @@ public class PlayerReloadEvent implements Event {
   public String getWeaponName() {
     return weaponName;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_RELOAD_EVENT;
+  }
 }

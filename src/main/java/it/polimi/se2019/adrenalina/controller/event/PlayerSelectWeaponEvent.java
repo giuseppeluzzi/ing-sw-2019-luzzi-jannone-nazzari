@@ -20,4 +20,9 @@ public class PlayerSelectWeaponEvent implements Event {
   public String getWeaponName() {
     return weaponName;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_SELECT_WEAPON_EVENT;
+  }
 }

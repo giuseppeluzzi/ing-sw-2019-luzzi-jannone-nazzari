@@ -12,4 +12,9 @@ public class MapSelectionEvent implements Event {
   public int getMap() {
     return map;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.MAP_SELECTION_EVENT;
+  }
 }

@@ -1,1 +1,8 @@
-{"rmiPort":1234,"serverIP":"127.0.0.1","joinTimeout":30,"powerUpTimeout":10,"turnTimeout":60,"socketPort":2345}
+{
+  "rmiPort": 1234,
+  "serverIP": "127.0.0.1",
+  "joinTimeout": 10,
+  "powerUpTimeout": 10,
+  "turnTimeout": 60,
+  "socketPort": 2345
+}

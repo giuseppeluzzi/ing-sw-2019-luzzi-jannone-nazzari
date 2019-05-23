@@ -14,4 +14,9 @@ public class DoubleKillEvent implements Event {
   public Kill getKill() {
     return kill;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.DOUBLE_KILL_EVENT;
+  }
 }

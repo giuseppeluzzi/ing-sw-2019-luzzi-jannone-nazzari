@@ -8,9 +8,9 @@ import it.polimi.se2019.adrenalina.controller.action.game.PowerUpEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectWeapon;
 import it.polimi.se2019.adrenalina.controller.action.game.SquareSelection;
-import it.polimi.se2019.adrenalina.controller.action.game.WeaponEffect;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
@@ -29,10 +29,13 @@ import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PlayerController extends UnicastRemoteObject implements Observer {
 
@@ -40,8 +43,20 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   private final BoardController boardController;
 
+  private final Set<EventType> registeredEvents = new HashSet<>();
+
   PlayerController(BoardController boardController) throws RemoteException {
     this.boardController = boardController;
+
+    registeredEvents.add(EventType.PLAYER_NO_COLLECT_EVENT);
+    registeredEvents.add(EventType.PLAYER_COLLECT_AMMO_EVENT);
+    registeredEvents.add(EventType.PLAYER_COLLECT_WEAPON_EVENT);
+    registeredEvents.add(EventType.PLAYER_POWERUP_EVENT);
+    registeredEvents.add(EventType.PLAYER_ACTION_SELECTION_EVENT);
+    registeredEvents.add(EventType.PLAYER_DISCARD_POWERUP_EVENT);
+    registeredEvents.add(EventType.PLAYER_PAYMENT_EVENT);
+    registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EVENT);
+    registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EFFECT_EVENT);
   }
 
   private Player getPlayerFromBoard(Board board, PlayerColor playerColor) {
@@ -266,7 +281,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (weapon != null) {
       List<GameAction> actions = new ArrayList<>();
       for (String effectName : event.getEffectNames()) {
-        actions.add(new Payment(boardController.getTurnController(), player, weapon.getEffectByName(effectName)));
+        actions.add(new Payment(boardController.getTurnController(), player,
+            weapon.getEffectByName(effectName)));
       }
 
       boardController.getTurnController().addTurnActions(actions);
@@ -277,9 +293,15 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   @Override
   public void update(Event event) {
-    throw new WrongMethodTypeException("Wrong method type");
+    if (registeredEvents.contains(event.getEventType())) {
+      try {
+        getClass().getMethod("update", event.getEventType().getEventClass())
+            .invoke(this, event);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        //
+      }
+    }
   }
-
 
   @Override
   public boolean equals(Object obj) {

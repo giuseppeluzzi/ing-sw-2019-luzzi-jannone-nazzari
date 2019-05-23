@@ -16,8 +16,9 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
-public class TurnController {
+public class TurnController implements Serializable {
 
+  private static final long serialVersionUID = -2990384474014352897L;
   private final BoardController boardController;
   private final Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
 

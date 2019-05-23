@@ -77,6 +77,7 @@ public class Log {
 
   public static void exception(RemoteException exception) {
     severe("RMI", exception.getMessage());
+    exception.printStackTrace();
   }
 
   public static void exception(IOException exception) {

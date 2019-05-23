@@ -20,4 +20,9 @@ public class PlayerChatEvent implements Event {
   public String getMessage() {
     return message;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_CHAT_EVENT;
+  }
 }

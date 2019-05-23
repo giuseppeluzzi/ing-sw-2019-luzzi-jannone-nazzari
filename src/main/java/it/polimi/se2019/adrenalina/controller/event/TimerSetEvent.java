@@ -22,4 +22,9 @@ public class TimerSetEvent implements Event {
   public int getTimer() {
     return timer;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.TIMER_SET_EVENT;
+  }
 }

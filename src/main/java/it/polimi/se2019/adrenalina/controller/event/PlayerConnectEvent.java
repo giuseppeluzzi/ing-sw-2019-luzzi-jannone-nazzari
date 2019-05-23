@@ -18,4 +18,9 @@ public class PlayerConnectEvent implements Event {
   public boolean isDomination() {
     return domination;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_CONNECT_EVENT;
+  }
 }

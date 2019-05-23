@@ -28,4 +28,9 @@ public class PlayerSelectWeaponEffectEvent implements Event {
   public List<String> getEffectNames() {
     return new ArrayList<>(effectNames);
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_SELECT_WEAPON_EFFECT_EVENT;
+  }
 }

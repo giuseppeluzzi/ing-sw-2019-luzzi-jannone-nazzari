@@ -21,4 +21,9 @@ public class PlayerActionSelectionEvent implements Event {
   public TurnAction getTurnAction() {
     return turnAction;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.PLAYER_ACTION_SELECTION_EVENT;
+  }
 }

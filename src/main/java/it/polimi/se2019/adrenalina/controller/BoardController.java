@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.FinalFrenzyToggleEvent;
 import it.polimi.se2019.adrenalina.controller.event.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerColorSelectionEvent;
@@ -11,7 +12,11 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
+import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.TagbackGrenade;
+import it.polimi.se2019.adrenalina.model.TargetingScope;
+import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -21,6 +26,7 @@ import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -32,9 +38,11 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,6 +51,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private static final long serialVersionUID = 5651066204312828750L;
 
   private final transient Board board;
+
   private final TurnController turnController;
   private final AttackController attackController;
   private final PlayerController playerController;
@@ -58,6 +67,8 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   private final transient Timer timer;
   private final Random random;
+
+  private final Set<EventType> registeredEvents = new HashSet<>();
 
   public BoardController(boolean domination) throws RemoteException {
 
@@ -75,12 +86,34 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     timer = new Timer();
     random = new Random();
 
+    registeredEvents.add(EventType.FINAL_FRENZY_TOGGLE_EVENT);
+    registeredEvents.add(EventType.MAP_SELECTION_EVENT);
+    registeredEvents.add(EventType.PLAYER_COLOR_SELECTION_EVENT);
+
     turnController = new TurnController(this);
     attackController = new AttackController(this);
     playerController = new PlayerController(this);
 
     loadWeapons();
+    loadPowerUps();
     loadMaps();
+  }
+
+  private void loadPowerUps() {
+    board.addPowerUp(new Teleporter(AmmoColor.RED));
+    board.addPowerUp(new TagbackGrenade(AmmoColor.RED));
+    board.addPowerUp(new Newton(AmmoColor.RED));
+    board.addPowerUp(new TargetingScope(AmmoColor.RED));
+
+    board.addPowerUp(new Teleporter(AmmoColor.BLUE));
+    board.addPowerUp(new TagbackGrenade(AmmoColor.BLUE));
+    board.addPowerUp(new Newton(AmmoColor.BLUE));
+    board.addPowerUp(new TargetingScope(AmmoColor.BLUE));
+
+    board.addPowerUp(new Teleporter(AmmoColor.YELLOW));
+    board.addPowerUp(new TagbackGrenade(AmmoColor.YELLOW));
+    board.addPowerUp(new Newton(AmmoColor.YELLOW));
+    board.addPowerUp(new TargetingScope(AmmoColor.YELLOW));
   }
 
   public Board getBoard() {
@@ -194,7 +227,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       board.addPlayer(player);
       player.setStatus(PlayerStatus.WAITING);
 
-      if (board.getPlayers().size() >= 3) {
+      if (board.getPlayers().size() >= 1) {
         startJoinTimer();
       }
 
@@ -229,7 +262,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void chooseMap() {
     if (selectedMap == 0) {
       List<GameMap> validMaps = getValidMaps(board.getPlayers().size());
-      selectedMap = validMaps.get(random.nextInt(maps.size())).getId();
+      selectedMap = validMaps.get(random.nextInt(validMaps.size())).getId();
     }
 
     for (GameMap map : new ArrayList<>(maps)) {
@@ -238,6 +271,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       }
     }
     Log.info("Selected map #" + selectedMap);
+    run();
   }
 
 
@@ -364,7 +398,14 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   @Override
   public void update(Event event) {
-    throw new UnsupportedOperationException();
+    if (registeredEvents.contains(event.getEventType())) {
+      try {
+        getClass().getMethod("update", event.getEventType().getEventClass())
+            .invoke(this, event);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        //
+      }
+    }
   }
 
   @Override

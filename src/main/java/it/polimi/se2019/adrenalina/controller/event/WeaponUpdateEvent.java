@@ -30,4 +30,9 @@ public class WeaponUpdateEvent implements Event {
   public boolean isRemove() {
     return remove;
   }
+
+  @Override
+  public EventType getEventType() {
+    return EventType.WEAPON_UPDATE_EVENT;
+  }
 }
