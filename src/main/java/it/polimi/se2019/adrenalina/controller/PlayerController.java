@@ -300,7 +300,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   @Override
   public void update(Event event) {
-    Log.debug("PlayerController", "Ricevuto evento: " + event.getEventType());
     if (registeredEvents.contains(event.getEventType())) {
       Log.debug("PlayerController", "Inoltrato evento: " + event.getEventType());
       try {

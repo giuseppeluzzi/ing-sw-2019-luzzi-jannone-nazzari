@@ -334,8 +334,14 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       playerDashboardViews.put(client, playerDashboardsView);
 
       boardView.addObserver(this);
+      boardView.addObserver(playerController);
+      boardView.addObserver(attackController);
+      charactersView.addObserver(this);
       charactersView.addObserver(playerController);
+      charactersView.addObserver(attackController);
+      playerDashboardsView.addObserver(this);
       playerDashboardsView.addObserver(playerController);
+      playerDashboardsView.addObserver(attackController);
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -424,7 +430,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   @Override
   public void update(Event event) {
-    Log.debug("BoardController", "Ricevuto evento: " + event.getEventType());
     if (registeredEvents.contains(event.getEventType())) {
       Log.debug("BoardController", "Inoltrato evento: " + event.getEventType());
       try {
