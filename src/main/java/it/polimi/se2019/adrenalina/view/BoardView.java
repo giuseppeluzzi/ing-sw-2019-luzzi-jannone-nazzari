@@ -56,6 +56,9 @@ public abstract class BoardView extends Observable implements Observer, BoardVie
   public abstract void showSquareSelect(List<Target> targets);
 
   @Override
+  public abstract void showSpawnPointTrackSelection();
+
+  @Override
   public void update(WeaponUpdateEvent event) {
     // TODO: replace a weapon on the board
   }

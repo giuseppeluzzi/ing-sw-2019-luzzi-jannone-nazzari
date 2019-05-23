@@ -75,7 +75,12 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   }
   
   @Override
-  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
+  public void showBuyableWeapons(List<Weapon> weapons) {
+
+  }
+
+  @Override
+  public void showSpawnPointTrackSelection() {
 
   }
 

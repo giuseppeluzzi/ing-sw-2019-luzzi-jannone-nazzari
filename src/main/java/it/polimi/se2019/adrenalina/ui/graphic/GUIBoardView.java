@@ -34,6 +34,11 @@ public class GUIBoardView extends BoardView {
   
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
-    // TODOo
+    // TODO
+  }
+
+  @Override
+  public void showSpawnPointTrackSelection() {
+    // TODO
   }
 }

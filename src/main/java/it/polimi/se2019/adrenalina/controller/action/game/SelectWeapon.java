@@ -23,7 +23,7 @@ public class SelectWeapon extends GameAction {
       }
     }
     try {
-      getPlayer().getClient().getPlayerDashboardsView().showWeaponSelect(weapons);
+      getPlayer().getClient().getPlayerDashboardsView().showWeaponSelection(weapons);
     } catch (RemoteException e) {
       Log.exception(e);
     }

@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.model.Buyable;
@@ -47,13 +48,18 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void showPaymentOption(Buyable item) throws RemoteException {
+  public void showPaymentOption(Buyable item) {
     //
   }
 
   @Override
-  public void showWeaponSelect(List<Weapon> weapons) {
+  public void showWeaponSelection(List<Weapon> weapons) {
     // TODO: show weapon selection
+  }
+
+  @Override
+  public void showEffectSelection(Weapon weapon) {
+    // TODO
   }
 
   @Override

@@ -37,6 +37,8 @@ public interface BoardViewInterface extends RemoteObservable, Serializable {
 
   void showBuyableWeapons(List<Weapon> weapons) throws RemoteException;
 
+  void showSpawnPointTrackSelection() throws RemoteException;
+
   void update(WeaponUpdateEvent event) throws RemoteException;
 
   void update(AmmoCardUpdateEvent event) throws RemoteException;

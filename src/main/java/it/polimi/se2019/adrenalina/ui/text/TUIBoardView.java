@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -25,7 +26,7 @@ public class TUIBoardView extends BoardView {
 
   private static final long serialVersionUID = 7696019255617335385L;
   private final transient ClientInterface client;
-  private final transient Scanner scanner = new Scanner(System.in, "utf-8");
+  private final transient Scanner scanner = TUIUtils.getScanner();
 
   public TUIBoardView(ClientInterface client) {
     this.client = client;
@@ -73,8 +74,8 @@ public class TUIBoardView extends BoardView {
   }
 
   private Target selectRoom(List<Target> targets) {
-    int targetIndex = 0;
-    int chosenTarget = 0;
+    int targetIndex;
+    int chosenTarget;
 
     EnumSet<SquareColor> squareColors = EnumSet.noneOf(SquareColor.class);
 
@@ -83,6 +84,7 @@ public class TUIBoardView extends BoardView {
     }
 
     do {
+      targetIndex = 1;
       Log.print("Seleziona una stanza");
       for (SquareColor color : squareColors) {
         Log.print("\t" + targetIndex + ") " + color);
@@ -102,11 +104,12 @@ public class TUIBoardView extends BoardView {
   }
 
   private Target selectSquare(List<Target> targets) {
-    int targetIndex = 0;
-    int chosenTarget = 0;
+    int targetIndex;
+    int chosenTarget;
 
     Log.print("Seleziona un quadrato");
     do {
+      targetIndex = 1;
       for (Target target : targets) {
         Log.print(
             String.format("\t%d) X: %d - Y: %d - Colore: %s",
@@ -124,11 +127,11 @@ public class TUIBoardView extends BoardView {
 
   private Target selectAttackTarget(List<Target> targets) {
     int targetIndex;
-    int chosenTarget = 0;
+    int chosenTarget;
 
     Log.print("Seleziona un bersaglio");
     do {
-      targetIndex = 0;
+      targetIndex = 1;
       for (Target target : targets) {
         try {
           if (target.isPlayer()) {
@@ -151,10 +154,11 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void showDirectionSelect() {
-    int targetIndex = 0;
-    int chosenTarget = 0;
+    int targetIndex;
+    int chosenTarget;
 
     do {
+      targetIndex = 1;
       Log.print("Seleziona una direzione");
       for (Direction direction : Direction.values()) {
         Log.print("\t" + targetIndex + ") " + direction);
@@ -184,8 +188,18 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
-    String weapon = TUIUtils.selectWeapon(weapons, scanner, "Quale arma vuoi acquistare?", true);
+    String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi acquistare?", true);
     notifyObservers(new PlayerCollectWeaponEvent(client.getPlayerColor(), weapon));
+  }
+
+  @Override
+  public void showSpawnPointTrackSelection() {
+    AmmoColor chosen = TUIUtils.showAmmoColorSelection(false);
+    try {
+      notifyObservers(new SpawnPointDamageEvent(client.getPlayerColor(), chosen));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
 

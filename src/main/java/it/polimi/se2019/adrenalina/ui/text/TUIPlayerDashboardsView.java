@@ -2,15 +2,16 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.controller.event.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
-import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -137,7 +138,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
-    int targetIndex = 0;
+    int targetIndex = 1;
     int chosenTarget = 0;
 
     do {
@@ -168,10 +169,35 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showWeaponSelect(List<Weapon> weapons) {
-    String weapon = TUIUtils.selectWeapon(weapons, scanner, "Quale arma vuoi usare?", true);
+  public void showWeaponSelection(List<Weapon> weapons) {
+    String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     try {
       notifyObservers(new PlayerCollectWeaponEvent(client.getPlayerColor(), weapon));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  @Override
+  public void showEffectSelection(Weapon weapon) {
+    List<Effect> chosenEffects = new ArrayList<>();
+    List<String> chosenEffectsNames = new ArrayList<>();
+    int targetIndex = 1;
+    int subEffectIndex = 1;
+    int chosenTarget = 0;
+
+    chosenEffects.add(TUIUtils.showEffectSelection(weapon.getEffects(), false));
+
+    while (!chosenEffects.get(chosenEffects.size()-1).getSubEffects().isEmpty()) {
+      chosenEffects.add(TUIUtils.showEffectSelection(chosenEffects.get(0).getSubEffects(), true));
+    }
+
+    for (Effect effect : chosenEffects) {
+      chosenEffectsNames.add(effect.getName());
+    }
+
+    try {
+      notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(), chosenEffectsNames));
     } catch (RemoteException e) {
       Log.exception(e);
     }
