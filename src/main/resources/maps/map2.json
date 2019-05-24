@@ -1,141 +1,141 @@
 {
+    "minPlayers": "0",
     "id": 2,
+    "maxPlayers": "0",
     "name": "Mappa 2",
     "description": "Una mappa",
-    "minPlayers": "0",
-    "maxPlayers": "0",
     "squares": [
         {
             "posX": 0,
-            "posY": 0,
-            "color": "BLUE",
             "spawnPoint": false,
+            "posY": 0,
             "borders": {
+                "NORTH": "WALL",
                 "EAST": "AIR",
-                "SOUTH": "DOOR",
                 "WEST": "WALL",
-                "NORTH": "WALL"
-            }
+                "SOUTH": "DOOR"
+            },
+            "color": "BLUE"
         },
         {
             "posX": 1,
-            "posY": 0,
-            "color": "BLUE",
             "spawnPoint": false,
+            "posY": 0,
             "borders": {
+                "NORTH": "WALL",
                 "EAST": "AIR",
-                "SOUTH": "WALL",
                 "WEST": "AIR",
-                "NORTH": "WALL"
-            }
+                "SOUTH": "WALL"
+            },
+            "color": "BLUE"
         },
         {
             "posX": 2,
-            "posY": 0,
-            "color": "BLUE",
             "spawnPoint": true,
+            "posY": 0,
             "borders": {
+                "NORTH": "WALL",
                 "EAST": "DOOR",
-                "SOUTH": "DOOR",
                 "WEST": "AIR",
-                "NORTH": "WALL"
-            }
+                "SOUTH": "DOOR"
+            },
+            "color": "BLUE"
         },
         {
             "posX": 0,
-            "posY": 1,
-            "color": "RED",
             "spawnPoint": true,
+            "posY": 1,
             "borders": {
+                "NORTH": "DOOR",
                 "EAST": "AIR",
-                "SOUTH": "WALL",
                 "WEST": "WALL",
-                "NORTH": "DOOR"
-            }
+                "SOUTH": "WALL"
+            },
+            "color": "RED"
         },
         {
             "posX": 1,
-            "posY": 1,
-            "color": "RED",
             "spawnPoint": false,
+            "posY": 1,
             "borders": {
-                "EAST": "AIR",
-                "SOUTH": "DOOR",
+                "NORTH": "WALL",
+                "EAST": "WALL",
                 "WEST": "AIR",
-                "NORTH": "WALL"
-            }
+                "SOUTH": "DOOR"
+            },
+            "color": "RED"
         },
         {
             "posX": 2,
-            "posY": 1,
-            "color": "YELLOW",
             "spawnPoint": false,
+            "posY": 1,
             "borders": {
+                "NORTH": "DOOR",
                 "EAST": "AIR",
-                "SOUTH": "AIR",
                 "WEST": "WALL",
-                "NORTH": "DOOR"
-            }
+                "SOUTH": "AIR"
+            },
+            "color": "YELLOW"
         },
         {
             "posX": 3,
-            "posY": 1,
-            "color": "YELLOW",
             "spawnPoint": false,
+            "posY": 1,
             "borders": {
+                "NORTH": "DOOR",
                 "EAST": "WALL",
-                "SOUTH": "AIR",
                 "WEST": "AIR",
-                "NORTH": "DOOR"
-            }
+                "SOUTH": "AIR"
+            },
+            "color": "YELLOW"
         },
         {
             "posX": 1,
-            "posY": 2,
-            "color": "GREY",
             "spawnPoint": false,
+            "posY": 2,
             "borders": {
-                "EAST": "AIR",
-                "SOUTH": "WALL",
+                "NORTH": "DOOR",
+                "EAST": "DOOR",
                 "WEST": "WALL",
-                "NORTH": "DOOR"
-            }
+                "SOUTH": "WALL"
+            },
+            "color": "GREY"
         },
         {
             "posX": 2,
-            "posY": 2,
-            "color": "YELLOW",
             "spawnPoint": false,
+            "posY": 2,
             "borders": {
+                "NORTH": "AIR",
                 "EAST": "AIR",
-                "SOUTH": "WALL",
                 "WEST": "DOOR",
-                "NORTH": "AIR"
-            }
+                "SOUTH": "WALL"
+            },
+            "color": "YELLOW"
         },
         {
             "posX": 3,
-            "posY": 2,
-            "color": "YELLOW",
             "spawnPoint": true,
+            "posY": 2,
             "borders": {
+                "NORTH": "AIR",
                 "EAST": "WALL",
-                "SOUTH": "WALL",
                 "WEST": "AIR",
-                "NORTH": "AIR"
-            }
+                "SOUTH": "WALL"
+            },
+            "color": "YELLOW"
         },
         {
             "posX": 3,
+            "spawnPoint": false,
             "posY": 0,
-            "color": "GREEN",
-            "spawnPoint": false,
             "borders": {
+                "NORTH": "WALL",
                 "EAST": "WALL",
-                "SOUTH": "DOOR",
                 "WEST": "DOOR",
-                "NORTH": "WALL"
-            }
+                "SOUTH": "DOOR"
+            },
+            "color": "GREEN"
         }
     ]
 }
