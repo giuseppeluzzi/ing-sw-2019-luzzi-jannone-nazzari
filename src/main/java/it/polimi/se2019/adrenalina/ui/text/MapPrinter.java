@@ -45,26 +45,26 @@ public final class MapPrinter {
     Direction verticalSide;
     switch (cornerType) {
       case TOP_LEFT_CORNER:
-        x = square.getPosX() * SQUARE_WIDTH;
-        y = square.getPosY() * SQUARE_HEIGHT;
+        x = square.getPosX() * SQUARE_WIDTH + 2;
+        y = square.getPosY() * SQUARE_HEIGHT + 2;
         horizontalSide = Direction.WEST;
         verticalSide = Direction.NORTH;
         break;
       case TOP_RIGHT_CORNER:
-        x = (square.getPosX() * SQUARE_WIDTH) + SQUARE_WIDTH - 1;
-        y = square.getPosY() * SQUARE_HEIGHT;
+        x = (square.getPosX() * SQUARE_WIDTH) + SQUARE_WIDTH + 1;
+        y = square.getPosY() * SQUARE_HEIGHT + 2;
         horizontalSide = Direction.EAST;
         verticalSide = Direction.NORTH;
         break;
       case BOTTOM_LEFT_CORNER:
-        x = square.getPosX() * SQUARE_WIDTH;
-        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT - 1;
+        x = square.getPosX() * SQUARE_WIDTH + 2;
+        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT + 1;
         horizontalSide = Direction.WEST;
         verticalSide = Direction.SOUTH;
         break;
       case BOTTOM_RIGHT_CORNER:
-        x = (square.getPosX() * SQUARE_WIDTH) + SQUARE_WIDTH - 1;
-        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT - 1;
+        x = (square.getPosX() * SQUARE_WIDTH) + SQUARE_WIDTH + 1;
+        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT + 1;
         horizontalSide = Direction.EAST;
         verticalSide = Direction.SOUTH;
         break;
@@ -109,8 +109,8 @@ public final class MapPrinter {
 
     switch (direction) {
       case WEST:
-        x = square.getPosX() * SQUARE_WIDTH;
-        y = square.getPosY() * SQUARE_HEIGHT + pos;
+        x = square.getPosX() * SQUARE_WIDTH + 2;
+        y = square.getPosY() * SQUARE_HEIGHT + 2 + pos;
         squareDimension = SQUARE_HEIGHT;
         doorDimension = DOOR_HEIGHT;
         line = VERTICAL_LINE;
@@ -118,8 +118,8 @@ public final class MapPrinter {
         corner2 = CornerType.TOP_RIGHT_CORNER;
         break;
       case EAST:
-        x = square.getPosX() * SQUARE_WIDTH + SQUARE_WIDTH - 1;
-        y = square.getPosY() * SQUARE_HEIGHT + pos;
+        x = square.getPosX() * SQUARE_WIDTH + SQUARE_WIDTH + 1;
+        y = square.getPosY() * SQUARE_HEIGHT + 2 + pos;
         squareDimension = SQUARE_HEIGHT;
         doorDimension = DOOR_HEIGHT;
         line = VERTICAL_LINE;
@@ -127,8 +127,8 @@ public final class MapPrinter {
         corner2 = CornerType.TOP_LEFT_CORNER;
         break;
       case NORTH:
-        x = square.getPosX() * SQUARE_WIDTH + pos;
-        y = square.getPosY() * SQUARE_HEIGHT;
+        x = square.getPosX() * SQUARE_WIDTH + 2 + pos;
+        y = square.getPosY() * SQUARE_HEIGHT + 2;
         squareDimension = SQUARE_WIDTH;
         doorDimension = DOOR_WIDTH;
         line = HORIZONTAL_LINE;
@@ -136,8 +136,8 @@ public final class MapPrinter {
         corner2 = CornerType.BOTTOM_LEFT_CORNER;
         break;
       case SOUTH:
-        x = square.getPosX() * SQUARE_WIDTH + pos;
-        y = square.getPosY() * SQUARE_HEIGHT + SQUARE_HEIGHT - 1;
+        x = square.getPosX() * SQUARE_WIDTH + 2 + pos;
+        y = square.getPosY() * SQUARE_HEIGHT + SQUARE_HEIGHT + 1;
         squareDimension = SQUARE_WIDTH;
         doorDimension = DOOR_WIDTH;
         line = HORIZONTAL_LINE;
@@ -183,8 +183,8 @@ public final class MapPrinter {
    * @param square the square to consider
    */
   private static void drawAttributes(String [][] map, Square square) {
-    int centerX = (square.getPosX() * SQUARE_WIDTH) + (SQUARE_WIDTH - 1) / 2;
-    int centerY = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT - 2;
+    int centerX = (square.getPosX() * SQUARE_WIDTH) + 2 + (SQUARE_WIDTH - 1) / 2;
+    int centerY = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT;
     if (square.isSpawnPoint()) {
       map[centerX][centerY] = square.getColor().getAnsiColor() + SPAWN_POINT;
     } else if (square.getAmmoCard() != null) {
@@ -221,7 +221,7 @@ public final class MapPrinter {
       drawEdge(map, square, Direction.SOUTH, x);
     } else {
       // Inner whitespace fill-up
-      map[square.getPosX() * SQUARE_WIDTH + x][square.getPosY() * SQUARE_HEIGHT + y] = " ";
+      map[square.getPosX() * SQUARE_WIDTH + 2 + x][square.getPosY() * SQUARE_HEIGHT + 2 + y] = " ";
     }
   }
 
@@ -263,7 +263,24 @@ public final class MapPrinter {
       } else {
         y = SQUARE_HEIGHT / 2;
       }
-      map[square.getPosX() * SQUARE_WIDTH + x][square.getPosY() * SQUARE_HEIGHT + y] = square.getPlayers().get(i).getColor().getAnsiColor() + PLAYER_ICON;
+      map[square.getPosX() * SQUARE_WIDTH + 2 + x][square.getPosY() * SQUARE_HEIGHT + 2 + y] = square.getPlayers().get(i).getColor().getAnsiColor() + PLAYER_ICON;
+    }
+  }
+
+  /**
+   * Generates coordinates numbers and adds them to the print matrix.
+   * @param map the print matrix that will be updated
+   */
+  private static void drawCoordinates(String[][] map) {
+    int initXOffset = 2 + (SQUARE_WIDTH - 1) / 2;
+    int initYOffset = 2 + SQUARE_HEIGHT / 2;
+    for (Integer i = 0; i < 4; i++) {
+      map[initXOffset][0] = ANSIColor.RESET + i.toString();
+      initXOffset += SQUARE_WIDTH;
+    }
+    for (Integer i = 0; i < 3; i++) {
+      map[0][initYOffset] = ANSIColor.RESET + i.toString();
+      initYOffset += SQUARE_HEIGHT;
     }
   }
 
@@ -273,11 +290,12 @@ public final class MapPrinter {
    * @return a print matrix for the map
    */
   static String[][] buildMap(Board board) {
-    String[][] map = new String[4 * SQUARE_WIDTH][3 * SQUARE_HEIGHT];
+    String[][] map = new String[4 * SQUARE_WIDTH + 2][3 * SQUARE_HEIGHT + 2];
     for (Square square : board.getSquares()) {
       drawSquare(map, square);
       drawPlayers(map, square);
     }
+    drawCoordinates(map);
     return map;
   }
 
@@ -287,8 +305,8 @@ public final class MapPrinter {
    */
   static void print(Board board) {
     String[][] map = buildMap(board);
-    for (int y = 0; y < 3 * SQUARE_HEIGHT; y++) {
-      for (int x = 0; x < 4 * SQUARE_WIDTH; x++) {
+    for (int y = 0; y < 3 * SQUARE_HEIGHT + 2; y++) {
+      for (int x = 0; x < 4 * SQUARE_WIDTH + 2; x++) {
         if (map[x][y] != null) {
           Log.print(map[x][y]);
         } else {
