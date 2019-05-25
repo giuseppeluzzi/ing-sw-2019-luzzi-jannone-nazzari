@@ -2,7 +2,6 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ public class TUIUtils {
 
   static String selectWeapon(List<Weapon> weapons, String prompt,
       boolean showCost) {
-    Log.print(prompt);
+    Log.println(prompt);
 
     int targetIndex;
     int chosenTarget;
@@ -28,7 +27,7 @@ public class TUIUtils {
       targetIndex = 1;
       for (Weapon weapon : weapons) {
         if (showCost) {
-          Log.print(
+          Log.println(
               String.format("\t%d) %s%n  Costo: %d rosso, %d blu, %d giallo",
                   targetIndex,
                   weapon.getName(),
@@ -36,7 +35,7 @@ public class TUIUtils {
                   weapon.getCost(AmmoColor.BLUE),
                   weapon.getCost(AmmoColor.YELLOW)));
         } else {
-          Log.print(String.format("\t%d) %s", targetIndex, weapon.getName()));
+          Log.println(String.format("\t%d) %s", targetIndex, weapon.getName()));
         }
         targetIndex++;
       }
@@ -58,9 +57,9 @@ public class TUIUtils {
 
     do {
       targetIndex = 1;
-      Log.print("Seleziona un colore");
+      Log.println("Seleziona un colore");
       for (AmmoColor color : colors) {
-        Log.print("\t" + targetIndex + ") " + color);
+        Log.println("\t" + targetIndex + ") " + color);
         targetIndex++;
       }
       chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
@@ -76,12 +75,12 @@ public class TUIUtils {
     do {
       targetIndex = 1;
       if (areSubEffects) {
-        Log.print("Ora scegli quali effetti secondari aggiungere");
+        Log.println("Ora scegli quali effetti secondari aggiungere");
       } else {
-        Log.print("Scegli quale effetto usare");
+        Log.println("Scegli quale effetto usare");
       }
       for (Effect effect : effects) {
-        Log.print("\t" + targetIndex + ") " + effect.getName());
+        Log.println("\t" + targetIndex + ") " + effect.getName());
         targetIndex++;
       }
       chosenIndex = Character.getNumericValue(scanner.nextLine().charAt(0));

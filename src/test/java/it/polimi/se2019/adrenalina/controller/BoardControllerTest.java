@@ -76,10 +76,10 @@ public class BoardControllerTest {
       for (int x = 0; x < MAX_VERT_TILES; x++) {
         currentLine.append(map[x][y]);
       }
-      Log.print(currentLine.toString());
+      Log.println(currentLine.toString());
     }
 
-    /*Log.print("┏━━━━━━━━━┓\n"
+    /*Log.println("┏━━━━━━━━━┓\n"
         + "┃\n"
         + "┃\n"
         + "┃\n"

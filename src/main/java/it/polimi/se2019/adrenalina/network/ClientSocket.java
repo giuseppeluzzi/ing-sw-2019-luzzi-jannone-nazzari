@@ -60,8 +60,8 @@ public class ClientSocket extends Client implements Runnable {
 
   @Override
   public void showMessage(MessageSeverity severity, String title, String message) {
-    Log.print(severity + ": " + title);
-    Log.print(message);
+    Log.println(severity + ": " + title);
+    Log.println(message);
   }
 
   @Override

@@ -93,16 +93,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     boolean completed = false;
 
     for (Spendable match : spendables) {
-      Log.print(String.format("\t%d) %s", index, match.getSpendableName()));
+      Log.println(String.format("\t%d) %s", index, match.getSpendableName()));
       index++;
     }
 
-    Log.print(
+    Log.println(
         String.format("Il costo da pagare è:%n\t%d rosso, %d blu, %d giallo, %d qualsiasi colore%n"
             + "Come preferisci pagare?", item.getCost(AmmoColor.RED), item.getCost(AmmoColor.BLUE), item.getCost(AmmoColor.YELLOW), item.getCost(AmmoColor.ANY)));
 
     do {
-      Log.print("Inserisci i numeri scelti separati da virgole");
+      Log.println("Inserisci i numeri scelti separati da virgole");
       String response = scanner.nextLine();
       if (!response.matches(inputValidationRegex)) {
         continue;
@@ -143,9 +143,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     int chosenTarget = 0;
 
     do {
-      Log.print("Seleziona un'azione");
+      Log.println("Seleziona un'azione");
       for (TurnAction action : actions) {
-        Log.print("\t" + targetIndex + ") " + action.getName() + ": " + action.getDescription());
+        Log.println("\t" + targetIndex + ") " + action.getName() + ": " + action.getDescription());
         targetIndex++;
       }
 
@@ -211,9 +211,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     do {
       targetIndex = 1;
-      Log.print("Seleziona un PowerUp");
+      Log.println("Seleziona un PowerUp");
       for (PowerUp powerUp : powerUps) {
-        Log.print("\t" + targetIndex + ") " + powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
+        Log.println("\t" + targetIndex + ") " + powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
         targetIndex++;
       }
 

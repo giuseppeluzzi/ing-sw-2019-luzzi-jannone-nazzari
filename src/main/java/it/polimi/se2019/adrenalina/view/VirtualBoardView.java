@@ -55,11 +55,6 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   }
 
   @Override
-  public void showMessage(MessageSeverity severity, String title, String message) {
-    // TODO: show a message
-  }
-
-  @Override
   public void showTargetSelect(TargetType type, List<Target> targets) {
     // TODO: send selection
   }

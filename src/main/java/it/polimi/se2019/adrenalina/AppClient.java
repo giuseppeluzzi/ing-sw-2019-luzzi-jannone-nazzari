@@ -23,18 +23,18 @@ public class AppClient {
 
     if (args.length < 3) {
       Scanner scanner = new Scanner(System.in, "utf-8");
-      Log.print("Please select a connection mode");
-      Log.print("  (1) RMI");
-      Log.print("  (2) Socket");
-      Log.print("");
+      Log.println("Please select a connection mode");
+      Log.println("  (1) RMI");
+      Log.println("  (2) Socket");
+      Log.println("");
       connectionMode = scanner.nextLine().charAt(0);
 
-      Log.print("Please enter your name");
+      Log.println("Please enter your name");
       name = scanner.nextLine();
 
-      Log.print("Please select a game mode");
-      Log.print("  (1) Classic");
-      Log.print("  (2) Domination");
+      Log.println("Please select a game mode");
+      Log.println("  (1) Classic");
+      Log.println("  (2) Domination");
       char gameMode = scanner.nextLine().charAt(0);
 
       if (gameMode == '2') {

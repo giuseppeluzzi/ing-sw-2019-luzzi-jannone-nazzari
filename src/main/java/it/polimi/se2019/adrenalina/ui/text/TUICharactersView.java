@@ -30,9 +30,9 @@ public class TUICharactersView extends CharactersView {
     }
 
     if (player.getColor() == playerColor) {
-      Log.print("Sei morto!\n");
+      Log.println("Sei morto!\n");
     } else {
-      Log.print(player.getName() + " è morto\n");
+      Log.println(player.getName() + " è morto\n");
     }
   }
 }

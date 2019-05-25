@@ -13,11 +13,6 @@ public class GUIBoardView extends BoardView {
   private static final long serialVersionUID = -5469323461908447838L;
 
   @Override
-  public void showMessage(MessageSeverity severity, String title, String message) {
-    // TODO
-  }
-
-  @Override
   public void showTargetSelect(TargetType type, List<Target> targets) {
     // TODO
   }

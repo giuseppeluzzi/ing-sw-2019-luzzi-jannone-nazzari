@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
@@ -85,9 +84,9 @@ public class TUIBoardView extends BoardView {
 
     do {
       targetIndex = 1;
-      Log.print("Seleziona una stanza");
+      Log.println("Seleziona una stanza");
       for (SquareColor color : squareColors) {
-        Log.print(
+        Log.println(
             String.format("\t%d) %s%s%s",
                 targetIndex,
                 color.getAnsiColor(),
@@ -113,7 +112,7 @@ public class TUIBoardView extends BoardView {
     int targetIndex;
     int chosenTarget;
 
-    Log.print("Seleziona un quadrato");
+    Log.println("Seleziona un quadrato");
     do {
       targetIndex = 1;
       for (Target target : targets) {
@@ -125,7 +124,7 @@ public class TUIBoardView extends BoardView {
               "(" + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
                   + ")";
         }
-        Log.print(
+        Log.println(
             String.format("\t%d) %sx: %d y:%d %s%s",
                 targetIndex,
                 target.getSquare().getColor().getAnsiColor(),
@@ -145,15 +144,15 @@ public class TUIBoardView extends BoardView {
     int targetIndex;
     int chosenTarget;
 
-    Log.print("Seleziona un bersaglio");
+    Log.println("Seleziona un bersaglio");
     do {
       targetIndex = 1;
       for (Target target : targets) {
         try {
           if (target.isPlayer()) {
-            Log.print(String.format("\t%d) %s", targetIndex, target.getPlayer().getName()));
+            Log.println(String.format("\t%d) %s", targetIndex, target.getPlayer().getName()));
           } else {
-            Log.print(
+            Log.println(
                 String
                     .format("\t%d) %sx: %d y:%d (Spawnpoint)%s",
                         targetIndex,
@@ -180,9 +179,9 @@ public class TUIBoardView extends BoardView {
 
     do {
       targetIndex = 1;
-      Log.print("Seleziona una direzione");
+      Log.println("Seleziona una direzione");
       for (Direction direction : Direction.values()) {
-        Log.print("\t" + targetIndex + ") " + direction);
+        Log.println("\t" + targetIndex + ") " + direction);
         targetIndex++;
       }
 
