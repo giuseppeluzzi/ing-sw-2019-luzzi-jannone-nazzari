@@ -44,9 +44,6 @@ public abstract class BoardView extends Observable implements Observer, BoardVie
   }
 
   @Override
-  public abstract void showMessage(MessageSeverity severity, String title, String message);
-
-  @Override
   public abstract void showTargetSelect(TargetType type, List<Target> targets);
 
   @Override

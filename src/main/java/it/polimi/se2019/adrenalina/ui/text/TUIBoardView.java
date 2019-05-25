@@ -16,6 +16,7 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
@@ -31,12 +32,6 @@ public class TUIBoardView extends BoardView {
 
   public TUIBoardView(ClientInterface client) {
     this.client = client;
-  }
-
-  @Override
-  public void showMessage(MessageSeverity severity, String title, String message) {
-    Log.print(severity + ": " + title);
-    Log.print(message);
   }
 
   @Override
@@ -56,8 +51,12 @@ public class TUIBoardView extends BoardView {
           }
           break;
         case MOVE_SQUARE:
+          chosenTarget = selectSquare(targets, true);
+          notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
+              chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
+          break;
         case ATTACK_SQUARE:
-          chosenTarget = selectSquare(targets);
+          chosenTarget = selectSquare(targets, false);
           notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           break;
@@ -88,7 +87,13 @@ public class TUIBoardView extends BoardView {
       targetIndex = 1;
       Log.print("Seleziona una stanza");
       for (SquareColor color : squareColors) {
-        Log.print("\t" + targetIndex + ") " + color);
+        Log.print(
+            String.format("\t%d) %s%s%s",
+                targetIndex,
+                color.getAnsiColor(),
+                color,
+                ANSIColor.RESET)
+        );
         targetIndex++;
       }
 
@@ -104,7 +109,7 @@ public class TUIBoardView extends BoardView {
     throw new IllegalStateException();
   }
 
-  private Target selectSquare(List<Target> targets) {
+  private Target selectSquare(List<Target> targets, boolean fetch) {
     int targetIndex;
     int chosenTarget;
 
@@ -112,12 +117,22 @@ public class TUIBoardView extends BoardView {
     do {
       targetIndex = 1;
       for (Target target : targets) {
+        String fetchHelper = "";
+        if (target.getSquare().isSpawnPoint()) {
+          fetchHelper = "(Spawnpoint)";
+        } else if (fetch) {
+          fetchHelper =
+              "(" + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
+                  + ")";
+        }
         Log.print(
-            String.format("\t%d) X: %d - Y: %d - Colore: %s",
+            String.format("\t%d) %sx: %d y:%d %s%s",
                 targetIndex,
+                target.getSquare().getColor().getAnsiColor(),
                 target.getSquare().getPosX(),
                 target.getSquare().getPosY(),
-                target.getSquare().getColor()));
+                fetchHelper,
+                ANSIColor.RESET));
         targetIndex++;
       }
       chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
@@ -140,7 +155,12 @@ public class TUIBoardView extends BoardView {
           } else {
             Log.print(
                 String
-                    .format("\t%d) Spawnpoint %s", targetIndex, target.getSquare().getColor()));
+                    .format("\t%d) %sx: %d y:%d (Spawnpoint)%s",
+                        targetIndex,
+                        target.getSquare().getColor().getAnsiColor(),
+                        target.getSquare().getPosX(),
+                        target.getSquare().getPosY(),
+                        ANSIColor.RESET));
           }
           targetIndex++;
         } catch (InvalidSquareException ignored) {
@@ -179,9 +199,10 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void showSquareSelect(List<Target> targets) {
-    Square square = (Square) selectSquare(targets);
+    Square square = (Square) selectSquare(targets, true);
     try {
-      notifyObservers(new SquareMoveSelectionEvent(client.getPlayerColor(), square.getPosX(), square.getPosY()));
+      notifyObservers(new SquareMoveSelectionEvent(client.getPlayerColor(), square.getPosX(),
+          square.getPosY()));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -202,6 +223,4 @@ public class TUIBoardView extends BoardView {
       Log.exception(e);
     }
   }
-
-
 }

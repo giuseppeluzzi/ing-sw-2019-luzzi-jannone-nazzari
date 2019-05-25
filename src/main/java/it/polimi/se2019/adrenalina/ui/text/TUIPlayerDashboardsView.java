@@ -15,6 +15,7 @@ import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
 import java.rmi.RemoteException;
@@ -38,7 +39,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   private List<Spendable> setSpendable(Player player) {
-
     List<Spendable> spendables = new ArrayList<>();
     List<PowerUp> powerUps = player.getPowerUps();
     int index = 0;
@@ -213,7 +213,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       targetIndex = 1;
       Log.print("Seleziona un PowerUp");
       for (PowerUp powerUp : powerUps) {
-        Log.print("\t" + targetIndex + ") " + powerUp.getName());
+        Log.print("\t" + targetIndex + ") " + powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
         targetIndex++;
       }
 

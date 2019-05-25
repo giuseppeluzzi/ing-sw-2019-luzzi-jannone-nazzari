@@ -21,11 +21,10 @@ public class ObjectPickup extends GameAction {
   @Override
   public void execute(Board board) {
     if (getPlayer().getSquare().isSpawnPoint()) {
-      List<Weapon> buyableWeapons = new ArrayList<>();
-      for (Weapon weapon : getPlayer().getSquare().getWeapons()) {
-        if (getPlayer().canCollectWeapon(weapon)) {
-          buyableWeapons.add(weapon);
-        }
+      List<Weapon> buyableWeapons = getBuyableWeapons();
+
+      if (buyableWeapons.isEmpty()) {
+        return;
       }
 
       try {
@@ -46,9 +45,25 @@ public class ObjectPickup extends GameAction {
         try {
           getPlayer().addPowerUp(powerUp);
         } catch (InvalidPowerUpException e) {
+          board.undrawPowerUp(powerUp);
           break;
         }
       }
     }
+  }
+
+  private List<Weapon> getBuyableWeapons() {
+    List<Weapon> buyableWeapons = new ArrayList<>();
+    for (Weapon weapon : getPlayer().getSquare().getWeapons()) {
+      if (getPlayer().canCollectWeapon(weapon)) {
+        buyableWeapons.add(weapon);
+      }
+    }
+    return buyableWeapons;
+  }
+
+  @Override
+  public boolean isSync() {
+    return getPlayer().getSquare().isSpawnPoint() && !getBuyableWeapons().isEmpty();
   }
 }

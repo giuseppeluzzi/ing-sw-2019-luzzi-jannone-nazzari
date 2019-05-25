@@ -27,8 +27,6 @@ public interface BoardViewInterface extends RemoteObservable, Serializable {
 
   void hideTimer() throws RemoteException;
 
-  void showMessage(MessageSeverity severity, String title, String message) throws RemoteException;
-
   void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
 
   void showDirectionSelect() throws RemoteException;

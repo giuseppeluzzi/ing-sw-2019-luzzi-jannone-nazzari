@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.network;
 import static java.lang.Thread.sleep;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
@@ -75,8 +76,9 @@ public class ClientRMI extends Client {
   }
 
   @Override
-  public void showMessage(String text) {
-    Log.info(text);
+  public void showMessage(MessageSeverity severity, String title, String message) {
+    Log.print(severity + ": " + title);
+    Log.print(message);
   }
 
   @Override

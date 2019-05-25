@@ -38,6 +38,9 @@ public class Board extends Observable implements Serializable {
   private final List<PowerUp> powerUps;
   private final List<PowerUp> takenPowerUps;
 
+  private final List<AmmoCard> ammoCards;
+  private final List<AmmoCard> takenAmmoCards;
+
   private final List<Player> doubleKills;
   private final List<Kill> killShots;
 
@@ -62,6 +65,8 @@ public class Board extends Observable implements Serializable {
     takenWeapons = new ArrayList<>();
     powerUps = new ArrayList<>();
     takenPowerUps = new ArrayList<>();
+    ammoCards = new ArrayList<>();
+    takenAmmoCards = new ArrayList<>();
     doubleKills = new ArrayList<>();
     killShots = new ArrayList<>();
     publicCopy = false;
@@ -99,6 +104,8 @@ public class Board extends Observable implements Serializable {
     takenWeapons = new ArrayList<>();
     powerUps = new ArrayList<>();
     takenPowerUps = new ArrayList<>();
+    ammoCards = new ArrayList<>();
+    takenAmmoCards = new ArrayList<>();
 
     setObservers(board.getObservers());
 
@@ -501,6 +508,65 @@ public class Board extends Observable implements Serializable {
     }
     return null;
   }
+
+  /**
+   * Adds a ammoCard to the Board.
+   *
+   * @param ammoCard the ammoCard to add to the Board
+   */
+  public void addAmmoCard(AmmoCard ammoCard) {
+    ammoCards.add(ammoCard);
+    Collections.shuffle(ammoCards);
+  }
+
+  /**
+   * Marks a ammoCard as used by moving it from the ammoCards list to the usedAmmoCards list.
+   *
+   * @param ammoCard the ammoCard to be marked as used
+   * @throws IllegalArgumentException thrown if ammoCard is not in the Board
+   */
+  public void drawAmmoCard(AmmoCard ammoCard) {
+    if (!ammoCards.contains(ammoCard)) {
+      throw new IllegalArgumentException("AmmoCard not present");
+    }
+    ammoCards.remove(ammoCard);
+    takenAmmoCards.add(ammoCard);
+  }
+
+  /**
+   * Marks a ammoCard as not used by moving it from the takenAmmoCards list to the ammoCards list.
+   *
+   * @param ammoCard the ammoCard to be marked as unused
+   * @throws IllegalArgumentException thrown if ammoCard is not in the Board
+   */
+  public void undrawAmmoCard(AmmoCard ammoCard) {
+    if (!takenAmmoCards.contains(ammoCard)) {
+      throw new IllegalArgumentException("AmmoCard not present");
+    }
+    takenAmmoCards.remove(ammoCard);
+    ammoCards.add(ammoCard);
+    Collections.shuffle(ammoCards);
+  }
+
+
+  /**
+   * Returns a List of ammoCards in the Board.
+   *
+   * @return a List of ammoCards in the Board
+   */
+  public List<AmmoCard> getAmmoCards() {
+    return new ArrayList<>(ammoCards);
+  }
+
+  /**
+   * Returns a List of drawn ammoCards in the Board.
+   *
+   * @return a List of drawn ammoCards in the Board
+   */
+  public List<AmmoCard> getTakenAmmoCards() {
+    return new ArrayList<>(takenAmmoCards);
+  }
+
 
   /**
    * Adds a doubleKill to the Board.

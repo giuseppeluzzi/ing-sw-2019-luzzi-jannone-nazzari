@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.network;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.BoardController;
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
@@ -24,6 +25,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.rmi.RemoteException;
 
 public class VirtualClientSocket implements ClientInterface, Runnable {
 
@@ -122,9 +124,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   }
 
   @Override
-  public void showMessage(String text) {
-    printWriter.println(text);
-    printWriter.flush();
+  public void showMessage(MessageSeverity severity, String title, String message) {
+    // TODO
   }
 
   @Override

@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.network;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerConnectEvent;
@@ -58,8 +59,9 @@ public class ClientSocket extends Client implements Runnable {
   }
 
   @Override
-  public void showMessage(String text) {
-    Log.info(text);
+  public void showMessage(MessageSeverity severity, String title, String message) {
+    Log.print(severity + ": " + title);
+    Log.print(message);
   }
 
   @Override

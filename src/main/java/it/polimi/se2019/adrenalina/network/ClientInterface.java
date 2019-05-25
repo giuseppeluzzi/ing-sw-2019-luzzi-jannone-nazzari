@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.network;
 
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
@@ -15,7 +16,7 @@ public interface ClientInterface extends Remote {
   boolean isDomination() throws RemoteException;
   void setDomination(boolean domination) throws RemoteException;
 
-  void showMessage(String text) throws RemoteException;
+  void showMessage(MessageSeverity severity, String title, String message) throws RemoteException;
   void ping() throws IOException;
   Long getLastPing() throws IOException;
 

@@ -1,20 +1,22 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
+
 public enum SquareColor {
-  GREEN("\u001b[32m"),
-  BLUE("\u001b[34m"),
-  PURPLE("\u001b[35m"),
-  GREY("\u001b[37m"),
-  YELLOW("\u001b[33m"),
-  RED("\u001b[31m");
+  GREEN(ANSIColor.GREEN),
+  BLUE(ANSIColor.BLUE),
+  PURPLE(ANSIColor.MAGENTA),
+  GREY(ANSIColor.WHITE),
+  YELLOW(ANSIColor.YELLOW),
+  RED(ANSIColor.RED);
 
-  private final String ansiColor;
+  private final ANSIColor ansiColor;
 
-  SquareColor(String ansiColor) {
+  SquareColor(ANSIColor ansiColor) {
     this.ansiColor = ansiColor;
   }
 
-  public String getAnsiColor() {
+  public ANSIColor getAnsiColor() {
     return ansiColor;
   }
 }

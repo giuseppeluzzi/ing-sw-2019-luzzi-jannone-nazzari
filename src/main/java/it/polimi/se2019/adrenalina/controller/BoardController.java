@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
@@ -99,6 +100,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     loadWeapons();
     loadPowerUps();
     loadMaps();
+    loadAmmoCards();
   }
 
   private void loadPowerUps() {
@@ -205,6 +207,30 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  private void loadAmmoCards() {
+    try (Stream<Path> ammoCardStream = Files.walk(
+        Paths.get(BoardController.class.getResource("/img/ammo").toURI()))) {
+      ammoCardStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable)
+          .forEach(filePath -> {
+            String name = filePath.getFileName().toString()
+                .replace("ammo_", "")
+                .replace(".png", "");
+            if (! "back".equalsIgnoreCase(name)) {
+              int red = 3 - name.replace("R", "").length();
+              int blue = 3 - name.replace("B", "").length();
+              int yellow = 3 - name.replace("Y", "").length();
+              int powerUp = 3 - name.replace("P", "").length();
+              board.addAmmoCard(new AmmoCard(red, blue, yellow, powerUp));
+            }
+          });
+    } catch (URISyntaxException | IOException e) {
+      Log.critical("No ammo card found");
+    }
+    if (board.getAmmoCards().isEmpty()) {
+      Log.critical("No ammo card found");
+    }
+  }
+
   /**
    * Adds a new player to a board in LOBBY status or a returning player (who had previously
    * disconnected) to a board where a game is in progress.
@@ -232,7 +258,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       if (board.getPlayers().size() >= 2) {
         startJoinTimer();
       }
-
     } else {
       if (board.getPlayers().contains(player)) {
         player.setStatus(PlayerStatus.PLAYING);
@@ -269,25 +294,42 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
     for (GameMap map : new ArrayList<>(maps)) {
       if (map.getId() == selectedMap) {
-        for (Square square: map.getSquares()) {
-          Square realSquare = new Square(square.getPosX(),
-              square.getPosY(),
-              square.getColor(),
-              square.getEdge(Direction.NORTH),
-              square.getEdge(Direction.EAST),
-              square.getEdge(Direction.SOUTH),
-              square.getEdge(Direction.WEST),
-              board);
-          if (square.isSpawnPoint()) {
-            realSquare.setSpawnPoint(true);
-          }
-          board.setSquare(realSquare);
-        }
+        prepareMap(map);
+
       }
       maps.remove(map);
     }
     Log.info("Selected map #" + selectedMap);
     run();
+  }
+
+  private void prepareMap(GameMap map) {
+    for (Square square : map.getSquares()) {
+      Square realSquare = new Square(square.getPosX(),
+          square.getPosY(),
+          square.getColor(),
+          square.getEdge(Direction.NORTH),
+          square.getEdge(Direction.EAST),
+          square.getEdge(Direction.SOUTH),
+          square.getEdge(Direction.WEST),
+          board);
+      if (square.isSpawnPoint()) {
+        realSquare.setSpawnPoint(true);
+      }
+      board.setSquare(realSquare);
+    }
+
+    placeAmmoCard();
+  }
+
+  private void placeAmmoCard() {
+    for (Square square : board.getSquares()) {
+      if (! square.isSpawnPoint()) {
+        AmmoCard ammoCard = board.getAmmoCards().get(0);
+        board.drawAmmoCard(ammoCard);
+        square.setAmmoCard(ammoCard);
+      }
+    }
   }
 
 
