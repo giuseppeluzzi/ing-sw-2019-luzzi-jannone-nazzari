@@ -22,10 +22,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.rmi.RemoteException;
 
 public class VirtualClientSocket implements ClientInterface, Runnable {
 

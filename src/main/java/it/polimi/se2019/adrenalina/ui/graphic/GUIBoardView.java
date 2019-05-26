@@ -4,12 +4,17 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.util.List;
 
 public class GUIBoardView extends BoardView {
 
   private static final long serialVersionUID = -5469323461908447838L;
+
+  public GUIBoardView(ClientInterface client) {
+    super(client);
+  }
 
   @Override
   public void showBoard(Board board) {

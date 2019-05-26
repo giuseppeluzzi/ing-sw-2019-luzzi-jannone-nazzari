@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.model.PowerUp;
 
 public abstract class PlayerSquareEvent implements Event {
 

@@ -108,7 +108,7 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
     try {
       player.addPowerUp(powerUp);
     } catch (InvalidPowerUpException ignored) {
-
+      // ignore exception
     }
   }
 }

@@ -498,10 +498,10 @@ public class Board extends Observable implements Serializable {
    * if PowerUp does not exist
    */
   public PowerUp getPowerUpByNameAndColor(String powerUpName, AmmoColor powerUpColor) {
-    List<PowerUp> powerUps = getPowerUps();
-    powerUps.addAll(takenPowerUps);
+    List<PowerUp> allPowerUps = getPowerUps();
+    allPowerUps.addAll(takenPowerUps);
 
-    for (PowerUp powerUp : powerUps) {
+    for (PowerUp powerUp : allPowerUps) {
       if (powerUp.getName().equals(powerUpName) && powerUp.getColor() == powerUpColor) {
         return powerUp;
       }
@@ -745,9 +745,9 @@ public class Board extends Observable implements Serializable {
    * @return Weapon with name equals to "name", null if weapon does not exist
    */
   public Weapon getWeaponByName(String name) {
-    List<Weapon> weapons = getWeapons();
-    weapons.addAll(takenWeapons);
-    for (Weapon weapon : weapons) {
+    List<Weapon> allWeapons = getWeapons();
+    allWeapons.addAll(takenWeapons);
+    for (Weapon weapon : allWeapons) {
       if (weapon.getName().equals(name)) {
         return weapon;
       }

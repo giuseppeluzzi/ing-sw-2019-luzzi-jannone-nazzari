@@ -9,7 +9,6 @@ import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
