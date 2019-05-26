@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
@@ -15,7 +14,6 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
-import java.rmi.RemoteException;
 import java.util.List;
 
 public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
@@ -55,6 +53,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   }
 
   @Override
+  public void showBoard(Board board) {
+    // TODO
+  }
+
+  @Override
   public void showTargetSelect(TargetType type, List<Target> targets) {
     // TODO: send selection
   }
@@ -68,7 +71,7 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   public void showSquareSelect(List<Target> targets) {
     // TODO: send selection
   }
-  
+
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
 

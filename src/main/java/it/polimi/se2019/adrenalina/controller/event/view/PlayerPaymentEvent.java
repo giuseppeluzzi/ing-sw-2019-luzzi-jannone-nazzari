@@ -1,11 +1,16 @@
-package it.polimi.se2019.adrenalina.controller.event;
+package it.polimi.se2019.adrenalina.controller.event.view;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Event fired whena a player completes a payment
+ */
 public class PlayerPaymentEvent implements Event {
 
   private static final long serialVersionUID = -188103349321829299L;

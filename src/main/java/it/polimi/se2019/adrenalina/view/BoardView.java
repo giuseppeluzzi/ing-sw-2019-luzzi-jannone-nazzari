@@ -1,7 +1,5 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
-import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;
@@ -10,18 +8,44 @@ import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.controller.event.TimerSetEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
+import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import java.lang.invoke.WrongMethodTypeException;
-import java.util.List;
+import java.rmi.RemoteException;
 
 public abstract class BoardView extends Observable implements Observer, BoardViewInterface {
 
   private static final long serialVersionUID = 2545732483334205102L;
+  private final transient ClientInterface client;
+
   private Board board;
   private final Timer timer = new Timer();
+
+  protected BoardView(ClientInterface client) {
+    this.client = client;
+    try {
+      initializeBoard();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  private void initializeBoard() throws RemoteException {
+    if (client.isDomination()) {
+      board = new DominationBoard();
+    } else {
+      board = new Board();
+    }
+  }
+
+  public ClientInterface getClient() {
+    return client;
+  }
 
   @Override
   public Board getBoard() {
@@ -42,18 +66,6 @@ public abstract class BoardView extends Observable implements Observer, BoardVie
   public void hideTimer() {
     timer.stop();
   }
-
-  @Override
-  public abstract void showTargetSelect(TargetType type, List<Target> targets);
-
-  @Override
-  public abstract void showDirectionSelect();
-
-  @Override
-  public abstract void showSquareSelect(List<Target> targets);
-
-  @Override
-  public abstract void showSpawnPointTrackSelection();
 
   @Override
   public void update(WeaponUpdateEvent event) {

@@ -1,15 +1,16 @@
 package it.polimi.se2019.adrenalina.controller.event;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 
-public class SquareMoveSelectionEvent implements Event {
+public abstract class PlayerSquareEvent implements Event {
 
-  private static final long serialVersionUID = 6690751482225846610L;
+  private static final long serialVersionUID = -3420489819986950040L;
   private final PlayerColor playerColor;
   private final int squareX;
   private final int squareY;
 
-  public SquareMoveSelectionEvent(PlayerColor playerColor, int squareX, int squareY) {
+  protected PlayerSquareEvent(PlayerColor playerColor, int squareX, int squareY) {
     this.playerColor = playerColor;
     this.squareX = squareX;
     this.squareY = squareY;
@@ -25,10 +26,5 @@ public class SquareMoveSelectionEvent implements Event {
 
   public int getSquareY() {
     return squareY;
-  }
-
-  @Override
-  public EventType getEventType() {
-    return EventType.SQUARE_MOVE_SELECTION_EVENT;
   }
 }

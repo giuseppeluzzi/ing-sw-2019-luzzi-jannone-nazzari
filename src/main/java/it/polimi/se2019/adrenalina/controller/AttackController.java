@@ -3,17 +3,16 @@ package it.polimi.se2019.adrenalina.controller;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
-import it.polimi.se2019.adrenalina.controller.event.PlayerReloadEvent;
-import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
-import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
-import it.polimi.se2019.adrenalina.controller.event.SquareMoveSelectionEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.SelectPlayerEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
-import java.lang.invoke.WrongMethodTypeException;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -39,6 +38,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player uses an effect.
+   *
    * @param event event specifing the effect used
    */
   public void update(PlayerAttackEvent event) {
@@ -53,6 +53,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player reloads a weapon.
+   *
    * @param event event specifing the weapon reloaded
    */
   public void update(PlayerReloadEvent event) {
@@ -76,6 +77,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select another player.
+   *
    * @param event event specifing selected target
    */
   public void update(SelectPlayerEvent event) {
@@ -93,6 +95,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select a square.
+   *
    * @param event event specifing selected target
    */
   public void update(SelectSquareEvent event) {
@@ -109,6 +112,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player moves to a different square.
+   *
    * @param event event specifing selected square
    */
   public void update(SquareMoveSelectionEvent event) {
@@ -118,7 +122,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
-    Log.debug(event.getSquareX()+ "-"+event.getSquareY());
+    Log.debug(event.getSquareX() + "-" + event.getSquareY());
     player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
 
     boardController.getTurnController().executeGameActionQueue();

@@ -1,8 +1,13 @@
-package it.polimi.se2019.adrenalina.controller.event;
+package it.polimi.se2019.adrenalina.controller.event.view;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
+import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.EventType;
 
+/**
+ * Event fired when a player choose his turn action
+ */
 public class PlayerActionSelectionEvent implements Event {
 
   private static final long serialVersionUID = -2788134306042770302L;

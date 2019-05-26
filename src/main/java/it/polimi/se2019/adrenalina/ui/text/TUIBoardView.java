@@ -3,13 +3,14 @@ package it.polimi.se2019.adrenalina.ui.text;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.controller.event.PlayerCollectWeaponEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.controller.event.SelectDirectionEvent;
-import it.polimi.se2019.adrenalina.controller.event.SelectPlayerEvent;
-import it.polimi.se2019.adrenalina.controller.event.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.SelectPlayerEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
-import it.polimi.se2019.adrenalina.controller.event.SquareMoveSelectionEvent;
+import it.polimi.se2019.adrenalina.controller.event.view.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
@@ -26,11 +27,15 @@ import java.util.Scanner;
 public class TUIBoardView extends BoardView {
 
   private static final long serialVersionUID = 7696019255617335385L;
-  private final transient ClientInterface client;
   private final transient Scanner scanner = TUIUtils.getScanner();
 
   public TUIBoardView(ClientInterface client) {
-    this.client = client;
+    super(client);
+  }
+
+  @Override
+  public void showBoard(Board board) {
+    MapPrinter.print(getBoard());
   }
 
   @Override
@@ -42,26 +47,26 @@ public class TUIBoardView extends BoardView {
         case ATTACK_TARGET:
           chosenTarget = selectAttackTarget(targets);
           if (chosenTarget.isPlayer()) {
-            notifyObservers(new SelectPlayerEvent(client.getPlayerColor(),
+            notifyObservers(new SelectPlayerEvent(getClient().getPlayerColor(),
                 chosenTarget.getPlayer().getColor()));
           } else {
-            notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
+            notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
                 chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           }
           break;
         case MOVE_SQUARE:
           chosenTarget = selectSquare(targets, true);
-          notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
+          notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           break;
         case ATTACK_SQUARE:
           chosenTarget = selectSquare(targets, false);
-          notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
+          notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           break;
         case ATTACK_ROOM:
           chosenTarget = selectRoom(targets);
-          notifyObservers(new SelectSquareEvent(client.getPlayerColor(),
+          notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           break;
       }
@@ -189,7 +194,7 @@ public class TUIBoardView extends BoardView {
     } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     try {
-      notifyObservers(new SelectDirectionEvent(client.getPlayerColor(),
+      notifyObservers(new SelectDirectionEvent(getClient().getPlayerColor(),
           Direction.values()[chosenTarget - 1]));
     } catch (RemoteException e) {
       Log.exception(e);
@@ -200,7 +205,7 @@ public class TUIBoardView extends BoardView {
   public void showSquareSelect(List<Target> targets) {
     Square square = (Square) selectSquare(targets, true);
     try {
-      notifyObservers(new SquareMoveSelectionEvent(client.getPlayerColor(), square.getPosX(),
+      notifyObservers(new SquareMoveSelectionEvent(getClient().getPlayerColor(), square.getPosX(),
           square.getPosY()));
     } catch (RemoteException e) {
       Log.exception(e);
@@ -210,14 +215,14 @@ public class TUIBoardView extends BoardView {
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
     String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi acquistare?", true);
-    notifyObservers(new PlayerCollectWeaponEvent(client.getPlayerColor(), weapon));
+    notifyObservers(new PlayerCollectWeaponEvent(getClient().getPlayerColor(), weapon));
   }
 
   @Override
   public void showSpawnPointTrackSelection() {
     AmmoColor chosen = TUIUtils.showAmmoColorSelection(false);
     try {
-      notifyObservers(new SpawnPointDamageEvent(client.getPlayerColor(), chosen));
+      notifyObservers(new SpawnPointDamageEvent(getClient().getPlayerColor(), chosen));
     } catch (RemoteException e) {
       Log.exception(e);
     }

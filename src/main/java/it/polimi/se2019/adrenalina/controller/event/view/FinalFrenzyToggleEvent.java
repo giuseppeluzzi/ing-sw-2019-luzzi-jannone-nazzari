@@ -1,5 +1,11 @@
-package it.polimi.se2019.adrenalina.controller.event;
+package it.polimi.se2019.adrenalina.controller.event.view;
 
+import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.EventType;
+
+/**
+ * Event fired when the master player toggles Final Frenzy
+ */
 public class FinalFrenzyToggleEvent implements Event {
 
   private static final long serialVersionUID = -2684483250916955093L;

@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
@@ -26,6 +25,8 @@ public interface BoardViewInterface extends RemoteObservable, Serializable {
   void startTimer(int time) throws RemoteException;
 
   void hideTimer() throws RemoteException;
+
+  void showBoard(Board board) throws RemoteException;
 
   void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
 
