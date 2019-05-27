@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.model.Buyable;
@@ -17,9 +18,7 @@ public interface PlayerDashboardsViewInterface extends RemoteObservable, Seriali
 
   List<Player> getPlayers() throws RemoteException;
 
-  void reset(Player player) throws RemoteException;
-
-  void switchToFinalFrenzy(Player player) throws RemoteException;
+  void switchToFinalFrenzy(PlayerColor playerColor) throws RemoteException;
 
   void showPaymentOption(Buyable item) throws RemoteException;
 

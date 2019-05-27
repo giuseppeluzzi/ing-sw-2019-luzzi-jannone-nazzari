@@ -15,7 +15,6 @@ public abstract class CharactersView extends Observable implements CharactersVie
 
   private static final long serialVersionUID = 3820277997554969634L;
   private final ArrayList<Player> players;
-  private Player selectedPlayer;
 
   protected CharactersView() {
     players = new ArrayList<>();
@@ -41,13 +40,13 @@ public abstract class CharactersView extends Observable implements CharactersVie
   }
 
   @Override
-  public void setSelected(Player player) {
-    selectedPlayer = player;
+  public void setSelected(PlayerColor playerColor) {
+    // TODO: Show selected player
   }
 
   @Override
   public void removeSelected() {
-    selectedPlayer = null;
+    // TODO: Remove selected player
   }
 
   @Override

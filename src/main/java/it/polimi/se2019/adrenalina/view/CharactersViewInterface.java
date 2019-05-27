@@ -11,13 +11,19 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface CharactersViewInterface extends RemoteObservable, Serializable {
+
   List<Player> getPlayers() throws RemoteException;
+
   void addPlayer(Player player) throws RemoteException;
-  void setSelected(Player player) throws RemoteException;
+
+  void setSelected(PlayerColor playerColor) throws RemoteException;
+
   void removeSelected() throws RemoteException;
+
   void showDeath(PlayerColor playerColor) throws RemoteException;
 
   void update(PlayerDeathEvent event) throws RemoteException;
+
   void update(PlayerSpawnEvent event) throws RemoteException;
 
   void update(Event event) throws RemoteException;

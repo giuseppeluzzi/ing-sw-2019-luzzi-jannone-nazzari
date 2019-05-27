@@ -6,7 +6,13 @@ import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.KillShotEvent;
 import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
-import it.polimi.se2019.adrenalina.controller.event.TimerSetEvent;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowBoardInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowBuyableWeaponsInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowDirectionSelectInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowSpawnPointTrackSelectionInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowSquareSelectInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowTargetSelectInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
@@ -54,32 +60,32 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
 
   @Override
   public void showBoard(Board board) {
-    // TODO
+    clientSocket.sendEvent(new ShowBoardInvocation());
   }
 
   @Override
   public void showTargetSelect(TargetType type, List<Target> targets) {
-    // TODO: send selection
+    clientSocket.sendEvent(new ShowTargetSelectInvocation(type, targets));
   }
 
   @Override
   public void showDirectionSelect() {
-    // TODO: send selection
+    clientSocket.sendEvent(new ShowDirectionSelectInvocation());
   }
 
   @Override
   public void showSquareSelect(List<Target> targets) {
-    // TODO: send selection
+    clientSocket.sendEvent(new ShowSquareSelectInvocation(targets));
   }
 
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
-
+    clientSocket.sendEvent(new ShowBuyableWeaponsInvocation(weapons));
   }
 
   @Override
   public void showSpawnPointTrackSelection() {
-
+    clientSocket.sendEvent(new ShowSpawnPointTrackSelectionInvocation());
   }
 
   @Override

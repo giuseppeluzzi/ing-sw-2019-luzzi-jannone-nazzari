@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.PlayerDeathEvent;
 import it.polimi.se2019.adrenalina.controller.event.PlayerSpawnEvent;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowDeath;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -16,7 +17,6 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
 
   private static final long serialVersionUID = -6715889122608916050L;
   private final transient ArrayList<Player> players;
-  private Player selectedPlayer;
   private final transient VirtualClientSocket clientSocket;
 
   public VirtualCharactersView(VirtualClientSocket clientSocket) {
@@ -36,18 +36,18 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
   }
 
   @Override
-  public void setSelected(Player player) {
-    selectedPlayer = player;
+  public void setSelected(PlayerColor playerColor) {
+    // TODO: Show selected player
   }
 
   @Override
   public void removeSelected() {
-    selectedPlayer = null;
+    // TODO: Remove selected Player
   }
 
   @Override
   public void showDeath(PlayerColor playerColor) {
-    // TODO: show death
+    clientSocket.sendEvent(new ShowDeath(playerColor));
   }
 
   @Override

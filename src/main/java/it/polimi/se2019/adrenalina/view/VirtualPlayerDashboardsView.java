@@ -1,7 +1,14 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowBuyableWeaponsInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowEffectSelectionInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowPaymentOptionInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowPowerUpSelectionInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.ShowWeaponSelectionInvocation;
+import it.polimi.se2019.adrenalina.controller.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
@@ -37,33 +44,28 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void reset(Player player) {
-    // TODO: reset the player dashboard
-  }
-
-  @Override
-  public void switchToFinalFrenzy(Player player) {
-    // TODO: change dashboard to final frenzy mode
+  public void switchToFinalFrenzy(PlayerColor playerColor) {
+    clientSocket.sendEvent(new SwitchToFinalFrenzyInvocation(playerColor));
   }
 
   @Override
   public void showPaymentOption(Buyable item) {
-    //
+    clientSocket.sendEvent(new ShowPaymentOptionInvocation(item));
   }
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
-    // TODO: show weapon selection
+    clientSocket.sendEvent(new ShowWeaponSelectionInvocation(weapons));
   }
 
   @Override
   public void showEffectSelection(Weapon weapon) {
-    // TODO
+    clientSocket.sendEvent(new ShowEffectSelectionInvocation(weapon));
   }
 
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps) {
-    // TODO
+    clientSocket.sendEvent(new ShowPowerUpSelectionInvocation(powerUps));
   }
 
   @Override

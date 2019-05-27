@@ -58,12 +58,7 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   }
 
   @Override
-  public void reset(Player player) {
-    // TODO: reset the player dashboard
-  }
-
-  @Override
-  public void switchToFinalFrenzy(Player player) {
+  public void switchToFinalFrenzy(PlayerColor playerColor) {
     // TODO: change dashboard to final frenzy mode
   }
 
