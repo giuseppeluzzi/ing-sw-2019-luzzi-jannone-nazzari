@@ -1,12 +1,12 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import it.polimi.se2019.adrenalina.controller.event.Event;
-import it.polimi.se2019.adrenalina.controller.event.EventType;
-import it.polimi.se2019.adrenalina.controller.event.PlayerAttackEvent;
-import it.polimi.se2019.adrenalina.controller.event.viewcontroller.PlayerReloadEvent;
-import it.polimi.se2019.adrenalina.controller.event.viewcontroller.SelectPlayerEvent;
-import it.polimi.se2019.adrenalina.controller.event.viewcontroller.SelectSquareEvent;
-import it.polimi.se2019.adrenalina.controller.event.viewcontroller.SquareMoveSelectionEvent;
+import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.PlayerAttackEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;

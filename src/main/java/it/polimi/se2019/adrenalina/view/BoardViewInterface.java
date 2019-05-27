@@ -1,13 +1,13 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.controller.event.AmmoCardUpdateEvent;
-import it.polimi.se2019.adrenalina.controller.event.DoubleKillEvent;
-import it.polimi.se2019.adrenalina.controller.event.Event;
-import it.polimi.se2019.adrenalina.controller.event.KillShotEvent;
-import it.polimi.se2019.adrenalina.controller.event.SpawnPointDamageEvent;
-import it.polimi.se2019.adrenalina.controller.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.controller.event.WeaponUpdateEvent;
+import it.polimi.se2019.adrenalina.event.AmmoCardUpdateEvent;
+import it.polimi.se2019.adrenalina.event.DoubleKillEvent;
+import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.KillShotEvent;
+import it.polimi.se2019.adrenalina.event.SpawnPointDamageEvent;
+import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;

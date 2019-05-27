@@ -1,6 +1,6 @@
 package it.polimi.se2019.adrenalina.utils;
 
-import it.polimi.se2019.adrenalina.controller.event.Event;
+import it.polimi.se2019.adrenalina.event.Event;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;

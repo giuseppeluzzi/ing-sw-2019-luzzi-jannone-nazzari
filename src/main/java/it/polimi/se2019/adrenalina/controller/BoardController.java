@@ -1,11 +1,11 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.controller.event.Event;
-import it.polimi.se2019.adrenalina.controller.event.EventType;
-import it.polimi.se2019.adrenalina.controller.event.viewcontroller.FinalFrenzyToggleEvent;
-import it.polimi.se2019.adrenalina.controller.event.viewcontroller.MapSelectionEvent;
-import it.polimi.se2019.adrenalina.controller.event.viewcontroller.PlayerColorSelectionEvent;
+import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
