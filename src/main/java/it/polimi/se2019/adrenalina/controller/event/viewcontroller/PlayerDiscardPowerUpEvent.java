@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.event.view;
+package it.polimi.se2019.adrenalina.controller.event.viewcontroller;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
@@ -6,15 +6,15 @@ import it.polimi.se2019.adrenalina.controller.event.EventType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 
 /**
- * Event fired when a player uses a powerup
+ * Event fired a player discards a powerup to spawn
  */
-public class PlayerPowerUpEvent implements Event {
+public class PlayerDiscardPowerUpEvent implements Event {
 
-  private static final long serialVersionUID = 1383594161714063049L;
+  private static final long serialVersionUID = -4129538766030971119L;
   private final PlayerColor playerColor;
   private final PowerUp powerUp;
 
-  public PlayerPowerUpEvent(PlayerColor playerColor,
+  public PlayerDiscardPowerUpEvent(PlayerColor playerColor,
       PowerUp powerUp) {
     this.playerColor = playerColor;
     this.powerUp = powerUp;
@@ -30,6 +30,6 @@ public class PlayerPowerUpEvent implements Event {
 
   @Override
   public EventType getEventType() {
-    return EventType.PLAYER_POWERUP_EVENT;
+    return EventType.PLAYER_DISCARD_POWERUP_EVENT;
   }
 }

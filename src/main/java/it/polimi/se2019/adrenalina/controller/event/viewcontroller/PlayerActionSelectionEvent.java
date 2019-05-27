@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.controller.event.view;
+package it.polimi.se2019.adrenalina.controller.event.viewcontroller;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;

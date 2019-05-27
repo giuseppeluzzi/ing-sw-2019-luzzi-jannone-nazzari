@@ -1,8 +1,9 @@
-package it.polimi.se2019.adrenalina.controller.event;
+package it.polimi.se2019.adrenalina.controller.event.invocations;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.controller.event.EventType;
 
-public class TimerSetEvent implements Event {
+public class TimerSetEvent implements Invocation {
 
   private static final long serialVersionUID = 113909288118601962L;
   private final int timer;

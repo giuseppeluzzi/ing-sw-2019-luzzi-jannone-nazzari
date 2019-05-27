@@ -1,19 +1,19 @@
-package it.polimi.se2019.adrenalina.controller.event.view;
+package it.polimi.se2019.adrenalina.controller.event.viewcontroller;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 
 /**
- * Event fired when a player selects a weapon to shoot
+ * Event fired when a player reloads a weapon
  */
-public class PlayerSelectWeaponEvent implements Event {
+public class PlayerReloadEvent implements Event {
 
-  private static final long serialVersionUID = 3088618111020779192L;
+  private static final long serialVersionUID = -2788134306042770302L;
   private final PlayerColor playerColor;
   private final String weaponName;
 
-  public PlayerSelectWeaponEvent(PlayerColor playerColor, String weaponName) {
+  public PlayerReloadEvent(PlayerColor playerColor, String weaponName) {
     this.playerColor = playerColor;
     this.weaponName = weaponName;
   }
@@ -28,6 +28,6 @@ public class PlayerSelectWeaponEvent implements Event {
 
   @Override
   public EventType getEventType() {
-    return EventType.PLAYER_SELECT_WEAPON_EVENT;
+    return EventType.PLAYER_RELOAD_EVENT;
   }
 }

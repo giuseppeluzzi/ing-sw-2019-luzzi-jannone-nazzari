@@ -1,19 +1,19 @@
-package it.polimi.se2019.adrenalina.controller.event.view;
+package it.polimi.se2019.adrenalina.controller.event.viewcontroller;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.event.Event;
 import it.polimi.se2019.adrenalina.controller.event.EventType;
 
 /**
- * Event fired when a player reloads a weapon
+ * Event fired when a player fetches a weapon from a spawnpoint
  */
-public class PlayerReloadEvent implements Event {
+public class PlayerCollectWeaponEvent implements Event {
 
-  private static final long serialVersionUID = -2788134306042770302L;
+  private static final long serialVersionUID = -4228677364669070987L;
   private final PlayerColor playerColor;
   private final String weaponName;
 
-  public PlayerReloadEvent(PlayerColor playerColor, String weaponName) {
+  public PlayerCollectWeaponEvent(PlayerColor playerColor, String weaponName) {
     this.playerColor = playerColor;
     this.weaponName = weaponName;
   }
@@ -28,6 +28,6 @@ public class PlayerReloadEvent implements Event {
 
   @Override
   public EventType getEventType() {
-    return EventType.PLAYER_RELOAD_EVENT;
+    return EventType.PLAYER_COLLECT_WEAPON_EVENT;
   }
 }
