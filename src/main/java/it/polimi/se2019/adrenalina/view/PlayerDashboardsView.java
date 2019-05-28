@@ -14,8 +14,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerWeaponUpdate;
-import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -28,11 +27,9 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
-import java.lang.invoke.WrongMethodTypeException;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -126,20 +123,20 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   }
 
   @Override
-  public void update(PlayerWeaponUpdate event) throws RemoteException {
+  public void update(OwnWeaponUpdate event) throws RemoteException {
     getPlayerByColor(event.getPlayerColor()).updateWeapons(event.getWeapons());
   }
 
   @Override
   public void update(EnemyWeaponUpdate event) throws RemoteException {
-    Player player = getPlayerByColor(event.getEnemyColor());
+    Player player = getPlayerByColor(event.getPlayerColor());
     player.updateWeapons(event.getUnloadedWeapons());
     player.setWeaponCount(event.getNumWeapons());
   }
 
   @Override
   public void update(EnemyPowerUpUpdate event) throws RemoteException {
-    getPlayerByColor(event.getEnemyColor()).setPowerUpCount(event.getPowerUpsNum());
+    getPlayerByColor(event.getPlayerColor()).setPowerUpCount(event.getPowerUpsNum());
   }
 
   @Override

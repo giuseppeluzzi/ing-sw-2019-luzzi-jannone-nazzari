@@ -8,13 +8,13 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerWeaponUpdate implements Event {
+public class OwnWeaponUpdate implements Event {
 
   private static final long serialVersionUID = -4678079189320950629L;
   private final List<Weapon> weapons;
   private final PlayerColor playerColor;
 
-  public PlayerWeaponUpdate(PlayerColor playerColor, List<Weapon> weapons) {
+  public OwnWeaponUpdate(PlayerColor playerColor, List<Weapon> weapons) {
     this.playerColor = playerColor;
     this.weapons = new ArrayList<>();
     for (Weapon weapon : weapons) {

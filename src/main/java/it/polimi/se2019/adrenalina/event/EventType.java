@@ -30,7 +30,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
@@ -95,7 +95,7 @@ public enum EventType {
   PLAYER_KILL_SCORE_UPDATE(PlayerKillScoreUpdate.class),
   PLAYER_STATUS_UPDATE(PlayerStatusUpdate.class),
   PLAYER_AMMO_UPDATE(PlayerAmmoUpdate.class),
-  PLAYER_WEAPON_UPDATE(PlayerWeaponUpdate.class),
+  PLAYER_WEAPON_UPDATE(OwnWeaponUpdate.class),
   ENEMY_WEAPON_UPDATE(EnemyWeaponUpdate.class),
   ENEMY_POWER_UP_UPDATE(EnemyPowerUpUpdate.class),
   OWN_POWER_UP_UPDATE(OwnPowerUpUpdate.class),

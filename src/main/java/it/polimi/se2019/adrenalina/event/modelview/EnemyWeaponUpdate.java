@@ -11,12 +11,12 @@ import java.util.List;
 public class EnemyWeaponUpdate implements Event {
 
   private static final long serialVersionUID = -60076482096933990L;
-  private final PlayerColor enemyColor;
+  private final PlayerColor playerColor;
   private final int numWeapons;
   private final List<Weapon> unloadedWeapons;
 
-  public EnemyWeaponUpdate(PlayerColor enemyColor, int numWeapons, List<Weapon> unloadedWeapons) {
-    this.enemyColor = enemyColor;
+  public EnemyWeaponUpdate(PlayerColor playerColor, int numWeapons, List<Weapon> unloadedWeapons) {
+    this.playerColor = playerColor;
     this.numWeapons = numWeapons;
     this.unloadedWeapons = new ArrayList<>();
     for (Weapon weapon : unloadedWeapons) {
@@ -26,8 +26,8 @@ public class EnemyWeaponUpdate implements Event {
     }
   }
 
-  public PlayerColor getEnemyColor() {
-    return enemyColor;
+  public PlayerColor getPlayerColor() {
+    return playerColor;
   }
 
   public int getNumWeapons() {

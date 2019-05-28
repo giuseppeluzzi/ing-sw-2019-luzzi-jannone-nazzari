@@ -12,14 +12,13 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public interface PlayerDashboardsViewInterface extends RemoteObservable, Seriali
 
   void update(PlayerAmmoUpdate event) throws RemoteException;
 
-  void update(PlayerWeaponUpdate event) throws RemoteException;
+  void update(OwnWeaponUpdate event) throws RemoteException;
 
   void update(EnemyWeaponUpdate event) throws RemoteException;
 

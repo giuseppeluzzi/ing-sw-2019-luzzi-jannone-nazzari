@@ -7,16 +7,16 @@ import it.polimi.se2019.adrenalina.event.EventType;
 public class EnemyPowerUpUpdate implements Event {
 
   private static final long serialVersionUID = 3380422402729267446L;
-  private final PlayerColor enemyColor;
+  private final PlayerColor playerColor;
   private final int powerUpsNum;
 
-  public EnemyPowerUpUpdate(PlayerColor enemyColor, int powerUpsNum) {
-    this.enemyColor = enemyColor;
+  public EnemyPowerUpUpdate(PlayerColor playerColor, int powerUpsNum) {
+    this.playerColor = playerColor;
     this.powerUpsNum = powerUpsNum;
   }
 
-  public PlayerColor getEnemyColor() {
-    return enemyColor;
+  public PlayerColor getPlayerColor() {
+    return playerColor;
   }
 
   public int getPowerUpsNum() {
