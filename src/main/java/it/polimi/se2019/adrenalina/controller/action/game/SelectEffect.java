@@ -14,7 +14,8 @@ public class SelectEffect extends GameAction {
   @Override
   public void execute(Board board) {
     try {
-      getPlayer().getClient().getPlayerDashboardsView().showEffectSelection(getPlayer().getCurrentWeapon());
+      getPlayer().getClient().getPlayerDashboardsView().showEffectSelection(getPlayer()
+          .getCurrentWeapon());
     } catch (RemoteException e) {
       Log.exception(e);
     }
