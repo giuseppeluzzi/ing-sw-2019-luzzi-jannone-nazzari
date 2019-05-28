@@ -31,4 +31,12 @@ public abstract class GameAction {
   public boolean isSync() {
     return true;
   }
+
+  public void actionFailed() {
+    if (turnController == null) {
+      throw new IllegalStateException("This action can't fail");
+    }
+
+    turnController.executeGameActionQueue();
+  }
 }

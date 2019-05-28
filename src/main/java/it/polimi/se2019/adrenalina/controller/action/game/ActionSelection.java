@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -10,60 +11,75 @@ import java.util.List;
 
 public class ActionSelection extends GameAction {
 
-  public ActionSelection(Player player) {
-    super(player);
+  public ActionSelection(TurnController turnController, Player player) {
+    super(turnController, player);
   }
 
   @Override
   public void execute(Board board) {
-    List<TurnAction> actions = new ArrayList<>();
-
+    List<TurnAction> turnActions = null;
     if (board.isFinalFrenzyActive()) {
-      actions.addAll(finalFrenzyActions(board));
+      int playerIndex = board.getPlayers().indexOf(getPlayer());
+      int finalFrenzyActivator;
+
+      try {
+        finalFrenzyActivator = board.getPlayers()
+            .indexOf(board.getPlayerByColor(board.getFinalFrenzyActivator()));
+      } catch (InvalidPlayerException e) {
+        // Shouldn't happen
+        Log.critical("Player doesn't exists anymore!");
+        return;
+      }
+
+      turnActions = finalFrenzyTurnActions(playerIndex, getPlayer().hasLoadedWeapons(),
+          finalFrenzyActivator);
     } else {
-      actions.add(TurnAction.RUN);
-      if (getPlayer().getDamages().size() >= 3) {
-        actions.add(TurnAction.WALK_FETCH3);
-      } else {
-        actions.add(TurnAction.WALK_FETCH);
-      }
-      if (getPlayer().hasLoadedWeapons()) {
-        if (getPlayer().getDamages().size() >= 6) {
-          actions.add(TurnAction.SHOOT6);
-        } else {
-          actions.add(TurnAction.SHOOT);
-        }
-      }
+      turnActions = standardTurnActions(getPlayer().hasLoadedWeapons(),
+          getPlayer().getDamages().size());
     }
 
     try {
-      getPlayer().getClient().getPlayerDashboardsView().showTurnActionSelection(actions);
+      getPlayer().getClient().getPlayerDashboardsView().showTurnActionSelection(turnActions);
     } catch (RemoteException e) {
+      actionFailed();
       Log.exception(e);
     }
   }
 
-  private List<TurnAction> finalFrenzyActions(Board board) {
+  static List<TurnAction> standardTurnActions(boolean playerHasLoadedWeapons,
+      int playerDamages) {
     List<TurnAction> actions = new ArrayList<>();
 
-    int ffActivatorIndex = 0;
-    try {
-      ffActivatorIndex = board.getPlayers()
-          .indexOf(board.getPlayerByColor(board.getFinalFrenzyActivator()));
-    } catch (InvalidPlayerException e) {
-      // Shouldn't happen
-      Log.critical("Player doesn't exists anymore!");
+    actions.add(TurnAction.RUN);
+    if (playerDamages >= 3) {
+      actions.add(TurnAction.WALK_FETCH3);
+    } else {
+      actions.add(TurnAction.WALK_FETCH);
+    }
+    if (playerHasLoadedWeapons) {
+      if (playerDamages >= 6) {
+        actions.add(TurnAction.SHOOT6);
+      } else {
+        actions.add(TurnAction.SHOOT);
+      }
     }
 
-    if (board.getPlayers().indexOf(getPlayer()) > ffActivatorIndex) {
+    return actions;
+  }
+
+  static List<TurnAction> finalFrenzyTurnActions(int playerIndex,
+      boolean playerHasLoadedWeapons, int finalFrenzyActivatorIndex) {
+    List<TurnAction> actions = new ArrayList<>();
+
+    if (playerIndex > finalFrenzyActivatorIndex) {
       actions.add(TurnAction.FF_WALK_FETCH);
-      if (getPlayer().hasLoadedWeapons()) {
+      if (playerHasLoadedWeapons) {
         actions.add(TurnAction.FF_WALK_RELOAD_SHOOT);
       }
     } else {
       actions.add(TurnAction.FF_RUN);
       actions.add(TurnAction.FF_RUN_FETCH);
-      if (getPlayer().hasLoadedWeapons()) {
+      if (playerHasLoadedWeapons) {
         actions.add(TurnAction.FF_RUN_RELOAD_SHOOT);
       }
     }

@@ -20,7 +20,7 @@ public class TurnController implements Serializable {
 
   private static final long serialVersionUID = -2990384474014352897L;
   private final BoardController boardController;
-  private final Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
+  private final transient Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
 
   public TurnController(BoardController boardController) {
     this.boardController = boardController;
@@ -47,7 +47,7 @@ public class TurnController implements Serializable {
     Log.debug("execute! " + turnActionsQueue.size());
     GameAction gameAction = null;
 
-    while (! turnActionsQueue.isEmpty()) {
+    while (!turnActionsQueue.isEmpty()) {
       gameAction = turnActionsQueue.pop();
       Log.debug("GA: " + gameAction.getClass().getSimpleName());
       gameAction.execute(boardController.getBoard());
@@ -115,7 +115,8 @@ public class TurnController implements Serializable {
 
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
-      addTurnActions(new ActionSelection(player), new ActionSelection(player),
+      addTurnActions(new ActionSelection(this, player),
+          new ActionSelection(this, player),
           new CheckRespawn(this, player, true));
       addFirstSpawn(player);
     } else {
@@ -123,7 +124,8 @@ public class TurnController implements Serializable {
           boardController.getBoard().isFinalFrenzyActive()) {
         // TODO
       } else {
-        addTurnActions(new ActionSelection(player), new ActionSelection(player),
+        addTurnActions(new ActionSelection(this, player),
+            new ActionSelection(this, player),
             new CheckRespawn(this, player, true));
       }
     }
