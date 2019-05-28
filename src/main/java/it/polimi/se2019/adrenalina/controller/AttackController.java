@@ -2,7 +2,6 @@ package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.PlayerAttackEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
@@ -29,26 +28,10 @@ public class AttackController extends UnicastRemoteObject implements Observer {
   public AttackController(BoardController boardController) throws RemoteException {
     this.boardController = boardController;
 
-    registeredEvents.add(EventType.PLAYER_ATTACK_EVENT);
     registeredEvents.add(EventType.PLAYER_RELOAD_EVENT);
     registeredEvents.add(EventType.SELECT_PLAYER_EVENT);
     registeredEvents.add(EventType.SELECT_SQUARE_EVENT);
     registeredEvents.add(EventType.SQUARE_MOVE_SELECTION_EVENT);
-  }
-
-  /**
-   * Event fired when a player uses an effect.
-   *
-   * @param event event specifing the effect used
-   */
-  public void update(PlayerAttackEvent event) {
-    Weapon weapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
-    try {
-      boardController.getBoard().getPlayerByColor(event.getPlayerColor()).setCurrentWeapon(weapon);
-    } catch (InvalidPlayerException ignored) {
-      return;
-    }
-    weapon.executeActionQueue(boardController.getBoard());
   }
 
   /**

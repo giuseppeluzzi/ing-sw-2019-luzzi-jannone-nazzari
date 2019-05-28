@@ -13,7 +13,7 @@ public class SquareAmmoCardUpdate implements Event {
   private final int posX;
   private final int posY;
 
-  public SquareAmmoCardUpdate(int blue, int red, int yellow, int powerUps, int posX, int posY) {
+  public SquareAmmoCardUpdate(int posX, int posY, int blue, int red, int yellow, int powerUps) {
     this.blue = blue;
     this.red = red;
     this.yellow = yellow;

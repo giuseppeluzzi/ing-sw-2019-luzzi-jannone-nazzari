@@ -1,12 +1,8 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.event.AmmoCardUpdateEvent;
-import it.polimi.se2019.adrenalina.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.KillShotEvent;
-import it.polimi.se2019.adrenalina.event.SpawnPointDamageEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
@@ -64,26 +60,6 @@ public abstract class BoardView extends Observable implements Observer, BoardVie
   @Override
   public void hideTimer() {
     timer.stop();
-  }
-
-  @Override
-  public void update(WeaponUpdateEvent event) {
-    // TODO: replace a weapon on the board
-  }
-
-  @Override
-  public void update(AmmoCardUpdateEvent event) {
-    // TODO: replace an ammo card on the board
-  }
-
-  @Override
-  public void update(KillShotEvent event) {
-    // TODO: mark a new killshot
-  }
-
-  @Override
-  public void update(DoubleKillEvent event) {
-    // TODO: mark a double kill
   }
 
   @Override

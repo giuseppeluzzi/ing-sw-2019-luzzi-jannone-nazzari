@@ -2,7 +2,7 @@ package it.polimi.se2019.adrenalina.event;
 
 import it.polimi.se2019.adrenalina.event.invocations.ShowBoardInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowDeath;
+import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
@@ -17,7 +17,6 @@ import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardPlayerColorUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
@@ -46,23 +45,20 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 
 public enum EventType {
-  AMMO_CARD_UPDATE_EVENT(AmmoCardUpdateEvent.class),
-  DOUBLE_KILL_EVENT(DoubleKillEvent.class),
   FINAL_FRENZY_TOGGLE_EVENT(FinalFrenzyToggleEvent.class),
-  KILLSHOT_EVENT(KillShotEvent.class),
   MAP_SELECTION_EVENT(MapSelectionEvent.class),
   PLAYER_ACTION_SELECTION_EVENT(PlayerActionSelectionEvent.class),
-  PLAYER_ATTACK_EVENT(PlayerAttackEvent.class),
-  PLAYER_CHAT_EVENT(PlayerChatEvent.class),
   PLAYER_COLLECT_AMMO_EVENT(PlayerCollectAmmoEvent.class),
   PLAYER_COLLECT_WEAPON_EVENT(PlayerCollectWeaponEvent.class),
   PLAYER_COLOR_SELECTION_EVENT(PlayerColorSelectionEvent.class),
   PLAYER_CONNECT_EVENT(PlayerConnectEvent.class),
-  PLAYER_DEATH_EVENT(PlayerDeathEvent.class),
   PLAYER_DISCARD_POWERUP_EVENT(PlayerDiscardPowerUpEvent.class),
   PLAYER_NO_COLLECT_EVENT(PlayerNoCollectEvent.class),
   PLAYER_PAYMENT_EVENT(PlayerPaymentEvent.class),
@@ -71,15 +67,12 @@ public enum EventType {
   PLAYER_SELECT_WEAPON_EFFECT_EVENT(PlayerSelectWeaponEffectEvent.class),
   PLAYER_SELECT_WEAPON_EVENT(PlayerSelectWeaponEvent.class),
   PLAYER_SET_COLOR(PlayerSetColorEvent.class),
-  PLAYER_SPAWN_EVENT(PlayerSpawnEvent.class),
   SELECT_DIRECTION_EVENT(SelectDirectionEvent.class),
   SELECT_PLAYER_EVENT(SelectPlayerEvent.class),
   SELECT_SQUARE_EVENT(SelectPlayerEvent.class),
   SPAWN_POINT_DAMAGE_EVENT(SpawnPointDamageEvent.class),
   SQUARE_MOVE_SELECTION_EVENT(SquareMoveSelectionEvent.class),
   TIMER_SET_EVENT(TimerSetEvent.class),
-  WEAPON_UPDATE_EVENT(WeaponUpdateEvent.class),
-  PLAYER_MOVE_EVENT(PlayerMoveEvent.class),
   // Invocations:
   SHOW_BOARD_INVOCATION(ShowBoardInvocation.class),
   SHOW_TARGET_SELECT_INVOCATION(ShowTargetSelectInvocation.class),
@@ -87,7 +80,7 @@ public enum EventType {
   SHOW_SQUARE_SELECT_INVOCATION(ShowSquareSelectInvocation.class),
   SHOW_BUYABLE_WEAPONS_INVOCATION(ShowBuyableWeaponsInvocation.class),
   SHOW_SPAWN_POINT_TRACK_SELECTION_INVOCATION(ShowSpawnPointTrackSelectionInvocation.class),
-  SHOW_DEATH_INVOCATION(ShowDeath.class),
+  SHOW_DEATH_INVOCATION(ShowDeathInvocation.class),
   SHOW_PAYMENT_OPTION_INVOCATION(ShowPaymentOptionInvocation.class),
   SHOW_WEAPON_SELECTION_INVOCATION(ShowWeaponSelectionInvocation.class),
   SHOW_EFFECT_SELECTION_INVOCATION(ShowEffectSelectionInvocation.class),
@@ -112,7 +105,6 @@ public enum EventType {
   BOARD_HAS_WEAPON_UPDATE(BoardHasWeaponsUpdate.class),
   BOARD_HAS_AMMO_CARDS_UPDATE(BoardHasAmmoCardsUpdate.class),
   BOARD_KILL_SHOTS_UPDATE(BoardKillShotsUpdate.class),
-  BOARD_PLAYER_COLOR_UPDATE(BoardPlayerColorUpdate.class),
   DOMINATION_BOARD_DAMAGES_UPDATE(DominationBoardDamagesUpdate.class);
   private final Class<? extends Event> eventClass;
 

@@ -6,14 +6,14 @@ import it.polimi.se2019.adrenalina.event.EventType;
 public class BoardHasWeaponsUpdate implements Event {
 
   private static final long serialVersionUID = -1459684764328696748L;
-  private final boolean empty;
+  private final boolean weapons;
 
-  public BoardHasWeaponsUpdate(boolean empty) {
-    this.empty = empty;
+  public BoardHasWeaponsUpdate(boolean weapons) {
+    this.weapons = weapons;
   }
 
-  public boolean isEmpty() {
-    return empty;
+  public boolean hasWeapons() {
+    return weapons;
   }
 
   @Override

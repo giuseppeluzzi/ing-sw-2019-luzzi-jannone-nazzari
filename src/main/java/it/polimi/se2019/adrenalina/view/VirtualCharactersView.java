@@ -2,9 +2,7 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.PlayerDeathEvent;
-import it.polimi.se2019.adrenalina.event.PlayerSpawnEvent;
-import it.polimi.se2019.adrenalina.event.invocations.ShowDeath;
+import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -47,19 +45,7 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
 
   @Override
   public void showDeath(PlayerColor playerColor) {
-    clientSocket.sendEvent(new ShowDeath(playerColor));
-  }
-
-  @Override
-  public void update(PlayerDeathEvent event) {
-    // TODO: handle the death of a character
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(PlayerSpawnEvent event) {
-    // TODO: handle the respawn of a character
-    clientSocket.sendEvent(event);
+    clientSocket.sendEvent(new ShowDeathInvocation(playerColor));
   }
 
   @Override

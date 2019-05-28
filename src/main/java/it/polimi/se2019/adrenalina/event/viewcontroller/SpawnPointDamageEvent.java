@@ -1,7 +1,9 @@
-package it.polimi.se2019.adrenalina.event;
+package it.polimi.se2019.adrenalina.event.viewcontroller;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
 
 public class SpawnPointDamageEvent implements Event {
 

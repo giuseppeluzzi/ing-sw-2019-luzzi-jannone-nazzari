@@ -11,8 +11,7 @@ public class BoardKillShotsUpdate implements Event {
   private static final long serialVersionUID = -4036656260665892023L;
   private final List<PlayerColor> players;
 
-  public BoardKillShotsUpdate(
-      List<PlayerColor> players) {
+  public BoardKillShotsUpdate(List<PlayerColor> players) {
     this.players = new ArrayList<>(players);
   }
 

@@ -6,14 +6,14 @@ import it.polimi.se2019.adrenalina.event.EventType;
 public class BoardHasAmmoCardsUpdate implements Event {
 
   private static final long serialVersionUID = 3101088508036419453L;
-  private final boolean empty;
+  private final boolean ammoCards;
 
-  public BoardHasAmmoCardsUpdate(boolean empty) {
-    this.empty = empty;
+  public BoardHasAmmoCardsUpdate(boolean ammoCards) {
+    this.ammoCards = ammoCards;
   }
 
-  public boolean isEmpty() {
-    return empty;
+  public boolean hasAmmoCards() {
+    return ammoCards;
   }
 
   @Override

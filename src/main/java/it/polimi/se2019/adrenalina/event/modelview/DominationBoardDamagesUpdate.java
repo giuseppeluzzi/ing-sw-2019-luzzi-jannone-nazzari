@@ -13,9 +13,7 @@ public class DominationBoardDamagesUpdate implements Event {
   private final AmmoColor spawnPointColor;
   private final List<PlayerColor> players;
 
-  public DominationBoardDamagesUpdate(
-      AmmoColor spawnPointColor,
-      List<PlayerColor> players) {
+  public DominationBoardDamagesUpdate(AmmoColor spawnPointColor, List<PlayerColor> players) {
     this.spawnPointColor = spawnPointColor;
     this.players = new ArrayList<>(players);
   }

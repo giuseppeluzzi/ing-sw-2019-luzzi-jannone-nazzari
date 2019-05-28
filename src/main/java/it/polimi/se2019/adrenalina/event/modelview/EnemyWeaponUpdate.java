@@ -13,8 +13,7 @@ public class EnemyWeaponUpdate implements Event {
   private final int numWeapons;
   private final List<String> unloadedWeapons;
 
-  public EnemyWeaponUpdate(PlayerColor enemyColor, int numWeapons,
-      List<String> unloadedWeapons) {
+  public EnemyWeaponUpdate(PlayerColor enemyColor, int numWeapons, List<String> unloadedWeapons) {
     this.enemyColor = enemyColor;
     this.numWeapons = numWeapons;
     this.unloadedWeapons = new ArrayList<>(unloadedWeapons);

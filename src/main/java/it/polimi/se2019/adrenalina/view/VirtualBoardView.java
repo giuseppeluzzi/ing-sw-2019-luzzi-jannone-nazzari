@@ -1,11 +1,8 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.event.AmmoCardUpdateEvent;
-import it.polimi.se2019.adrenalina.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.KillShotEvent;
-import it.polimi.se2019.adrenalina.event.SpawnPointDamageEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBoardInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
@@ -13,7 +10,6 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectio
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -86,26 +82,6 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   @Override
   public void showSpawnPointTrackSelection() {
     clientSocket.sendEvent(new ShowSpawnPointTrackSelectionInvocation());
-  }
-
-  @Override
-  public void update(WeaponUpdateEvent event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(AmmoCardUpdateEvent event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(KillShotEvent event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(DoubleKillEvent event) {
-    clientSocket.sendEvent(event);
   }
 
   @Override

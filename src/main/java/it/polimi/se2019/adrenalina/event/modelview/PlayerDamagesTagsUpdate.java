@@ -12,9 +12,7 @@ public class PlayerDamagesTagsUpdate implements Event {
   private final List<PlayerColor> damages;
   private final List<PlayerColor> tags;
 
-  public PlayerDamagesTagsUpdate(
-      List<PlayerColor> damages,
-      List<PlayerColor> tags) {
+  public PlayerDamagesTagsUpdate(List<PlayerColor> damages, List<PlayerColor> tags) {
     this.damages = new ArrayList<>(damages);
     this.tags = new ArrayList<>(tags);
   }

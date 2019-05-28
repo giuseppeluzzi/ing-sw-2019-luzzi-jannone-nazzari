@@ -1,13 +1,9 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.event.AmmoCardUpdateEvent;
-import it.polimi.se2019.adrenalina.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.KillShotEvent;
-import it.polimi.se2019.adrenalina.event.SpawnPointDamageEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.event.WeaponUpdateEvent;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -37,14 +33,6 @@ public interface BoardViewInterface extends RemoteObservable, Serializable {
   void showBuyableWeapons(List<Weapon> weapons) throws RemoteException;
 
   void showSpawnPointTrackSelection() throws RemoteException;
-
-  void update(WeaponUpdateEvent event) throws RemoteException;
-
-  void update(AmmoCardUpdateEvent event) throws RemoteException;
-
-  void update(KillShotEvent event) throws RemoteException;
-
-  void update(DoubleKillEvent event) throws RemoteException;
 
   void update(SpawnPointDamageEvent event) throws RemoteException;
 

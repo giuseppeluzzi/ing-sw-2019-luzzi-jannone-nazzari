@@ -9,14 +9,26 @@ public class SquareWeaponUpdate implements Event {
 
   private static final long serialVersionUID = -777315149155987994L;
   private final HashMap<String, HashMap<AmmoColor, Integer>> weapons;
+  private final int posX;
+  private final int posY;
 
-  public SquareWeaponUpdate(
+  public SquareWeaponUpdate(int posX, int posY,
       HashMap<String, HashMap<AmmoColor, Integer>> weapons) {
     this.weapons = new HashMap<>(weapons);
+    this.posX = posX;
+    this.posY = posY;
   }
 
   public HashMap<String, HashMap<AmmoColor, Integer>> getWeapons() {
     return new HashMap<>(weapons);
+  }
+
+  public int getPosX() {
+    return posX;
+  }
+
+  public int getPosY() {
+    return posY;
   }
 
   @Override

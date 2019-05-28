@@ -11,7 +11,7 @@ public class PlayerPositionUpdate implements Event {
   private final int posY;
   private final PlayerColor playerColor;
 
-  public PlayerPositionUpdate(int posX, int posY, PlayerColor playerColor) {
+  public PlayerPositionUpdate(PlayerColor playerColor, int posX, int posY) {
     this.posX = posX;
     this.posY = posY;
     this.playerColor = playerColor;

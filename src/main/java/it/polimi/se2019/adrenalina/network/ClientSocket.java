@@ -7,7 +7,7 @@ import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
-import it.polimi.se2019.adrenalina.event.PlayerSetColorEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
@@ -108,39 +108,19 @@ public class ClientSocket extends Client implements Runnable {
           EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
           Event event = gson.fromJson(message, eventType.getEventClass());
 
-          switch (eventType) {
-            case PLAYER_SET_COLOR:
-              PlayerSetColorEvent playerSetColorEvent = gson.fromJson(message,
-                  PlayerSetColorEvent.class);
-              setPlayerColor(playerSetColorEvent.getPlayerColor());
-              break;
-            case TIMER_SET_EVENT:
-            case WEAPON_UPDATE_EVENT:
-            case AMMO_CARD_UPDATE_EVENT:
-            case KILLSHOT_EVENT:
-            case DOUBLE_KILL_EVENT:
-            case SPAWN_POINT_DAMAGE_EVENT:
-              boardView.getClass().
-                  getMethod("update", eventType.getEventClass()).invoke(boardView, event);
-              break;
-
-            case PLAYER_DEATH_EVENT:
-            case PLAYER_SPAWN_EVENT:
-              charactersView.getClass().
-                  getMethod("update", eventType.getEventClass()).invoke(charactersView, event);
-              break;
-
-            default:
-              Log.severe("Unexpected client event!");
-              break;
+          if (eventType == EventType.PLAYER_SET_COLOR) {
+            PlayerSetColorEvent playerSetColorEvent = gson.fromJson(message,
+                PlayerSetColorEvent.class);
+            setPlayerColor(playerSetColorEvent.getPlayerColor());
+          } else {
+            boardView.update(event);
+            charactersView.update(event);
+            playerDashboardsView.update(event);
           }
         }
       } catch (IOException e) {
         Log.exception(e);
-      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-        Log.severe("Unexpected client event!");
       }
-
     }
   }
 }
