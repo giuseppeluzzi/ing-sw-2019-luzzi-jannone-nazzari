@@ -53,7 +53,6 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   @Override
   public abstract void showPowerUpSelection(List<PowerUp> powerUps);
 
-
   @Override
   public void addPlayer(Player player) {
     players.add(player);

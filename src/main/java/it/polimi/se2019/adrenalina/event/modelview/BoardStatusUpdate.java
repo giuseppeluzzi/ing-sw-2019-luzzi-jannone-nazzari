@@ -1,18 +1,19 @@
 package it.polimi.se2019.adrenalina.event.modelview;
 
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 public class BoardStatusUpdate implements Event {
 
   private static final long serialVersionUID = -7116650564967462703L;
-  private final String status;
+  private final BoardStatus status;
 
-  public BoardStatusUpdate(String status) {
+  public BoardStatusUpdate(BoardStatus status) {
     this.status = status;
   }
 
-  public String getStatus() {
+  public BoardStatus getStatus() {
     return status;
   }
 

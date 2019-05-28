@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +11,9 @@ import java.util.List;
  * The damages to each spawn point are contained in three lists.
  */
 public class DominationBoard extends Board {
-  private final List<PlayerColor> blueDamages;
-  private final List<PlayerColor> redDamages;
-  private final List<PlayerColor> yellowDamages;
+  private List<PlayerColor> blueDamages;
+  private List<PlayerColor> redDamages;
+  private List<PlayerColor> yellowDamages;
 
   public DominationBoard() {
     blueDamages = new ArrayList<>();
@@ -82,6 +83,21 @@ public class DominationBoard extends Board {
    */
   public List<PlayerColor> getYellowDamages() {
     return new ArrayList<>(yellowDamages);
+  }
+
+  /**
+   * Updates the list of damages of a specified color.
+   * @param color the color of the track to update
+   * @param damages the new list of damages that will replace the current one
+   */
+  public void updateDamages(AmmoColor color, List<PlayerColor> damages) {
+    if (color == AmmoColor.BLUE) {
+      blueDamages = new ArrayList<>(damages);
+    } else if (color == AmmoColor.RED) {
+      redDamages = new ArrayList<>(damages);
+    } else if (color == AmmoColor.YELLOW) {
+      yellowDamages = new ArrayList<>(damages);
+    }
   }
 
   /**

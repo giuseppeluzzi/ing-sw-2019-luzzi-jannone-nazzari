@@ -29,7 +29,7 @@ public class Square extends Observable implements Target, Serializable {
   private transient Board board;
 
   private final HashMap<Direction, BorderType> borders;
-  private final List<Weapon> weapons;
+  private List<Weapon> weapons;
 
   public Square(int posX, int posY, SquareColor color,
       BorderType edgeUp, BorderType edgeRight,
@@ -125,6 +125,10 @@ public class Square extends Observable implements Target, Serializable {
 
   public void setAmmoCard(AmmoCard ammoCard) {
     this.ammoCard = ammoCard;
+  }
+
+  public void setWeapons(List<Weapon> weapons) {
+    this.weapons = new ArrayList<>(weapons);
   }
 
   public BorderType getEdge(Direction direction) {
