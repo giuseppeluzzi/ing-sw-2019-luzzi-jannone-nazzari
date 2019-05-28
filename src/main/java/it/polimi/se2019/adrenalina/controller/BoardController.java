@@ -473,7 +473,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   @Override
   public void update(Event event) {
     if (registeredEvents.contains(event.getEventType())) {
-      Log.debug("BoardController", "Inoltrato evento: " + event.getEventType());
+      Log.debug("BoardController", "Event received: " + event.getEventType());
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);

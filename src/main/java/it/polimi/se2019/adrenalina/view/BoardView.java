@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.view;
 import it.polimi.se2019.adrenalina.event.AmmoCardUpdateEvent;
 import it.polimi.se2019.adrenalina.event.DoubleKillEvent;
 import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.KillShotEvent;
 import it.polimi.se2019.adrenalina.event.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
@@ -15,11 +16,16 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class BoardView extends Observable implements Observer, BoardViewInterface {
 
   private static final long serialVersionUID = 2545732483334205102L;
+  private final Set<EventType> registeredEvents = new HashSet<>();
+
   private final transient ClientInterface client;
 
   private Board board;
@@ -102,6 +108,14 @@ public abstract class BoardView extends Observable implements Observer, BoardVie
 
   @Override
   public void update(Event event) {
-    throw new WrongMethodTypeException();
+    if (registeredEvents.contains(event.getEventType())) {
+      Log.debug("BoardView", "Event received: " + event.getEventType());
+      try {
+        getClass().getMethod("update", event.getEventType().getEventClass())
+            .invoke(this, event);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        //
+      }
+    }
   }
 }
