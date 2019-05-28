@@ -6,12 +6,20 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
+import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -315,6 +323,11 @@ public class Board extends Observable implements Serializable {
    */
   public void setCurrentPlayer(PlayerColor player) {
     currentPlayer = player;
+    try {
+      notifyObservers(new CurrentPlayerUpdate(player));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
@@ -412,6 +425,16 @@ public class Board extends Observable implements Serializable {
     }
     weapons.remove(weapon);
     takenWeapons.add(weapon);
+
+    try {
+      if (weapons.isEmpty()) {
+        notifyObservers(new BoardHasWeaponsUpdate(false));
+      } else {
+        notifyObservers(new BoardHasWeaponsUpdate(true));
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
@@ -532,6 +555,16 @@ public class Board extends Observable implements Serializable {
     }
     ammoCards.remove(ammoCard);
     takenAmmoCards.add(ammoCard);
+
+    try {
+      if (ammoCards.isEmpty()) {
+        notifyObservers(new BoardHasAmmoCardsUpdate(false));
+      } else {
+        notifyObservers(new BoardHasAmmoCardsUpdate(true));
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
@@ -604,6 +637,11 @@ public class Board extends Observable implements Serializable {
    */
   public void addKillShot(Kill kill) {
     killShots.add(kill);
+    try {
+      notifyObservers(new BoardKillShotsUpdate(getKillShots()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
@@ -686,6 +724,11 @@ public class Board extends Observable implements Serializable {
    */
   public void setStatus(BoardStatus status) {
     this.status = status;
+    try {
+      notifyObservers(new BoardStatusUpdate(status));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
