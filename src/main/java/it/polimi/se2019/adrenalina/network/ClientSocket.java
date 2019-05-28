@@ -52,8 +52,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
     super(name, domination);
 
     boardView = new TUIBoardView(this);
-    charactersView = new TUICharactersView(this);
-    playerDashboardsView = new TUIPlayerDashboardsView(this);
+    charactersView = new TUICharactersView(this, boardView);
+    playerDashboardsView = new TUIPlayerDashboardsView(this, boardView);
 
     try {
       boardView.addObserver(this);

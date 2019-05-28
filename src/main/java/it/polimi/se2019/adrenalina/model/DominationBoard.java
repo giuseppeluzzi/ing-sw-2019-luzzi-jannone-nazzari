@@ -3,6 +3,9 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
+import it.polimi.se2019.adrenalina.utils.Log;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +46,11 @@ public class DominationBoard extends Board {
    */
   public void addBlueDamage(PlayerColor color) {
     blueDamages.add(color);
+    try {
+      notifyObservers(new DominationBoardDamagesUpdate(AmmoColor.BLUE, getBlueDamages()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
@@ -59,6 +67,11 @@ public class DominationBoard extends Board {
    */
   public void addRedDamage(PlayerColor color) {
     redDamages.add(color);
+    try {
+      notifyObservers(new DominationBoardDamagesUpdate(AmmoColor.RED, getRedDamages()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
@@ -75,6 +88,11 @@ public class DominationBoard extends Board {
    */
   public void addYellowDamage(PlayerColor color) {
     yellowDamages.add(color);
+    try {
+      notifyObservers(new DominationBoardDamagesUpdate(AmmoColor.YELLOW, getYellowDamages()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**

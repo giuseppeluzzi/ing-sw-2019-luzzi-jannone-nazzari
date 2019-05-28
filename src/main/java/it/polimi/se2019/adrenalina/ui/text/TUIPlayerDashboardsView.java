@@ -18,6 +18,8 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.view.BoardView;
+import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -35,7 +37,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   private final transient ClientInterface client;
   private final transient Scanner scanner = new Scanner(System.in, "utf-8");
 
-  public TUIPlayerDashboardsView(ClientInterface client) {
+  public TUIPlayerDashboardsView(ClientInterface client, BoardViewInterface boardView) {
+    super((BoardView) boardView);
     this.client = client;
   }
 

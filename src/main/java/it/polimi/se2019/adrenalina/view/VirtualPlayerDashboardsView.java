@@ -10,17 +10,34 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocat
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
+import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Buyable;
+import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.PowerUpType;
+import it.polimi.se2019.adrenalina.model.TagbackGrenade;
+import it.polimi.se2019.adrenalina.model.TargetingScope;
+import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VirtualPlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface, Observer {
@@ -85,6 +102,58 @@ public class VirtualPlayerDashboardsView extends Observable implements
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
     clientSocket.sendEvent(new ShowTurnActionSelectionInvocation(actions));
+  }
+
+  @Override
+  public void update(PlayerDamagesTagsUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(PlayerScoreUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(PlayerKillScoreUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(PlayerStatusUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(PlayerAmmoUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(PlayerWeaponUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(EnemyWeaponUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+
+  }
+
+  @Override
+  public void update(EnemyPowerUpUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(OwnPowerUpUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+
+  }
+
+  @Override
+  public void update(CurrentPlayerUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
   }
 
   @Override
