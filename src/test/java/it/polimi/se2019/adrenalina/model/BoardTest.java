@@ -37,7 +37,7 @@ public class BoardTest {
     }
     board.drawPowerUp(board.getPowerUps().get(0));
     board.addKillShot(new Kill(PlayerColor.YELLOW, true));
-    board.addDoubleKill(player);
+    board.setDoubleKill(player);
     board2 = new Board(board, false);
     board3 = new Board(board, true);
 
