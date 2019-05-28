@@ -96,6 +96,8 @@ public class TurnController implements Serializable {
       currentPlayerIndex++;
     }
 
+    boardController.getBoard().removeDoubleKill();
+
     currentPlayer = boardController.getBoard().getPlayers().get(currentPlayerIndex);
     boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
 

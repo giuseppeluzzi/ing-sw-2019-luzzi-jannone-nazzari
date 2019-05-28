@@ -41,7 +41,7 @@ public class Board extends Observable implements Serializable {
   private final List<AmmoCard> ammoCards;
   private final List<AmmoCard> takenAmmoCards;
 
-  private final List<Player> doubleKills;
+  private Player doubleKill;
   private final List<Kill> killShots;
 
   private boolean finalFrenzyActive;
@@ -67,7 +67,6 @@ public class Board extends Observable implements Serializable {
     takenPowerUps = new ArrayList<>();
     ammoCards = new ArrayList<>();
     takenAmmoCards = new ArrayList<>();
-    doubleKills = new ArrayList<>();
     killShots = new ArrayList<>();
     publicCopy = false;
     publicCopyHasWeapons = false;
@@ -113,9 +112,8 @@ public class Board extends Observable implements Serializable {
       copyPrivateAttributes(board);
     }
 
-    doubleKills = new ArrayList<>();
-    for (Player player : board.doubleKills) {
-      doubleKills.add(new Player(player, publicCopy));
+    if (board.doubleKill != null) {
+      doubleKill = new Player(board.doubleKill, publicCopy);
     }
 
     killShots = new ArrayList<>();
@@ -573,17 +571,27 @@ public class Board extends Observable implements Serializable {
    *
    * @param player the Player who scored the doubleKill
    */
-  public void addDoubleKill(Player player) {
-    doubleKills.add(player);
+  public void setDoubleKill(Player player) {
+    if (player == null) {
+      throw new IllegalArgumentException("Player cannot be null, use removeDoubleKill instead");
+    }
+    doubleKill = player;
   }
 
   /**
-   * Returns a list of doubleKills in the Board.
-   *
-   * @return a list of doubleKills in the Board
+   * Removes the doubleKill from the board.
    */
-  public List<Player> getDoubleKills() {
-    return new ArrayList<>(doubleKills);
+  public void removeDoubleKill() {
+    doubleKill = null;
+  }
+
+  /**
+   * Returns the player who scored a double kill in the last turn.
+   *
+   * @return the player
+   */
+  public Player getDoubleKill() {
+    return doubleKill;
   }
 
   /**
@@ -596,9 +604,9 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Returns a list of doubleKills in the killshot track.
+   * Returns a list of killShot in the killshot track.
    *
-   * @return a list of doubleKills in the killshot track
+   * @return a list of killShot in the killshot track
    */
   public List<Kill> getKillShots() {
     return new ArrayList<>(killShots);

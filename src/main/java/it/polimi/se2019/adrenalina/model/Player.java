@@ -293,6 +293,9 @@ public class Player extends Observable implements Target, Serializable {
         awardedScore -= 2;
       }
     }
+    if (board.getDoubleKill().color == color) {
+      score += 1;
+    }
     if (! board.isDominationBoard()) {
       board.addKillShot(new Kill(damages.get(10), damages.get(NORMAL_DEATH) == damages.get(10)));
     } else if (damages.get(NORMAL_DEATH) == damages.get(10)) {
