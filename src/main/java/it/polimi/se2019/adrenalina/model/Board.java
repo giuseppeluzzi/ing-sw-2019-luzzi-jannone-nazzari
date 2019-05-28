@@ -16,8 +16,6 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import it.polimi.se2019.adrenalina.utils.Observer;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -176,7 +174,7 @@ public class Board extends Observable implements Serializable {
       throw new IllegalArgumentException("spawnPointColor can't be AmmoColor.ANY");
     }
 
-    for (Square square: getSquares()) {
+    for (Square square : getSquares()) {
       if (square.isSpawnPoint() &&
           square.getColor() == spawnPointColor.getEquivalentSquareColor()) {
         return square;
@@ -417,11 +415,11 @@ public class Board extends Observable implements Serializable {
    * Marks a Weapon as used by moving it from the weapons list to the takenWeapons list.
    *
    * @param weapon Weapon to be marked as used
-   * @throws InvalidWeaponException thrown if weapon is not in the Board
+   * @throws IllegalArgumentException thrown if weapon is not in the Board
    */
-  public void takeWeapon(Weapon weapon) throws InvalidWeaponException {
+  public void takeWeapon(Weapon weapon) {
     if (!weapons.contains(weapon)) {
-      throw new InvalidWeaponException("Weapon not present");
+      throw new IllegalArgumentException("Weapon not present");
     }
     weapons.remove(weapon);
     takenWeapons.add(weapon);
@@ -518,8 +516,8 @@ public class Board extends Observable implements Serializable {
    *
    * @param powerUpType type of the requested powerup
    * @param powerUpColor color of the requested powerup
-   * @return PowerUp with name equals to "name" and powerUpColor equals "powerUpColor", null
-   * if PowerUp does not exist
+   * @return PowerUp with name equals to "name" and powerUpColor equals "powerUpColor", null if
+   * PowerUp does not exist
    */
   public PowerUp getPowerUpByNameAndColor(PowerUpType powerUpType, AmmoColor powerUpColor) {
     List<PowerUp> allPowerUps = getPowerUps();
@@ -655,6 +653,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Updates the list of killShots in the board.
+   *
    * @param newKillShots the new list of killShots that will replace the current one
    */
   public void updateKillShots(List<Kill> newKillShots) {
@@ -748,11 +747,12 @@ public class Board extends Observable implements Serializable {
   /**
    * Sets whether the board has any weapons in the stack. This method is used in public copies of
    * the board.
+   *
    * @param status true if the board has any weapons left in the stack, false otherwise
    * @throws IllegalStateException thrown if the board is not a public copy
    */
   public void setPublicCopyHasWeapons(boolean status) {
-    if (! publicCopy) {
+    if (!publicCopy) {
       throw new IllegalStateException("Cannot set this attribute on a non-public board");
     }
     publicCopyHasWeapons = status;
@@ -775,11 +775,12 @@ public class Board extends Observable implements Serializable {
   /**
    * Sets whether the board has any ammoCards in the stack. This method is used in public copies of
    * the board.
+   *
    * @param status true if the board has any ammoCards left in the stack, false otherwise
    * @throws IllegalStateException thrown if the board is not a public copy
    */
   public void setPublicCopyHasAmmoCards(boolean status) {
-    if (! publicCopy) {
+    if (!publicCopy) {
       throw new IllegalStateException("Cannot set this attribute on a non-public board");
     }
     publicCopyHasAmmoCards = status;
@@ -792,7 +793,7 @@ public class Board extends Observable implements Serializable {
    */
   public Set<PlayerColor> getFreePlayerColors() {
     EnumSet<PlayerColor> freeColors = EnumSet.allOf(PlayerColor.class);
-    for (Player player: players) {
+    for (Player player : players) {
       if (freeColors.contains(player.getColor())) {
         freeColors.remove(player.getColor());
       } else {

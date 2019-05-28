@@ -103,6 +103,11 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
   }
 
   @Override
+  public BuyableType getBuyableType() {
+    return BuyableType.POWERUP;
+  }
+
+  @Override
   public int getCost(AmmoColor ammoColor) {
     return 0;
   }

@@ -23,7 +23,7 @@ public class SquareSelection extends GameAction {
 
   @Override
   public void execute(Board board) {
-    List<Target> targets = new ArrayList<>(getPlayer().getSquare().getSquaresInRange(1, maxDistance));
+    List<Target> targets = new ArrayList<>(getPlayer().getSquare().getSquaresInRange(0, maxDistance));
     try {
       getPlayer().getClient().getBoardView().showSquareSelect(targets);
     } catch (RemoteException e) {

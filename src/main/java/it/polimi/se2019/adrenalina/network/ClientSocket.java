@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.network;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
@@ -18,11 +19,12 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvo
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
-import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
+import it.polimi.se2019.adrenalina.utils.JsonShowPaymentOptionInvocationDeserializer;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
@@ -129,7 +131,11 @@ public class ClientSocket extends Client implements Runnable, Observer {
         while (socket.isConnected()) {
           String message = bufferedReader.readLine();
 
-          Gson gson = new Gson();
+          GsonBuilder gsonBuilder = new GsonBuilder();
+          gsonBuilder.registerTypeAdapter(ShowPaymentOptionInvocation.class,
+              new JsonShowPaymentOptionInvocationDeserializer());
+          gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
+          Gson gson = gsonBuilder.create();
           JsonObject json = gson.fromJson(message, JsonObject.class);
 
           EventType eventType = EventType.valueOf(json.get("eventType").getAsString());

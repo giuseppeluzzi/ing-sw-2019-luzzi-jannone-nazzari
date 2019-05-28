@@ -232,6 +232,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
     }
 
+    player.addAmmo(AmmoColor.RED, 3);
+    player.addAmmo(AmmoColor.BLUE, 3);
+    player.addAmmo(AmmoColor.YELLOW, 3);
+
     boardController.getTurnController().executeGameActionQueue();
   }
 

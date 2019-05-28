@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.WeaponEffect;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Buyable;
+import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
@@ -119,6 +120,11 @@ public class Effect implements Serializable, Buyable {
         effect.reconcileDeserialization(ofWeapon, this);
       }
     }
+  }
+
+  @Override
+  public BuyableType getBuyableType() {
+    return BuyableType.EFFECT;
   }
 
   @Override

@@ -130,11 +130,12 @@ public class TUIBoardView extends BoardView {
                   + ")";
         }
         Log.println(
-            String.format("\t%d) %sx: %d y:%d %s%s",
+            String.format("\t%d) %sx: %d y:%d %s%s%s",
                 targetIndex,
                 target.getSquare().getColor().getAnsiColor(),
                 target.getSquare().getPosX(),
                 target.getSquare().getPosY(),
+                ANSIColor.RESET,
                 fetchHelper,
                 ANSIColor.RESET));
         targetIndex++;

@@ -6,7 +6,10 @@ import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.game.PickPowerUp;
 import it.polimi.se2019.adrenalina.controller.action.game.PowerUpSelection;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.Serializable;
 import java.util.ArrayDeque;
@@ -40,6 +43,7 @@ public class TurnController implements Serializable {
         return;
       }
     }
+    refillMap();
     addGameTurn(currentPlayer);
   }
 
@@ -101,6 +105,7 @@ public class TurnController implements Serializable {
     currentPlayer = boardController.getBoard().getPlayers().get(currentPlayerIndex);
     boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
 
+    refillMap();
     addGameTurn(currentPlayer);
     executeGameActionQueue();
   }
@@ -127,6 +132,25 @@ public class TurnController implements Serializable {
         addTurnActions(new ActionSelection(this, player),
             new ActionSelection(this, player),
             new CheckRespawn(this, player, true));
+      }
+    }
+  }
+
+  private void refillMap() {
+    for (Square square : boardController.getBoard().getSquares()) {
+      if (square.isSpawnPoint()) {
+        int weapons = square.getWeapons().size();
+        for (int i = 0; i < 3 - weapons; i++) {
+          Weapon weapon = boardController.getBoard().getWeapons().get(0);
+          boardController.getBoard().takeWeapon(weapon);
+          square.addWeapon(weapon);
+        }
+      } else {
+        if (square.getAmmoCard() == null) {
+          AmmoCard ammoCard = boardController.getBoard().getAmmoCards().get(0);
+          boardController.getBoard().drawAmmoCard(ammoCard);
+          square.setAmmoCard(ammoCard);
+        }
       }
     }
   }

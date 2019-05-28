@@ -6,15 +6,13 @@ import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
-import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
-import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -25,26 +23,28 @@ import java.util.Map;
 /**
  * Class defining a weapon.
  */
-public class Weapon extends Observable implements Serializable, ExecutableObject, Buyable {
+public class Weapon extends Observable implements ExecutableObject, Buyable {
 
   private static final long serialVersionUID = -5264181345540286103L;
   private final AmmoColor baseCost;
   @NotExpose
   private boolean loaded;
   private final String name;
-  private final HashMap<AmmoColor, Integer> cost = new HashMap<>();
+  private final HashMap<AmmoColor, Integer> cost;
+  private Integer currentSelectTargetSlot;
   @NotExpose
   private final HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
+  @NotExpose
   private final List<Effect> effects = new ArrayList<>();
-  private Deque<WeaponAction> actionsQueue = new ArrayDeque<>();
-  private Integer currentSelectTargetSlot;
+  @NotExpose
+  private final transient Deque<WeaponAction> actionsQueue = new ArrayDeque<>();
 
   // Usage information
   @NotExpose
   private final HashMap<Integer, Target> targetHistory = new HashMap<>();
   @NotExpose
   private final List<Effect> selectedEffects = new ArrayList<>();
-  private Direction lastUsageDirection = null;
+  private Direction lastUsageDirection;
   // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
@@ -52,6 +52,8 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
     this.baseCost = baseCost;
     this.name = name;
     loaded = true;
+
+    cost = new HashMap<>();
 
     cost.put(AmmoColor.RED, costRed);
     cost.put(AmmoColor.BLUE, costBlue);
@@ -63,6 +65,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
     baseCost = weapon.baseCost;
     name = weapon.name;
     loaded = weapon.loaded;
+    cost = new HashMap<>();
 
     for (Map.Entry<Integer, Target> entry : weapon.targetHistory.entrySet()) {
       Integer key = entry.getKey();
@@ -92,6 +95,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns whether the weapon is loaded or not.
+   *
    * @return true if weapon is loaded, false otherwise
    */
   public boolean isLoaded() {
@@ -100,6 +104,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Set if weapon is loaded or not.
+   *
    * @param loaded, true if weapon is loaded, false otherwise
    */
   public void setLoaded(boolean loaded) {
@@ -108,6 +113,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns the color of the weapon's base cost.
+   *
    * @return baseCost of weapon
    */
   public AmmoColor getBaseCost() {
@@ -116,6 +122,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns the weapon's name.
+   *
    * @return the weapon's name
    */
   public String getName() {
@@ -139,6 +146,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns whether any {@code OptionalMoveAction} from group of index "key" has been executed.
+   *
    * @param key group id
    * @return true if group id "key" has been previously executed, false otherwise
    */
@@ -147,8 +155,9 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
   }
 
   /**
-   * Whenever an optional move weaponaction is executed an entry with values "true, group_id" is created
-   * and no more move actions of that group can be executed.
+   * Whenever an optional move weaponaction is executed an entry with values "true, group_id" is
+   * created and no more move actions of that group can be executed.
+   *
    * @param key group id of executed move weaponaction
    */
   public void setGroupMoveUsed(Integer key) {
@@ -157,6 +166,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns list of Effects contained in this weapon.
+   *
    * @return list of Effects
    */
   public List<Effect> getEffects() {
@@ -165,6 +175,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns an effect based on its name.
+   *
    * @param findName the name of the effect
    * @return the effect object
    */
@@ -179,6 +190,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Add an Effect to the weapon's list.
+   *
    * @param effect Effect to be added
    */
   public void addEffect(Effect effect) {
@@ -187,10 +199,11 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Select an Effect and places it in selectedEffects list.
+   *
    * @param effect Effect to be placed in selectedEffets
    */
   public void setSelectedEffect(Effect effect) {
-    if (! effects.contains(effect)) {
+    if (!effects.contains(effect)) {
       throw new IllegalArgumentException("This weapon does not have that effect");
     }
     selectedEffects.add(effect);
@@ -209,6 +222,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns selectedEffects.
+   *
    * @return list of selected effects
    */
   public List<Effect> getSelectedEffects() {
@@ -222,18 +236,28 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
     selectedEffects.clear();
   }
 
+  @Override
+  public BuyableType getBuyableType() {
+    return BuyableType.WEAPON;
+  }
+
   /**
    * Returns how many ammo of specified AmmoColor must be paid in order to reload the weapon.
+   *
    * @param color color of the ammo
    * @return how many ammo of specified AmmoColor must be paid
    */
   @Override
   public int getCost(AmmoColor color) {
+    if (color == AmmoColor.ANY) {
+      return 0;
+    }
     return cost.get(color);
   }
 
   /**
    * Return last direction used from an effect of the weapon.
+   *
    * @return lastUsageDirection
    */
   public Direction getLastUsageDirection() {
@@ -242,6 +266,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Set last direction used.
+   *
    * @param lastUsageDirection last direction used
    */
   public void setLastUsageDirection(Direction lastUsageDirection) {
@@ -250,6 +275,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Return currentSelectTargetSlot value.
+   *
    * @return currentSelectTargetSlot
    */
   public Integer getCurrentSelectTargetSlot() {
@@ -258,6 +284,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Add all the actions of effect in the queue
+   *
    * @param effect Effect whose actions will be added
    * @throws IllegalArgumentException thrown if effect has no weaponaction
    */
@@ -272,10 +299,11 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * All the actions in the queue are executed with LIFO methodology.
+   *
    * @param board Board object, must be passed as the argument of execute method
    */
   public void executeActionQueue(Board board) {
-    while ( !actionsQueue.isEmpty()) {
+    while (!actionsQueue.isEmpty()) {
       WeaponAction action = actionsQueue.getFirst();
       action.execute(board, this);
       actionsQueue.removeFirst();
@@ -293,6 +321,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Returns if actionsQueue is empty
+   *
    * @return true if empty, false otherwhise
    */
   public boolean isQueueEmpty() {
@@ -301,19 +330,22 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
 
   /**
    * Gson serialization.
+   *
    * @return JSON string containing serialized object
    */
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
+    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy())
+        .create();
     return gson.toJson(this);
   }
 
   /**
    * Create Weapon object from json formatted String
+   *
    * @param json json input String
    * @return Weapon
-   * @exception IllegalArgumentException thrown if argument json is null
+   * @throws IllegalArgumentException thrown if argument json is null
    */
   public static Weapon deserialize(String json) {
     if (json == null) {
@@ -326,7 +358,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
     Gson gson = builder.create();
     Weapon weapon = gson.fromJson(json, Weapon.class);
 
-    for (Effect effect: weapon.effects) {
+    for (Effect effect : weapon.effects) {
       effect.reconcileDeserialization(weapon, null);
     }
 
@@ -346,11 +378,7 @@ public class Weapon extends Observable implements Serializable, ExecutableObject
       }
     }
 
-    try {
-      board.takeWeapon(weapon);
-    } catch (InvalidWeaponException ignored) {
-      return;
-    }
+    board.takeWeapon(weapon);
 
     player.addWeapon(weapon);
   }
