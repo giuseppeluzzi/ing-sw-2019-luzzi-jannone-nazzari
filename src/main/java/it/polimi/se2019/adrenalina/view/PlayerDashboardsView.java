@@ -3,19 +3,26 @@ package it.polimi.se2019.adrenalina.view;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class PlayerDashboardsView extends Observable implements PlayerDashboardsViewInterface, Observer {
 
   private static final long serialVersionUID = -6150690431150041388L;
+  private final Set<EventType> registeredEvents = new HashSet<>();
+
   private final List<Player> players;
 
   protected PlayerDashboardsView() {
@@ -58,12 +65,15 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   }
 
   @Override
-  public void switchToFinalFrenzy(PlayerColor playerColor) {
-    // TODO: change dashboard to final frenzy mode
-  }
-
-  @Override
   public void update(Event event) {
-    throw new WrongMethodTypeException();
+    if (registeredEvents.contains(event.getEventType())) {
+      Log.debug("PlayerDashboardsView", "Event received: " + event.getEventType());
+      try {
+        getClass().getMethod("update", event.getEventType().getEventClass())
+            .invoke(this, event);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        //
+      }
+    }
   }
 }
