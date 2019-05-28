@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.view;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -71,6 +72,11 @@ public abstract class CharactersView extends Observable implements CharactersVie
   @Override
   public void update(PlayerStatusUpdate event) {
     getPlayerByColor(event.getPlayerColor()).setStatus(event.getPlayerStatus());
+  }
+
+  @Override
+  public void update(PlayerDeathUpdate event) {
+    showDeath(event.getPlayerColor());
   }
 
   @Override

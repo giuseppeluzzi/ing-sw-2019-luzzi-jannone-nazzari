@@ -1,14 +1,19 @@
 package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,10 +130,22 @@ public class Square extends Observable implements Target, Serializable {
 
   public void setAmmoCard(AmmoCard ammoCard) {
     this.ammoCard = ammoCard;
+    try {
+      notifyObservers(new SquareAmmoCardUpdate(posX, posY, ammoCard.getAmmo(AmmoColor.BLUE),
+          ammoCard.getAmmo(AmmoColor.RED), ammoCard.getAmmo(AmmoColor.YELLOW),
+          ammoCard.getPowerUp()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public void setWeapons(List<Weapon> weapons) {
     this.weapons = new ArrayList<>(weapons);
+    try {
+      notifyObservers(new SquareWeaponUpdate(posX, posY, getWeapons()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public BorderType getEdge(Direction direction) {

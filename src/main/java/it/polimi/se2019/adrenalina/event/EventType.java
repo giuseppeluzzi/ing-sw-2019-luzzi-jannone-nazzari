@@ -25,6 +25,7 @@ import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
@@ -105,7 +106,8 @@ public enum EventType {
   BOARD_HAS_WEAPON_UPDATE(BoardHasWeaponsUpdate.class),
   BOARD_HAS_AMMO_CARDS_UPDATE(BoardHasAmmoCardsUpdate.class),
   BOARD_KILL_SHOTS_UPDATE(BoardKillShotsUpdate.class),
-  DOMINATION_BOARD_DAMAGES_UPDATE(DominationBoardDamagesUpdate.class);
+  DOMINATION_BOARD_DAMAGES_UPDATE(DominationBoardDamagesUpdate.class),
+  PLAYER_DEATH_UPDATE(PlayerDeathUpdate.class);
   private final Class<? extends Event> eventClass;
 
   EventType(Class<? extends Event> eventClass) {

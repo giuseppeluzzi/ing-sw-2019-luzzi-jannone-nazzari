@@ -372,6 +372,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       boardView.addObserver(this);
       boardView.addObserver(playerController);
       boardView.addObserver(attackController);
+      for (Square square : boardView.getBoard().getSquares()) {
+        square.addObserver(this);
+        square.addObserver(playerController);
+        square.addObserver(attackController);
+      }
       charactersView.addObserver(this);
       charactersView.addObserver(playerController);
       charactersView.addObserver(attackController);
