@@ -34,7 +34,7 @@ public class TUIBoardView extends BoardView {
   }
 
   @Override
-  public void showBoard(Board board) {
+  public void showBoard() {
     MapPrinter.print(getBoard());
   }
 

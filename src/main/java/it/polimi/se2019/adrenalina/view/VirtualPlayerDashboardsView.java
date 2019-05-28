@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
@@ -17,6 +18,7 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VirtualPlayerDashboardsView extends Observable implements
@@ -64,7 +66,19 @@ public class VirtualPlayerDashboardsView extends Observable implements
 
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps) {
-    clientSocket.sendEvent(new ShowPowerUpSelectionInvocation(powerUps));
+    HashMap<String, List<AmmoColor>> powerUpsMap = new HashMap<>();
+    for (PowerUp powerUp : powerUps) {
+      if (powerUpsMap.containsKey(powerUp.getName())) {
+        List<AmmoColor> elems = new ArrayList<>(powerUpsMap.get(powerUp.getName()));
+        elems.add(powerUp.getColor());
+        powerUpsMap.put(powerUp.getName(), elems);
+      } else {
+        List<AmmoColor> elems = new ArrayList<>();
+        elems.add(powerUp.getColor());
+        powerUpsMap.put(powerUp.getName(), elems);
+      }
+    }
+    clientSocket.sendEvent(new ShowPowerUpSelectionInvocation(powerUpsMap));
   }
 
   @Override

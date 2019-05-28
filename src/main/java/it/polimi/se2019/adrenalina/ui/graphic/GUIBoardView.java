@@ -17,7 +17,7 @@ public class GUIBoardView extends BoardView {
   }
 
   @Override
-  public void showBoard(Board board) {
+  public void showBoard() {
     // TODO
   }
 
