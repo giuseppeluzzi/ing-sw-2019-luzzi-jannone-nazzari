@@ -42,14 +42,15 @@ public class Board extends Observable implements Serializable {
   private final List<AmmoCard> takenAmmoCards;
 
   private Player doubleKill;
-  private final List<Kill> killShots;
+  private List<Kill> killShots;
 
   private boolean finalFrenzyActive;
   private boolean finalFrenzySelected;
   private PlayerColor finalFrenzyActivator;
 
   private final boolean publicCopy;
-  private final boolean publicCopyHasWeapons;
+  private boolean publicCopyHasWeapons;
+  private boolean publicCopyHasAmmoCards;
 
   /**
    * Class constructor. Creates an empty Board to which objects have to be added.
@@ -70,6 +71,7 @@ public class Board extends Observable implements Serializable {
     killShots = new ArrayList<>();
     publicCopy = false;
     publicCopyHasWeapons = false;
+    publicCopyHasAmmoCards = false;
   }
 
   /**
@@ -86,6 +88,7 @@ public class Board extends Observable implements Serializable {
     }
     this.publicCopy = publicCopy;
     publicCopyHasWeapons = board.hasWeapons();
+    publicCopyHasAmmoCards = board.hasAmmoCards();
 
     grid = new Square[4][3];
     for (int x = 0; x < 4; x++) {
@@ -613,6 +616,14 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
+   * Updates the list of killShots in the board.
+   * @param newKillShots the new list of killShots that will replace the current one
+   */
+  public void updateKillShots(List<Kill> newKillShots) {
+    killShots = new ArrayList<>(newKillShots);
+  }
+
+  /**
    * Returns the timestamp at which the current turn started.
    *
    * @return the timestamp at which the current turn started
@@ -689,6 +700,46 @@ public class Board extends Observable implements Serializable {
       return publicCopyHasWeapons;
     }
     return !weapons.isEmpty();
+  }
+
+  /**
+   * Sets whether the board has any weapons in the stack. This method is used in public copies of
+   * the board.
+   * @param status true if the board has any weapons left in the stack, false otherwise
+   * @throws IllegalStateException thrown if the board is not a public copy
+   */
+  public void setPublicCopyHasWeapons(boolean status) {
+    if (! publicCopy) {
+      throw new IllegalStateException("Cannot set this attribute on a non-public board");
+    }
+    publicCopyHasWeapons = status;
+  }
+
+  /**
+   * Returns whether the board has any ammoCards left in the stack. This method works even if this
+   * object is the publicCopy of a board (and thus has no ammoCards saved into it), thanks to the
+   * {@code publicCopyHasAmmoCards} attribute.
+   *
+   * @return true if the board has any ammoCards left in the stack, false otherwise
+   */
+  public boolean hasAmmoCards() {
+    if (publicCopy) {
+      return publicCopyHasAmmoCards;
+    }
+    return !ammoCards.isEmpty();
+  }
+
+  /**
+   * Sets whether the board has any ammoCards in the stack. This method is used in public copies of
+   * the board.
+   * @param status true if the board has any ammoCards left in the stack, false otherwise
+   * @throws IllegalStateException thrown if the board is not a public copy
+   */
+  public void setPublicCopyHasAmmoCards(boolean status) {
+    if (! publicCopy) {
+      throw new IllegalStateException("Cannot set this attribute on a non-public board");
+    }
+    publicCopyHasAmmoCards = status;
   }
 
   /**
