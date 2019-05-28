@@ -11,24 +11,7 @@ public class Newton extends PowerUp {
   private static final long serialVersionUID = 3859349171755429567L;
 
   public Newton(AmmoColor color) {
-    super(color, false);
-  }
-
-  /**
-   * Copy constructor, creates an exact copy of a Newton.
-   * @param powerup Newton object to be cloned, has to be not null
-   */
-  public Newton(Newton powerup) {
-    // TODO: copy actions
-    // TODO: copy target history
-    super(powerup.getColor(), false);
-  }
-
-  // TODO: documentation
-  @Override
-  public boolean canUse(){
-    //TODO: implement function
-    return true;
+    super(color, false, PowerUpType.NEWTON);
   }
 
   @Override
@@ -42,7 +25,13 @@ public class Newton extends PowerUp {
    */
   @Override
   public Newton copy() {
-    return new Newton(this);
+    return new Newton(getColor());
+  }
+
+  @Override
+  public boolean canUse(){
+    //TODO: implement function
+    return true;
   }
 
   /**

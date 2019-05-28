@@ -11,33 +11,23 @@ public class TagbackGrenade extends PowerUp {
   private static final long serialVersionUID = 8370118473308407561L;
 
   public TagbackGrenade(AmmoColor color) {
-    super(color, false);
+    super(color, false, PowerUpType.TAGBACK_GRANADE);
   }
 
-  /**
-   * Copy constructor
-   * @param powerup TagbackGrenade object that has to be copied, can't be null
-   */
-  public TagbackGrenade(TagbackGrenade powerup) {
-    // TODO: copy actions
-    // TODO: copy target history
-    super(powerup.getColor(), false);
+  @Override
+  public TagbackGrenade copy() {
+    return new TagbackGrenade(this.getColor());
+  }
+
+  @Override
+  public String getName() {
+    return "Granata a frammentazione";
   }
 
   @Override
   public boolean canUse(){
     //TODO: implement function
     return true;
-  }
-
-  @Override
-  public TagbackGrenade copy() {
-    return new TagbackGrenade(this);
-  }
-
-  @Override
-  public String getName() {
-    return "Granata a frammentazione";
   }
 
   /**

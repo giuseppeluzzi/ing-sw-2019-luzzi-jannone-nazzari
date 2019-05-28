@@ -11,23 +11,7 @@ public class TargetingScope extends PowerUp {
   private static final long serialVersionUID = -9185952826985193602L;
 
   public TargetingScope(AmmoColor color) {
-    super(color, true);
-  }
-
-  /**
-   * Copy constructor
-   * @param powerup TargetingScope object that has to be copied, can't be null
-   */
-  public TargetingScope(TargetingScope powerup) {
-    // TODO: copy actions
-    // TODO: copy target history
-    super(powerup.getColor(), true);
-  }
-  
-  @Override
-  public boolean canUse(){
-    //TODO implement function
-    return true;
+    super(color, true, PowerUpType.TARGETING_SCOPE);
   }
 
   @Override
@@ -45,11 +29,18 @@ public class TargetingScope extends PowerUp {
 
   @Override
   public TargetingScope copy() {
-    return new TargetingScope(this);
+    return new TargetingScope(getColor());
+  }
+
+  @Override
+  public boolean canUse() {
+    //TODO implement function
+    return true;
   }
 
   /**
    * Create TargetingScope object from json formatted String
+   *
    * @param json json input String
    * @return TargetingScope
    */

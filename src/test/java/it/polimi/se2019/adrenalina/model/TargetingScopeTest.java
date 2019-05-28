@@ -7,22 +7,6 @@ import org.junit.Test;
 
 public class TargetingScopeTest {
   @Test
-  public void testCopyConstructor() {
-    TargetingScope targetingScope = new TargetingScope(AmmoColor.RED);
-    TargetingScope targetingScope2 = new TargetingScope(targetingScope);
-    assertEquals(
-        "Cloned class attributes not matching with original class attributes",
-        targetingScope.getColor(),
-        targetingScope2.getColor());
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void testCopyConstructorException() {
-    TargetingScope targetingScope = null;
-    TargetingScope targetingScope2 = new TargetingScope(targetingScope);
-  }
-
-  @Test
   public void testSerialization() {
     TargetingScope targetingScope = new TargetingScope(AmmoColor.RED);
     TargetingScope targetingScope2;

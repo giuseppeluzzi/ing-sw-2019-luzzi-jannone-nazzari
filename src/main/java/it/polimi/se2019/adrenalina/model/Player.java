@@ -326,8 +326,16 @@ public class Player extends Observable implements Target, Serializable {
     }
   }
 
+  public PowerUp getPowerUp(PowerUpType powerUpType, AmmoColor powerUpColor) {
+    for (PowerUp powerUp : powerUps) {
+      if (powerUp.getType() == powerUpType && powerUp.getColor() == powerUpColor) {
+        return powerUp;
+      }
+    }
+    return null;
+  }
+
   public List<PowerUp> getPowerUps() {
-    // TODO: powerUps is mutable
     return new ArrayList<>(powerUps);
   }
 

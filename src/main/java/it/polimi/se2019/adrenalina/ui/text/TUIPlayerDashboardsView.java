@@ -228,7 +228,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     try {
       notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps
-          .get(chosenTarget - 1).getName(), powerUps.get(chosenTarget - 1).getColor()));
+          .get(chosenTarget - 1).getType(), powerUps.get(chosenTarget - 1).getColor()));
     } catch (RemoteException e) {
       Log.exception(e);
     }

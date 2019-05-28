@@ -11,33 +11,23 @@ public class Teleporter extends PowerUp {
   private static final long serialVersionUID = -384452700114270235L;
 
   public Teleporter(AmmoColor color) {
-    super(color, false);
+    super(color, false, PowerUpType.TELEPORTER);
   }
 
-  /**
-   * Copy constructor
-   * @param powerup Teleporter object that has to be copied, can't be null
-   */
-  public Teleporter(Teleporter powerup) {
-    // TODO: copy actions
-    // TODO: copy target history
-    super(powerup.getColor(), false);
+  @Override
+  public Teleporter copy() {
+    return new Teleporter(getColor());
+  }
+
+  @Override
+  public String getName() {
+    return "Teletrasporto";
   }
 
   @Override
   public boolean canUse(){
     //TODO implement function
     return true;
-  }
-
-  @Override
-  public Teleporter copy() {
-    return new Teleporter(this);
-  }
-
-  @Override
-  public String getName() {
-    return "Teletrasporto";
   }
 
   /**

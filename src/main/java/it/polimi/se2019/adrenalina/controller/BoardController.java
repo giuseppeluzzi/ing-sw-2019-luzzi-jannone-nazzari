@@ -104,20 +104,14 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   private void loadPowerUps() {
-    board.addPowerUp(new Teleporter(AmmoColor.RED));
-    board.addPowerUp(new TagbackGrenade(AmmoColor.RED));
-    board.addPowerUp(new Newton(AmmoColor.RED));
-    board.addPowerUp(new TargetingScope(AmmoColor.RED));
-
-    board.addPowerUp(new Teleporter(AmmoColor.BLUE));
-    board.addPowerUp(new TagbackGrenade(AmmoColor.BLUE));
-    board.addPowerUp(new Newton(AmmoColor.BLUE));
-    board.addPowerUp(new TargetingScope(AmmoColor.BLUE));
-
-    board.addPowerUp(new Teleporter(AmmoColor.YELLOW));
-    board.addPowerUp(new TagbackGrenade(AmmoColor.YELLOW));
-    board.addPowerUp(new Newton(AmmoColor.YELLOW));
-    board.addPowerUp(new TargetingScope(AmmoColor.YELLOW));
+    for (AmmoColor color: AmmoColor.getValidColor()) {
+      for (int i = 0; i < 4; i++) {
+        board.addPowerUp(new Teleporter(AmmoColor.RED));
+        board.addPowerUp(new TagbackGrenade(AmmoColor.RED));
+        board.addPowerUp(new Newton(AmmoColor.RED));
+        board.addPowerUp(new TargetingScope(AmmoColor.RED));
+      }
+    }
   }
 
   public Board getBoard() {

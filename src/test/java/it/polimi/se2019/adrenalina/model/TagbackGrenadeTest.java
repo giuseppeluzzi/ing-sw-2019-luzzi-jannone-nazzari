@@ -7,22 +7,6 @@ import org.junit.Test;
 
 public class TagbackGrenadeTest {
   @Test
-  public void testCopyConstructor() {
-    TagbackGrenade tagbackGrenade = new TagbackGrenade(AmmoColor.RED);
-    TagbackGrenade tagbackGrenade2 = new TagbackGrenade(tagbackGrenade);
-    assertEquals(
-        "Cloned class attributes not matching with original class attributes",
-        tagbackGrenade.getColor(),
-        tagbackGrenade2.getColor());
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void testCopyConstructorException() {
-    TagbackGrenade tagbackGrenade = null;
-    TagbackGrenade tagbackGrenade2 = new TagbackGrenade(tagbackGrenade);
-  }
-
-  @Test
   public void testSerialization() {
     TagbackGrenade tagbackGrenade = new TagbackGrenade(AmmoColor.RED);
     TagbackGrenade tagbackGrenade2;
