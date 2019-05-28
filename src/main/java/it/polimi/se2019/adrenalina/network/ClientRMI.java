@@ -40,8 +40,8 @@ public class ClientRMI extends Client {
       server = (ServerInterface) registry.lookup("MyServer");
 
       boardView = new TUIBoardView(this);
-      charactersView = new TUICharactersView(this);
-      playerDashboardsView = new TUIPlayerDashboardsView(this);
+      charactersView = new TUICharactersView(this, boardView);
+      playerDashboardsView = new TUIPlayerDashboardsView(this, boardView);
 
       UnicastRemoteObject.exportObject(boardView, 0);
       UnicastRemoteObject.exportObject(charactersView, 0);

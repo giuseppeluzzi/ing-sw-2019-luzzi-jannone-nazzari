@@ -3,7 +3,10 @@ package it.polimi.se2019.adrenalina.view;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -19,9 +22,13 @@ public abstract class CharactersView extends Observable implements CharactersVie
   private final Set<EventType> registeredEvents = new HashSet<>();
 
   private final ArrayList<Player> players;
+  private final BoardView boardView;
 
-  protected CharactersView() {
+  protected CharactersView(BoardView boardView) {
     players = new ArrayList<>();
+    this.boardView = boardView;
+    registeredEvents.add(EventType.PLAYER_POSITION_UPDATE);
+    registeredEvents.add(EventType.PLAYER_STATUS_UPDATE);
   }
 
   @Override
@@ -55,6 +62,16 @@ public abstract class CharactersView extends Observable implements CharactersVie
 
   @Override
   public abstract void showDeath(PlayerColor playerColor);
+
+  @Override
+  public void update(PlayerPositionUpdate event) {
+    getPlayerByColor(event.getPlayerColor()).setSquare(boardView.getBoard().getSquare(event.getPosX(), event.getPosY()));
+  }
+
+  @Override
+  public void update(PlayerStatusUpdate event) {
+    getPlayerByColor(event.getPlayerColor()).setStatus(event.getPlayerStatus());
+  }
 
   @Override
   public void update(Event event) {
