@@ -213,8 +213,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
 
-    PowerUp powerUp = board.getPowerUpByNameAndColor(event.getPowerUp().getName(),
-        event.getPowerUp().getColor());
+    PowerUp powerUp = board.getPowerUpByNameAndColor(event.getName(),
+        event.getColor());
 
     try {
       player.removePowerUp(powerUp);
@@ -224,7 +224,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     board.undrawPowerUp(powerUp);
 
     if (board.getTurnCounter() > 1) {
-      player.respawn(event.getPowerUp().getColor());
+      player.respawn(event.getColor());
     } else {
       player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
     }
