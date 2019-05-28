@@ -22,7 +22,7 @@ public interface BoardViewInterface extends RemoteObservable, Serializable {
 
   void hideTimer() throws RemoteException;
 
-  void showBoard(Board board) throws RemoteException;
+  void showBoard() throws RemoteException;
 
   void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
 
