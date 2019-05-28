@@ -3,6 +3,8 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckRespawn extends GameActionAsync {
 
@@ -16,15 +18,23 @@ public class CheckRespawn extends GameActionAsync {
   @Override
   public void execute(Board board) {
     if (everyPlayer) {
-      for (Player player : board.getPlayers()) {
-        if (player.isDead()) {
-          getTurnController().addRespawn(player);
-        }
+      for (Player player : getDeadPlayers(board)) {
+        getTurnController().addRespawn(player);
       }
     } else {
       if (getPlayer().isDead()) {
         getTurnController().addRespawn(getPlayer());
       }
     }
+  }
+
+  static List<Player> getDeadPlayers(Board board) {
+    List<Player> output = new ArrayList<>();
+    for (Player player : board.getPlayers()) {
+      if (player.isDead()) {
+        output.add(player);
+      }
+    }
+    return output;
   }
 }
