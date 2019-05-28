@@ -14,7 +14,8 @@ public class PowerUpSelection extends GameAction {
   @Override
   public void execute(Board board) {
     try {
-      getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer().getPowerUps());
+      getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer()
+          .getPowerUps());
     } catch (RemoteException e) {
       Log.exception(e);
     }

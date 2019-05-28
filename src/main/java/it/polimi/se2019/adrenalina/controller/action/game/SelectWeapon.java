@@ -16,16 +16,21 @@ public class SelectWeapon extends GameAction {
 
   @Override
   public void execute(Board board) {
-    List<Weapon> weapons = new ArrayList<>();
-    for (Weapon weapon : getPlayer().getWeapons()) {
-      if (weapon.isLoaded()) {
-        weapons.add(weapon);
-      }
-    }
+    List<Weapon> weapons = getLoadedWeapons(getPlayer().getWeapons());
     try {
       getPlayer().getClient().getPlayerDashboardsView().showWeaponSelection(weapons);
     } catch (RemoteException e) {
       Log.exception(e);
     }
+  }
+
+  static List<Weapon> getLoadedWeapons(List<Weapon> playerWeapons) {
+    List<Weapon> weapons = new ArrayList<>();
+    for (Weapon weapon : playerWeapons) {
+      if (weapon.isLoaded()) {
+        weapons.add(weapon);
+      }
+    }
+    return weapons;
   }
 }

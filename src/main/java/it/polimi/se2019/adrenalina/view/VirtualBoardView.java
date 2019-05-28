@@ -17,6 +17,7 @@ import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -50,6 +51,9 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
     this.board = board;
     if (this.board != null) {
       board.addObserver(this);
+      for (Square square : board.getSquares()) {
+        square.addObserver(this);
+      }
     }
   }
 

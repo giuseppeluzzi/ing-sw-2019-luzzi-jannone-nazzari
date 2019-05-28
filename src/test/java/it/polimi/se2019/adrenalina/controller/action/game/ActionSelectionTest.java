@@ -9,10 +9,6 @@ import org.junit.Test;
 
 public class ActionSelectionTest {
 
-  @Before
-  public void setUp() throws Exception {
-  }
-
   @Test
   public void testStandardTurnActions() {
     List<TurnAction> turnActions;

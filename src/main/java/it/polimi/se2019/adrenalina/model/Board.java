@@ -425,11 +425,7 @@ public class Board extends Observable implements Serializable {
     takenWeapons.add(weapon);
 
     try {
-      if (weapons.isEmpty()) {
-        notifyObservers(new BoardHasWeaponsUpdate(false));
-      } else {
-        notifyObservers(new BoardHasWeaponsUpdate(true));
-      }
+      notifyObservers(new BoardHasWeaponsUpdate(weapons.isEmpty()));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -555,11 +551,7 @@ public class Board extends Observable implements Serializable {
     takenAmmoCards.add(ammoCard);
 
     try {
-      if (ammoCards.isEmpty()) {
-        notifyObservers(new BoardHasAmmoCardsUpdate(false));
-      } else {
-        notifyObservers(new BoardHasAmmoCardsUpdate(true));
-      }
+      notifyObservers(new BoardHasAmmoCardsUpdate(ammoCards.isEmpty()));
     } catch (RemoteException e) {
       Log.exception(e);
     }

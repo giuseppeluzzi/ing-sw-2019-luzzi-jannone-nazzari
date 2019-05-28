@@ -4,11 +4,23 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -158,6 +170,11 @@ public class Player extends Observable implements Target, Serializable {
     }
     this.square = square;
     square.addPlayer(this);
+    try {
+      notifyObservers(new PlayerPositionUpdate(color, square.getPosX(), square.getPosY()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public Board getBoard() {
@@ -194,6 +211,11 @@ public class Player extends Observable implements Target, Serializable {
 
   public void setScore(int points) {
     score = points;
+    try {
+      notifyObservers(new PlayerScoreUpdate(color, score));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public List<PlayerColor> getDamages() {
@@ -237,6 +259,18 @@ public class Player extends Observable implements Target, Serializable {
         board.getPlayerByColor(damages.get(NORMAL_DEATH)).addTags(color, 1);
       } catch (InvalidPlayerException ignored) {
         //
+      }
+    }
+    try {
+      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+    if (damages.size() >= NORMAL_DEATH) {
+      try {
+        notifyObservers(new PlayerDeathUpdate(color));
+      } catch (RemoteException e) {
+        Log.exception(e);
       }
     }
   }
@@ -316,6 +350,11 @@ public class Player extends Observable implements Target, Serializable {
     }
     damages.clear();
     square = board.getSpawnPointSquare(spawnColor);
+    try {
+      notifyObservers(new PlayerKillScoreUpdate(color, killScore));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public List<PlayerColor> getTags() {
@@ -333,6 +372,11 @@ public class Player extends Observable implements Target, Serializable {
         return;
       }
       tags.add(player);
+    }
+    try {
+      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color));
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 
@@ -370,7 +414,15 @@ public class Player extends Observable implements Target, Serializable {
     }
     powerUps.add(powerUp);
     powerUpCount++;
+
+    try {
+      notifyObservers(new OwnPowerUpUpdate(color, getPowerUps()));
+      notifyObservers(new EnemyPowerUpUpdate(color, powerUpCount));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
+
 
   /**
    * Removes a powerUp from a player.
@@ -394,6 +446,16 @@ public class Player extends Observable implements Target, Serializable {
     return new ArrayList<>(weapons);
   }
 
+  public List<Weapon> getUnloadedWeapons() {
+    List<Weapon> returnWeapons = new ArrayList<>();
+    for (Weapon weapon : getWeapons()) {
+      if (! weapon.isLoaded()) {
+        returnWeapons.add(weapon);
+      }
+    }
+    return returnWeapons;
+  }
+
   /**
    * Adds a weapon to the list of weapons of this player.
    * @param weapon collected weapon
@@ -405,6 +467,12 @@ public class Player extends Observable implements Target, Serializable {
     }
     weapons.add(weapon);
     weaponCount++;
+    try {
+      notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+      notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public void updateWeapons(List<Weapon> newWeapons) {
@@ -473,6 +541,12 @@ public class Player extends Observable implements Target, Serializable {
       ammo.put(ammoColor, 3);
     } else {
       ammo.put(ammoColor, currentAmmo + value);
+    }
+    try {
+      notifyObservers(new PlayerAmmoUpdate(color, getAmmo(AmmoColor.BLUE), getAmmo(AmmoColor.RED),
+          getAmmo(AmmoColor.YELLOW)));
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 

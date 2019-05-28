@@ -4,27 +4,21 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
-public class EnemyPowerUpUpdate implements Event {
+public class PlayerDeathUpdate implements Event {
 
-  private static final long serialVersionUID = 3380422402729267446L;
+  private static final long serialVersionUID = -8987048353974663246L;
   private final PlayerColor playerColor;
-  private final int powerUpsNum;
 
-  public EnemyPowerUpUpdate(PlayerColor playerColor, int powerUpsNum) {
+  public PlayerDeathUpdate(PlayerColor playerColor) {
     this.playerColor = playerColor;
-    this.powerUpsNum = powerUpsNum;
   }
 
   public PlayerColor getPlayerColor() {
     return playerColor;
   }
 
-  public int getPowerUpsNum() {
-    return powerUpsNum;
-  }
-
   @Override
   public EventType getEventType() {
-    return EventType.ENEMY_POWER_UP_UPDATE;
+    return EventType.PLAYER_DEATH_UPDATE;
   }
 }

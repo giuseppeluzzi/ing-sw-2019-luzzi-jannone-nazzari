@@ -14,8 +14,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerWeaponUpdate;
-import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -28,11 +27,9 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
-import java.lang.invoke.WrongMethodTypeException;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -126,38 +123,79 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   }
 
   @Override
-  public void update(PlayerWeaponUpdate event) throws RemoteException {
+  public void update(OwnWeaponUpdate event) throws RemoteException {
     getPlayerByColor(event.getPlayerColor()).updateWeapons(event.getWeapons());
   }
 
   @Override
   public void update(EnemyWeaponUpdate event) throws RemoteException {
-    Player player = getPlayerByColor(event.getEnemyColor());
+    Player player = getPlayerByColor(event.getPlayerColor());
     player.updateWeapons(event.getUnloadedWeapons());
     player.setWeaponCount(event.getNumWeapons());
   }
 
   @Override
   public void update(EnemyPowerUpUpdate event) throws RemoteException {
-    getPlayerByColor(event.getEnemyColor()).setPowerUpCount(event.getPowerUpsNum());
+    getPlayerByColor(event.getPlayerColor()).setPowerUpCount(event.getPowerUpsNum());
   }
 
   @Override
   public void update(OwnPowerUpUpdate event) throws RemoteException {
     List<PowerUp> powerUps = new ArrayList<>();
-    for (Map.Entry<PowerUpType, AmmoColor> entrySet : event.getPowerUps().entrySet()) {
+    for (Map.Entry<PowerUpType, Map<AmmoColor, Integer>> entrySet : event.getPowerUps().entrySet()) {
       if (entrySet.getKey() == PowerUpType.NEWTON) {
-        powerUps.add(new Newton(entrySet.getValue()));
+        powerUps.addAll(addNewtons(entrySet.getValue()));
       } else if (entrySet.getKey() == PowerUpType.TELEPORTER) {
-        powerUps.add(new Teleporter(entrySet.getValue()));
+        powerUps.addAll(addTeleporters(entrySet.getValue()));
       } else if (entrySet.getKey() == PowerUpType.TAGBACK_GRANADE) {
-        powerUps.add(new TagbackGrenade(entrySet.getValue()));
+        powerUps.addAll(addTagbackGranades(entrySet.getValue()));
       } else if (entrySet.getKey() == PowerUpType.TARGETING_SCOPE) {
-        powerUps.add(new TargetingScope(entrySet.getValue()));
+        powerUps.addAll(addTargetingScopes(entrySet.getValue()));
       }
     }
     getPlayerByColor(event.getPlayerColor()).updatePowerUps(powerUps);
   }
+
+  private List<PowerUp> addNewtons(Map<AmmoColor, Integer> entrySet) {
+    List<PowerUp> powerUps = new ArrayList<>();
+    for (AmmoColor color : AmmoColor.values()) {
+      for (int i = 0; i < entrySet.get(color); i++) {
+        powerUps.add(new Newton(color));
+      }
+    }
+    return powerUps;
+  }
+
+  private List<PowerUp> addTargetingScopes(Map<AmmoColor, Integer> entrySet) {
+    List<PowerUp> powerUps = new ArrayList<>();
+    for (AmmoColor color : AmmoColor.values()) {
+      for (int i = 0; i < entrySet.get(color); i++) {
+        powerUps.add(new TargetingScope(color));
+      }
+    }
+    return powerUps;
+  }
+
+  private List<PowerUp> addTagbackGranades(Map<AmmoColor, Integer> entrySet) {
+    List<PowerUp> powerUps = new ArrayList<>();
+    for (AmmoColor color : AmmoColor.values()) {
+      for (int i = 0; i < entrySet.get(color); i++) {
+        powerUps.add(new TagbackGrenade(color));
+      }
+    }
+    return powerUps;
+  }
+
+  private List<PowerUp> addTeleporters(Map<AmmoColor, Integer> entrySet) {
+    List<PowerUp> powerUps = new ArrayList<>();
+    for (AmmoColor color : AmmoColor.values()) {
+      for (int i = 0; i < entrySet.get(color); i++) {
+        powerUps.add(new Teleporter(color));
+      }
+    }
+    return powerUps;
+  }
+
 
   @Override
   public void update(CurrentPlayerUpdate event) throws RemoteException {
