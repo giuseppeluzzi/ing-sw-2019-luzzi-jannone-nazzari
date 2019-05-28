@@ -27,7 +27,7 @@ public class ServerSocket implements Runnable {
     while (running) {
       try {
         clientSocket = socket.accept();
-        new VirtualClientSocket(server, clientSocket).run();
+        new Thread(new VirtualClientSocket(server, clientSocket)).start();
       } catch (IOException e) {
         Log.exception(e);
       }
