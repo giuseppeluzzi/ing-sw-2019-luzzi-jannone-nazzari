@@ -9,22 +9,21 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
-import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
@@ -33,12 +32,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 
-public class ClientSocket extends Client implements Runnable {
+public class ClientSocket extends Client implements Runnable, Observer {
 
   private static final long serialVersionUID = 5069992236971339205L;
   private transient Socket socket;
@@ -55,6 +54,14 @@ public class ClientSocket extends Client implements Runnable {
     boardView = new TUIBoardView(this);
     charactersView = new TUICharactersView(this, boardView);
     playerDashboardsView = new TUIPlayerDashboardsView(this, boardView);
+
+    try {
+      boardView.addObserver(this);
+      charactersView.addObserver(this);
+      playerDashboardsView.addObserver(this);
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
 
     try {
       socket = new Socket(Configuration.getInstance().getServerIP(),
@@ -104,6 +111,12 @@ public class ClientSocket extends Client implements Runnable {
     return playerDashboardsView;
   }
 
+  @Override
+  public void update(Event event) {
+    // Forward messages
+    sendEvent(event);
+  }
+
   public final void sendEvent(Event event) {
     printWriter.println(event.serialize());
     printWriter.flush();
@@ -139,7 +152,7 @@ public class ClientSocket extends Client implements Runnable {
             case SHOW_SQUARE_SELECT_INVOCATION:
               ShowSquareSelectInvocation showSquareSelectInvocation = gson.fromJson(message,
                   ShowSquareSelectInvocation.class);
-              boardView.showSquareSelect(showSquareSelectInvocation.getTargets());
+              boardView.showSquareSelect(new ArrayList<>(showSquareSelectInvocation.getTargets()));
               break;
             case SHOW_TARGET_SELECT_INVOCATION:
               ShowTargetSelectInvocation showTargetSelectInvocation = gson.fromJson(message,

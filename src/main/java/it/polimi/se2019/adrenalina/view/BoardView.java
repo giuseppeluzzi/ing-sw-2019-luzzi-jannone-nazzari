@@ -1,20 +1,18 @@
 package it.polimi.se2019.adrenalina.view;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
-import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
-import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -22,11 +20,7 @@ import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class BoardView extends Observable implements Observer, BoardViewInterface {
@@ -123,7 +117,8 @@ public abstract class BoardView extends Observable implements Observer, BoardVie
 
   @Override
   public void update(SquareAmmoCardUpdate event) {
-    board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
+    board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(
+        new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
   }
 
   @Override

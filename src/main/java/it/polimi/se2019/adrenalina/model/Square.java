@@ -1,4 +1,5 @@
 package it.polimi.se2019.adrenalina.model;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Square extends Observable implements Target, Serializable {
+public class Square extends Observable implements Target {
 
   private static final long serialVersionUID = -4261049664345567097L;
   private final int posX;
@@ -31,7 +32,7 @@ public class Square extends Observable implements Target, Serializable {
 
   private boolean spawnPoint;
   private AmmoCard ammoCard;
-  private transient Board board;
+  private final transient Board board;
 
   private final HashMap<Direction, BorderType> borders;
   private List<Weapon> weapons;
@@ -61,8 +62,9 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Copy constructor, creates an exact copy of square.
+   *
    * @param square, Square object that has to be copied, can't be null
-   * @exception IllegalArgumentException thrown if square argument is null
+   * @throws IllegalArgumentException thrown if square argument is null
    */
   public Square(Square square) {
     if (square == null) {
@@ -162,6 +164,7 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Add a square as neighbour in specified direction.
+   *
    * @param direction direction in which neighbour is placed
    * @param square neighbour square
    */
@@ -182,7 +185,7 @@ public class Square extends Observable implements Target, Serializable {
       return getPlayers().get(0);
     } else if (getPlayers().isEmpty()) {
       return null;
-    } else{
+    } else {
       throw new InvalidSquareException("In this square there is more than one player");
     }
   }
@@ -223,6 +226,7 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Verify if a square is visible
+   *
    * @param square a square to be checked
    * @return visibility condition
    */
@@ -233,6 +237,7 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Calculate the distance from a specific square
+   *
    * @param square a specific square
    * @return distance from the square
    */
@@ -242,6 +247,7 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Calculate the cardinal direction between two squares
+   *
    * @param square another square
    * @return direction between the squares
    * @throws InvalidSquareException if the squares are equal or if the squares aren't aligned to a
@@ -274,11 +280,12 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Add a Weapon object to the square, only if it's a spawn point
+   *
    * @param weapon, weapon that will be added
-   * @exception IllegalStateException thrown if selected square is not a spawn point
+   * @throws IllegalStateException thrown if selected square is not a spawn point
    */
   public void addWeapon(Weapon weapon) {
-    if (! spawnPoint) {
+    if (!spawnPoint) {
       throw new IllegalStateException("Square is not a spawnPoint");
     }
     weapons.add(weapon);
@@ -294,7 +301,7 @@ public class Square extends Observable implements Target, Serializable {
   }
 
   @Override
-  public boolean equals (Object object) {
+  public boolean equals(Object object) {
     return object instanceof Square
         && ((Square) object).posX == posX
         && ((Square) object).posY == posY;
@@ -307,6 +314,7 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Check if x coordinate is within valid range.
+   *
    * @param x coordinate
    * @return true if valid, false otherwise
    */
@@ -316,6 +324,7 @@ public class Square extends Observable implements Target, Serializable {
 
   /**
    * Check if y coordinate is within valid range.
+   *
    * @param y coordinate
    * @return true if valid, false otherwise
    */
@@ -335,15 +344,17 @@ public class Square extends Observable implements Target, Serializable {
 
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy()).create();
+    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy())
+        .create();
     return gson.toJson(this);
   }
 
   /**
    * Create Square object from json formatted String
+   *
    * @param json json input String, can't be null
    * @return Square
-   * @exception  IllegalArgumentException thrown if argument json is null
+   * @throws IllegalArgumentException thrown if argument json is null
    */
   public static Square deserialize(String json) {
     if (json == null) {
