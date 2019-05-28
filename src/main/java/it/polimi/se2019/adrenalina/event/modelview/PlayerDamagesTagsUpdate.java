@@ -11,10 +11,12 @@ public class PlayerDamagesTagsUpdate implements Event {
   private static final long serialVersionUID = 1014334077223621057L;
   private final List<PlayerColor> damages;
   private final List<PlayerColor> tags;
+  private final PlayerColor playerColor;
 
-  public PlayerDamagesTagsUpdate(List<PlayerColor> damages, List<PlayerColor> tags) {
+  public PlayerDamagesTagsUpdate(List<PlayerColor> damages, List<PlayerColor> tags, PlayerColor playerColor) {
     this.damages = new ArrayList<>(damages);
     this.tags = new ArrayList<>(tags);
+    this.playerColor = playerColor;
   }
 
   public List<PlayerColor> getDamages() {
@@ -23,6 +25,10 @@ public class PlayerDamagesTagsUpdate implements Event {
 
   public List<PlayerColor> getTags() {
     return new ArrayList<>(tags);
+  }
+
+  public PlayerColor getPlayerColor() {
+    return playerColor;
   }
 
   @Override

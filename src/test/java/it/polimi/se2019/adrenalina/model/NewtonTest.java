@@ -7,22 +7,6 @@ import org.junit.Test;
 
 public class NewtonTest {
   @Test
-  public void testCopyConstructor() {
-    Newton newton = new Newton(AmmoColor.RED);
-    Newton newton2 = new Newton(newton);
-    assertEquals(
-        "Cloned class attributes not matching with original class attributes",
-        newton.getColor(),
-        newton2.getColor());
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void testCopyConstructorException() {
-    Newton newton = null;
-    Newton newton2 = new Newton(newton);
-  }
-
-  @Test
   public void testSerialization() {
     Newton newton = new Newton(AmmoColor.RED);
     Newton newton2;

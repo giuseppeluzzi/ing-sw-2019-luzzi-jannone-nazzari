@@ -4,7 +4,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.PowerUpType;
 
 /**
  * Event fired a player discards a powerup to spawn
@@ -13,13 +13,13 @@ public class PlayerDiscardPowerUpEvent implements Event {
 
   private static final long serialVersionUID = -4129538766030971119L;
   private final PlayerColor playerColor;
-  private final String name;
+  private final PowerUpType type;
   private final AmmoColor color;
 
-  public PlayerDiscardPowerUpEvent(PlayerColor playerColor, String name,
+  public PlayerDiscardPowerUpEvent(PlayerColor playerColor, PowerUpType type,
       AmmoColor color) {
     this.playerColor = playerColor;
-    this.name = name;
+    this.type = type;
     this.color = color;
   }
 
@@ -27,11 +27,11 @@ public class PlayerDiscardPowerUpEvent implements Event {
     return playerColor;
   }
 
-  public String getName() {
-    return name;
+  public PowerUpType getPowerUpType() {
+    return type;
   }
 
-  public AmmoColor getColor() {
+  public AmmoColor getPowerUpColor() {
     return color;
   }
 

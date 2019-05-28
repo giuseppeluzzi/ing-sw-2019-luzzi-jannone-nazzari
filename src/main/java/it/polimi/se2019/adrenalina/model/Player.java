@@ -41,14 +41,15 @@ public class Player extends Observable implements Target, Serializable {
   private boolean frenzy;
 
   private int powerUpCount;
+  private int weaponCount;
   private int score;
   private int killScore; // TODO: this should be updated in Final Frenzy mode
 
-  private final List<PlayerColor> damages;
-  private final List<PlayerColor> tags;
-  private final List<PowerUp> powerUps;
-  private final List<Weapon> weapons;
-  private final HashMap<AmmoColor, Integer> ammo;
+  private List<PlayerColor> damages;
+  private List<PlayerColor> tags;
+  private List<PowerUp> powerUps;
+  private List<Weapon> weapons;
+  private HashMap<AmmoColor, Integer> ammo;
 
   private Weapon currentWeapon;
 
@@ -133,6 +134,7 @@ public class Player extends Observable implements Target, Serializable {
     frenzy = player.frenzy;
     status = player.status;
     powerUpCount = player.powerUpCount;
+    weaponCount = player.weaponCount;
     currentWeapon = null;
   }
 
@@ -190,8 +192,8 @@ public class Player extends Observable implements Target, Serializable {
     return score;
   }
 
-  public void addScore(int points) {
-    score += points;
+  public void setScore(int points) {
+    score = points;
   }
 
   public List<PlayerColor> getDamages() {
@@ -239,6 +241,14 @@ public class Player extends Observable implements Target, Serializable {
     }
   }
 
+  public void updateDamages(List<PlayerColor> newDamages) {
+    damages = new ArrayList<>(newDamages);
+  }
+
+  public void updateTags(List<PlayerColor> newTags) {
+    tags = new ArrayList<>(newTags);
+  }
+
   public boolean isDead() {
     return damages.size() >= NORMAL_DEATH;
   }
@@ -277,7 +287,7 @@ public class Player extends Observable implements Target, Serializable {
     }
     if (! board.isFinalFrenzyActive()) {
       try {
-        board.getPlayerByColor(damages.get(0)).addScore(1); // first blood
+        board.getPlayerByColor(damages.get(0)).setScore(score + 1); // first blood
       } catch (InvalidPlayerException ignored) {
         //
       }
@@ -285,7 +295,7 @@ public class Player extends Observable implements Target, Serializable {
     int awardedScore = killScore;
     for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
       try {
-        board.getPlayerByColor(playerColor).addScore(awardedScore);
+        board.getPlayerByColor(playerColor).setScore(score + awardedScore);
       } catch (InvalidPlayerException ignored) {
         //
       }
@@ -326,8 +336,16 @@ public class Player extends Observable implements Target, Serializable {
     }
   }
 
+  public PowerUp getPowerUp(PowerUpType powerUpType, AmmoColor powerUpColor) {
+    for (PowerUp powerUp : powerUps) {
+      if (powerUp.getType() == powerUpType && powerUp.getColor() == powerUpColor) {
+        return powerUp;
+      }
+    }
+    return null;
+  }
+
   public List<PowerUp> getPowerUps() {
-    // TODO: powerUps is mutable
     return new ArrayList<>(powerUps);
   }
 
@@ -367,6 +385,11 @@ public class Player extends Observable implements Target, Serializable {
     powerUpCount--;
   }
 
+  public void updatePowerUps(List<PowerUp> newPowerUps) {
+    powerUps = new ArrayList<>(newPowerUps);
+    powerUpCount = powerUps.size();
+  }
+
   public List<Weapon> getWeapons() {
     return new ArrayList<>(weapons);
   }
@@ -381,6 +404,12 @@ public class Player extends Observable implements Target, Serializable {
       throw new IllegalStateException("Player already has 3 weapons");
     }
     weapons.add(weapon);
+    weaponCount++;
+  }
+
+  public void updateWeapons(List<Weapon> newWeapons) {
+    weapons = new ArrayList<>(newWeapons);
+    weaponCount = weapons.size();
   }
 
   /**
@@ -447,6 +476,12 @@ public class Player extends Observable implements Target, Serializable {
     }
   }
 
+  public void updateAmmo(AmmoColor ammoColor, int value) {
+    if (value > 3) {
+      throw new IllegalStateException("Cannot have more than 3 ammoCards of this color");
+    }
+    ammo.put(ammoColor, value);
+  }
 
   /**
    * Private method, creates an EnumMap associating each AmmoColor to an integer value
@@ -507,6 +542,18 @@ public class Player extends Observable implements Target, Serializable {
 
   public int getPowerUpCount() {
     return powerUpCount;
+  }
+
+  public void setPowerUpCount(int powerUpCount) {
+    this.powerUpCount = powerUpCount;
+  }
+
+  public int getWeaponCount() {
+    return weaponCount;
+  }
+
+  public void setWeaponCount(int weaponCount) {
+    this.weaponCount = weaponCount;
   }
 
   public Weapon getCurrentWeapon() {

@@ -516,17 +516,17 @@ public class Board extends Observable implements Serializable {
   /**
    * Returns a PowerUp whose name and color is the same as the specified one.
    *
-   * @param powerUpName name of the requested powerup
+   * @param powerUpType type of the requested powerup
    * @param powerUpColor color of the requested powerup
    * @return PowerUp with name equals to "name" and powerUpColor equals "powerUpColor", null
    * if PowerUp does not exist
    */
-  public PowerUp getPowerUpByNameAndColor(String powerUpName, AmmoColor powerUpColor) {
+  public PowerUp getPowerUpByNameAndColor(PowerUpType powerUpType, AmmoColor powerUpColor) {
     List<PowerUp> allPowerUps = getPowerUps();
     allPowerUps.addAll(takenPowerUps);
 
     for (PowerUp powerUp : allPowerUps) {
-      if (powerUp.getName().equals(powerUpName) && powerUp.getColor() == powerUpColor) {
+      if (powerUp.getType() == powerUpType && powerUp.getColor() == powerUpColor) {
         return powerUp;
       }
     }

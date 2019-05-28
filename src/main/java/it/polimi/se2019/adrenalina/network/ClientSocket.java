@@ -53,8 +53,8 @@ public class ClientSocket extends Client implements Runnable {
     super(name, domination);
 
     boardView = new TUIBoardView(this);
-    charactersView = new TUICharactersView(this);
-    playerDashboardsView = new TUIPlayerDashboardsView(this);
+    charactersView = new TUICharactersView(this, boardView);
+    playerDashboardsView = new TUIPlayerDashboardsView(this, boardView);
 
     try {
       socket = new Socket(Configuration.getInstance().getServerIP(),

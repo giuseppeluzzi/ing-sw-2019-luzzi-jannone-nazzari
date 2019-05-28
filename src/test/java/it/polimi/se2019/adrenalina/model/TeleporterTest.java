@@ -7,22 +7,6 @@ import org.junit.Test;
 
 public class TeleporterTest {
   @Test
-  public void testCopyConstructor() {
-    Teleporter teleporter = new Teleporter(AmmoColor.RED);
-    Teleporter teleporter2 = new Teleporter(teleporter);
-    assertEquals(
-        "Cloned class attributes not matching with original class attributes",
-        teleporter.getColor(),
-        teleporter2.getColor());
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void testCopyConstructorException() {
-    Teleporter teleporter = null;
-    Teleporter teleporter2 = new Teleporter(teleporter);
-  }
-
-  @Test
   public void testSerialization() {
     Teleporter teleporter = new Teleporter(AmmoColor.RED);
     Teleporter teleporter2;

@@ -4,6 +4,8 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.view.BoardView;
+import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersView;
 import java.rmi.RemoteException;
 import java.util.Scanner;
@@ -14,7 +16,8 @@ public class TUICharactersView extends CharactersView {
   private final transient ClientInterface client;
   private final transient Scanner scanner = new Scanner(System.in, "utf-8");
 
-  public TUICharactersView(ClientInterface client) {
+  public TUICharactersView(ClientInterface client, BoardViewInterface boardView) {
+    super((BoardView) boardView);
     this.client = client;
   }
 

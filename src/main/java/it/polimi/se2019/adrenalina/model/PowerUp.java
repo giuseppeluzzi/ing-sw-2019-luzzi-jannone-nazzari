@@ -17,13 +17,19 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
   private final AmmoColor color;
   private final List<WeaponAction> actions;
   private final boolean doesCost;
+  private final PowerUpType type;
   @NotExpose
   private final HashMap<Integer, Target> targetHistory = new HashMap<>();
 
-  protected PowerUp(AmmoColor color, boolean doesCost) {
+  protected PowerUp(AmmoColor color, boolean doesCost, PowerUpType type) {
+    this.type = type;
     this.color = color;
     this.doesCost = doesCost;
     actions = new ArrayList<>();
+  }
+
+  public PowerUpType getType() {
+    return type;
   }
 
   public abstract boolean canUse();
@@ -103,12 +109,14 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
 
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    PowerUp powerUp = board.getPowerUpByNameAndColor(getName(), color);
-    board.drawPowerUp(powerUp);
-    try {
-      player.addPowerUp(powerUp);
-    } catch (InvalidPowerUpException ignored) {
-      // ignore exception
+    PowerUp powerUp = player.getPowerUp(type, color);
+    if (powerUp != null) {
+      board.undrawPowerUp(powerUp);
+      try {
+        player.removePowerUp(powerUp);
+      } catch (InvalidPowerUpException ignored) {
+        // ignore exception
+      }
     }
   }
 }
