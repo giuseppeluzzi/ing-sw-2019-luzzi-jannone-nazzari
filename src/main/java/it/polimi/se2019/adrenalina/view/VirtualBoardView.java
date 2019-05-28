@@ -2,14 +2,6 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBoardInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
@@ -17,14 +9,22 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectio
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.DominationBoard;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
@@ -80,7 +80,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
 
   @Override
   public void showSquareSelect(List<Target> targets) {
-    clientSocket.sendEvent(new ShowSquareSelectInvocation(targets));
+    List<Square> squareList = new ArrayList<>();
+    for (Target target : targets) {
+      squareList.add(target.getSquare());
+    }
+    clientSocket.sendEvent(new ShowSquareSelectInvocation(squareList));
   }
 
   @Override

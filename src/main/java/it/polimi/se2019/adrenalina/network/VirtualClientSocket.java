@@ -76,6 +76,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
         EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
         Event event = gson.fromJson(message, eventType.getEventClass());
 
+        Log.debug("Event received: " + eventType);
+
         if (eventType == EventType.PLAYER_CONNECT_EVENT) {
           PlayerConnectEvent connectEvent = gson.fromJson(message, PlayerConnectEvent.class);
           name = connectEvent.getPlayerName();
