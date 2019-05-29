@@ -39,6 +39,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -106,10 +107,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void loadPowerUps() {
     for (AmmoColor color: AmmoColor.getValidColor()) {
       for (int i = 0; i < 4; i++) {
-        board.addPowerUp(new Teleporter(AmmoColor.RED));
-        board.addPowerUp(new TagbackGrenade(AmmoColor.RED));
-        board.addPowerUp(new Newton(AmmoColor.RED));
-        board.addPowerUp(new TargetingScope(AmmoColor.RED));
+        board.addPowerUp(new Teleporter(color));
+        board.addPowerUp(new TagbackGrenade(color));
+        board.addPowerUp(new Newton(color));
+        board.addPowerUp(new TargetingScope(color));
       }
     }
   }
