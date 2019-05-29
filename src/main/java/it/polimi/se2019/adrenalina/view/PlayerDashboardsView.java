@@ -9,13 +9,13 @@ import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
-import it.polimi.se2019.adrenalina.model.Buyable;
+import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class PlayerDashboardsView extends Observable implements PlayerDashboardsViewInterface, Observer {
+public abstract class PlayerDashboardsView extends Observable implements
+    PlayerDashboardsViewInterface, Observer {
 
   private static final long serialVersionUID = -6150690431150041388L;
   private final Set<EventType> registeredEvents = new HashSet<>();
@@ -67,7 +68,9 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   }
 
   @Override
-  public abstract void showPaymentOption(Buyable item);
+  public abstract void showPaymentOption(BuyableType buyableType,
+      Map<AmmoColor, Integer> buyableCost, List<PowerUp> budgetPowerUp,
+      Map<AmmoColor, Integer> budgetAmmo);
 
   @Override
   public abstract void showTurnActionSelection(List<TurnAction> actions);
@@ -142,7 +145,8 @@ public abstract class PlayerDashboardsView extends Observable implements PlayerD
   @Override
   public void update(OwnPowerUpUpdate event) throws RemoteException {
     List<PowerUp> powerUps = new ArrayList<>();
-    for (Map.Entry<PowerUpType, Map<AmmoColor, Integer>> entrySet : event.getPowerUps().entrySet()) {
+    for (Map.Entry<PowerUpType, Map<AmmoColor, Integer>> entrySet : event.getPowerUps()
+        .entrySet()) {
       if (entrySet.getKey() == PowerUpType.NEWTON) {
         powerUps.addAll(addNewtons(entrySet.getValue()));
       } else if (entrySet.getKey() == PowerUpType.TELEPORTER) {

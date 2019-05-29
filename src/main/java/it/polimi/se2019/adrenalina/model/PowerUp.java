@@ -1,12 +1,14 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
+import com.google.gson.InstanceCreator;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

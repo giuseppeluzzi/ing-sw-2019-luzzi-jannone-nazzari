@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -367,19 +368,17 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
 
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    Weapon weapon = board.getWeaponByName(name);
-
-    for (Square square : board.getSquares()) {
-      for (Weapon squareWeapon : square.getWeapons()) {
-        if (weapon.name.equals(name)) {
-          square.removeWeapon(weapon);
+    if (player.hasWeapon(this)) {
+      setLoaded(true);
+    } else {
+      for (Square square : board.getSquares()) {
+        if (square.getWeapons().contains(this)) {
+          square.removeWeapon(this);
           break;
         }
       }
+
+      player.addWeapon(this);
     }
-
-    board.takeWeapon(weapon);
-
-    player.addWeapon(weapon);
   }
 }

@@ -105,7 +105,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
-    Log.debug(event.getSquareX() + "-" + event.getSquareY());
     player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
 
     boardController.getTurnController().executeGameActionQueue();

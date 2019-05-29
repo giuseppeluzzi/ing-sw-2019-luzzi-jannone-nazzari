@@ -19,10 +19,11 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvo
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
-import it.polimi.se2019.adrenalina.utils.JsonShowPaymentOptionInvocationDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonPowerUpDeserializer;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -132,13 +133,13 @@ public class ClientSocket extends Client implements Runnable, Observer {
           String message = bufferedReader.readLine();
 
           GsonBuilder gsonBuilder = new GsonBuilder();
-          gsonBuilder.registerTypeAdapter(ShowPaymentOptionInvocation.class,
-              new JsonShowPaymentOptionInvocationDeserializer());
+          gsonBuilder.registerTypeAdapter(PowerUp.class, new JsonPowerUpDeserializer());
           gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
           Gson gson = gsonBuilder.create();
           JsonObject json = gson.fromJson(message, JsonObject.class);
 
           EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
+          Log.debug("Received: " + eventType);
           Event event = gson.fromJson(message, eventType.getEventClass());
 
           switch (eventType) {
@@ -169,7 +170,11 @@ public class ClientSocket extends Client implements Runnable, Observer {
             case SHOW_PAYMENT_OPTION_INVOCATION:
               ShowPaymentOptionInvocation showPaymentOptionInvocation = gson.fromJson(message,
                   ShowPaymentOptionInvocation.class);
-              playerDashboardsView.showPaymentOption(showPaymentOptionInvocation.getItem());
+              playerDashboardsView.showPaymentOption(
+                  showPaymentOptionInvocation.getBuyableType(),
+                  showPaymentOptionInvocation.getBuyableCost(),
+                  showPaymentOptionInvocation.getBudgetPowerUps(),
+                  showPaymentOptionInvocation.getBudgetAmmos());
               break;
             case SHOW_BUYABLE_WEAPONS_INVOCATION:
               ShowBuyableWeaponsInvocation showBuyableWeaponsInvocation = gson.fromJson(message,

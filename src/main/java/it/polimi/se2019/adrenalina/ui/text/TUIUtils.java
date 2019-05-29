@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.ui.text;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +29,18 @@ public class TUIUtils {
       for (Weapon weapon : weapons) {
         if (showCost) {
           Log.println(
-              String.format("\t%d) %s%n  Costo: %d rosso, %d blu, %d giallo",
+              String.format("\t%d) %s%n\t   Costo: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
                   targetIndex,
                   weapon.getName(),
+                  AmmoColor.RED.getAnsiColor(),
                   weapon.getCost(AmmoColor.RED),
+                  ANSIColor.RESET,
+                  AmmoColor.BLUE.getAnsiColor(),
                   weapon.getCost(AmmoColor.BLUE),
-                  weapon.getCost(AmmoColor.YELLOW)));
+                  ANSIColor.RESET,
+                  AmmoColor.YELLOW.getAnsiColor(),
+                  weapon.getCost(AmmoColor.YELLOW),
+                  ANSIColor.RESET));
         } else {
           Log.println(String.format("\t%d) %s", targetIndex, weapon.getName()));
         }

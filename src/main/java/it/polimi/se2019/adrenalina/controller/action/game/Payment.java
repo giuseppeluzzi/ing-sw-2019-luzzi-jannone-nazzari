@@ -24,9 +24,10 @@ public class Payment extends GameAction {
   @Override
   public void execute(Board board) {
     if (isSync()) {
+      getPlayer().setCurrentBuying(item);
       try {
         getPlayer().getClient().getPlayerDashboardsView()
-            .showPaymentOption(item);
+            .showPaymentOption(item.getBuyableType(), item.getCost(), getPlayer().getPowerUps(), getPlayer().getAmmos());
       } catch (RemoteException e) {
         Log.exception(e);
       }

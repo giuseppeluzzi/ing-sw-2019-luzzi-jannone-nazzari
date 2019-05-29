@@ -64,6 +64,7 @@ public class Player extends Observable implements Target, Serializable {
   private HashMap<AmmoColor, Integer> ammo;
 
   private Weapon currentWeapon;
+  private Buyable currentBuying;
 
   private transient ClientInterface client;
 
@@ -598,6 +599,10 @@ public class Player extends Observable implements Target, Serializable {
     return true;
   }
 
+  public HashMap<AmmoColor, Integer> getAmmos() {
+    return new HashMap<>(ammo);
+  }
+
   public int getAmmo(AmmoColor ammoColor) {
     return ammo.get(ammoColor);
   }
@@ -640,6 +645,14 @@ public class Player extends Observable implements Target, Serializable {
 
   public void setKillScore(int score) {
     killScore = score;
+  }
+
+  public Buyable getCurrentBuying() {
+    return currentBuying;
+  }
+
+  public void setCurrentBuying(Buyable currentBuying) {
+    this.currentBuying = currentBuying;
   }
 
   /**

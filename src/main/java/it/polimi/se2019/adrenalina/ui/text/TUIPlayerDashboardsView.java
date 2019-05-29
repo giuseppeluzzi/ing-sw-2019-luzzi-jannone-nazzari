@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
-
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
@@ -10,8 +9,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
-import it.polimi.se2019.adrenalina.model.Buyable;
-import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -42,13 +40,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     this.client = client;
   }
 
-  private List<Spendable> setSpendable(Player player) {
+  private List<Spendable> setSpendable(List<PowerUp> powerUps,
+      Map<AmmoColor, Integer> budgetAmmo) {
     List<Spendable> spendables = new ArrayList<>();
-    List<PowerUp> powerUps = player.getPowerUps();
     int index = 0;
-    int redAmmo = player.getAmmo(AmmoColor.RED);
-    int blueAmmo = player.getAmmo(AmmoColor.BLUE);
-    int yellowAmmo = player.getAmmo(AmmoColor.YELLOW);
+    int redAmmo = budgetAmmo.get(AmmoColor.RED);
+    int blueAmmo = budgetAmmo.get(AmmoColor.BLUE);
+    int yellowAmmo = budgetAmmo.get(AmmoColor.YELLOW);
 
     for (int i = 0; i < blueAmmo; i++) {
       spendables.add(index, AmmoColor.BLUE);
@@ -71,57 +69,65 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void switchToFinalFrenzy(PlayerColor playerColor) {
-
+    // TODO
   }
 
   @Override
-  public void showPaymentOption(Buyable item) {
-    Player player;
-    try {
-      player = getPlayerByColor(client.getPlayerColor());
-    } catch (RemoteException e) {
-      Log.exception(e);
-      return;
-    }
+  public void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
+      List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) {
 
     int answerBlue = 0;
     int answerRed = 0;
     int answerYellow = 0;
     int index = 1;
-    String inputValidationRegex = "/^[0-9,.]*$/";
+    String inputValidationRegex = "^[0-9,]*$";
 
     Map<AmmoColor, Integer> costs = new EnumMap<>(AmmoColor.class);
-    costs.put(AmmoColor.BLUE, item.getCost(AmmoColor.BLUE));
-    costs.put(AmmoColor.RED, item.getCost(AmmoColor.RED));
-    costs.put(AmmoColor.YELLOW, item.getCost(AmmoColor.YELLOW));
-    costs.put(AmmoColor.ANY, item.getCost(AmmoColor.ANY));
+    costs.put(AmmoColor.BLUE, buyableCost.get(AmmoColor.BLUE));
+    costs.put(AmmoColor.RED, buyableCost.get(AmmoColor.RED));
+    costs.put(AmmoColor.YELLOW, buyableCost.get(AmmoColor.YELLOW));
+    costs.put(AmmoColor.ANY, buyableCost.get(AmmoColor.ANY));
 
-    List<Spendable> spendables = setSpendable(player);
+    List<Spendable> spendables = setSpendable(budgetPowerUp, budgetAmmo);
     List<PowerUp> answerPowerUp = new ArrayList<>();
     Set<String> answers = null;
-    boolean completed = false;
 
+    Log.println("Hai a dispozione:");
     for (Spendable match : spendables) {
-      Log.println(String.format("\t%d) %s", index, match.getSpendableName()));
+      Log.println(String
+          .format("\t%d) %s%s%s", index, match.getColor().getAnsiColor(), match.getSpendableName(),
+              ANSIColor.RESET));
       index++;
     }
+    Log.println("");
 
     Log.println(
-        String.format("Il costo da pagare è:%n\t%d rosso, %d blu, %d giallo, %d qualsiasi colore%n"
-            + "Come preferisci pagare?", item.getCost(AmmoColor.RED), item.getCost(AmmoColor.BLUE), item.getCost(AmmoColor.YELLOW), item.getCost(AmmoColor.ANY)));
+        String.format(
+            "Devi pagare:\t%s%d rosso%s, %s%d blu%s, %s%d giallo%s, %s%d qualsiasi colore%s%n"
+                + "Come preferisci pagare?%n",
+            AmmoColor.RED.getAnsiColor(),
+            buyableCost.get(AmmoColor.RED),
+            ANSIColor.RESET,
+            AmmoColor.BLUE.getAnsiColor(),
+            buyableCost.get(AmmoColor.BLUE),
+            ANSIColor.RESET,
+            AmmoColor.YELLOW.getAnsiColor(),
+            buyableCost.get(AmmoColor.YELLOW),
+            ANSIColor.RESET,
+            AmmoColor.ANY.getAnsiColor(),
+            buyableCost.get(AmmoColor.ANY),
+            ANSIColor.RESET));
 
+    String response;
     do {
-      Log.println("Inserisci i numeri scelti separati da virgole");
-      String response = scanner.nextLine();
-      if (!response.matches(inputValidationRegex)) {
-        continue;
-      }
+      Log.println("Inserisci i numeri delle opzioni scelte separati da una virgola");
+      response = scanner.nextLine().replace(" ", "");
 
       response = response.replace(" ", "");
       answers = new HashSet<>(Arrays.asList(response.split(",")));
-      validatePaymentAnswer(answers, spendables, costs);
-      completed = true;
-    } while (!completed);
+    } while (response.isEmpty() || !response.matches(inputValidationRegex)
+        || !verifyPaymentAnswers(answers, spendables)
+        || !verifyPaymentFullfilled(answers, spendables, costs));
 
     for (String element : answers) {
       if (spendables.get(Integer.parseInt(element)).isPowerUp()) {
@@ -140,7 +146,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     try {
       notifyObservers(
           new PlayerPaymentEvent(client.getPlayerColor(), answerRed, answerBlue, answerYellow,
-              answerPowerUp, item));
+              answerPowerUp));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -162,20 +168,37 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     try {
-      notifyObservers(new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(chosenTarget - 1)));
+      notifyObservers(
+          new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(chosenTarget - 1)));
     } catch (RemoteException e) {
       Log.exception(e);
     }
   }
 
-  private void validatePaymentAnswer(Set<String> answers, List<Spendable> matches,
-      Map<AmmoColor, Integer> costs) {
-    for (AmmoColor ammoColor : AmmoColor.values()) {
-      if (answers.stream().filter(x -> matches.get(Integer.parseInt(x)).getColor()
-          == ammoColor).count() != costs.get(ammoColor)) {
-        break;
+  private static boolean verifyPaymentAnswers(Set<String> answers, List<Spendable> spendables) {
+    if (answers.isEmpty()) {
+      Log.println("Hai selezionato un'opzione non valida!");
+      return false;
+    }
+    for (String answer : answers) {
+      if (Integer.parseInt(answer) > spendables.size() - 1) {
+        Log.println("Hai selezionato un'opzione non valida!");
+        return false;
       }
     }
+    return true;
+  }
+
+  private static boolean verifyPaymentFullfilled(Set<String> answers, List<Spendable> spendables,
+      Map<AmmoColor, Integer> costs) {
+    for (AmmoColor ammoColor : AmmoColor.values()) {
+      if (answers.stream().filter(x -> spendables.get(Integer.parseInt(x) - 1).getColor()
+          == ammoColor).count() != costs.get(ammoColor)) {
+        Log.println("Non hai pagato l'intera somma!");
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override
@@ -192,14 +215,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   public void showEffectSelection(Weapon weapon) {
     List<Effect> chosenEffects = new ArrayList<>();
     List<String> chosenEffectsNames = new ArrayList<>();
-    int targetIndex = 1;
-    int subEffectIndex = 1;
-    int chosenTarget = 0;
 
     chosenEffects.add(TUIUtils.showEffectSelection(weapon.getEffects(), false));
 
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
-      chosenEffects.add(TUIUtils.showEffectSelection(chosenEffects.get(0).getSubEffects(), true));
+      chosenEffects.add(
+          TUIUtils.showEffectSelection(chosenEffects.get(0).getSubEffects(), true));
     }
 
     for (Effect effect : chosenEffects) {
@@ -207,7 +228,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
 
     try {
-      notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(), chosenEffectsNames));
+      notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(),
+          chosenEffectsNames));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -222,7 +244,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       targetIndex = 1;
       Log.println("Seleziona un PowerUp");
       for (PowerUp powerUp : powerUps) {
-        Log.println("\t" + targetIndex + ") " + powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
+        Log.println(
+            "\t" + targetIndex + ") " + powerUp.getColor().getAnsiColor() + powerUp.getName()
+                + ANSIColor.RESET);
         targetIndex++;
       }
 

@@ -21,11 +21,9 @@ public class ObjectPickup extends GameAction {
   @Override
   public void execute(Board board) {
     if (getPlayer().getSquare().isSpawnPoint()) {
-      Log.debug("is in a spawnpoint");
       List<Weapon> buyableWeapons = getBuyableWeapons();
 
       if (buyableWeapons.isEmpty()) {
-        Log.debug("no buyable weapons");
         return;
       }
 

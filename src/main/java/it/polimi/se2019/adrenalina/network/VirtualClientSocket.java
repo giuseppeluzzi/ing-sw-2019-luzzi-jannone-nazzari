@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.network;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.BoardController;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
@@ -11,6 +12,7 @@ import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
@@ -70,7 +72,9 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
       while (clientSocket.isConnected()) {
         String message = bufferedReader.readLine();
 
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
+        Gson gson = gsonBuilder.create();
         JsonObject json = gson.fromJson(message, JsonObject.class);
 
         EventType eventType = EventType.valueOf(json.get("eventType").getAsString());

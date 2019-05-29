@@ -210,19 +210,19 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     Player player = getPlayerFromBoard(board, event.getPlayerColor());
 
     if (player == null) {
-      return ;
+      return;
     }
 
     PowerUp powerUp = player.getPowerUp(event.getPowerUpType(), event.getPowerUpColor());
 
     if (powerUp == null) {
-      return ;
+      return;
     }
 
     try {
       player.removePowerUp(powerUp);
     } catch (InvalidPowerUpException ignored) {
-      return ;
+      return;
     }
     board.undrawPowerUp(powerUp);
 
@@ -252,22 +252,26 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         && player.getAmmo(AmmoColor.YELLOW) >= event.getYellow()
         && player.getPowerUps().containsAll(event.getPowerUps())) {
 
-      player.addAmmo(AmmoColor.BLUE, player.getAmmo(AmmoColor.BLUE) - event.getBlue());
-      player.addAmmo(AmmoColor.RED, player.getAmmo(AmmoColor.RED) - event.getRed());
-      player.addAmmo(AmmoColor.YELLOW, player.getAmmo(AmmoColor.YELLOW) - event.getYellow());
+      player.addAmmo(AmmoColor.BLUE, - event.getBlue());
+      player.addAmmo(AmmoColor.RED, - event.getRed());
+      player.addAmmo(AmmoColor.YELLOW, - event.getYellow());
 
       for (PowerUp powerUp : event.getPowerUps()) {
+        PowerUp localPowerUp = player.getPowerUp(powerUp.getType(), powerUp.getColor());
         try {
-          player.removePowerUp(powerUp);
-        } catch (InvalidPowerUpException e) {
-          return;
+          player.removePowerUp(localPowerUp);
+        } catch (InvalidPowerUpException ignored) {
+          //
         }
-        board.undrawPowerUp(powerUp);
+        board.undrawPowerUp(localPowerUp);
       }
     }
 
-    event.getItem().afterPaymentCompleted(boardController.getTurnController(), board, player);
-
+    if (player.getCurrentBuying() != null) {
+      player.getCurrentBuying()
+          .afterPaymentCompleted(boardController.getTurnController(), board, player);
+      player.setCurrentBuying(null);
+    }
     boardController.getTurnController().executeGameActionQueue();
   }
 

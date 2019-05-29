@@ -294,6 +294,21 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       maps.remove(map);
     }
     Log.info("Selected map #" + selectedMap);
+
+    for (Player player : board.getPlayers()) {
+      for (Square square : board.getSquares()) {
+        //try {
+          // TODO
+          //board.addObserver
+          //square.addObserver(player.getClient().getBoardView());
+          //square.addObserver(player.getClient().getPlayerDashboardsView());
+          //square.addObserver(player.getClient().getCharactersView());
+        //} catch (RemoteException e) {
+        //  Log.exception(e);
+        //}
+      }
+    }
+
     run();
   }
 
@@ -372,14 +387,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       boardView.addObserver(this);
       boardView.addObserver(playerController);
       boardView.addObserver(attackController);
-      for (Square square : boardView.getBoard().getSquares()) {
-        square.addObserver(this);
-        square.addObserver(playerController);
-        square.addObserver(attackController);
-      }
+
       charactersView.addObserver(this);
       charactersView.addObserver(playerController);
       charactersView.addObserver(attackController);
+
       playerDashboardsView.addObserver(this);
       playerDashboardsView.addObserver(playerController);
       playerDashboardsView.addObserver(attackController);

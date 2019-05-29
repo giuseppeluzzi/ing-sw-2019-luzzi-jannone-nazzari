@@ -14,13 +14,13 @@ import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
-import it.polimi.se2019.adrenalina.model.Buyable;
+import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -32,6 +32,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VirtualPlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface, Observer {
@@ -62,8 +63,11 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void showPaymentOption(Buyable item) {
-    clientSocket.sendEvent(new ShowPaymentOptionInvocation(item));
+  public void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
+      List<PowerUp> budgetPowerUp,
+      Map<AmmoColor, Integer> budgetAmmo) {
+    clientSocket.sendEvent(
+        new ShowPaymentOptionInvocation(buyableType, buyableCost, budgetPowerUp, budgetAmmo));
   }
 
   @Override

@@ -19,16 +19,14 @@ public class PlayerPaymentEvent implements Event {
   private final int blue;
   private final int yellow;
   private final List<PowerUp> powerUps;
-  private final Buyable item;
 
   public PlayerPaymentEvent(PlayerColor playerColor, int red, int blue, int yellow,
-      List<PowerUp> powerUps, Buyable item) {
+      List<PowerUp> powerUps) {
     this.playerColor = playerColor;
     this.red = red;
     this.blue = blue;
     this.yellow = yellow;
     this.powerUps = new ArrayList<>(powerUps);
-    this.item = item;
   }
 
   public PlayerColor getPlayerColor() {
@@ -49,10 +47,6 @@ public class PlayerPaymentEvent implements Event {
 
   public List<PowerUp> getPowerUps() {
     return new ArrayList<>(powerUps);
-  }
-
-  public Buyable getItem() {
-    return item;
   }
 
   @Override
