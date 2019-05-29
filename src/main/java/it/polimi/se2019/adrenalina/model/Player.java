@@ -18,6 +18,7 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -46,8 +47,9 @@ public class Player extends Observable implements Target, Serializable {
 
   private final String name;
   private PlayerColor color;
-  private Square square;
   private PlayerStatus status;
+  @NotExpose
+  private Square square;
 
   private int deaths;
   private boolean frenzy;
@@ -59,11 +61,15 @@ public class Player extends Observable implements Target, Serializable {
 
   private List<PlayerColor> damages;
   private List<PlayerColor> tags;
-  private List<PowerUp> powerUps;
-  private List<Weapon> weapons;
   private HashMap<AmmoColor, Integer> ammo;
+  @NotExpose
+  private List<Weapon> weapons = new ArrayList<>();
+  @NotExpose
+  private List<PowerUp> powerUps = new ArrayList<>();
 
+  @NotExpose
   private Weapon currentWeapon;
+  @NotExpose
   private Buyable currentBuying;
 
   private transient ClientInterface client;
@@ -477,6 +483,7 @@ public class Player extends Observable implements Target, Serializable {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+    weapon.setLoaded(true);
   }
 
   public void updateWeapons(List<Weapon> newWeapons) {

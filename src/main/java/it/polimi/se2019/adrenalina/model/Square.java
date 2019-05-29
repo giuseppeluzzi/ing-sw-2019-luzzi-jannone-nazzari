@@ -26,9 +26,9 @@ public class Square extends Observable implements Target {
   private final int posY;
   private final SquareColor color;
   @NotExpose
-  private HashMap<Direction, Square> neighbours;
+  private HashMap<Direction, Square> neighbours = new HashMap<>();
   @NotExpose
-  private List<Player> players;
+  private List<Player> players = new ArrayList<>();
 
   private boolean spawnPoint;
   private AmmoCard ammoCard;

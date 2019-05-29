@@ -7,26 +7,21 @@ import java.util.List;
 
 public class Observable implements RemoteObservable {
   @NotExpose
-  private final List<Observer> observers = new ArrayList<>();
+  private List<Observer> observers = new ArrayList<>();
 
   @Override
   public void addObserver(Observer observer) {
-    synchronized (observers) {
-      observers.add(observer);
-    }
+    observers.add(observer);
   }
 
   @Override
   public void removeObserver(Observer observer) {
-    synchronized (observers) {
-      observers.remove(observer);
-    }
+    observers.remove(observer);
   }
 
   @Override
   public final void setObservers(List<Observer> observers) {
-    this.observers.clear();
-    this.observers.addAll(observers);
+    this.observers = new ArrayList<>(observers);
   }
 
   @Override

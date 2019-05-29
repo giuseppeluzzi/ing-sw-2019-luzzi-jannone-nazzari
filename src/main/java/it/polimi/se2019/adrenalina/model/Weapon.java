@@ -34,22 +34,20 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   private final HashMap<AmmoColor, Integer> cost;
   private Integer currentSelectTargetSlot;
   @NotExpose
-  private final HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
+  private HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
   @NotExpose
-  private final List<Effect> effects = new ArrayList<>();
-  @NotExpose
-  private final transient Deque<WeaponAction> actionsQueue = new ArrayDeque<>();
+  private List<Effect> effects = new ArrayList<>();
 
   // Usage information
   @NotExpose
-  private final HashMap<Integer, Target> targetHistory = new HashMap<>();
+  private HashMap<Integer, Target> targetHistory = new HashMap<>();
   @NotExpose
   private final List<Effect> selectedEffects = new ArrayList<>();
   private boolean didShoot;
   private Direction lastUsageDirection;
   private boolean cancelled;
   @NotExpose
-  private HashMap<Player, Square> initialPlayerPositions;
+  private HashMap<Player, Square> initialPlayerPositions = new HashMap<>();
   // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
@@ -287,30 +285,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   }
 
   /**
-   * Add all the actions of effect in the queue
-   *
-   * @param effect Effect whose actions will be added
-   * @throws IllegalArgumentException thrown if effect has no weaponaction
-   */
-  public void enqueue(Effect effect) {
-    if (effect.getActions().isEmpty()) {
-      throw new IllegalArgumentException("effect does not contain any weaponaction");
-    }
-    for (WeaponAction action : effect.getActions()) {
-      actionsQueue.addLast(action);
-    }
-  }
-
-  /**
-   * Returns if actionsQueue is empty
-   *
-   * @return true if empty, false otherwhise
-   */
-  public boolean isQueueEmpty() {
-    return actionsQueue.isEmpty();
-  }
-
-  /**
    * Gson serialization.
    *
    * @return JSON string containing serialized object
@@ -339,6 +313,11 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
 
     Gson gson = builder.create();
     Weapon weapon = gson.fromJson(json, Weapon.class);
+
+    weapon.setObservers(new ArrayList<>());
+    weapon.optMoveGroups = new HashMap<>();
+    weapon.targetHistory = new HashMap<>();
+    weapon.initialPlayerPositions = new HashMap<>();
 
     for (Effect effect : weapon.effects) {
       effect.reconcileDeserialization(weapon, null);

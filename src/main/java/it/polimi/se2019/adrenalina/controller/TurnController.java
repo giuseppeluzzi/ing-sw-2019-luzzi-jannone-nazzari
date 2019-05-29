@@ -54,14 +54,18 @@ public class TurnController implements Serializable {
     while (!turnActionsQueue.isEmpty()) {
       gameAction = turnActionsQueue.pop();
       Log.debug("GA: " + gameAction.getClass().getSimpleName());
-      gameAction.execute(boardController.getBoard());
 
       if (gameAction.isSync()) {
+        Log.debug("stooooop");
         break;
       }
+      gameAction.execute(boardController.getBoard());
       gameAction = null;
     }
-    if (gameAction == null) {
+
+    if (gameAction != null) {
+      gameAction.execute(boardController.getBoard());
+    } else {
       endTurn();
     }
   }
@@ -124,9 +128,14 @@ public class TurnController implements Serializable {
 
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
-      addTurnActions(new ActionSelection(this, player),
-          new ActionSelection(this, player),
-          new CheckRespawn(this, player, true));
+      if (player.getName().equals("PeppeRMI")) {
+        // TODO CHEAT SUITE CANCELLARE
+        addTurnActions(new CheckRespawn(this, player, true));
+      } else {
+        addTurnActions(new ActionSelection(this, player),
+            new ActionSelection(this, player),
+            new CheckRespawn(this, player, true));
+      }
       addFirstSpawn(player);
     } else {
       if (boardController.getBoard().isFinalFrenzySelected() &&

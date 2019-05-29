@@ -26,17 +26,6 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
   }
 
   @Override
-  public List<Player> getPlayers() {
-    return new ArrayList<>(players);
-  }
-
-  @Override
-  public void addPlayer(Player player) {
-    players.add(player);
-    player.addObserver(this);
-  }
-
-  @Override
   public void setSelected(PlayerColor playerColor) {
     // TODO: Show selected player
   }

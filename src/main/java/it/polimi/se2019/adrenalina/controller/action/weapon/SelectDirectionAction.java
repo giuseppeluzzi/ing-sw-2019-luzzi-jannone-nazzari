@@ -3,6 +3,8 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
+import it.polimi.se2019.adrenalina.utils.Log;
+import java.rmi.RemoteException;
 
 public class SelectDirectionAction implements WeaponAction {
 
@@ -20,7 +22,11 @@ public class SelectDirectionAction implements WeaponAction {
 
   @Override
   public void execute(Board board, ExecutableObject object) {
-    // TODO: show direction selection
+    try {
+      object.getOwner().getClient().getBoardView().showDirectionSelect();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   @Override

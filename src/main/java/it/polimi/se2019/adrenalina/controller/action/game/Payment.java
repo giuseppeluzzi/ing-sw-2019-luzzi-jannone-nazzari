@@ -38,6 +38,7 @@ public class Payment extends GameAction {
 
   @Override
   public boolean isSync() {
+    Log.debug(item.getCost(AmmoColor.RED) + " - " + item.getCost(AmmoColor.BLUE) + " - " + item.getCost(AmmoColor.YELLOW) + " - " + item.getCost(AmmoColor.ANY));
     return item.getCost(AmmoColor.RED) != 0 ||
         item.getCost(AmmoColor.BLUE) != 0 ||
         item.getCost(AmmoColor.YELLOW) != 0 ||

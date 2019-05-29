@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
+import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
@@ -26,7 +27,11 @@ public class PowerUpEffect extends GameAction {
 
   @Override
   public void execute(Board board) {
-    weaponAction.execute(board, powerUp);
+    try {
+      weaponAction.execute(board, powerUp);
+    } catch (NoTargetsException ignored) {
+      // doesn't happen
+    }
   }
 
   @Override

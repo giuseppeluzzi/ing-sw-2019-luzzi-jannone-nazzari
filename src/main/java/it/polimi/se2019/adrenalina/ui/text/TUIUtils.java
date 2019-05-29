@@ -29,7 +29,7 @@ public class TUIUtils {
       for (Weapon weapon : weapons) {
         if (showCost) {
           Log.println(
-              String.format("\t%d) %s%n\t   Costo: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
+              String.format("\t%d) %s%n\t   Costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
                   targetIndex,
                   weapon.getName(),
                   AmmoColor.RED.getAnsiColor(),

@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectio
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
@@ -105,6 +106,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
 
   @Override
   public void update(BoardStatusUpdate event) {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
+  public void update(BoardAddPlayerUpdate event) throws RemoteException {
     clientSocket.sendEvent(event);
   }
 

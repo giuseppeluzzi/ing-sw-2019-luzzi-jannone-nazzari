@@ -14,10 +14,6 @@ import java.util.List;
 
 public interface CharactersViewInterface extends Observer, RemoteObservable, Serializable {
 
-  List<Player> getPlayers() throws RemoteException;
-
-  void addPlayer(Player player) throws RemoteException;
-
   void setSelected(PlayerColor playerColor) throws RemoteException;
 
   void removeSelected() throws RemoteException;

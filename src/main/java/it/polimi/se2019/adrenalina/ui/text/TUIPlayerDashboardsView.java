@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
@@ -127,19 +128,22 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
       response = response.replace(" ", "");
       answers = new HashSet<>(Arrays.asList(response.split(",")));
-    } while (response.isEmpty() || !response.matches(inputValidationRegex)
+    } while (
+        response.isEmpty()
+        || !response.matches(inputValidationRegex)
         || !verifyPaymentAnswers(answers, spendables)
-        || !verifyPaymentFullfilled(answers, spendables, costs));
+        || !verifyPaymentFullfilled(answers, spendables, costs)
+    );
 
     for (String element : answers) {
-      if (spendables.get(Integer.parseInt(element)).isPowerUp()) {
-        answerPowerUp.add((PowerUp) spendables.get(Integer.parseInt(element)));
+      if (spendables.get(Integer.parseInt(element) - 1).isPowerUp()) {
+        answerPowerUp.add((PowerUp) spendables.get(Integer.parseInt(element) - 1));
       } else {
-        if (spendables.get(Integer.parseInt(element)).getColor() == AmmoColor.RED) {
+        if (spendables.get(Integer.parseInt(element) - 1).getColor() == AmmoColor.RED) {
           answerRed++;
-        } else if (spendables.get(Integer.parseInt(element)).getColor() == AmmoColor.BLUE) {
+        } else if (spendables.get(Integer.parseInt(element) - 1).getColor() == AmmoColor.BLUE) {
           answerBlue++;
-        } else if (spendables.get(Integer.parseInt(element)).getColor() == AmmoColor.YELLOW) {
+        } else if (spendables.get(Integer.parseInt(element) - 1).getColor() == AmmoColor.YELLOW) {
           answerYellow++;
         }
       }
@@ -217,7 +221,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
     String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     try {
-      notifyObservers(new PlayerCollectWeaponEvent(client.getPlayerColor(), weapon));
+      notifyObservers(new PlayerSelectWeaponEvent(client.getPlayerColor(), weapon));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -232,7 +236,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
       chosenEffects.add(
-          TUIUtils.showEffectSelection(chosenEffects.get(0).getSubEffects(), true));
+          TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
     }
 
     for (Effect effect : chosenEffects) {

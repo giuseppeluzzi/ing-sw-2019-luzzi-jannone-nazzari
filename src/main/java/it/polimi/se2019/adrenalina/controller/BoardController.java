@@ -315,6 +315,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         Log.exception(e);
       }
     }
+    board.notifyInitialStatus();
 
     for (Square square : map.getSquares()) {
       Square realSquare = new Square(square.getPosX(),

@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.view;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
@@ -43,6 +44,8 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
   void showSpawnPointTrackSelection() throws RemoteException;
 
   void update(BoardStatusUpdate event) throws RemoteException;
+
+  void update(BoardAddPlayerUpdate event) throws RemoteException;
 
   void update(BoardSetSquareUpdate event) throws RemoteException;
 

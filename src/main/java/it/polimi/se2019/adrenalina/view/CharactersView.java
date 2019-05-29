@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -32,23 +33,13 @@ public abstract class CharactersView extends Observable implements CharactersVie
     registeredEvents.add(EventType.PLAYER_STATUS_UPDATE);
   }
 
-  @Override
-  public List<Player> getPlayers() {
-    return new ArrayList<>(players);
-  }
-
   public Player getPlayerByColor(PlayerColor playerColor) {
-    for (Player player : getPlayers()) {
+    for (Player player : boardView.getBoard().getPlayers()) {
       if (player.getColor() == playerColor) {
         return player;
       }
     }
     return null;
-  }
-
-  @Override
-  public void addPlayer(Player player) {
-    players.add(player);
   }
 
   @Override
@@ -66,12 +57,22 @@ public abstract class CharactersView extends Observable implements CharactersVie
 
   @Override
   public void update(PlayerPositionUpdate event) {
-    getPlayerByColor(event.getPlayerColor()).setSquare(boardView.getBoard().getSquare(event.getPosX(), event.getPosY()));
+    Square newSquare = boardView.getBoard().getSquare(event.getPosX(), event.getPosY());
+    try {
+      boardView.getBoard().getPlayerByColor(event.getPlayerColor()).setSquare(newSquare);
+    } catch (InvalidPlayerException e) {
+      Log.critical("Player not found!");
+    }
   }
 
   @Override
   public void update(PlayerStatusUpdate event) {
-    getPlayerByColor(event.getPlayerColor()).setStatus(event.getPlayerStatus());
+    try {
+      boardView.getBoard().getPlayerByColor(event.getPlayerColor())
+          .setStatus(event.getPlayerStatus());
+    } catch (InvalidPlayerException e) {
+      Log.critical("Player not found!");
+    }
   }
 
   @Override

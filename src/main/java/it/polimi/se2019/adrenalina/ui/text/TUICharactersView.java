@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -16,8 +17,11 @@ public class TUICharactersView extends CharactersView {
   private final transient ClientInterface client;
   private final transient Scanner scanner = new Scanner(System.in, "utf-8");
 
+  private final BoardViewInterface boardView;
+
   public TUICharactersView(ClientInterface client, BoardViewInterface boardView) {
     super((BoardView) boardView);
+    this.boardView = boardView;
     this.client = client;
   }
 
@@ -26,9 +30,12 @@ public class TUICharactersView extends CharactersView {
 
     Player player;
     try {
-      player = getPlayerByColor(client.getPlayerColor());
+      player = boardView.getBoard().getPlayerByColor(client.getPlayerColor());
     } catch (RemoteException e) {
       Log.exception(e);
+      return;
+    } catch (InvalidPlayerException e) {
+      Log.critical("Player not found!");
       return;
     }
 

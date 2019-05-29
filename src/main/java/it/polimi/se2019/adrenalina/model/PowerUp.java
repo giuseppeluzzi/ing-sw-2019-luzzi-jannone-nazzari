@@ -22,7 +22,7 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
   private final boolean doesCost;
   private final PowerUpType type;
   @NotExpose
-  private final HashMap<Integer, Target> targetHistory = new HashMap<>();
+  private HashMap<Integer, Target> targetHistory = new HashMap<>();
 
   protected PowerUp(AmmoColor color, boolean doesCost, PowerUpType type) {
     this.type = type;

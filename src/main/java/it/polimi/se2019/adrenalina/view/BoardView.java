@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.view;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
@@ -14,6 +15,7 @@ import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -44,6 +46,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     registeredEvents.add(EventType.BOARD_HAS_WEAPON_UPDATE);
     registeredEvents.add(EventType.BOARD_HAS_AMMO_CARDS_UPDATE);
     registeredEvents.add(EventType.BOARD_KILL_SHOTS_UPDATE);
+    registeredEvents.add(EventType.BOARD_ADD_PLAYER_UPDATE);
     registeredEvents.add(EventType.BOARD_SET_SQUARE_UPDATE);
     registeredEvents.add(EventType.DOMINATION_BOARD_DAMAGES_UPDATE);
     registeredEvents.add(EventType.SQUARE_AMMO_CARD_UPDATE);
@@ -97,8 +100,13 @@ public abstract class BoardView extends Observable implements BoardViewInterface
   }
 
   @Override
+  public void update(BoardAddPlayerUpdate event) throws RemoteException {
+    board.addPlayer(new Player(event.getPlayerName(), event.getPlayerColor(), board));
+
+  }
+
+  @Override
   public void update(BoardSetSquareUpdate event) {
-    Log.debug(board.getSquares().size()+"");
     board.setSquare(event.getSquare());
   }
 

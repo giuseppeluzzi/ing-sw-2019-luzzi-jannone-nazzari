@@ -9,6 +9,8 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +88,12 @@ public class SelectAction implements WeaponAction {
         || selectType == TargetType.ATTACK_SQUARE) && targets.isEmpty()) {
       throw new NoTargetsException("No targets available", ! object.didShoot());
     }
-    // TODO: show selection to the user
+
+    try {
+      object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets);
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public List<Target> getTargets(Board board, ExecutableObject object) {

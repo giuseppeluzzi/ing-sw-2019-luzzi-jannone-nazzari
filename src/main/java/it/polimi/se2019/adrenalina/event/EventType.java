@@ -14,6 +14,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvo
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
@@ -109,7 +110,8 @@ public enum EventType {
   BOARD_KILL_SHOTS_UPDATE(BoardKillShotsUpdate.class),
   DOMINATION_BOARD_DAMAGES_UPDATE(DominationBoardDamagesUpdate.class),
   PLAYER_DEATH_UPDATE(PlayerDeathUpdate.class),
-  BOARD_SET_SQUARE_UPDATE(BoardSetSquareUpdate.class);
+  BOARD_SET_SQUARE_UPDATE(BoardSetSquareUpdate.class),
+  BOARD_ADD_PLAYER_UPDATE(BoardAddPlayerUpdate.class);
 
   private final Class<? extends Event> eventClass;
 

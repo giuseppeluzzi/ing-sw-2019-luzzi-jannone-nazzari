@@ -232,9 +232,16 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
     }
 
+
+    // CHEAT SUITE
+    // TODO CANCELLARE
     player.addAmmo(AmmoColor.RED, 3);
     player.addAmmo(AmmoColor.BLUE, 3);
     player.addAmmo(AmmoColor.YELLOW, 3);
+    Weapon weapon = board.getWeapons().get(0);
+    board.takeWeapon(weapon);
+    player.addWeapon(weapon);
+    // END CHEAT SUITE
 
     boardController.getTurnController().executeGameActionQueue();
   }
@@ -266,10 +273,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         board.undrawPowerUp(localPowerUp);
       }
     }
-
     if (player.getCurrentBuying() != null) {
+      TurnController turnController = boardController.getTurnController();
       player.getCurrentBuying()
-          .afterPaymentCompleted(boardController.getTurnController(), board, player);
+          .afterPaymentCompleted(turnController, board, player);
       player.setCurrentBuying(null);
     }
     boardController.getTurnController().executeGameActionQueue();
