@@ -37,23 +37,10 @@ public class VirtualPlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface {
 
   private static final long serialVersionUID = 4893523547038046745L;
-  private final transient List<Player> players;
   private final transient VirtualClientSocket clientSocket;
 
   public VirtualPlayerDashboardsView(VirtualClientSocket clientSocket) {
     this.clientSocket = clientSocket;
-    players = new ArrayList<>();
-  }
-
-  @Override
-  public void addPlayer(Player player) {
-    players.add(player);
-    player.addObserver(this);
-  }
-
-  @Override
-  public List<Player> getPlayers() {
-    return new ArrayList<>(players);
   }
 
   @Override
@@ -102,66 +89,9 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void update(PlayerDamagesTagsUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(PlayerScoreUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(PlayerKillScoreUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(PlayerStatusUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(PlayerAmmoUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(OwnWeaponUpdate event) throws RemoteException {
-    if (clientSocket.getPlayerColor() == event.getPlayerColor()) {
-      clientSocket.sendEvent(event);
-    }
-  }
-
-  @Override
-  public void update(EnemyWeaponUpdate event) throws RemoteException {
-    if (clientSocket.getPlayerColor() != event.getPlayerColor()) {
-      clientSocket.sendEvent(event);
-    }
-
-  }
-
-  @Override
-  public void update(EnemyPowerUpUpdate event) throws RemoteException {
-    if (clientSocket.getPlayerColor() != event.getPlayerColor()) {
-      clientSocket.sendEvent(event);
-    }
-  }
-
-  @Override
-  public void update(OwnPowerUpUpdate event) throws RemoteException {
-    if (clientSocket.getPlayerColor() == event.getPlayerColor()) {
-      clientSocket.sendEvent(event);
-    }
-  }
-
-  @Override
-  public void update(CurrentPlayerUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
   public void update(Event event) {
-    // do nothing
+    if (getHandledEvents().contains(event.getEventType())) {
+      clientSocket.sendEvent(event);
+    }
   }
 }

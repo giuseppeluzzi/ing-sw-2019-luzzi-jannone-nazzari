@@ -17,12 +17,10 @@ import java.util.List;
 public class VirtualCharactersView extends Observable implements CharactersViewInterface {
 
   private static final long serialVersionUID = -6715889122608916050L;
-  private final transient ArrayList<Player> players;
   private final transient VirtualClientSocket clientSocket;
 
   public VirtualCharactersView(VirtualClientSocket clientSocket) {
     this.clientSocket = clientSocket;
-    players = new ArrayList<>();
   }
 
   @Override
@@ -41,22 +39,9 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
   }
 
   @Override
-  public void update(PlayerPositionUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(PlayerStatusUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(PlayerDeathUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
   public void update(Event event) {
-    // do nothing
+    if (getHandledEvents().contains(event.getEventType())) {
+      clientSocket.sendEvent(event);
+    }
   }
 }

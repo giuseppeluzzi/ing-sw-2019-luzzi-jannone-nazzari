@@ -128,7 +128,7 @@ public class TurnController implements Serializable {
 
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
-      if (player.getName().equals("PeppeRMI")) {
+      if (player.getName().equals("PeppeSocket")) {
         // TODO CHEAT SUITE CANCELLARE
         addTurnActions(new CheckRespawn(this, player, true));
       } else {

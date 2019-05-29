@@ -9,25 +9,12 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectio
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
-import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import it.polimi.se2019.adrenalina.utils.Observer;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +54,7 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
 
   @Override
   public void hideTimer() {
-    startTimer(0);
+    clientSocket.sendEvent(new TimerSetEvent(0));
   }
 
   @Override
@@ -105,57 +92,9 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
   }
 
   @Override
-  public void update(BoardStatusUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(BoardAddPlayerUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(BoardSetSquareUpdate event) throws RemoteException {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(BoardHasWeaponsUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(BoardHasAmmoCardsUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(BoardKillShotsUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(DominationBoardDamagesUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(SquareAmmoCardUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(SquareWeaponUpdate event) {
-    clientSocket.sendEvent(event);
-  }
-
-  @Override
-  public void update(TimerSetEvent event) {
-    // Not expected
-  }
-
-  @Override
   public void update(Event event) {
-    // do nothing
+    if (getHandledEvents().contains(event.getEventType())) {
+      clientSocket.sendEvent(event);
+    }
   }
 }

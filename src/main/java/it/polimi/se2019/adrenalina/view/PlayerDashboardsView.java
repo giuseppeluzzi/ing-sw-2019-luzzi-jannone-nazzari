@@ -4,7 +4,6 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
@@ -26,44 +25,28 @@ import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class PlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface {
 
   private static final long serialVersionUID = -6150690431150041388L;
-  private final Set<EventType> registeredEvents = new HashSet<>();
   private final BoardView boardView;
-  private final List<Player> players;
 
   protected PlayerDashboardsView(BoardView boardView) {
-    players = new ArrayList<>();
     this.boardView = boardView;
   }
 
   public Player getPlayerByColor(PlayerColor playerColor) {
-    for (Player player : getPlayers()) {
+    for (Player player : boardView.getBoard().getPlayers()) {
       if (player.getColor() == playerColor) {
         return player;
       }
     }
-    registeredEvents.add(EventType.PLAYER_DAMAGES_TAGS_UPDATE);
-    registeredEvents.add(EventType.PLAYER_SCORE_UPDATE);
-    registeredEvents.add(EventType.PLAYER_KILL_SCORE_UPDATE);
-    registeredEvents.add(EventType.PLAYER_STATUS_UPDATE);
-    registeredEvents.add(EventType.PLAYER_AMMO_UPDATE);
-    registeredEvents.add(EventType.PLAYER_WEAPON_UPDATE);
-    registeredEvents.add(EventType.ENEMY_WEAPON_UPDATE);
-    registeredEvents.add(EventType.ENEMY_POWER_UP_UPDATE);
-    registeredEvents.add(EventType.OWN_POWER_UP_UPDATE);
-    registeredEvents.add(EventType.CURRENT_PLAYER_UPDATE);
     return null;
   }
 
@@ -84,66 +67,46 @@ public abstract class PlayerDashboardsView extends Observable implements
   @Override
   public abstract void showPowerUpSelection(List<PowerUp> powerUps);
 
-  @Override
-  public void addPlayer(Player player) {
-    players.add(player);
-  }
-
-  @Override
-  public List<Player> getPlayers() {
-    return new ArrayList<>(players);
-  }
-
-  @Override
-  public void update(PlayerDamagesTagsUpdate event) throws RemoteException {
+  public void update(PlayerDamagesTagsUpdate event) {
     Player player = getPlayerByColor(event.getPlayerColor());
     player.updateDamages(event.getDamages());
     player.updateTags(event.getTags());
   }
 
-  @Override
-  public void update(PlayerScoreUpdate event) throws RemoteException {
+  public void update(PlayerScoreUpdate event) {
     getPlayerByColor(event.getPlayerColor()).setScore(event.getScore());
   }
 
-  @Override
-  public void update(PlayerKillScoreUpdate event) throws RemoteException {
+  public void update(PlayerKillScoreUpdate event) {
     getPlayerByColor(event.getPlayerColor()).setKillScore(event.getKillScore());
   }
 
-  @Override
-  public void update(PlayerStatusUpdate event) throws RemoteException {
+  public void update(PlayerStatusUpdate event) {
     getPlayerByColor(event.getPlayerColor()).setStatus(event.getPlayerStatus());
   }
 
-  @Override
-  public void update(PlayerAmmoUpdate event) throws RemoteException {
+  public void update(PlayerAmmoUpdate event) {
     Player player = getPlayerByColor(event.getPlayerColor());
     player.updateAmmo(AmmoColor.BLUE, event.getBlue());
     player.updateAmmo(AmmoColor.RED, event.getRed());
     player.updateAmmo(AmmoColor.YELLOW, event.getYellow());
-
   }
 
-  @Override
-  public void update(OwnWeaponUpdate event) throws RemoteException {
+  public void update(OwnWeaponUpdate event) {
     getPlayerByColor(event.getPlayerColor()).updateWeapons(event.getWeapons());
   }
 
-  @Override
-  public void update(EnemyWeaponUpdate event) throws RemoteException {
+  public void update(EnemyWeaponUpdate event) {
     Player player = getPlayerByColor(event.getPlayerColor());
     player.updateWeapons(event.getUnloadedWeapons());
     player.setWeaponCount(event.getNumWeapons());
   }
 
-  @Override
-  public void update(EnemyPowerUpUpdate event) throws RemoteException {
+  public void update(EnemyPowerUpUpdate event) {
     getPlayerByColor(event.getPlayerColor()).setPowerUpCount(event.getPowerUpsNum());
   }
 
-  @Override
-  public void update(OwnPowerUpUpdate event) throws RemoteException {
+  public void update(OwnPowerUpUpdate event) {
     List<PowerUp> powerUps = new ArrayList<>();
     for (Map.Entry<PowerUpType, Map<AmmoColor, Integer>> entrySet : event.getPowerUps()
         .entrySet()) {
@@ -201,14 +164,13 @@ public abstract class PlayerDashboardsView extends Observable implements
   }
 
 
-  @Override
-  public void update(CurrentPlayerUpdate event) throws RemoteException {
+  public void update(CurrentPlayerUpdate event) {
     boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());
   }
 
   @Override
   public void update(Event event) {
-    if (registeredEvents.contains(event.getEventType())) {
+    if (getHandledEvents().contains(event.getEventType())) {
       Log.debug("PlayerDashboardsView", "Event received: " + event.getEventType());
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())

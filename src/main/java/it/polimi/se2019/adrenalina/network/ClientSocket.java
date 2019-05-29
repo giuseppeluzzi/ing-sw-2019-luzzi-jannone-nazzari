@@ -18,6 +18,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
@@ -116,7 +117,6 @@ public class ClientSocket extends Client implements Runnable, Observer {
 
   @Override
   public void update(Event event) {
-    // Forward messages
     sendEvent(event);
   }
 
@@ -143,6 +143,14 @@ public class ClientSocket extends Client implements Runnable, Observer {
           Event event = gson.fromJson(message, eventType.getEventClass());
 
           switch (eventType) {
+            case TIMER_SET_EVENT:
+              TimerSetEvent timerSetEvent = gson.fromJson(message, TimerSetEvent.class);
+              if (timerSetEvent.getTimer() == 0) {
+                boardView.hideTimer();
+              } else {
+                boardView.startTimer(timerSetEvent.getTimer());
+              }
+              break;
             case PLAYER_SET_COLOR:
               PlayerSetColorEvent playerSetColorEvent = gson.fromJson(message,
                   PlayerSetColorEvent.class);

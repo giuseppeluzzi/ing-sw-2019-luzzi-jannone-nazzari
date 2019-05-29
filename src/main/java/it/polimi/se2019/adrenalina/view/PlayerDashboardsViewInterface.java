@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
@@ -22,14 +23,28 @@ import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public interface PlayerDashboardsViewInterface extends Observer, RemoteObservable, Serializable {
 
-  void addPlayer(Player player) throws RemoteException;
+  default List<EventType> getHandledEvents() {
+    List<EventType> registeredEvents = new ArrayList<>();
 
-  List<Player> getPlayers() throws RemoteException;
+    registeredEvents.add(EventType.PLAYER_DAMAGES_TAGS_UPDATE);
+    registeredEvents.add(EventType.PLAYER_SCORE_UPDATE);
+    registeredEvents.add(EventType.PLAYER_KILL_SCORE_UPDATE);
+    registeredEvents.add(EventType.PLAYER_STATUS_UPDATE);
+    registeredEvents.add(EventType.PLAYER_AMMO_UPDATE);
+    registeredEvents.add(EventType.PLAYER_WEAPON_UPDATE);
+    registeredEvents.add(EventType.ENEMY_WEAPON_UPDATE);
+    registeredEvents.add(EventType.ENEMY_POWER_UP_UPDATE);
+    registeredEvents.add(EventType.OWN_POWER_UP_UPDATE);
+    registeredEvents.add(EventType.CURRENT_PLAYER_UPDATE);
+
+    return registeredEvents;
+  }
 
   void switchToFinalFrenzy(PlayerColor playerColor) throws RemoteException;
 
@@ -44,26 +59,4 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
   void showEffectSelection(Weapon weapon) throws RemoteException;
 
   void showPowerUpSelection(List<PowerUp> powerUps) throws RemoteException;
-
-  void update(PlayerDamagesTagsUpdate event) throws RemoteException;
-
-  void update(PlayerScoreUpdate event) throws RemoteException;
-
-  void update(PlayerKillScoreUpdate event) throws RemoteException;
-
-  void update(PlayerStatusUpdate event) throws RemoteException;
-
-  void update(PlayerAmmoUpdate event) throws RemoteException;
-
-  void update(OwnWeaponUpdate event) throws RemoteException;
-
-  void update(EnemyWeaponUpdate event) throws RemoteException;
-
-  void update(EnemyPowerUpUpdate event) throws RemoteException;
-
-  void update(OwnPowerUpUpdate event) throws RemoteException;
-
-  void update(CurrentPlayerUpdate event) throws RemoteException;
-
-  void update(Event event) throws RemoteException;
 }
