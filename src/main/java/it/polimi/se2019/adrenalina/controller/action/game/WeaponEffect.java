@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
+import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -26,7 +27,16 @@ public class WeaponEffect extends GameAction {
 
   @Override
   public void execute(Board board) {
-    weaponAction.execute(board, weapon);
+    if (! weapon.isCancelled()) {
+      try {
+        weaponAction.execute(board, weapon);
+      } catch (NoTargetsException e) {
+        if (e.isRollback()) {
+          getTurnController().addTurnActions(new MoveRollback(getTurnController(), getPlayer(), weapon));
+        }
+        weapon.setCancelled();
+      }
+    }
   }
 
   @Override

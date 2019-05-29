@@ -1,11 +1,14 @@
 package it.polimi.se2019.adrenalina.model;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 public interface ExecutableObject {
   /**
    * Clear data of previous targets.
    */
-  void clearTargetHistory();
+  void reset();
 
   /**
    * Return Target element from targetHistory at index "key".
@@ -26,4 +29,14 @@ public interface ExecutableObject {
    * @return Player if existing
    */
   Player getOwner();
+
+  void setDidShoot();
+
+  boolean didShoot();
+
+  Map<Player, Square> getInitialPlayerPositions();
+
+  void setInitialPlayerPosition(Player player, Square position);
+
+  boolean isInitialPositionSet(Player player);
 }

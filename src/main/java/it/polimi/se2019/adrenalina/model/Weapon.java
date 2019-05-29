@@ -45,7 +45,11 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   private final HashMap<Integer, Target> targetHistory = new HashMap<>();
   @NotExpose
   private final List<Effect> selectedEffects = new ArrayList<>();
+  private boolean didShoot;
   private Direction lastUsageDirection;
+  private boolean cancelled;
+  @NotExpose
+  private HashMap<Player, Square> initialPlayerPositions;
   // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
@@ -53,6 +57,7 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
     this.baseCost = baseCost;
     this.name = name;
     loaded = true;
+    didShoot = false;
 
     cost = new HashMap<>();
 
@@ -77,6 +82,9 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
         targetHistory.put(key, new Square((Square) value));
       }
     }
+
+    didShoot = weapon.didShoot;
+    initialPlayerPositions = new HashMap<>(weapon.initialPlayerPositions);
 
     optMoveGroups.putAll(weapon.optMoveGroups);
 
@@ -128,11 +136,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
    */
   public String getName() {
     return name;
-  }
-
-  @Override
-  public void clearTargetHistory() {
-    targetHistory.clear();
   }
 
   @Override
@@ -299,28 +302,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   }
 
   /**
-   * All the actions in the queue are executed with LIFO methodology.
-   *
-   * @param board Board object, must be passed as the argument of execute method
-   */
-  public void executeActionQueue(Board board) {
-    while (!actionsQueue.isEmpty()) {
-      WeaponAction action = actionsQueue.getFirst();
-      action.execute(board, this);
-      actionsQueue.removeFirst();
-      if (action.getActionType() == WeaponActionType.SELECT) {
-        currentSelectTargetSlot = ((SelectAction) action).getTarget();
-      }
-      if (action.isSync()) {
-        break;
-      }
-      currentSelectTargetSlot = null;
-    }
-    getOwner().setCurrentWeapon(null);
-    // TODO: Player has completed its turn?
-  }
-
-  /**
    * Returns if actionsQueue is empty
    *
    * @return true if empty, false otherwhise
@@ -381,4 +362,47 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
       player.addWeapon(this);
     }
   }
+
+  @Override
+  public void setDidShoot() {
+    didShoot = true;
+  }
+
+  @Override
+  public boolean didShoot() {
+    return didShoot;
+  }
+
+  @Override
+  public Map<Player, Square> getInitialPlayerPositions() {
+    return new HashMap<>(initialPlayerPositions);
+  }
+
+  @Override
+  public void setInitialPlayerPosition(Player player, Square position) {
+    initialPlayerPositions.put(player, position);
+  }
+
+  @Override
+  public boolean isInitialPositionSet(Player player) {
+    return initialPlayerPositions.containsKey(player);
+  }
+
+  public void setCancelled() {
+    cancelled = true;
+  }
+
+  public boolean isCancelled() {
+    return cancelled;
+  }
+
+  @Override
+  public void reset() {
+    targetHistory.clear();
+    didShoot = false;
+    initialPlayerPositions = new HashMap<>();
+    cancelled = false;
+  }
+
+
 }

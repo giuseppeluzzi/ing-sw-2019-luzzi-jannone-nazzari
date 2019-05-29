@@ -89,6 +89,10 @@ public class TurnController implements Serializable {
       return;
     }
 
+    for (Weapon weapon : currentPlayer.getWeapons()) {
+      weapon.reset();
+    }
+
     Log.debug(currentPlayer.getName() + " ha terminato il turno!");
 
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);

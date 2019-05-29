@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
 
@@ -79,7 +80,7 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
   }
 
   @Override
-  public void clearTargetHistory() {
+  public void reset() {
     targetHistory.clear();
   }
 
@@ -125,5 +126,33 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
         // ignore exception
       }
     }
+  }
+
+  @Override
+  public void setDidShoot() {
+    // Not implemented in powerUps
+  }
+
+  @Override
+  public boolean didShoot() {
+    // Not implemented in powerUps
+    return true;
+  }
+
+  @Override
+  public Map<Player, Square> getInitialPlayerPositions() {
+    // Not implemented in powerUps
+    return null;
+  }
+
+  @Override
+  public void setInitialPlayerPosition(Player player, Square position) {
+    // Not implemented in powerUps
+  }
+
+  @Override
+  public boolean isInitialPositionSet(Player player) {
+    // Not implemented in powerUps
+    return true;
   }
 }

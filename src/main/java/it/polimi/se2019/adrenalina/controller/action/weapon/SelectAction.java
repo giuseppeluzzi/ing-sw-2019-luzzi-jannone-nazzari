@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -77,8 +78,18 @@ public class SelectAction implements WeaponAction {
   }
 
   @Override
-  public void execute(Board board, ExecutableObject object) {
+  public void execute(Board board, ExecutableObject object) throws NoTargetsException {
     // TODO: show selection, ignore if target in targethistory is alredy setted
+    List<Target> targets = getTargets(board, object);
+    if ((selectType == TargetType.ATTACK_TARGET
+        || selectType == TargetType.ATTACK_ROOM
+        || selectType == TargetType.ATTACK_SQUARE) && targets.isEmpty()) {
+      throw new NoTargetsException("No targets available", ! object.didShoot());
+    }
+    // TODO: show selection to the user
+  }
+
+  public List<Target> getTargets(Board board, ExecutableObject object) {
     Player owner = object.getOwner();
     List<Target> targets = new ArrayList<>();
 
@@ -143,9 +154,7 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> fromTarget.getSquare().getColor() == x.getSquare().getColor());
     }
 
-    targets = targetStream.collect(Collectors.toList());
-
-    // TODO: show selection to the user
+    return targetStream.collect(Collectors.toList());
   }
 
   @Override
