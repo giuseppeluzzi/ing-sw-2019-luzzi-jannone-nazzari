@@ -35,6 +35,7 @@ public class Square extends Observable implements Target {
   private final transient Board board;
 
   private final HashMap<Direction, BorderType> borders;
+  @NotExpose
   private List<Weapon> weapons;
 
   public Square(int posX, int posY, SquareColor color,
@@ -364,6 +365,7 @@ public class Square extends Observable implements Target {
     Square square = gson.fromJson(json, Square.class);
     square.neighbours = new HashMap<>();
     square.players = new ArrayList<>();
+    square.weapons = new ArrayList<>();
     return square;
   }
 }

@@ -14,6 +14,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
+import it.polimi.se2019.adrenalina.utils.Log;
 import org.junit.Test;
 
 public class WeaponTest {
@@ -70,6 +71,7 @@ public class WeaponTest {
     base.addSubEffect(bis);
     weapon.addEffect(base);
     String json = weapon.serialize();
+    Log.println(json);
 
     if (json.isEmpty()) {
       fail("JSON resulting from serialization is empty");

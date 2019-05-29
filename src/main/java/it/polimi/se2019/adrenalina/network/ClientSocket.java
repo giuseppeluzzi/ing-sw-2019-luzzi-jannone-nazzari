@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
@@ -24,6 +25,7 @@ import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
+import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.JsonPowerUpDeserializer;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
@@ -40,6 +42,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientSocket extends Client implements Runnable, Observer {
 
@@ -133,6 +136,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
           String message = bufferedReader.readLine();
 
           GsonBuilder gsonBuilder = new GsonBuilder();
+          gsonBuilder.registerTypeAdapter(Effect.class, new JsonEffectDeserializer());
           gsonBuilder.registerTypeAdapter(PowerUp.class, new JsonPowerUpDeserializer());
           gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
           Gson gson = gsonBuilder.create();
@@ -195,7 +199,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
             case SHOW_EFFECT_SELECTION_INVOCATION:
               ShowEffectSelectionInvocation showEffectSelectionInvocation = gson.fromJson(message,
                   ShowEffectSelectionInvocation.class);
-              playerDashboardsView.showEffectSelection(showEffectSelectionInvocation.getWeapon());
+              playerDashboardsView.showEffectSelection(showEffectSelectionInvocation.getWeapon(),
+                  showEffectSelectionInvocation.getEffects());
               break;
             case SHOW_WEAPON_SELECTION_INVOCATION:
               ShowWeaponSelectionInvocation showWeaponSelectionInvocation = gson.fromJson(message,

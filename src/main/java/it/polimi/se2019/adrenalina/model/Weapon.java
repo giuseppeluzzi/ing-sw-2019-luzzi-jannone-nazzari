@@ -6,17 +6,11 @@ import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.TurnController;
-import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
-import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
-import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
-import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +29,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   private Integer currentSelectTargetSlot;
   @NotExpose
   private HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
-  @NotExpose
   private List<Effect> effects = new ArrayList<>();
 
   // Usage information

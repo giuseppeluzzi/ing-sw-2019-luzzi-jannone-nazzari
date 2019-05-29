@@ -9,11 +9,10 @@ import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Effect implements Serializable, Buyable {
+public class Effect implements Buyable {
 
   private static final long serialVersionUID = 2725086084597119182L;
   private final int costRed;
@@ -21,12 +20,15 @@ public class Effect implements Serializable, Buyable {
   private final int costYellow;
   private final boolean anyTime;
   private final String name;
-  @NotExpose private Effect requiredEffect;
-  @NotExpose private Weapon weapon;
   private final List<WeaponAction> actions;
   private final List<Effect> subEffects;
+  @NotExpose
+  private Effect requiredEffect;
+  @NotExpose
+  private Weapon weapon;
 
-  public Effect(String name, Weapon weapon, int costRed, int costBlue, int costYellow, boolean anyTime) {
+  public Effect(String name, Weapon weapon, int costRed, int costBlue, int costYellow,
+      boolean anyTime) {
     this.name = name;
     this.weapon = weapon;
     this.costRed = costRed;
@@ -40,16 +42,29 @@ public class Effect implements Serializable, Buyable {
   }
 
   public Effect(Effect effect) {
+    this(effect, false);
+  }
+
+  public Effect(Effect effect, boolean stripActions) {
     name = effect.name;
     weapon = effect.weapon;
     costRed = effect.costRed;
     costBlue = effect.costBlue;
     costYellow = effect.costYellow;
     anyTime = effect.anyTime;
-    requiredEffect = effect.getRequiredEffect();
-    actions = effect.getActions();
-    subEffects = effect.getSubEffects();
+    requiredEffect = effect.requiredEffect;
+    if (stripActions) {
+      actions = new ArrayList<>();
+      subEffects = new ArrayList<>();
+      for (Effect subEffect : effect.subEffects) {
+        subEffects.add(new Effect(subEffect, true));
+      }
+    } else {
+      actions = effect.getActions();
+      subEffects = effect.getSubEffects();
+    }
   }
+
 
   public String getName() {
     return name;
@@ -101,7 +116,7 @@ public class Effect implements Serializable, Buyable {
   }
 
   @Override
-  public boolean equals (Object object) {
+  public boolean equals(Object object) {
     return object instanceof Effect &&
         ((Effect) object).name.equals(name) &&
         ((Effect) object).weapon.getName().equals(weapon.getName());

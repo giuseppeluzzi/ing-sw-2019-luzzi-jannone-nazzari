@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
 
 public class WeaponEffect extends GameAction {
 
@@ -29,6 +30,7 @@ public class WeaponEffect extends GameAction {
   public void execute(Board board) {
     if (! weapon.isCancelled()) {
       try {
+        Log.debug("WA: " + weaponAction.getActionType());
         weaponAction.execute(board, weapon);
       } catch (NoTargetsException e) {
         if (e.isRollback()) {

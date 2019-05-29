@@ -228,21 +228,25 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showEffectSelection(Weapon weapon) {
+  public void showEffectSelection(Weapon weapon, List<Effect> effects) {
     List<Effect> chosenEffects = new ArrayList<>();
     List<String> chosenEffectsNames = new ArrayList<>();
 
-    chosenEffects.add(TUIUtils.showEffectSelection(weapon.getEffects(), false));
+    chosenEffects.add(TUIUtils.showEffectSelection(effects, false));
 
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
+      Log.debug("aa1 " + chosenEffects.get(chosenEffects.size()-1));
       chosenEffects.add(
           TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
     }
+
+    Log.debug("aa2");
 
     for (Effect effect : chosenEffects) {
       chosenEffectsNames.add(effect.getName());
     }
 
+    Log.debug("aa3");
     try {
       notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(),
           chosenEffectsNames));

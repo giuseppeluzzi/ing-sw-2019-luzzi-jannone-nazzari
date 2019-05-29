@@ -92,7 +92,7 @@ public class TUIUtils {
       }
       chosenIndex = Character.getNumericValue(scanner.nextLine().charAt(0));
       if (chosenIndex >= 0 && chosenIndex < targetIndex){
-        chosenEffect = effects.get(chosenIndex);
+        chosenEffect = effects.get(chosenIndex - 1);
       }
     } while (chosenEffect == null);
 

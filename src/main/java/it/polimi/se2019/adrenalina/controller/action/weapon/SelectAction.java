@@ -81,7 +81,6 @@ public class SelectAction implements WeaponAction {
 
   @Override
   public void execute(Board board, ExecutableObject object) throws NoTargetsException {
-    // TODO: show selection, ignore if target in targethistory is alredy setted
     List<Target> targets = getTargets(board, object);
     if ((selectType == TargetType.ATTACK_TARGET
         || selectType == TargetType.ATTACK_ROOM

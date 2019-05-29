@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
@@ -56,7 +57,7 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
 
   void showWeaponSelection(List<Weapon> weapons) throws RemoteException;
 
-  void showEffectSelection(Weapon weapon) throws RemoteException;
+  void showEffectSelection(Weapon weapon, List<Effect> effects) throws RemoteException;
 
   void showPowerUpSelection(List<PowerUp> powerUps) throws RemoteException;
 }
