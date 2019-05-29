@@ -59,7 +59,7 @@
             "color": "PURPLE",
             "spawnPoint": false,
             "borders": {
-                "EAST": "WALL",
+                "EAST": "AIR",
                 "SOUTH": "DOOR",
                 "WEST": "WALL",
                 "NORTH": "DOOR"
@@ -107,7 +107,7 @@
             "color": "GREY",
             "spawnPoint": false,
             "borders": {
-                "EAST": "DOOR",
+                "EAST": "AIR",
                 "SOUTH": "WALL",
                 "WEST": "AIR",
                 "NORTH": "DOOR"
