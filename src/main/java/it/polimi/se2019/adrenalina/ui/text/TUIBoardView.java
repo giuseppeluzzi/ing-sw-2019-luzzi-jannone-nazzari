@@ -10,7 +10,6 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
-import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
@@ -42,6 +41,7 @@ public class TUIBoardView extends BoardView {
   public void showTargetSelect(TargetType type, List<Target> targets) {
     Target chosenTarget;
 
+    showBoard();
     try {
       switch (type) {
         case ATTACK_TARGET:
@@ -87,6 +87,7 @@ public class TUIBoardView extends BoardView {
       squareColors.add(target.getSquare().getColor());
     }
 
+    showBoard();
     do {
       targetIndex = 1;
       Log.println("Seleziona una stanza");
@@ -206,7 +207,8 @@ public class TUIBoardView extends BoardView {
   public void showSquareSelect(List<Target> targets) {
     Square square = (Square) selectSquare(targets, true);
     try {
-      notifyObservers(new SquareMoveSelectionEvent(getClient().getPlayerColor(), square.getPosX(),
+      notifyObservers(new SquareMoveSelectionEvent(getClient().getPlayerColor(),
+          square.getPosX(),
           square.getPosY()));
     } catch (RemoteException e) {
       Log.exception(e);

@@ -469,6 +469,9 @@ public class Player extends Observable implements Target, Serializable {
     weapons.add(weapon);
     weaponCount++;
     try {
+      weapon.addObserver(client.getBoardView());
+      weapon.addObserver(client.getPlayerDashboardsView());
+      weapon.addObserver(client.getCharactersView());
       notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
       notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
     } catch (RemoteException e) {

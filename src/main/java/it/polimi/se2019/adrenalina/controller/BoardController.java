@@ -39,7 +39,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -105,7 +104,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   private void loadPowerUps() {
-    for (AmmoColor color: AmmoColor.getValidColor()) {
+    for (AmmoColor color : AmmoColor.getValidColor()) {
       for (int i = 0; i < 4; i++) {
         board.addPowerUp(new Teleporter(color));
         board.addPowerUp(new TagbackGrenade(color));
@@ -149,6 +148,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Returns a set of valid maps for a given number of players
+   *
    * @param players number of players
    * @return a set of GameMap
    */
@@ -165,6 +165,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Loads a single map from a file
+   *
    * @param mapPath Path of a map
    */
   private void loadMap(Path mapPath) {
@@ -210,7 +211,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
             String name = filePath.getFileName().toString()
                 .replace("ammo_", "")
                 .replace(".png", "");
-            if (! "back".equalsIgnoreCase(name)) {
+            if (!"back".equalsIgnoreCase(name)) {
               int red = 3 - name.replace("R", "").length();
               int blue = 3 - name.replace("B", "").length();
               int yellow = 3 - name.replace("Y", "").length();
@@ -290,30 +291,31 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     for (GameMap map : new ArrayList<>(maps)) {
       if (map.getId() == selectedMap) {
         prepareMap(map);
-
       }
       maps.remove(map);
     }
     Log.info("Selected map #" + selectedMap);
 
-    for (Player player : board.getPlayers()) {
-      for (Square square : board.getSquares()) {
-        //try {
-          // TODO
-          //board.addObserver
-          //square.addObserver(player.getClient().getBoardView());
-          //square.addObserver(player.getClient().getPlayerDashboardsView());
-          //square.addObserver(player.getClient().getCharactersView());
-        //} catch (RemoteException e) {
-        //  Log.exception(e);
-        //}
-      }
-    }
-
     run();
   }
 
   private void prepareMap(GameMap map) {
+    for (Player player : board.getPlayers()) {
+      try {
+        for (Player toPlayer : board.getPlayers()) {
+          player.addObserver(toPlayer.getClient().getBoardView());
+          player.addObserver(toPlayer.getClient().getPlayerDashboardsView());
+          player.addObserver(toPlayer.getClient().getCharactersView());
+        }
+
+        board.addObserver(player.getClient().getBoardView());
+        board.addObserver(player.getClient().getPlayerDashboardsView());
+        board.addObserver(player.getClient().getCharactersView());
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    }
+
     for (Square square : map.getSquares()) {
       Square realSquare = new Square(square.getPosX(),
           square.getPosY(),
@@ -334,7 +336,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   private void placeAmmoCard() {
     for (Square square : board.getSquares()) {
-      if (! square.isSpawnPoint()) {
+      if (!square.isSpawnPoint()) {
         AmmoCard ammoCard = board.getAmmoCards().get(0);
         board.drawAmmoCard(ammoCard);
         square.setAmmoCard(ammoCard);
@@ -372,6 +374,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Sets needed views (BoardView, CharactersView and PlayerDashboardsView) on a Player
+   *
    * @param player a Player
    */
   private void setViews(Player player) {
@@ -440,7 +443,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     board.setCurrentPlayer(null);
 
     Deque<PlayerColor> freeColors = new ArrayDeque<>(board.getFreePlayerColors());
-    for (Player player: board.getPlayers()) {
+    for (Player player : board.getPlayers()) {
       if (player.getColor() == null) {
         player.setColor(freeColors.pop());
       }
@@ -461,8 +464,8 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   public void update(PlayerColorSelectionEvent event) {
-    if (! board.getFreePlayerColors().contains(event.getNewPlayerColor())) {
-      return ;
+    if (!board.getFreePlayerColors().contains(event.getNewPlayerColor())) {
+      return;
     }
 
     Player player;

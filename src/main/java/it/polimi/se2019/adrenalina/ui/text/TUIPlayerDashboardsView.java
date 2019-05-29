@@ -34,10 +34,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   private static final long serialVersionUID = 572470044324855920L;
   private final transient ClientInterface client;
   private final transient Scanner scanner = new Scanner(System.in, "utf-8");
+  private final BoardViewInterface boardView;
 
   public TUIPlayerDashboardsView(ClientInterface client, BoardViewInterface boardView) {
     super((BoardView) boardView);
     this.client = client;
+    this.boardView = boardView;
   }
 
   private List<Spendable> setSpendable(List<PowerUp> powerUps,
@@ -157,6 +159,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     int targetIndex = 1;
     int chosenTarget = 0;
 
+    try {
+      boardView.showBoard();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
     do {
       Log.println("Seleziona un'azione");
       for (TurnAction action : actions) {
@@ -203,6 +210,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
+    try {
+      boardView.showBoard();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
     String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     try {
       notifyObservers(new PlayerCollectWeaponEvent(client.getPlayerColor(), weapon));

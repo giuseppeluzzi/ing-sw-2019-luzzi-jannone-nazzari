@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class PlayerDashboardsView extends Observable implements
-    PlayerDashboardsViewInterface, Observer {
+    PlayerDashboardsViewInterface {
 
   private static final long serialVersionUID = -6150690431150041388L;
   private final Set<EventType> registeredEvents = new HashSet<>();

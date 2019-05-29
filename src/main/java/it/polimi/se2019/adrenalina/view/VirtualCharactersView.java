@@ -14,7 +14,7 @@ import java.lang.invoke.WrongMethodTypeException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VirtualCharactersView extends Observable implements CharactersViewInterface, Observer {
+public class VirtualCharactersView extends Observable implements CharactersViewInterface {
 
   private static final long serialVersionUID = -6715889122608916050L;
   private final transient ArrayList<Player> players;
@@ -68,6 +68,6 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
 
   @Override
   public void update(Event event) {
-    throw new WrongMethodTypeException();
+    // do nothing
   }
 }

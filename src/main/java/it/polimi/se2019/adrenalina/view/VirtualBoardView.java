@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
@@ -25,10 +26,11 @@ import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VirtualBoardView extends Observable implements BoardViewInterface, Observer {
+public class VirtualBoardView extends Observable implements BoardViewInterface {
 
   private static final long serialVersionUID = -4988173252714241460L;
   private transient Board board;
@@ -107,6 +109,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
   }
 
   @Override
+  public void update(BoardSetSquareUpdate event) throws RemoteException {
+    clientSocket.sendEvent(event);
+  }
+
+  @Override
   public void update(BoardHasWeaponsUpdate event) {
     clientSocket.sendEvent(event);
   }
@@ -143,6 +150,6 @@ public class VirtualBoardView extends Observable implements BoardViewInterface, 
 
   @Override
   public void update(Event event) {
-    clientSocket.sendEvent(event);
+    // do nothing
   }
 }

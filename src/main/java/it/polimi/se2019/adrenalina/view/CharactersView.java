@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class CharactersView extends Observable implements CharactersViewInterface, Observer {
+public abstract class CharactersView extends Observable implements CharactersViewInterface {
 
   private static final long serialVersionUID = 3820277997554969634L;
   private final Set<EventType> registeredEvents = new HashSet<>();

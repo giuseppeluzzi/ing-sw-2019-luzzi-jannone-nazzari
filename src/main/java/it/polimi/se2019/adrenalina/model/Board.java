@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -203,6 +204,22 @@ public class Board extends Observable implements Serializable {
     setWestNeighbour(square, this, true);
 
     grid[square.getPosX()][square.getPosY()] = square;
+
+    try {
+      notifyObservers(new BoardSetSquareUpdate(square));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+
+    try {
+      for (Player player: getPlayers()) {
+        square.addObserver(player.getClient().getBoardView());
+          square.addObserver(player.getClient().getPlayerDashboardsView());
+        square.addObserver(player.getClient().getCharactersView());
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**

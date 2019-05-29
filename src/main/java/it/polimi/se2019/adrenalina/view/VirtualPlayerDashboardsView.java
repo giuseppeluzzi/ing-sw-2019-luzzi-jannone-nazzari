@@ -26,7 +26,6 @@ import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 public class VirtualPlayerDashboardsView extends Observable implements
-    PlayerDashboardsViewInterface, Observer {
+    PlayerDashboardsViewInterface {
 
   private static final long serialVersionUID = 4893523547038046745L;
   private final transient List<Player> players;
@@ -163,6 +162,6 @@ public class VirtualPlayerDashboardsView extends Observable implements
 
   @Override
   public void update(Event event) {
-    throw new WrongMethodTypeException();
+    // do nothing
   }
 }

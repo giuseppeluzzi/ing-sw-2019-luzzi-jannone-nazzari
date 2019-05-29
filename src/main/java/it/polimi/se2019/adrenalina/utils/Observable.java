@@ -31,17 +31,12 @@ public class Observable implements RemoteObservable {
 
   @Override
   public List<Observer> getObservers() {
-    //synchronized (observers) {
-      return new ArrayList<>(observers);
-    //}
+    return new ArrayList<>(observers);
   }
 
   protected void notifyObservers(Event event) throws RemoteException {
-    Log.debug("notify " + event.getEventType());
-    //synchronized (observers) {
-      for (Observer observer : observers){
-        observer.update(event);
-      }
-    //}
+    for (Observer observer : observers){
+      observer.update(event);
+    }
   }
 }

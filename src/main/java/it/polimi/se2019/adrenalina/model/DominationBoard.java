@@ -14,6 +14,8 @@ import java.util.List;
  * The damages to each spawn point are contained in three lists.
  */
 public class DominationBoard extends Board {
+
+  private static final long serialVersionUID = -5497312114295479630L;
   private List<PlayerColor> blueDamages;
   private List<PlayerColor> redDamages;
   private List<PlayerColor> yellowDamages;
