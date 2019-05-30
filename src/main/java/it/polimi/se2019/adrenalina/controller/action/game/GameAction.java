@@ -19,6 +19,9 @@ public abstract class GameAction {
   }
 
   public TurnController getTurnController() {
+    if (turnController == null) {
+      throw new IllegalStateException("This action doesn't have access to TurnController");
+    }
     return turnController;
   }
 

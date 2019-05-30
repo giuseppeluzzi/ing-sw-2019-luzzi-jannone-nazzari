@@ -13,7 +13,7 @@ public class Payment extends GameAction {
   private final Buyable item;
 
   public Payment(TurnController turnController, Player player, Buyable item) {
-    super(player);
+    super(turnController, player);
     this.item = item;
   }
 

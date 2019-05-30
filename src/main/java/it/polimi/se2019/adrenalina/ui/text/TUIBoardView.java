@@ -176,7 +176,7 @@ public class TUIBoardView extends BoardView {
       chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
     } while (chosenTarget < 1 || chosenTarget >= targetIndex);
 
-    return targets.get(targetIndex - 1);
+    return targets.get(chosenTarget - 1);
   }
 
   @Override

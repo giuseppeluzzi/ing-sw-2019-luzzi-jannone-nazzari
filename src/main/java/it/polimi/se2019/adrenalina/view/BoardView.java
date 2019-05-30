@@ -89,15 +89,19 @@ public abstract class BoardView extends Observable implements BoardViewInterface
   }
 
   public void update(BoardSetSquareUpdate event) {
-    board.setSquare(
-        new Square(event.getPosX(),
-          event.getPosY(),
-          event.getColor(),
-          event.getEdgeUp(),
-          event.getEdgeRight(),
-          event.getEdgeDown(),
-          event.getEdgeLeft(),
-          board));
+    Square square = new Square(event.getPosX(),
+        event.getPosY(),
+        event.getColor(),
+        event.getEdgeUp(),
+        event.getEdgeRight(),
+        event.getEdgeDown(),
+        event.getEdgeLeft(),
+        board);
+    if (event.isSpawnPoint()) {
+      square.setSpawnPoint(true);
+    }
+
+    board.setSquare(square);
   }
 
   public void update(BoardHasWeaponsUpdate event) {

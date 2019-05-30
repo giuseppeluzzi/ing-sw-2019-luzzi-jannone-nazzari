@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.model;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 public interface ExecutableObject {
@@ -37,6 +36,10 @@ public interface ExecutableObject {
   Map<Player, Square> getInitialPlayerPositions();
 
   void setInitialPlayerPosition(Player player, Square position);
+
+  Integer getCurrentSelectTargetSlot();
+
+  void setCurrentSelectTargetSlot(Integer slot);
 
   boolean isInitialPositionSet(Player player);
 }

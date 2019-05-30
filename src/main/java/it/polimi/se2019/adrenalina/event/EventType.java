@@ -51,6 +51,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 
@@ -72,7 +73,7 @@ public enum EventType {
   PLAYER_SET_COLOR(PlayerSetColorEvent.class),
   SELECT_DIRECTION_EVENT(SelectDirectionEvent.class),
   SELECT_PLAYER_EVENT(SelectPlayerEvent.class),
-  SELECT_SQUARE_EVENT(SelectPlayerEvent.class),
+  SELECT_SQUARE_EVENT(SelectSquareEvent.class),
   SPAWN_POINT_DAMAGE_EVENT(SpawnPointDamageEvent.class),
   SQUARE_MOVE_SELECTION_EVENT(SquareMoveSelectionEvent.class),
   TIMER_SET_EVENT(TimerSetEvent.class),

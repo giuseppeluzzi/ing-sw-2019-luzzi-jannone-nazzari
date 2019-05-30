@@ -88,6 +88,7 @@ public class SelectAction implements WeaponAction {
       throw new NoTargetsException("No targets available", ! object.didShoot());
     }
 
+    object.setCurrentSelectTargetSlot(target);
     try {
       object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets);
     } catch (RemoteException e) {

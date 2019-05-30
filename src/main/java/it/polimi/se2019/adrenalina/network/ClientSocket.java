@@ -22,11 +22,13 @@ import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocati
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.JsonPowerUpDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonTargetDeserializer;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -42,7 +44,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClientSocket extends Client implements Runnable, Observer {
 
@@ -138,6 +139,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
           GsonBuilder gsonBuilder = new GsonBuilder();
           gsonBuilder.registerTypeAdapter(Effect.class, new JsonEffectDeserializer());
           gsonBuilder.registerTypeAdapter(PowerUp.class, new JsonPowerUpDeserializer());
+          gsonBuilder.registerTypeAdapter(Target.class, new JsonTargetDeserializer());
           gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
           Gson gson = gsonBuilder.create();
           JsonObject json = gson.fromJson(message, JsonObject.class);

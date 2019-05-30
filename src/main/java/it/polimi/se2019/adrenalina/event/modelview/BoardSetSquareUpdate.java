@@ -12,6 +12,7 @@ public class BoardSetSquareUpdate implements Event {
   private static final long serialVersionUID = -2673936916461806650L;
   private final int posX;
   private final int posY;
+  private final boolean spawnPoint;
   private final SquareColor color;
   private final BorderType edgeUp;
   private final BorderType edgeRight;
@@ -22,6 +23,7 @@ public class BoardSetSquareUpdate implements Event {
     posX = square.getPosX();
     posY = square.getPosY();
     color = square.getColor();
+    spawnPoint = square.isSpawnPoint();
     edgeUp = square.getEdge(Direction.NORTH);
     edgeRight = square.getEdge(Direction.EAST);
     edgeLeft = square.getEdge(Direction.WEST);
@@ -38,6 +40,10 @@ public class BoardSetSquareUpdate implements Event {
 
   public SquareColor getColor() {
     return color;
+  }
+
+  public boolean isSpawnPoint() {
+    return spawnPoint;
   }
 
   public BorderType getEdgeUp() {

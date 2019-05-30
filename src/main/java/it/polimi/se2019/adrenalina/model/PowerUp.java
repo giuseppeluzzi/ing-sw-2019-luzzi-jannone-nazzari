@@ -1,14 +1,12 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
-import com.google.gson.InstanceCreator;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +19,7 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
   private final List<WeaponAction> actions;
   private final boolean doesCost;
   private final PowerUpType type;
+  private int currentSelectTargetSlot;
   @NotExpose
   private HashMap<Integer, Target> targetHistory = new HashMap<>();
 
@@ -148,6 +147,16 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
   @Override
   public void setInitialPlayerPosition(Player player, Square position) {
     // Not implemented in powerUps
+  }
+
+  @Override
+  public Integer getCurrentSelectTargetSlot() {
+    return currentSelectTargetSlot;
+  }
+
+  @Override
+  public void setCurrentSelectTargetSlot(Integer slot) {
+    currentSelectTargetSlot = slot;
   }
 
   @Override

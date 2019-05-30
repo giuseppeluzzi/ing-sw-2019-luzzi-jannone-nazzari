@@ -269,10 +269,20 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   }
 
   /**
+   * Sets currentSelectTargetSlot value.
+   * @param slot
+   */
+  @Override
+  public void setCurrentSelectTargetSlot(Integer slot) {
+    currentSelectTargetSlot = slot;
+  }
+
+  /**
    * Return currentSelectTargetSlot value.
    *
    * @return currentSelectTargetSlot
    */
+  @Override
   public Integer getCurrentSelectTargetSlot() {
     return currentSelectTargetSlot;
   }
@@ -370,11 +380,12 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
 
   @Override
   public void reset() {
+    Target currentOwner = targetHistory.get(0);
     targetHistory.clear();
+    setTargetHistory(0, currentOwner);
+    setCurrentSelectTargetSlot(null);
     didShoot = false;
     initialPlayerPositions = new HashMap<>();
     cancelled = false;
   }
-
-
 }

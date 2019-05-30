@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.controller;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
@@ -74,6 +75,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     }
     Weapon weapon = player.getCurrentWeapon();
     weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), target);
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   /**
@@ -91,8 +93,18 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     Square square = boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY());
     Weapon weapon = player.getCurrentWeapon();
     weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), square);
+    boardController.getTurnController().executeGameActionQueue();
   }
 
+  public void update(SelectDirectionEvent event) {
+    Player player;
+    try {
+      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+    player.getCurrentWeapon().setLastUsageDirection(event.getSelectedDirection());
+  }
   /**
    * Event fired when a player moves to a different square.
    *
