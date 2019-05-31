@@ -42,4 +42,6 @@ public interface ExecutableObject {
   void setCurrentSelectTargetSlot(Integer slot);
 
   boolean isInitialPositionSet(Player player);
+
+  String getSymbol();
 }

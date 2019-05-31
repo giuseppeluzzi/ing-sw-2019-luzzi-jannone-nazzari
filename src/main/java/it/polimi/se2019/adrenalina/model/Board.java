@@ -228,7 +228,6 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set northern neighbour of a square if it exists.
-   *
    * @param square whose neighbour will be set
    */
   private static void setNorthNeighbour(Square square, Board board, boolean reciprocal) {
@@ -245,7 +244,6 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set southern neighbour of a square if it exists.
-   *
    * @param square whose neighbour will be set
    */
   private static void setSouthNeighbour(Square square, Board board, boolean reciprocal) {

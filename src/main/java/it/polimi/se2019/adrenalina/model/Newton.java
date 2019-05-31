@@ -34,6 +34,12 @@ public class Newton extends PowerUp {
     return true;
   }
 
+  @Override
+  public String getSymbol() {
+    // TODO: complete method
+    return null;
+  }
+
   /**
    * Creates Newton object from a JSON serialized object.
    * @param json JSON input String

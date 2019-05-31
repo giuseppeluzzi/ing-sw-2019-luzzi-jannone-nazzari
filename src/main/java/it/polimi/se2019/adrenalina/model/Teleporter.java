@@ -30,6 +30,12 @@ public class Teleporter extends PowerUp {
     return true;
   }
 
+  @Override
+  public String getSymbol() {
+    // TODO: complete method
+    return null;
+  }
+
   /**
    * Create Teleporter object from json formatted String
    * @param json json input String

@@ -287,48 +287,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
     return currentSelectTargetSlot;
   }
 
-  /**
-   * Gson serialization.
-   *
-   * @return JSON string containing serialized object
-   */
-  public String serialize() {
-    GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy())
-        .create();
-    return gson.toJson(this);
-  }
-
-  /**
-   * Create Weapon object from json formatted String
-   *
-   * @param json json input String
-   * @return Weapon
-   * @throws IllegalArgumentException thrown if argument json is null
-   */
-  public static Weapon deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    GsonBuilder builder = new GsonBuilder();
-    JsonDeserializer<Effect> effectJsonDeserializer = new JsonEffectDeserializer();
-    builder.registerTypeAdapter(Effect.class, effectJsonDeserializer);
-
-    Gson gson = builder.create();
-    Weapon weapon = gson.fromJson(json, Weapon.class);
-
-    weapon.setObservers(new ArrayList<>());
-    weapon.optMoveGroups = new HashMap<>();
-    weapon.targetHistory = new HashMap<>();
-    weapon.initialPlayerPositions = new HashMap<>();
-
-    for (Effect effect : weapon.effects) {
-      effect.reconcileDeserialization(weapon, null);
-    }
-
-    return weapon;
-  }
-
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
     if (player.hasWeapon(this)) {
@@ -387,5 +345,53 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
     didShoot = false;
     initialPlayerPositions = new HashMap<>();
     cancelled = false;
+  }
+
+  @Override
+  public String getSymbol() {
+    // TODO: complete method
+    return null;
+  }
+
+  /**
+   * Gson serialization.
+   *
+   * @return JSON string containing serialized object
+   */
+  public String serialize() {
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy())
+        .create();
+    return gson.toJson(this);
+  }
+
+  /**
+   * Create Weapon object from json formatted String
+   *
+   * @param json json input String
+   * @return Weapon
+   * @throws IllegalArgumentException thrown if argument json is null
+   */
+  public static Weapon deserialize(String json) {
+    if (json == null) {
+      throw new IllegalArgumentException("Argument json can't be null");
+    }
+    GsonBuilder builder = new GsonBuilder();
+    JsonDeserializer<Effect> effectJsonDeserializer = new JsonEffectDeserializer();
+    builder.registerTypeAdapter(Effect.class, effectJsonDeserializer);
+
+    Gson gson = builder.create();
+    Weapon weapon = gson.fromJson(json, Weapon.class);
+
+    weapon.setObservers(new ArrayList<>());
+    weapon.optMoveGroups = new HashMap<>();
+    weapon.targetHistory = new HashMap<>();
+    weapon.initialPlayerPositions = new HashMap<>();
+
+    for (Effect effect : weapon.effects) {
+      effect.reconcileDeserialization(weapon, null);
+    }
+
+    return weapon;
   }
 }

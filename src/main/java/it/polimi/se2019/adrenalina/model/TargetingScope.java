@@ -38,6 +38,12 @@ public class TargetingScope extends PowerUp {
     return true;
   }
 
+  @Override
+  public String getSymbol() {
+    // TODO: complete method
+    return null;
+  }
+
   /**
    * Create TargetingScope object from json formatted String
    *

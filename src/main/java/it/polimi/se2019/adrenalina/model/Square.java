@@ -13,11 +13,13 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Square extends Observable implements Target {
 
@@ -227,23 +229,70 @@ public class Square extends Observable implements Target {
 
   /**
    * Verify if a square is visible
-   *
    * @param square a square to be checked
    * @return visibility condition
    */
   public boolean isVisible(Square square) {
-    // TODO: is square visible from this?
-    return true;
+
+    for (Direction direction : Direction.values()) {
+      if (getNeighbour(direction) != null && getNeighbour(direction).getColor() == square.getColor()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
    * Calculate the distance from a specific square
-   *
    * @param square a specific square
    * @return distance from the square
    */
   public int getDistance(Square square) {
-    return Math.abs(posX - square.posX) + Math.abs(posY - square.posY);
+    Map<Square, Integer> nodes = bfs();
+    return nodes.get(square);
+  }
+
+  /**
+   * Creates an Hashmap where all the squares of the board are coupled with their distance from
+   * the current square
+   * @return Specified Hashmap
+   */
+  private Map<Square, Integer> bfs() {
+    ArrayDeque<Square> unvisitedNodes = new ArrayDeque<>();
+    List<Square> visitedNodes = new ArrayList<>();
+    Map<Square, Integer> nodes = new HashMap<>();
+    unvisitedNodes.addLast(this);
+    nodes.put(this, 0);
+
+    while (!unvisitedNodes.isEmpty()) {
+
+      Square current = unvisitedNodes.removeFirst();
+      int currentValue = nodes.get(current);
+
+      for (Direction direction : Direction.values()) {
+        Square next = current.getNeighbour(direction);
+        updateNodes(next, visitedNodes, nodes, unvisitedNodes, currentValue);
+      }
+      visitedNodes.add(current);
+    }
+    return nodes;
+  }
+
+  private void updateNodes(Square next, List<Square> visitedNodes,
+      Map<Square, Integer> nodes, Deque<Square> unvisitedNodes, int currentValue) {
+    if (next != null) {
+      if (!visitedNodes.contains(next)) {
+        unvisitedNodes.addLast(next);
+      }
+
+      if (nodes.containsKey(next)) {
+        if (nodes.get(next) > currentValue + 1) {
+          nodes.put(next, currentValue + 1);
+        }
+      } else {
+        nodes.put(next, currentValue + 1);
+      }
+    }
   }
 
   /**

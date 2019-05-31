@@ -164,4 +164,7 @@ public abstract class PowerUp implements Spendable, ExecutableObject, Buyable {
     // Not implemented in powerUps
     return true;
   }
+
+  @Override
+  public abstract String getSymbol();
 }
