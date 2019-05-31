@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEven
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
@@ -250,6 +251,24 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     try {
       notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(),
           chosenEffectsNames));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  @Override
+  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
+    try {
+      boardView.showBoard();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+    String ownWeapon = TUIUtils
+        .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);
+    String squareWeapon = TUIUtils
+        .selectWeapon(squareWeapons, "Quale arma vuoi prendere?", true);
+    try {
+      notifyObservers(new PlayerSwapWeaponEvent(client.getPlayerColor(), ownWeapon, squareWeapon));
     } catch (RemoteException e) {
       Log.exception(e);
     }

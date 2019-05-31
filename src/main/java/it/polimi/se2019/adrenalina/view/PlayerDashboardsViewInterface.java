@@ -60,4 +60,6 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
   void showEffectSelection(Weapon weapon, List<Effect> effects) throws RemoteException;
 
   void showPowerUpSelection(List<PowerUp> powerUps) throws RemoteException;
+
+  void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws RemoteException;
 }

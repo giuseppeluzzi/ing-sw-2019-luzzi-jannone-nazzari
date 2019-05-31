@@ -20,6 +20,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -293,6 +294,24 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       player.setCurrentWeapon(selectedWeapon);
     }
 
+    boardController.getTurnController().executeGameActionQueue();
+  }
+
+  public void update(PlayerSwapWeaponEvent event) {
+    Board board = boardController.getBoard();
+    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    if (player == null) {
+      return;
+    }
+    Weapon ownWeapon = player.getWeaponByName(event.getOwnWeaponName());
+    Weapon squareWeapon = board.getWeaponByName(event.getSquareWeaponName());
+
+    if (ownWeapon != null && squareWeapon != null) {
+      player.removeWeapon(ownWeapon);
+      player.getSquare().removeWeapon(squareWeapon);
+      player.addWeapon(squareWeapon);
+      player.getSquare().addWeapon(ownWeapon);
+    }
     boardController.getTurnController().executeGameActionQueue();
   }
 

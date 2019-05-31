@@ -2,14 +2,12 @@ package it.polimi.se2019.adrenalina.model;
 
 import static org.junit.Assert.*;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
-import it.polimi.se2019.adrenalina.utils.Log;
+
 import org.junit.Test;
 
 public class BoardTest {
