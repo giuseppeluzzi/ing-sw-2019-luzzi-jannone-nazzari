@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
+import java.rmi.RemoteException;
 
 public class WeaponEffect extends GameAction {
 
@@ -34,6 +35,11 @@ public class WeaponEffect extends GameAction {
         weaponAction.execute(board, weapon);
       } catch (NoTargetsException e) {
         if (e.isRollback()) {
+          try {
+            getPlayer().getClient().showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione.");
+          } catch (RemoteException remoteException) {
+            Log.exception(remoteException);
+          }
           getTurnController().addTurnActions(new MoveRollback(getTurnController(), getPlayer(), weapon));
         }
         weapon.setCancelled();

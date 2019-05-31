@@ -8,9 +8,11 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.invoke.WrongMethodTypeException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +42,12 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
 
   @Override
   public void update(Event event) {
-    if (getHandledEvents().contains(event.getEventType())) {
-      clientSocket.sendEvent(event);
+    try {
+      if (getHandledEvents().contains(event.getEventType())) {
+        clientSocket.sendEvent(event);
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 }

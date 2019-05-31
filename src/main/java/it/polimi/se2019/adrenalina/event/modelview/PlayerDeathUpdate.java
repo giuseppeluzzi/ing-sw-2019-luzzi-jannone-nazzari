@@ -8,13 +8,19 @@ public class PlayerDeathUpdate implements Event {
 
   private static final long serialVersionUID = -8987048353974663246L;
   private final PlayerColor playerColor;
+  private final PlayerColor killerColor;
 
-  public PlayerDeathUpdate(PlayerColor playerColor) {
+  public PlayerDeathUpdate(PlayerColor playerColor, PlayerColor killerColor) {
     this.playerColor = playerColor;
+    this.killerColor = killerColor;
   }
 
   public PlayerColor getPlayerColor() {
     return playerColor;
+  }
+
+  public PlayerColor getKillerColor() {
+    return killerColor;
   }
 
   @Override

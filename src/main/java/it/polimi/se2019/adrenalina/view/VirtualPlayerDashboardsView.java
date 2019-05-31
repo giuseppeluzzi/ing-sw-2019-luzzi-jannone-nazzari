@@ -15,7 +15,9 @@ import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,8 +84,12 @@ public class VirtualPlayerDashboardsView extends Observable implements
 
   @Override
   public void update(Event event) {
-    if (getHandledEvents().contains(event.getEventType())) {
-      clientSocket.sendEvent(event);
+    try {
+      if (getHandledEvents().contains(event.getEventType())) {
+        clientSocket.sendEvent(event);
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 }

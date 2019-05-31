@@ -2,16 +2,6 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -24,7 +14,7 @@ import java.util.List;
 
 public interface BoardViewInterface extends Observer, RemoteObservable, Serializable {
 
-    default List<EventType> getHandledEvents() {
+    default List<EventType> getHandledEvents() throws RemoteException {
       List<EventType> registeredEvents = new ArrayList<>();
 
       registeredEvents.add(EventType.BOARD_STATUS_UPDATE);

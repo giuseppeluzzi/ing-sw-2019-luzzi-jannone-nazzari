@@ -131,14 +131,17 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   @Override
   public void update(Event event) {
-    if (getHandledEvents().contains(event.getEventType())) {
-      Log.debug("BoardView", "Event received: " + event.getEventType());
-      try {
+    try {
+      if (getHandledEvents().contains(event.getEventType())) {
+        Log.debug("BoardView", "Event received: " + event.getEventType());
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);
-      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
-        //
       }
+    } catch (RemoteException
+        | NoSuchMethodException
+        | InvocationTargetException
+        | IllegalAccessException ignored) {
+      //
     }
   }
 }

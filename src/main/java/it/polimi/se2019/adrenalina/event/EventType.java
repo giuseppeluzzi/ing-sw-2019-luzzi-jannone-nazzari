@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocatio
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
@@ -77,8 +78,9 @@ public enum EventType {
   SPAWN_POINT_DAMAGE_EVENT(SpawnPointDamageEvent.class),
   SQUARE_MOVE_SELECTION_EVENT(SquareMoveSelectionEvent.class),
   TIMER_SET_EVENT(TimerSetEvent.class),
-  // Invocations:
+  // Invocations
   SHOW_BOARD_INVOCATION(ShowBoardInvocation.class),
+  SHOW_MESSAGE_INVOCATION(ShowMessageInvocation.class),
   SHOW_TARGET_SELECT_INVOCATION(ShowTargetSelectInvocation.class),
   SHOW_DIRECTION_SELECT_INVOCATION(ShowDirectionSelectInvocation.class),
   SHOW_SQUARE_SELECT_INVOCATION(ShowSquareSelectInvocation.class),

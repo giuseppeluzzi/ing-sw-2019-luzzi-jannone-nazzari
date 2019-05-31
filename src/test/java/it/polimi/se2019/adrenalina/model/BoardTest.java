@@ -1,18 +1,18 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
-import it.polimi.se2019.adrenalina.utils.Log;
 import org.junit.Test;
 
 public class BoardTest {
+
   @Test
   public void testCopyConstructor() throws InvalidPlayerException {
     Board board = new Board();
@@ -22,8 +22,9 @@ public class BoardTest {
 
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
-        board.setSquare(new Square(x,y,
-            SquareColor.GREEN, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+        board.setSquare(new Square(x, y,
+            SquareColor.GREEN, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+            board));
       }
     }
     board.addPlayer(player);
@@ -58,12 +59,21 @@ public class BoardTest {
   public void testSetSquare() {
     try {
       Board board = new Board();
-      Square square = new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board);
+      Square square = new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR,
+          BorderType.AIR, BorderType.AIR, board);
       board.setSquare(square);
-      board.setSquare(new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-      board.setSquare(new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-      board.setSquare(new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-      board.setSquare(new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+      board.setSquare(
+          new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+              BorderType.AIR, board));
+      board.setSquare(
+          new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+              BorderType.AIR, board));
+      board.setSquare(
+          new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+              BorderType.AIR, board));
+      board.setSquare(
+          new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+              BorderType.AIR, board));
 
       assertEquals(
           "Square navigation failed",
@@ -89,7 +99,7 @@ public class BoardTest {
     }
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testSetSquareException() {
     Board board = new Board();
     board.setSquare(null);
@@ -106,25 +116,25 @@ public class BoardTest {
     }
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testGetSquareException1() {
     Board board = new Board();
     board.getSquare(3, 3);
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testGetSquareException2() {
     Board board = new Board();
     board.getSquare(-1, -1);
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testGetSquareException3() {
     Board board = new Board();
     board.getSquare(0, 4);
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testGetSquareException4() {
     Board board = new Board();
     board.getSquare(0, -1);
@@ -142,7 +152,7 @@ public class BoardTest {
     }
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testDrawPowerUpException() {
     Board board = new Board();
     Newton powerUp1 = new Newton(AmmoColor.YELLOW);
@@ -165,7 +175,7 @@ public class BoardTest {
     );
   }
 
-  @Test (expected = InvalidPlayerException.class)
+  @Test(expected = InvalidPlayerException.class)
   public void testGetPlayerByColorException() throws InvalidPlayerException {
     Board board = new Board();
     Player player = new Player("test", PlayerColor.YELLOW, board);
@@ -178,11 +188,21 @@ public class BoardTest {
     Board board = new Board();
     Player player = new Player("test", PlayerColor.YELLOW, board);
     board.addPlayer(player);
-    board.setSquare(new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
-    board.setSquare(new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+    board.setSquare(
+        new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+            BorderType.AIR, board));
+    board.setSquare(
+        new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+            BorderType.AIR, board));
+    board.setSquare(
+        new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+            BorderType.AIR, board));
+    board.setSquare(
+        new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+            BorderType.AIR, board));
+    board.setSquare(
+        new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR,
+            BorderType.AIR, board));
     String json = board.serialize();
 
     if (json.isEmpty()) {
@@ -222,7 +242,7 @@ public class BoardTest {
         board2.getSquare(1, 1).getNeighbour(Direction.WEST).getColor());
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testSerializationException() {
     Board.deserialize(null);
   }
