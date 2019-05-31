@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
@@ -8,9 +9,11 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.lang.reflect.InvocationTargetException;
+import java.rmi.RemoteException;
 
 public abstract class CharactersView extends Observable implements CharactersViewInterface {
 
@@ -63,19 +66,46 @@ public abstract class CharactersView extends Observable implements CharactersVie
   }
 
   public void update(PlayerDeathUpdate event) {
+    try {
+      String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
+      String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
+      if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
+        boardView.getClient().showGameMessage(
+            String.format(
+                "Sei stato ucciso da %s%s%s!",
+                event.getKillerColor().getAnsiColor(),
+                killerName,
+                ANSIColor.RESET));
+      } else {
+        boardView.getClient().showGameMessage(
+            String.format(
+                "%s%s%s è stato ucciso da %s%s%s!",
+                event.getPlayerColor().getAnsiColor(),
+                playerName,
+                ANSIColor.RESET,
+                event.getKillerColor().getAnsiColor(),
+                killerName,
+                ANSIColor.RESET));
+      }
+    } catch (InvalidPlayerException | RemoteException ignored) {
+      //
+    }
     showDeath(event.getPlayerColor());
   }
 
   @Override
   public void update(Event event) {
-    if (getHandledEvents().contains(event.getEventType())) {
-      Log.debug("CharactersView", "Event received: " + event.getEventType());
-      try {
+    try {
+      if (getHandledEvents().contains(event.getEventType())) {
+        Log.debug("CharactersView", "Event received: " + event.getEventType());
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);
-      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
-        //
       }
+    } catch (RemoteException
+        | NoSuchMethodException
+        | InvocationTargetException
+        | IllegalAccessException ignored) {
+      //
     }
   }
 }

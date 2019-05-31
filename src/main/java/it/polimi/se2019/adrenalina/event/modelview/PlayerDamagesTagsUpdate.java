@@ -12,11 +12,13 @@ public class PlayerDamagesTagsUpdate implements Event {
   private final List<PlayerColor> damages;
   private final List<PlayerColor> tags;
   private final PlayerColor playerColor;
+  private final PlayerColor killerColor;
 
-  public PlayerDamagesTagsUpdate(List<PlayerColor> damages, List<PlayerColor> tags, PlayerColor playerColor) {
+  public PlayerDamagesTagsUpdate(List<PlayerColor> damages, List<PlayerColor> tags, PlayerColor playerColor, PlayerColor killerColor) {
     this.damages = new ArrayList<>(damages);
     this.tags = new ArrayList<>(tags);
     this.playerColor = playerColor;
+    this.killerColor = killerColor;
   }
 
   public List<PlayerColor> getDamages() {
@@ -29,6 +31,10 @@ public class PlayerDamagesTagsUpdate implements Event {
 
   public PlayerColor getPlayerColor() {
     return playerColor;
+  }
+
+  public PlayerColor getKillerColor() {
+    return killerColor;
   }
 
   @Override

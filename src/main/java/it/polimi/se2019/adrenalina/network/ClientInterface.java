@@ -17,6 +17,8 @@ public interface ClientInterface extends Remote {
   void setDomination(boolean domination) throws RemoteException;
 
   void showMessage(MessageSeverity severity, String title, String message) throws RemoteException;
+  void showMessage(MessageSeverity severity, String message) throws RemoteException;
+  void showGameMessage(String message) throws RemoteException;
   void ping() throws IOException;
   Long getLastPing() throws IOException;
 

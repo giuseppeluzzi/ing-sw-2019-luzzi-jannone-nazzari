@@ -25,8 +25,6 @@ public class ClientRMI extends Client {
 
   private transient ServerInterface server;
 
-  private Player player;
-
   private BoardViewInterface boardView;
   private CharactersViewInterface charactersView;
   private PlayerDashboardsViewInterface playerDashboardsView;
@@ -79,6 +77,16 @@ public class ClientRMI extends Client {
   public void showMessage(MessageSeverity severity, String title, String message) {
     Log.println(severity + ": " + title);
     Log.println(message);
+  }
+
+  @Override
+  public void showMessage(MessageSeverity severity, String message) {
+    showMessage(severity, "", message);
+  }
+
+  @Override
+  public void showGameMessage(String message) {
+    showMessage(MessageSeverity.GAME, "", message);
   }
 
   @Override
