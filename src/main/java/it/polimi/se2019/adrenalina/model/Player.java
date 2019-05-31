@@ -389,12 +389,12 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Return Weapon whose name matches specified one.
-   * @param name name of the weapon
+   * @param weaponName name of the weapon
    * @return Weapon if present, null otherwise
    */
-  public Weapon getWeaponByName(String name) {
+  public Weapon getWeaponByName(String weaponName) {
     for (Weapon weapon : weapons) {
-      if (weapon.getName() == name) {
+      if (weaponName.equals(weapon.getName())) {
         return weapon;
       }
     }
@@ -496,15 +496,17 @@ public class Player extends Observable implements Target, Serializable {
     }
     weapons.add(weapon);
     weaponCount++;
-    try {
-      weapon.addObserver(client.getBoardView());
-      weapon.addObserver(client.getPlayerDashboardsView());
-      weapon.addObserver(client.getCharactersView());
-      notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
-      notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
-      weapon.setTargetHistory(0, this);
-    } catch (RemoteException e) {
-      Log.exception(e);
+    if (client != null) {
+      try {
+        weapon.addObserver(client.getBoardView());
+        weapon.addObserver(client.getPlayerDashboardsView());
+        weapon.addObserver(client.getCharactersView());
+        notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+        notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
+        weapon.setTargetHistory(0, this);
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
     weapon.setLoaded(true);
   }
