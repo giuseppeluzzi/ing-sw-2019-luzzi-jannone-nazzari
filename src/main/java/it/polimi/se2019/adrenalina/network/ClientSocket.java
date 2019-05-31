@@ -15,6 +15,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocati
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
@@ -239,6 +240,12 @@ public class ClientSocket extends Client implements Runnable, Observer {
               break;
             case SHOW_SPAWN_POINT_TRACK_SELECTION_INVOCATION:
               boardView.showSpawnPointTrackSelection();
+              break;
+            case SHOW_SWAP_WEAPON_SELECTION_INVOCATION:
+              ShowSwapWeaponSelectionInvocation showSwapWeaponSelectionInvocation = gson
+                  .fromJson(message, ShowSwapWeaponSelectionInvocation.class);
+              playerDashboardsView.showSwapWeaponSelection(showSwapWeaponSelectionInvocation
+                  .getOwnWeapons(), showSwapWeaponSelectionInvocation.getSquareWeapons());
               break;
             default:
               boardView.update(event);

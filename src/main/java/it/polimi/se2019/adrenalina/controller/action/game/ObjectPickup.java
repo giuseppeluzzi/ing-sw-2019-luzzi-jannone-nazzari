@@ -22,36 +22,48 @@ public class ObjectPickup extends GameAction {
   public void execute(Board board) {
     if (getPlayer().getSquare().isSpawnPoint()) {
       List<Weapon> buyableWeapons = getBuyableWeapons();
-
       if (buyableWeapons.isEmpty()) {
         return;
       }
 
-      try {
-        getPlayer().getClient().getBoardView().showBuyableWeapons(buyableWeapons);
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
-    } else {
-      AmmoCard ammoCard = getPlayer().getSquare().getAmmoCard();
-
-      getPlayer().addAmmo(AmmoColor.RED, ammoCard.getAmmo(AmmoColor.RED));
-      getPlayer().addAmmo(AmmoColor.BLUE, ammoCard.getAmmo(AmmoColor.BLUE));
-      getPlayer().addAmmo(AmmoColor.YELLOW, ammoCard.getAmmo(AmmoColor.YELLOW));
-
-      for (int i = 0; i < ammoCard.getPowerUp(); i++) {
-        PowerUp powerUp = board.getPowerUps().get(0);
-        board.drawPowerUp(powerUp);
+      if (getPlayer().getWeapons().size() == 3) {
         try {
-          getPlayer().addPowerUp(powerUp);
-        } catch (InvalidPowerUpException e) {
-          board.undrawPowerUp(powerUp);
-          break;
+          getPlayer().getClient().getPlayerDashboardsView()
+              .showSwapWeaponSelection(getPlayer().getWeapons(), buyableWeapons);
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
+      } else {
+        try {
+          getPlayer().getClient().getBoardView().showBuyableWeapons(buyableWeapons);
+        } catch (RemoteException e) {
+          Log.exception(e);
         }
       }
-
-      getPlayer().getSquare().setAmmoCard(null);
+    } else {
+      executePowerUp(board);
     }
+  }
+
+  private void executePowerUp(Board board) {
+    AmmoCard ammoCard = getPlayer().getSquare().getAmmoCard();
+
+    getPlayer().addAmmo(AmmoColor.RED, ammoCard.getAmmo(AmmoColor.RED));
+    getPlayer().addAmmo(AmmoColor.BLUE, ammoCard.getAmmo(AmmoColor.BLUE));
+    getPlayer().addAmmo(AmmoColor.YELLOW, ammoCard.getAmmo(AmmoColor.YELLOW));
+
+    for (int i = 0; i < ammoCard.getPowerUp(); i++) {
+      PowerUp powerUp = board.getPowerUps().get(0);
+      board.drawPowerUp(powerUp);
+      try {
+        getPlayer().addPowerUp(powerUp);
+      } catch (InvalidPowerUpException e) {
+        board.undrawPowerUp(powerUp);
+        break;
+      }
+    }
+
+    getPlayer().getSquare().setAmmoCard(null);
   }
 
   private List<Weapon> getBuyableWeapons() {

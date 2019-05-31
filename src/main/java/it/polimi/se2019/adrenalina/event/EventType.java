@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
@@ -50,6 +51,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
@@ -70,6 +72,7 @@ public enum EventType {
   PLAYER_POWERUP_EVENT(PlayerPowerUpEvent.class),
   PLAYER_RELOAD_EVENT(PlayerReloadEvent.class),
   PLAYER_SELECT_WEAPON_EFFECT_EVENT(PlayerSelectWeaponEffectEvent.class),
+  PLAYER_SWAP_WEAPON_EVENT(PlayerSwapWeaponEvent.class),
   PLAYER_SELECT_WEAPON_EVENT(PlayerSelectWeaponEvent.class),
   PLAYER_SET_COLOR(PlayerSetColorEvent.class),
   SELECT_DIRECTION_EVENT(SelectDirectionEvent.class),
@@ -93,6 +96,7 @@ public enum EventType {
   SHOW_POWER_UP_SELECTION_INVOCATION(ShowPowerUpSelectionInvocation.class),
   SHOW_TURN_ACTION_SELECTION_INVOCATION(ShowTurnActionSelectionInvocation.class),
   SWITCH_TO_FINAL_FRENZY_INVOCATION(SwitchToFinalFrenzyInvocation.class),
+  SHOW_SWAP_WEAPON_SELECTION_INVOCATION(ShowSwapWeaponSelectionInvocation.class),
   // Model View Events
   PLAYER_POSITION_UPDATE(PlayerPositionUpdate.class),
   PLAYER_DAMAGES_TAGS_UPDATE(PlayerDamagesTagsUpdate.class),

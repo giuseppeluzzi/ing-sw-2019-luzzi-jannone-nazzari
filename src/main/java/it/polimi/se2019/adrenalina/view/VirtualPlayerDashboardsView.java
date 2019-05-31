@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
@@ -80,6 +81,11 @@ public class VirtualPlayerDashboardsView extends Observable implements
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
     clientSocket.sendEvent(new ShowTurnActionSelectionInvocation(actions));
+  }
+
+  @Override
+  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
+    clientSocket.sendEvent(new ShowSwapWeaponSelectionInvocation(ownWeapons, squareWeapons));
   }
 
   @Override

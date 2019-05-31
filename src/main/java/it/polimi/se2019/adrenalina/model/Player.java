@@ -387,6 +387,26 @@ public class Player extends Observable implements Target, Serializable {
     }
   }
 
+  /**
+   * Return Weapon whose name matches specified one.
+   * @param weaponName name of the weapon
+   * @return Weapon if present, null otherwise
+   */
+  public Weapon getWeaponByName(String weaponName) {
+    for (Weapon weapon : weapons) {
+      if (weaponName.equals(weapon.getName())) {
+        return weapon;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Return a PowerUp that matches type and color if present.
+   * @param powerUpType Type of chosen powerup
+   * @param powerUpColor Color of chosen powerup
+   * @return PowerUp chosen.
+   */
   public PowerUp getPowerUp(PowerUpType powerUpType, AmmoColor powerUpColor) {
     for (PowerUp powerUp : powerUps) {
       if (powerUp.getType() == powerUpType && powerUp.getColor() == powerUpColor) {
@@ -395,6 +415,8 @@ public class Player extends Observable implements Target, Serializable {
     }
     return null;
   }
+
+
 
   public List<PowerUp> getPowerUps() {
     return new ArrayList<>(powerUps);
@@ -474,17 +496,40 @@ public class Player extends Observable implements Target, Serializable {
     }
     weapons.add(weapon);
     weaponCount++;
+    if (client != null) {
+      try {
+        weapon.addObserver(client.getBoardView());
+        weapon.addObserver(client.getPlayerDashboardsView());
+        weapon.addObserver(client.getCharactersView());
+        notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+        notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
+        weapon.setTargetHistory(0, this);
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    }
+    weapon.setLoaded(true);
+  }
+
+  /**
+   * Removes specified weapon if owned by the player.
+   * @param weapon removed weapon
+   * @throws IllegalArgumentException throw if the player doesn't own the weapon
+   */
+  public void removeWeapon(Weapon weapon) {
+    if (! weapons.contains(weapon)) {
+      throw new IllegalArgumentException("Player does not have this weapon");
+    }
     try {
-      weapon.addObserver(client.getBoardView());
-      weapon.addObserver(client.getPlayerDashboardsView());
-      weapon.addObserver(client.getCharactersView());
-      notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
-      notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
-      weapon.setTargetHistory(0, this);
+      weapon.removeObserver(client.getBoardView());
+      weapon.removeObserver(client.getPlayerDashboardsView());
+      weapon.removeObserver(client.getCharactersView());
+      weapon.reset();
+      weapon.setLoaded(true);
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    weapon.setLoaded(true);
+    weapons.remove(weapon);
   }
 
   public void updateWeapons(List<Weapon> newWeapons) {

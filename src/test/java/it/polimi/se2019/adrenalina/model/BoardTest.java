@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+
 import org.junit.Test;
 
 public class BoardTest {

@@ -20,6 +20,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -57,6 +58,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.PLAYER_PAYMENT_EVENT);
     registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EVENT);
     registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EFFECT_EVENT);
+    registeredEvents.add(EventType.PLAYER_SWAP_WEAPON_EVENT);
   }
 
   private Player getPlayerFromBoard(Board board, PlayerColor playerColor) {
@@ -239,8 +241,14 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     player.addAmmo(AmmoColor.BLUE, 3);
     player.addAmmo(AmmoColor.YELLOW, 3);
     Weapon weapon = board.getWeapons().get(0);
+    Weapon weapon1 = board.getWeapons().get(1);
+    Weapon weapon2 = board.getWeapons().get(2);
     board.takeWeapon(weapon);
     player.addWeapon(weapon);
+    board.takeWeapon(weapon1);
+    player.addWeapon(weapon1);
+    board.takeWeapon(weapon2);
+    player.addWeapon(weapon2);
     // END CHEAT SUITE
 
     boardController.getTurnController().executeGameActionQueue();
@@ -293,6 +301,24 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       player.setCurrentWeapon(selectedWeapon);
     }
 
+    boardController.getTurnController().executeGameActionQueue();
+  }
+
+  public void update(PlayerSwapWeaponEvent event) {
+    Board board = boardController.getBoard();
+    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    if (player == null) {
+      return;
+    }
+    Weapon ownWeapon = player.getWeaponByName(event.getOwnWeaponName());
+    Weapon squareWeapon = board.getWeaponByName(event.getSquareWeaponName());
+
+    if (ownWeapon != null && squareWeapon != null) {
+      player.removeWeapon(ownWeapon);
+      player.getSquare().removeWeapon(squareWeapon);
+      player.addWeapon(squareWeapon);
+      player.getSquare().addWeapon(ownWeapon);
+    }
     boardController.getTurnController().executeGameActionQueue();
   }
 
