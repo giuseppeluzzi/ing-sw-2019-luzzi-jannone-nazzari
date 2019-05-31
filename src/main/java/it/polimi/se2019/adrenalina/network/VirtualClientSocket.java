@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
+import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -88,6 +89,11 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
           domination = connectEvent.isDomination();
           server.addClient(this);
           game = server.getGameByClient(this);
+        } else if (eventType == EventType.SHOW_MESSAGE_INVOCATION) {
+          ShowMessageInvocation showMessageInvocation = gson
+              .fromJson(message, ShowMessageInvocation.class);
+          showMessage(showMessageInvocation.getSeverity(), showMessageInvocation.getTitle(),
+              showMessageInvocation.getMessage());
         } else {
           game.update(event);
           game.getAttackController().update(event);
@@ -101,7 +107,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
 
   @Override
   public String getName() {
-    // TODO: check if connected
     return name;
   }
 
@@ -118,7 +123,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
 
   @Override
   public boolean isDomination() {
-    // TODO: check if connected
     return domination;
   }
 
@@ -129,7 +133,17 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
 
   @Override
   public void showMessage(MessageSeverity severity, String title, String message) {
-    // TODO
+    sendEvent(new ShowMessageInvocation(severity, title, message));
+  }
+
+  @Override
+  public void showMessage(MessageSeverity severity, String message) {
+    showMessage(severity, "", message);
+  }
+
+  @Override
+  public void showGameMessage(String message) {
+    showMessage(MessageSeverity.GAME, "", message);
   }
 
   @Override

@@ -15,6 +15,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -24,6 +25,7 @@ import it.polimi.se2019.adrenalina.model.TagbackGrenade;
 import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.lang.reflect.InvocationTargetException;
@@ -70,6 +72,65 @@ public abstract class PlayerDashboardsView extends Observable implements
 
   public void update(PlayerDamagesTagsUpdate event) {
     Player player = getPlayerByColor(event.getPlayerColor());
+
+    List<PlayerColor> newDamages = new ArrayList<>(event.getDamages());
+    List<PlayerColor> newTags = new ArrayList<>(event.getTags());
+    newDamages.removeAll(player.getDamages());
+    newTags.removeAll(player.getTags());
+
+    try {
+      String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
+      String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
+
+      if (!newDamages.isEmpty()) {
+        if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
+          boardView.getClient().showGameMessage(
+              String.format(
+                  "Hai subito %d danni da %s%s%s!",
+                  newDamages.size(),
+                  event.getKillerColor().getAnsiColor(),
+                  killerName,
+                  ANSIColor.RESET));
+        } else {
+          boardView.getClient().showGameMessage(
+              String.format(
+                  "%s%s%s ha inflitto %d danni a %s%s%s!",
+                  event.getPlayerColor().getAnsiColor(),
+                  playerName,
+                  ANSIColor.RESET,
+                  newDamages.size(),
+                  event.getKillerColor().getAnsiColor(),
+                  killerName,
+                  ANSIColor.RESET));
+        }
+      }
+
+      if (!newTags.isEmpty()) {
+        if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
+          boardView.getClient().showGameMessage(
+              String.format(
+                  "Hai ricevuto %d marchi da %s%s%s!",
+                  newDamages.size(),
+                  event.getKillerColor().getAnsiColor(),
+                  killerName,
+                  ANSIColor.RESET));
+        } else {
+          boardView.getClient().showGameMessage(
+              String.format(
+                  "%s%s%s ha inflitto %d marchi a %s%s%s!",
+                  event.getPlayerColor().getAnsiColor(),
+                  playerName,
+                  ANSIColor.RESET,
+                  newDamages.size(),
+                  event.getKillerColor().getAnsiColor(),
+                  killerName,
+                  ANSIColor.RESET));
+        }
+      }
+    } catch (InvalidPlayerException | RemoteException ignored) {
+      //
+    }
+
     player.updateDamages(event.getDamages());
     player.updateTags(event.getTags());
   }
@@ -166,19 +227,49 @@ public abstract class PlayerDashboardsView extends Observable implements
 
 
   public void update(CurrentPlayerUpdate event) {
+    try {
+      Player previousPlayer = boardView.getBoard()
+          .getPlayerByColor(boardView.getBoard().getCurrentPlayer());
+      Player newPlayer = boardView.getBoard()
+          .getPlayerByColor(boardView.getBoard().getCurrentPlayer());
+
+      if (boardView.getBoard().getCurrentPlayer() == event.getCurrentPlayerColor()) {
+        boardView.getClient().showGameMessage(
+            String.format(
+                "Hai terminato il turno e ora è il turno di %s%s%s!",
+                event.getCurrentPlayerColor().getAnsiColor(),
+                newPlayer.getName(),
+                ANSIColor.RESET));
+      } else {
+        boardView.getClient().showGameMessage(
+            String.format(
+                "%s%s%s terminato il turno e ora è il turno di %s%s%s!",
+                previousPlayer.getColor(),
+                previousPlayer.getName(),
+                ANSIColor.RESET,
+                event.getCurrentPlayerColor().getAnsiColor(),
+                newPlayer.getName(),
+                ANSIColor.RESET));
+      }
+    } catch (InvalidPlayerException | RemoteException ignored) {
+      //
+    }
     boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());
   }
 
   @Override
   public void update(Event event) {
-    if (getHandledEvents().contains(event.getEventType())) {
-      Log.debug("PlayerDashboardsView", "Event received: " + event.getEventType());
-      try {
+    try {
+      if (getHandledEvents().contains(event.getEventType())) {
+        Log.debug("PlayerDashboardsView", "Event received: " + event.getEventType());
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);
-      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
-        //
       }
+    } catch (RemoteException
+        | NoSuchMethodException
+        | InvocationTargetException
+        | IllegalAccessException ignored) {
+      //
     }
   }
 }

@@ -1,9 +1,13 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.BorderType;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Direction;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 
@@ -19,10 +23,14 @@ public final class MapPrinter {
   private static final int SQUARE_HEIGHT = 6;
   private static final int DOOR_HEIGHT = 2;
   private static final int DOOR_WIDTH = 5;
+  private static final int DASHBOARD_WIDTH = 22;
+  private static final int DASHBOARD_HEIGHT = 4;
   private static final String HORIZONTAL_LINE = "━";
   private static final String VERTICAL_LINE = "┃";
   private static final String PLAYER_ICON = "⚑";
   private static final String SPAWN_POINT = "⊡";
+  private static final String TAG_SYMBOL = "✦";
+  private static final String DAMAGE_SYMBOL = "✚";
 
   private MapPrinter() {
     throw new IllegalStateException("MapPrinter cannot be instantiated");
@@ -282,6 +290,118 @@ public final class MapPrinter {
       map[0][initYOffset] = ANSIColor.RESET + i.toString();
       initYOffset += SQUARE_HEIGHT;
     }
+  }
+
+  private static void drawDashboard(String[][] map, int num, Board board, Player player, Player owner) {
+    String color;
+    if (board.getCurrentPlayer() == player.getColor()) {
+      color = player.getColor().toString();
+    } else {
+      switch (player.getColor()) {
+        case GREEN:
+          color = ANSIColor.DIM_GREEN.toString();
+          break;
+        case BLUE:
+          color = ANSIColor.DIM_BLUE.toString();
+          break;
+        case PURPLE:
+          color = ANSIColor.DIM_MAGENTA.toString();
+          break;
+        case GREY:
+          color = ANSIColor.DIM_WHITE.toString();
+          break;
+        case YELLOW:
+          color = ANSIColor.DIM_YELLOW.toString();
+          break;
+        default:
+          throw new IllegalStateException("Invalid PlayerColor");
+      }
+    }
+    int baseX = 4 * SQUARE_WIDTH + 4;
+    int posX = baseX;
+    int posY = num * DASHBOARD_HEIGHT;
+    map[posX][posY] = color + CornerType.TOP_LEFT_CORNER;
+    map[baseX + DASHBOARD_WIDTH][posY] = color + CornerType.TOP_RIGHT_CORNER;
+    posX++;
+    String title = player.getName() + " (" + player.getScore() + ")";
+    for (int i = 0; i < (DASHBOARD_WIDTH - title.length()) / 2; i++) {
+      map[posX][posY] = color + HORIZONTAL_LINE;
+      posX++;
+    }
+    for (char c : title.toCharArray()) {
+      map[posX][posY] = color + c;
+      posX++;
+    }
+    while (posX < baseX + DASHBOARD_WIDTH - 1) {
+      map[posX][posY] = color + HORIZONTAL_LINE;
+      posX++;
+    }
+    posX = baseX;
+    posY++;
+    map[posX][posY] = color + VERTICAL_LINE;
+    posX++;
+    for (Weapon weapon : player.getWeapons()) {
+      if (! weapon.isLoaded() || player.equals(owner)) {
+        map[posX][posY] = color + weapon.getSymbol();
+      } else {
+        map[posX][posY] = color + "*";
+      }
+      posX++;
+    }
+    for (int i = 0; i < 4 - player.getWeapons().size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+    map[posX][posY] = color + "|";
+    posX++;
+    map[posX][posY] = " ";
+    posX++;
+    for (PlayerColor tagColor : player.getTags()) {
+      map[posX][posY] = tagColor + TAG_SYMBOL;
+      posX++;
+    }
+    for (int i = 0; i < 13 - player.getTags().size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+    map[posX][posY] = color + VERTICAL_LINE;
+    posX = baseX;
+    posY++;
+
+    for (PowerUp powerUp : player.getPowerUps()) {
+      if (player.equals(owner)) {
+        map[posX][posY] = color + powerUp.getSymbol();
+      } else {
+        map[posX][posY] = color + "P";
+      }
+      posX++;
+    }
+    for (int i = 0; i < 4 - player.getPowerUps().size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+    map[posX][posY] = color + "|";
+    posX++;
+    map[posX][posY] = " ";
+    posX++;
+    for (PlayerColor damageColor : player.getDamages()) {
+      map[posX][posY] = damageColor + DAMAGE_SYMBOL;
+      posX++;
+    }
+    for (int i = 0; i < 13 - player.getDamages().size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+    map[posX][posY] = color + VERTICAL_LINE;
+    posX = baseX;
+    posY++;
+    /* TODO:
+       - linea orizzontale bassa
+       - scorporare per complessità
+       - rendere velori dipendenti dalle costanti
+       - funzione che stampa tutte le dashboard
+       - testing
+     */
   }
 
   /**

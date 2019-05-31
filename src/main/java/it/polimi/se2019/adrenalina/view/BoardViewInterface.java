@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface BoardViewInterface extends Observer, RemoteObservable, Serializable {
 
-    default List<EventType> getHandledEvents() {
+    default List<EventType> getHandledEvents() throws RemoteException {
       List<EventType> registeredEvents = new ArrayList<>();
 
       registeredEvents.add(EventType.BOARD_STATUS_UPDATE);

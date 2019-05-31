@@ -269,13 +269,13 @@ public class Player extends Observable implements Target, Serializable {
       }
     }
     try {
-      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color));
+      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color, killerColor));
     } catch (RemoteException e) {
       Log.exception(e);
     }
     if (damages.size() >= NORMAL_DEATH) {
       try {
-        notifyObservers(new PlayerDeathUpdate(color));
+        notifyObservers(new PlayerDeathUpdate(color, killerColor));
       } catch (RemoteException e) {
         Log.exception(e);
       }
@@ -381,7 +381,7 @@ public class Player extends Observable implements Target, Serializable {
       tags.add(player);
     }
     try {
-      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color));
+      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color, player));
     } catch (RemoteException e) {
       Log.exception(e);
     }

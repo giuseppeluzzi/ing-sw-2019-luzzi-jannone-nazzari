@@ -18,7 +18,7 @@ import java.util.Map;
 
 public interface PlayerDashboardsViewInterface extends Observer, RemoteObservable, Serializable {
 
-  default List<EventType> getHandledEvents() {
+  default List<EventType> getHandledEvents() throws RemoteException {
     List<EventType> registeredEvents = new ArrayList<>();
 
     registeredEvents.add(EventType.PLAYER_DAMAGES_TAGS_UPDATE);
