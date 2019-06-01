@@ -57,6 +57,7 @@ public class Player extends Observable implements Target, Serializable {
   private int powerUpCount;
   private int weaponCount;
   private int score;
+
   private int killScore; // TODO: this should be updated in Final Frenzy mode
 
   private List<PlayerColor> damages;
@@ -214,6 +215,10 @@ public class Player extends Observable implements Target, Serializable {
 
   public int getScore() {
     return score;
+  }
+
+  public int getKillScore() {
+    return killScore;
   }
 
   public void setScore(int points) {
