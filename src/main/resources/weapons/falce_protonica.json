@@ -1,6 +1,7 @@
 {
     "baseCost": "BLUE",
     "name": "Falce protonica",
+    "symbol": "K",
     "effects": [
         {
             "costRed": 0,

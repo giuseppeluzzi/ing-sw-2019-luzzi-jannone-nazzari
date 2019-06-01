@@ -1,6 +1,7 @@
 {
     "baseCost": "YELLOW",
     "name": "Fucile laser",
+    "symbol": "I",
     "effects": [
         {
             "costRed": 0,

@@ -105,6 +105,7 @@
     ],
     "baseCost": "RED",
     "name": "Lanciafiamme",
+    "symbol": "L",
     "selectedEffects": [],
     "cost": {
         "RED": 0,

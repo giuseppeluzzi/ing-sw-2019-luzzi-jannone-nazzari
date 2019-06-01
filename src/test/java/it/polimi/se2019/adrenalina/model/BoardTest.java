@@ -29,8 +29,8 @@ public class BoardTest {
       }
     }
     board.addPlayer(player);
-    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1"));
-    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2"));
+    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1", "X"));
+    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2", "X"));
     board.addPowerUp(new Newton(AmmoColor.YELLOW));
     board.addPowerUp(new Newton(AmmoColor.BLUE));
 

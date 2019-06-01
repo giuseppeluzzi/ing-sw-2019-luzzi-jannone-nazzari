@@ -1,6 +1,7 @@
 {
     "baseCost": "YELLOW",
     "name": "Martello ionico",
+    "symbol": "N",
     "effects": [
         {
             "costRed": 0,

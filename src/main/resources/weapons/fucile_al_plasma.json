@@ -1,6 +1,7 @@
 {
     "baseCost": "BLUE",
     "name": "Fucile al plasma",
+    "symbol": "U",
     "effects": [
         {
             "costRed": 0,

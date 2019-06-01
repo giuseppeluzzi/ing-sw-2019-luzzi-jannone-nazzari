@@ -1,6 +1,7 @@
 {
     "baseCost": "YELLOW",
     "name": "Fucile a pompa",
+    "symbol": "E",
     "effects": [
         {
             "costRed": 0,

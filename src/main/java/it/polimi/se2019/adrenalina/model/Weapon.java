@@ -41,14 +41,16 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   private boolean cancelled;
   @NotExpose
   private HashMap<Player, Square> initialPlayerPositions = new HashMap<>();
+  private final String symbol;
   // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
-      AmmoColor baseCost, String name) {
+      AmmoColor baseCost, String name, String symbol) {
     this.baseCost = baseCost;
     this.name = name;
     loaded = true;
     didShoot = false;
+    this.symbol = symbol;
 
     cost = new HashMap<>();
 
@@ -63,6 +65,7 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
     name = weapon.name;
     loaded = weapon.loaded;
     cost = new HashMap<>();
+    symbol = weapon.symbol;
 
     for (Map.Entry<Integer, Target> entry : weapon.targetHistory.entrySet()) {
       Integer key = entry.getKey();
@@ -349,8 +352,7 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
 
   @Override
   public String getSymbol() {
-    // TODO: complete method
-    return null;
+    return symbol;
   }
 
   /**

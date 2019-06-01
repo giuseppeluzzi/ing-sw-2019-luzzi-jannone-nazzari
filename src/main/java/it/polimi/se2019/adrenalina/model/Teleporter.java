@@ -32,8 +32,7 @@ public class Teleporter extends PowerUp {
 
   @Override
   public String getSymbol() {
-    // TODO: complete method
-    return null;
+    return "H";
   }
 
   /**

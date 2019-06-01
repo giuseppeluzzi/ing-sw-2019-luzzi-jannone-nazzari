@@ -1,6 +1,7 @@
 {
     "baseCost": "BLUE",
     "name": "Mitragliatrice",
+    "symbol": "M",
     "effects": [
         {
             "costRed": 0,

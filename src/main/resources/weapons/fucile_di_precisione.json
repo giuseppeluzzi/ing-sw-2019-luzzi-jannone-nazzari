@@ -1,6 +1,7 @@
 {
     "baseCost": "BLUE",
     "name": "Fucile di precisione",
+    "symbol": "F",
     "effects": [
         {
             "costRed": 0,

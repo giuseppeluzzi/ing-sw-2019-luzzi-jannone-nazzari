@@ -16,7 +16,7 @@ public class SquareWeaponUpdate implements Event {
 
   public SquareWeaponUpdate(int posX, int posY, List<Weapon> weapons) {
     for (Weapon weapon : weapons) {
-      this.weapons.add(new Weapon(weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE), weapon.getCost(AmmoColor.YELLOW), weapon.getBaseCost(), weapon.getName()));
+      this.weapons.add(new Weapon(weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE), weapon.getCost(AmmoColor.YELLOW), weapon.getBaseCost(), weapon.getName(), weapon.getSymbol()));
     }
     this.posX = posX;
     this.posY = posY;

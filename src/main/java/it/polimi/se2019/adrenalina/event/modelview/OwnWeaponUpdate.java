@@ -19,7 +19,7 @@ public class OwnWeaponUpdate implements Event {
     this.weapons = new ArrayList<>();
     for (Weapon weapon : weapons) {
       Weapon newWeapon = new Weapon(weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE),
-          weapon.getCost(AmmoColor.YELLOW), weapon.getBaseCost(), weapon.getName());
+          weapon.getCost(AmmoColor.YELLOW), weapon.getBaseCost(), weapon.getName(), weapon.getSymbol());
       newWeapon.setLoaded(weapon.isLoaded());
       this.weapons.add(newWeapon);
     }

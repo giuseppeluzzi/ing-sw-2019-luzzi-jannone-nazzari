@@ -1,6 +1,7 @@
 {
     "baseCost": "YELLOW",
     "name": "Onda d'urto",
+    "symbol": "O",
     "effects": [
         {
             "costRed": 0,

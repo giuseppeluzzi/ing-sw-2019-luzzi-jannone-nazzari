@@ -1,6 +1,7 @@
 {
     "baseCost": "BLUE",
     "name": "Raggio traente",
+    "symbol": "T",
     "effects": [
         {
             "costRed": 0,

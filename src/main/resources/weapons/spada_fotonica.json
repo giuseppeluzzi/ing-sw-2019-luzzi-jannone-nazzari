@@ -1,6 +1,7 @@
 {
     "baseCost": "YELLOW",
     "name": "Spada fotonica",
+    "symbol": "A",
     "effects": [
         {
             "costRed": 0,

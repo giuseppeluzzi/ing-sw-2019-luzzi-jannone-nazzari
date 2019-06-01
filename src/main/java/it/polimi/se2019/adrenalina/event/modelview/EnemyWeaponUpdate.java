@@ -20,7 +20,7 @@ public class EnemyWeaponUpdate implements Event {
     this.numWeapons = numWeapons;
     this.unloadedWeapons = new ArrayList<>();
     for (Weapon weapon : unloadedWeapons) {
-      Weapon newWeapon = new Weapon(weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE), weapon.getCost(AmmoColor.YELLOW), weapon.getBaseCost(), weapon.getName());
+      Weapon newWeapon = new Weapon(weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE), weapon.getCost(AmmoColor.YELLOW), weapon.getBaseCost(), weapon.getName(), weapon.getSymbol());
       newWeapon.setLoaded(false);
       this.unloadedWeapons.add(newWeapon);
     }

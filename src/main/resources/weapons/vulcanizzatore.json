@@ -62,6 +62,7 @@
     ],
     "baseCost": "RED",
     "name": "Vulcanizzatore",
+    "symbol": "V",
     "selectedEffects": [],
     "cost": {
         "RED": 0,

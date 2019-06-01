@@ -1,6 +1,7 @@
 {
     "baseCost": "YELLOW",
     "name": "Zx-2",
+    "symbol": "Z",
     "effects": [
         {
             "costRed": 0,

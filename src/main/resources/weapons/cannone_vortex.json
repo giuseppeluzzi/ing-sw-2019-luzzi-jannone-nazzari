@@ -120,6 +120,7 @@
     ],
     "baseCost": "RED",
     "name": "Cannone vortex",
+    "symbol": "C",
     "selectedEffects": [],
     "cost": {
         "RED": 0,

@@ -40,8 +40,7 @@ public class TargetingScope extends PowerUp {
 
   @Override
   public String getSymbol() {
-    // TODO: complete method
-    return null;
+    return "Q";
   }
 
   /**

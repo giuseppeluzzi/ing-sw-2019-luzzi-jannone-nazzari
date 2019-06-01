@@ -89,6 +89,7 @@
         }
     ],
     "name": "Lanciagranate",
+    "symbol": "G",
     "cost": {
         "RED": 0,
         "BLUE": 0,

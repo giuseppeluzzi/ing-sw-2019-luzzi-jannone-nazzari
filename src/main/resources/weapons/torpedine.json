@@ -1,6 +1,7 @@
 {
     "baseCost": "BLUE",
     "name": "Torpedine",
+    "symbol": "P",
     "effects": [
         {
             "costRed": 0,

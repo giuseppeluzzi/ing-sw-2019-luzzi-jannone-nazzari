@@ -74,6 +74,7 @@
     ],
     "baseCost": "RED",
     "name": "Raggio solare",
+    "symbol": "S",
     "selectedEffects": [],
     "cost": {
         "RED": 0,

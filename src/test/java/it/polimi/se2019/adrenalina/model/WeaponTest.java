@@ -20,7 +20,7 @@ import org.junit.Test;
 public class WeaponTest {
   @Test
   public void testCopyConstructor() {
-    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
     weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
     weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW, null));
     weapon1.setGroupMoveUsed(5);
@@ -37,7 +37,7 @@ public class WeaponTest {
 
   @Test
   public void testSerialization() {
-    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
+    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
     Effect base = new Effect("test", weapon, 0, 1, 2, false);
     base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET));
 
@@ -55,7 +55,7 @@ public class WeaponTest {
 
   @Test
   public void testEffectSerialization() {
-    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
+    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
     Effect base = new Effect("test", weapon, 0, 1, 2, false);
     base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET));
     base.addAction(new ShootAction(1, 2, 1));
@@ -144,7 +144,7 @@ public class WeaponTest {
 
   @Test
   public void testSetSelectedEffect() {
-    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
+    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
     weapon.addEffect(new Effect("test", weapon, 0, 1, 2, false));
     try {
       weapon.setSelectedEffect(weapon.getEffects().get(0));
@@ -155,7 +155,7 @@ public class WeaponTest {
 
   @Test (expected = IllegalArgumentException.class)
   public void testSetSelectedEffectException() {
-    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test");
+    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
     Effect effect = new Effect("test", weapon, 0, 1, 2, false);
     weapon.setSelectedEffect(effect);
   }

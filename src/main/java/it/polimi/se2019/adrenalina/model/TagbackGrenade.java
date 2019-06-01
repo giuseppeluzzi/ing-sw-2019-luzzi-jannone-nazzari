@@ -32,8 +32,7 @@ public class TagbackGrenade extends PowerUp {
 
   @Override
   public String getSymbol() {
-    // TODO: complete method
-    return null;
+    return "J";
   }
 
   /**

@@ -36,7 +36,7 @@ public class SquareTest {
   public void testAddAmmoException() {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
         WALL, WALL, WALL, null);
-    Weapon weapon = new Weapon(1,2,3, AmmoColor.RED, "test");
+    Weapon weapon = new Weapon(1,2,3, AmmoColor.RED, "test", "X");
     square.setSpawnPoint(false);
     square.addWeapon(weapon);
   }
@@ -69,7 +69,7 @@ public class SquareTest {
         WALL, WALL, WALL, null);
     square.setSpawnPoint(true);
     if (square.isSpawnPoint()) {
-      Weapon weapon = new Weapon(1, 1, 1, AmmoColor.BLUE, "test");
+      Weapon weapon = new Weapon(1, 1, 1, AmmoColor.BLUE, "test", "X");
       square.addWeapon(weapon);
     }
     Square square2 = new Square(square);

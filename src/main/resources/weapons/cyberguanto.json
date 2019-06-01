@@ -1,6 +1,7 @@
 {
     "baseCost": "YELLOW",
     "name": "Cyberguanto",
+    "symbol": "Y",
     "effects": [
         {
             "costRed": 0,

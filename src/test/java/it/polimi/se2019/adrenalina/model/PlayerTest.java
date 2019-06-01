@@ -83,7 +83,7 @@ public class PlayerTest {
     Player player = new Player("test", PlayerColor.YELLOW, null);
     try {
       for (int i = 0; i < 3; i++) {
-        player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon"));
+        player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon", "X"));
       }
     } catch (IllegalStateException e) {
       fail("IllegalStateException thrown unnecessarily");
@@ -95,7 +95,7 @@ public class PlayerTest {
     Player player = new Player("test", PlayerColor.YELLOW, null);
 
     for (int i = 0; i < 4; i++) {
-      player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon"));
+      player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon", "X"));
     }
   }
 
@@ -103,7 +103,7 @@ public class PlayerTest {
   public void testSerialization() {
     Player player = new Player("test", PlayerColor.YELLOW, null);
     Player player2;
-    Weapon weapon = new Weapon(1,2,3,AmmoColor.BLUE, "testWeapon");
+    Weapon weapon = new Weapon(1,2,3,AmmoColor.BLUE, "testWeapon", "X");
     String json;
 
     player.addWeapon(weapon);
@@ -160,10 +160,10 @@ public class PlayerTest {
     } catch (InvalidPowerUpException e) {
 
     }
-    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1");
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1", "X");
     weapon1.setLoaded(false);
     player.addWeapon(weapon1);
-    player.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2"));
+    player.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2", "X"));
     Player player2 = new Player(player, false);
     Player player3 = new Player(player, true);
 
@@ -187,7 +187,7 @@ public class PlayerTest {
   @Test
   public void testReload() {
     Player player = new Player("test", PlayerColor.GREEN, null);
-    Weapon weapon = new Weapon(0,0,1,AmmoColor.BLUE, "test");
+    Weapon weapon = new Weapon(0,0,1,AmmoColor.BLUE, "test", "X");
     player.addAmmo(AmmoColor.BLUE, 1);
     player.addAmmo(AmmoColor.YELLOW, 1);
     assertTrue(player.canReload(weapon));
@@ -196,7 +196,7 @@ public class PlayerTest {
   @Test
   public void testReloadPowerUp() {
     Player player = new Player("test", PlayerColor.GREEN, null);
-    Weapon weapon = new Weapon(1,0,1,AmmoColor.BLUE, "test");
+    Weapon weapon = new Weapon(1,0,1,AmmoColor.BLUE, "test", "X");
     PowerUp powerUp = new Newton(AmmoColor.RED);
     player.addAmmo(AmmoColor.BLUE, 1);
     player.addAmmo(AmmoColor.YELLOW, 1);
@@ -232,8 +232,8 @@ public class PlayerTest {
   @Test
   public void testHasWeaponReload() {
     Player player = new Player("test", PlayerColor.GREEN, null);
-    Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test");
-    Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test");
+    Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test", "X");
+    Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test", "X");
     player.addWeapon(weapon);
     player.addAmmo(AmmoColor.BLUE, 1);
     player.addAmmo(AmmoColor.YELLOW, 1);

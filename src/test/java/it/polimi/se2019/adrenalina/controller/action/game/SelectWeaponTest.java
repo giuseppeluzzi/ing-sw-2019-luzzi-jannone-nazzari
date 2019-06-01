@@ -12,8 +12,8 @@ public class SelectWeaponTest {
   @Test
   public void testGetLoadedWeapons() {
     Player player = new Player("test", PlayerColor.GREEN, null);
-    player.addWeapon(new Weapon(0,1,1, AmmoColor.RED, "test1"));
-    player.addWeapon(new Weapon(1,1,1, AmmoColor.BLUE, "test2"));
+    player.addWeapon(new Weapon(0,1,1, AmmoColor.RED, "test1", "X"));
+    player.addWeapon(new Weapon(1,1,1, AmmoColor.BLUE, "test2", "X"));
     player.getWeapons().get(1).setLoaded(false);
     player.getWeapons().get(0).setLoaded(true);
     assertEquals(player.getWeapons().get(0), SelectWeapon.getLoadedWeapons(player.getWeapons()).get(0));

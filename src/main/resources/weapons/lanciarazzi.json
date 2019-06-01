@@ -1,6 +1,7 @@
 {
     "baseCost": "RED",
     "name": "Lanciarazzi",
+    "symbol": "B",
     "effects": [
         {
             "costRed": 0,

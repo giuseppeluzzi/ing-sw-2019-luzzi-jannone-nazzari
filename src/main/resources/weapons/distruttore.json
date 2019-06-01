@@ -1,6 +1,7 @@
 {
     "baseCost": "BLUE",
     "name": "Distruttore",
+    "symbol": "D",
     "effects": [
         {
             "costRed": 0,

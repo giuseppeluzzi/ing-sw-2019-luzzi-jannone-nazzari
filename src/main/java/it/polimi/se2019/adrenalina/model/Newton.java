@@ -36,8 +36,7 @@ public class Newton extends PowerUp {
 
   @Override
   public String getSymbol() {
-    // TODO: complete method
-    return null;
+    return "W";
   }
 
   /**
