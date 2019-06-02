@@ -35,7 +35,7 @@ public class TUIBoardView extends BoardView {
   @Override
   public void showBoard() {
     try {
-      MapPrinter.print(getBoard(), getClient().getPlayerColor());
+      BoardPrinter.print(getBoard(), getClient().getPlayerColor());
     } catch (RemoteException e) {
       // ignore exception
     }

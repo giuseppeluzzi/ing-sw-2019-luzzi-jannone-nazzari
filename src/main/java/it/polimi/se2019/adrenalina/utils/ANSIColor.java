@@ -1,31 +1,34 @@
 package it.polimi.se2019.adrenalina.utils;
 
 public enum ANSIColor {
-  BLACK("\u001b[30m"),
-  RED("\u001b[91m"),
-  GREEN("\u001b[92m"),
-  YELLOW("\u001b[93m"),
-  BLUE("\u001b[94m"),
-  MAGENTA("\u001b[95m"),
-  CYAN("\u001b[96m"),
-  WHITE("\u001b[97m"),
-  DIM_RED("\u001b[31m"),
-  DIM_GREEN("\u001b[32m"),
-  DIM_YELLOW("\u001b[33m"),
-  DIM_BLUE("\u001b[34m"),
-  DIM_MAGENTA("\u001b[35m"),
-  DIM_CYAN("\u001b[36m"),
-  DIM_WHITE("\u001b[37m"),
-  RESET("\u001b[0m");
+  BLACK("\u001b[30m", "\u001b[30m"),
+  RED("\u001b[91m", "\u001b[2;91m"),
+  GREEN("\u001b[92m", "\u001b[2;92m"),
+  YELLOW("\u001b[93m", "\u001b[2;93m"),
+  BLUE("\u001b[96m", "\u001b[2;96m"), // using 96 (cyan) instead of 94 for visibility
+  MAGENTA("\u001b[95m", "\u001b[2;95m"),
+  CYAN("\u001b[96m", "\u001b[2;96m"),
+  WHITE("\u001b[37m", "\u001b[2;97m"),
+  RESET("\u001b[0m", "\u001b[0m");
 
-  private final String ansiColor;
+  private final String normalColor;
+  private final String dimColor;
 
-  ANSIColor(String ansiColor) {
-    this.ansiColor = ansiColor;
+  ANSIColor(String ansiColor, String dimColor) {
+    this.normalColor = ansiColor;
+    this.dimColor = dimColor;
   }
 
   @Override
   public String toString() {
-    return ansiColor;
+    return normalColor;
+  }
+
+  public String toString(boolean dim) {
+    if (dim) {
+      return dimColor;
+    } else {
+      return normalColor;
+    }
   }
 }

@@ -19,7 +19,7 @@ import java.util.List;
  * characters. For characters, {@code String} is used instead of {@code char} in order to include
  * ANSI escape sequences for setting colors.
  */
-public final class MapPrinter {
+public final class BoardPrinter {
 
   private static final int SQUARE_WIDTH = 13;
   private static final int SQUARE_HEIGHT = 6;
@@ -34,8 +34,8 @@ public final class MapPrinter {
   private static final String TAG_SYMBOL = "✦";
   private static final String DAMAGE_SYMBOL = "✚";
 
-  private MapPrinter() {
-    throw new IllegalStateException("MapPrinter cannot be instantiated");
+  private BoardPrinter() {
+    throw new IllegalStateException("BoardPrinter cannot be instantiated");
   }
 
   /**
@@ -294,154 +294,202 @@ public final class MapPrinter {
     }
   }
 
-  private static void drawDashboard(String[][] map, int num, Board board, Player player, PlayerColor ownerColor) {
-    ANSIColor color;
-    if (board.getCurrentPlayer() == player.getColor()) {
-      color = player.getColor().getAnsiColor();
-    } else {
-      switch (player.getColor()) {
-        case GREEN:
-          color = ANSIColor.DIM_GREEN;
-          break;
-        case BLUE:
-          color = ANSIColor.DIM_BLUE;
-          break;
-        case PURPLE:
-          color = ANSIColor.DIM_MAGENTA;
-          break;
-        case GREY:
-          color = ANSIColor.DIM_WHITE;
-          break;
-        case YELLOW:
-          color = ANSIColor.DIM_YELLOW;
-          break;
-        default:
-          throw new IllegalStateException("Invalid PlayerColor");
+  /**
+   * Generates weapon icons and adds them to the print matrix. Returns the current X cursor position.
+   * @param map the print matrix that will be updated
+   * @param weapons the list of weapons to print
+   * @param playerColor the color of the player who owns the dashboard
+   * @param ownColor true if the dashboard we are printing will be shown to its own player
+   * @param posX cursor X position
+   * @param posY cursor Y position
+   * @return the updated cursor X position
+   */
+  private static int printDashboardWeapons(String[][] map, List<Weapon> weapons, String playerColor, boolean ownColor, int posX, int posY) {
+    for (Weapon weapon : weapons) {
+      if (! weapon.isLoaded() || ownColor) {
+        map[posX][posY] = playerColor + weapon.getSymbol();
+      } else {
+        map[posX][posY] = playerColor + "*";
       }
+      posX++;
     }
+    for (int i = 0; i < 4 - weapons.size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+    return posX;
+  }
+
+  /**
+   * Generates powerUps icons and adds them to the print matrix. Returns the current X cursor position.
+   * @param map the print matrix that will be updated
+   * @param powerUps the list of powerUps to print
+   * @param playerColor the color of the player who owns the dashboard
+   * @param ownColor true if the dashboard we are printing will be shown to its own player
+   * @param posX cursor X position
+   * @param posY cursor Y position
+   * @return the updated cursor X position
+   */
+  private static int printDashboardPowerUps(String[][] map, List<PowerUp> powerUps, String playerColor, boolean ownColor, int posX, int posY) {
+    for (PowerUp powerUp : powerUps) {
+      if (ownColor) {
+        map[posX][posY] = powerUp.getColor().getAnsiColor() + powerUp.getSymbol();
+      } else {
+        map[posX][posY] = playerColor + "P";
+      }
+      posX++;
+    }
+    for (int i = 0; i < 4 - powerUps.size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+    return posX;
+  }
+
+  private static void drawDashboard(String[][] map, int num, Board board, Player player, PlayerColor ownerColor) {
+    boolean dim = board.getCurrentPlayer() != player.getColor();
+    String playerColor = player.getColor().getAnsiColor().toString(dim);
     int baseX = 4 * SQUARE_WIDTH + 4;
     int posX = baseX;
     int posY = num * DASHBOARD_HEIGHT;
-    map[posX][posY] = color.toString() + CornerType.TOP_LEFT_CORNER;
-    map[baseX + DASHBOARD_WIDTH - 1][posY] = color.toString() + CornerType.TOP_RIGHT_CORNER;
-    posX++;
-    String title = " " + player.getName() + " (" + player.getScore() + ") ";
-    for (int i = 0; i < (DASHBOARD_WIDTH - title.length()) / 2; i++) {
-      map[posX][posY] = color + HORIZONTAL_LINE;
-      posX++;
-    }
-    for (char c : title.toCharArray()) {
-      map[posX][posY] = color.toString() + c;
-      posX++;
-    }
-    while (posX < baseX + DASHBOARD_WIDTH - 1) {
-      map[posX][posY] = color + HORIZONTAL_LINE;
-      posX++;
-    }
-    posX = baseX;
-    posY++;
-    map[posX][posY] = color + VERTICAL_LINE;
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    for (Weapon weapon : player.getWeapons()) {
-      if (! weapon.isLoaded() || player.getColor() == ownerColor) {
-        map[posX][posY] = color + weapon.getSymbol();
-      } else {
-        map[posX][posY] = color + "*";
-      }
-      posX++;
-    }
-    for (int i = 0; i < 4 - player.getWeapons().size(); i++) {
-      map[posX][posY] = " ";
-      posX++;
-    }
-    map[posX][posY] = color + "|";
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    for (PlayerColor tagColor : player.getTags()) {
-      map[posX][posY] = tagColor + TAG_SYMBOL;
-      posX++;
-    }
-    for (int i = 0; i < 13 - player.getTags().size(); i++) {
-      map[posX][posY] = " ";
-      posX++;
-    }
-    map[posX][posY] = color + VERTICAL_LINE;
-    posX = baseX;
-    posY++;
-    map[posX][posY] = color + VERTICAL_LINE;
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    for (PowerUp powerUp : player.getPowerUps()) {
-      if (player.getColor() == ownerColor) {
-        map[posX][posY] = color + powerUp.getSymbol();
-      } else {
-        map[posX][posY] = color + "P";
-      }
-      posX++;
-    }
-    for (int i = 0; i < 4 - player.getPowerUps().size(); i++) {
-      map[posX][posY] = " ";
-      posX++;
-    }
-    map[posX][posY] = color + "|";
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    for (PlayerColor damageColor : player.getDamages()) {
-      map[posX][posY] = damageColor + DAMAGE_SYMBOL;
-      posX++;
-    }
-    for (int i = 0; i < 13 - player.getDamages().size(); i++) {
-      map[posX][posY] = " ";
-      posX++;
-    }
-    map[posX][posY] = color + VERTICAL_LINE;
-    posX = baseX;
-    posY++;
-    map[posX][posY] = color.toString() + CornerType.BOTTOM_LEFT_CORNER;
-    posX++;
-    map[posX][posY] = color.toString() + HORIZONTAL_LINE;
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    for (char c : Integer.toString(player.getKillScore()).toCharArray()) {
-      map[posX][posY] = color.toString() + c;
-      posX++;
-    }
-    map[posX][posY] = " ";
-    posX++;
-    for (int i = 0; i < DASHBOARD_WIDTH - 13 - player.getKillScore() / 10; i++) {
-      map[posX][posY] = color.toString() + HORIZONTAL_LINE;
-      posX++;
-    }
-    map[posX][posY] = " ";
-    posX++;
-    map[posX][posY] = ANSIColor.RED.toString() + player.getAmmo(AmmoColor.RED);
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    map[posX][posY] = ANSIColor.YELLOW.toString() + player.getAmmo(AmmoColor.YELLOW);
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    map[posX][posY] = ANSIColor.BLUE.toString() + player.getAmmo(AmmoColor.BLUE);
-    posX++;
-    map[posX][posY] = " ";
-    posX++;
-    map[posX][posY] = color.toString() + CornerType.BOTTOM_RIGHT_CORNER;
 
-    /* TODO:
-       - sistemare i colori (brillanti/spenti, soprattutto quando si devono printare cose con colori statici)
-       - scorporare per complessità
-       - rendere velori dipendenti dalle costanti
-       - funzione che stampa tutte le dashboard
-       - aggiornare i commenti
-       - testing
-     */
+    // Top corners
+    map[posX][posY] = playerColor + CornerType.TOP_LEFT_CORNER;
+    map[baseX + DASHBOARD_WIDTH - 1][posY] = playerColor + CornerType.TOP_RIGHT_CORNER + ANSIColor.RESET;
+    posX++;
+
+    // Building player name & score (dashboard title)
+    String title = " " + player.getName() + " (" + player.getScore() + ") ";
+
+    // Left part of top edge
+    for (int i = 0; i < (DASHBOARD_WIDTH - title.length()) / 2; i++) {
+      map[posX][posY] = playerColor + HORIZONTAL_LINE;
+      posX++;
+    }
+
+    // Player name & score (dashboard title)
+    for (char c : title.toCharArray()) {
+      map[posX][posY] = playerColor + c;
+      posX++;
+    }
+
+    // Right part of top edge
+    while (posX < baseX + DASHBOARD_WIDTH - 1) {
+      map[posX][posY] = playerColor + HORIZONTAL_LINE;
+      posX++;
+    }
+
+    posX = baseX;
+    posY++;
+
+    // Line 1 side edges
+    map[posX][posY] = playerColor + VERTICAL_LINE;
+    map[baseX + DASHBOARD_WIDTH - 1][posY] = playerColor + VERTICAL_LINE + ANSIColor.RESET;
+    posX++;
+
+    map[posX][posY] = " ";
+    posX++;
+
+    // Weapons
+    posX = printDashboardWeapons(map, player.getWeapons(), playerColor, player.getColor() == ownerColor, posX, posY);
+
+    map[posX][posY] = playerColor + "|";
+    posX++;
+    map[posX][posY] = " ";
+    posX++;
+
+    // Tags
+    for (PlayerColor tagColor : player.getTags()) {
+      map[posX][posY] = tagColor.getAnsiColor().toString(dim) + TAG_SYMBOL;
+      posX++;
+    }
+
+    // Tag padding
+    for (int i = 0; i < DASHBOARD_WIDTH - 9 - player.getTags().size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+
+    posX = baseX;
+    posY++;
+
+    // Line 2 side edges
+    map[posX][posY] = playerColor + VERTICAL_LINE;
+    map[baseX + DASHBOARD_WIDTH - 1][posY] = playerColor + VERTICAL_LINE + ANSIColor.RESET;
+    posX++;
+
+    map[posX][posY] = " ";
+    posX++;
+
+    // PowerUps
+    posX = printDashboardPowerUps(map, player.getPowerUps(), playerColor, player.getColor() == ownerColor, posX, posY);
+
+    map[posX][posY] = playerColor + "|";
+    posX++;
+    map[posX][posY] = " ";
+    posX++;
+
+    // Damages
+    for (PlayerColor damageColor : player.getDamages()) {
+      map[posX][posY] = damageColor.getAnsiColor().toString(dim) + DAMAGE_SYMBOL;
+      posX++;
+    }
+
+    // Damage padding
+    for (int i = 0; i < DASHBOARD_WIDTH - 9 - player.getDamages().size(); i++) {
+      map[posX][posY] = " ";
+      posX++;
+    }
+
+    posX = baseX;
+    posY++;
+
+    // Bottom padding (unused space) if dashboard height > 4
+    while (posY < (num + 1) * DASHBOARD_HEIGHT - 1) {
+      map[baseX][posY] = playerColor + VERTICAL_LINE;
+      map[baseX + DASHBOARD_WIDTH - 1][posY] = playerColor + VERTICAL_LINE + ANSIColor.RESET;
+      posY++;
+    }
+
+    // Bottom corners
+    map[posX][posY] = playerColor + CornerType.BOTTOM_LEFT_CORNER;
+    posX++;
+    map[posX][posY] = playerColor + HORIZONTAL_LINE;
+    posX++;
+    map[posX][posY] = " ";
+    posX++;
+    map[baseX + DASHBOARD_WIDTH - 1][posY] = playerColor + CornerType.BOTTOM_RIGHT_CORNER + ANSIColor.RESET;
+    map[baseX + DASHBOARD_WIDTH - 2][posY] = playerColor + HORIZONTAL_LINE;
+    map[baseX + DASHBOARD_WIDTH - 3][posY] = " ";
+
+    // Kill score
+    for (char c : Integer.toString(player.getKillScore()).toCharArray()) {
+      map[posX][posY] = playerColor + c;
+      posX++;
+    }
+
+    map[posX][posY] = " ";
+    posX++;
+
+    // Bottom edge line
+    for (int i = 0; i < DASHBOARD_WIDTH - 14 - player.getKillScore() / 10; i++) {
+      map[posX][posY] = playerColor + HORIZONTAL_LINE;
+      posX++;
+    }
+
+    map[posX][posY] = " ";
+    posX++;
+
+    // Ammo
+    map[posX][posY] = ANSIColor.RED.toString(dim) + player.getAmmo(AmmoColor.RED);
+    posX++;
+    map[posX][posY] = " ";
+    posX++;
+    map[posX][posY] = ANSIColor.YELLOW.toString(dim) + player.getAmmo(AmmoColor.YELLOW);
+    posX++;
+    map[posX][posY] = " ";
+    posX++;
+    map[posX][posY] = ANSIColor.BLUE.toString(dim) + player.getAmmo(AmmoColor.BLUE);
   }
 
   /**
@@ -451,7 +499,7 @@ public final class MapPrinter {
    * @return a print matrix for the game board
    */
   static String[][] buildMap(Board board, PlayerColor ownerColor) {
-    String[][] map = new String[4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5][3 * SQUARE_HEIGHT + DASHBOARD_HEIGHT + 5];
+    String[][] map = new String[4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5][3 * SQUARE_HEIGHT + 2];
     for (Square square : board.getSquares()) {
       drawSquare(map, square);
       drawPlayers(map, square);
@@ -472,7 +520,7 @@ public final class MapPrinter {
    */
   static void print(Board board, PlayerColor ownerColor) {
     String[][] map = buildMap(board, ownerColor);
-    for (int y = 0; y < 3 * SQUARE_HEIGHT + DASHBOARD_HEIGHT + 5; y++) {
+    for (int y = 0; y < 3 * SQUARE_HEIGHT + 2; y++) {
       for (int x = 0; x < 4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5; x++) {
         if (map[x][y] != null) {
           Log.print(map[x][y]);
