@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.event.invocations;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 public class ShowMessageInvocation implements Invocation {

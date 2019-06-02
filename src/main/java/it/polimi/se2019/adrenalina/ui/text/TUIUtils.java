@@ -11,6 +11,10 @@ import java.util.Scanner;
 
 public class TUIUtils {
 
+  private TUIUtils() {
+    throw new IllegalStateException("Utility class");
+  }
+
   private static final Scanner scanner = new Scanner(System.in, "utf-8");
 
   static Scanner getScanner() {

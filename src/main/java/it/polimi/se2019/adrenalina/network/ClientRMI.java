@@ -3,8 +3,6 @@ package it.polimi.se2019.adrenalina.network;
 import static java.lang.Thread.sleep;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
-import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;

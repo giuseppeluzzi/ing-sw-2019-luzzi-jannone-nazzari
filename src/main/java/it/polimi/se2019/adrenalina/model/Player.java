@@ -669,7 +669,7 @@ public class Player extends Observable implements Target, Serializable {
     return true;
   }
 
-  public HashMap<AmmoColor, Integer> getAmmos() {
+  public Map<AmmoColor, Integer> getAmmos() {
     return new HashMap<>(ammo);
   }
 

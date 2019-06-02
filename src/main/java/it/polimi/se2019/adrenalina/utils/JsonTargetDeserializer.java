@@ -14,7 +14,7 @@ public class JsonTargetDeserializer implements JsonDeserializer<Target> {
 
   @Override
   public Target deserialize(JsonElement jsonElement, Type type,
-      JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+      JsonDeserializationContext jsonDeserializationContext) {
     JsonObject jsonObject = jsonElement.getAsJsonObject();
 
     Target target;

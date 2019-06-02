@@ -18,7 +18,7 @@ public class JsonPowerUpDeserializer implements JsonDeserializer<PowerUp> {
 
   @Override
   public PowerUp deserialize(JsonElement jsonElement, Type type,
-      JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+      JsonDeserializationContext jsonDeserializationContext) {
     JsonObject jsonObject = jsonElement.getAsJsonObject();
 
     PowerUpType powerUpType = PowerUpType.valueOf(jsonObject.get("type").getAsString());

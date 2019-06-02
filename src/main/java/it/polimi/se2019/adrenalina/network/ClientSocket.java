@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;

@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.graphic;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
