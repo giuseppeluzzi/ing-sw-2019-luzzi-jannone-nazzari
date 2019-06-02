@@ -297,23 +297,23 @@ public final class BoardPrinter {
   /**
    * Generates weapon icons and adds them to the print matrix. Returns the current X cursor position.
    * @param map the print matrix that will be updated
-   * @param weapons the list of weapons to print
+   * @param weapons the list of weapons to print - only includes unloaded weapons for enemies
    * @param playerColor the color of the player who owns the dashboard
-   * @param ownColor true if the dashboard we are printing will be shown to its own player
+   * @param weaponCount the total number of weapons to print
    * @param posX cursor X position
    * @param posY cursor Y position
    * @return the updated cursor X position
    */
-  private static int printDashboardWeapons(String[][] map, List<Weapon> weapons, String playerColor, boolean ownColor, int posX, int posY) {
+  private static int printDashboardWeapons(String[][] map, List<Weapon> weapons, String playerColor, int weaponCount, int posX, int posY) {
     for (Weapon weapon : weapons) {
-      if (! weapon.isLoaded() || ownColor) {
-        map[posX][posY] = playerColor + weapon.getSymbol();
-      } else {
-        map[posX][posY] = playerColor + "*";
-      }
+      map[posX][posY] = playerColor + weapon.getSymbol();
       posX++;
     }
-    for (int i = 0; i < 4 - weapons.size(); i++) {
+    for (int i = 0; i < weaponCount - weapons.size(); i++) {
+      map[posX][posY] = playerColor + "*";
+      posX++;
+    }
+    for (int i = 0; i < 4 - weaponCount; i++) {
       map[posX][posY] = " ";
       posX++;
     }
@@ -323,30 +323,30 @@ public final class BoardPrinter {
   /**
    * Generates powerUps icons and adds them to the print matrix. Returns the current X cursor position.
    * @param map the print matrix that will be updated
-   * @param powerUps the list of powerUps to print
+   * @param powerUps the list of powerUps to print - empty for enemies
    * @param playerColor the color of the player who owns the dashboard
-   * @param ownColor true if the dashboard we are printing will be shown to its own player
+   * @param powerUpCount the total number of powerUps to print
    * @param posX cursor X position
    * @param posY cursor Y position
    * @return the updated cursor X position
    */
-  private static int printDashboardPowerUps(String[][] map, List<PowerUp> powerUps, String playerColor, boolean ownColor, int posX, int posY) {
+  private static int printDashboardPowerUps(String[][] map, List<PowerUp> powerUps, String playerColor, int powerUpCount, int posX, int posY) {
     for (PowerUp powerUp : powerUps) {
-      if (ownColor) {
-        map[posX][posY] = powerUp.getColor().getAnsiColor() + powerUp.getSymbol();
-      } else {
-        map[posX][posY] = playerColor + "P";
-      }
+      map[posX][posY] = powerUp.getColor().getAnsiColor() + powerUp.getSymbol();
       posX++;
     }
-    for (int i = 0; i < 4 - powerUps.size(); i++) {
+    for (int i = 0; i < powerUpCount - powerUps.size(); i++) {
+      map[posX][posY] = playerColor + "P";
+      posX++;
+    }
+    for (int i = 0; i < 4 - powerUpCount; i++) {
       map[posX][posY] = " ";
       posX++;
     }
     return posX;
   }
 
-  private static void drawDashboard(String[][] map, int num, Board board, Player player, PlayerColor ownerColor) {
+  private static void drawDashboard(String[][] map, int num, Board board, Player player) {
     boolean dim = board.getCurrentPlayer() != player.getColor();
     String playerColor = player.getColor().getAnsiColor().toString(dim);
     int baseX = 4 * SQUARE_WIDTH + 4;
@@ -391,7 +391,7 @@ public final class BoardPrinter {
     posX++;
 
     // Weapons
-    posX = printDashboardWeapons(map, player.getWeapons(), playerColor, player.getColor() == ownerColor, posX, posY);
+    posX = printDashboardWeapons(map, player.getWeapons(), playerColor, player.getWeaponCount(), posX, posY);
 
     map[posX][posY] = playerColor + "|";
     posX++;
@@ -422,7 +422,7 @@ public final class BoardPrinter {
     posX++;
 
     // PowerUps
-    posX = printDashboardPowerUps(map, player.getPowerUps(), playerColor, player.getColor() == ownerColor, posX, posY);
+    posX = printDashboardPowerUps(map, player.getPowerUps(), playerColor, player.getPowerUpCount(), posX, posY);
 
     map[posX][posY] = playerColor + "|";
     posX++;
@@ -495,10 +495,9 @@ public final class BoardPrinter {
   /**
    * Generates a print matrix.
    * @param board the board with the game map to draw
-   * @param ownerColor the color of the player who will see the printed game board
    * @return a print matrix for the game board
    */
-  static String[][] buildMap(Board board, PlayerColor ownerColor) {
+  static String[][] buildMap(Board board) {
     String[][] map = new String[4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5][3 * SQUARE_HEIGHT + 2];
     for (Square square : board.getSquares()) {
       drawSquare(map, square);
@@ -507,7 +506,7 @@ public final class BoardPrinter {
     drawCoordinates(map);
     int num = 0;
     for (Player player : board.getPlayers()) {
-      drawDashboard(map, num, board, player, ownerColor);
+      drawDashboard(map, num, board, player);
       num++;
     }
     return map;
@@ -516,10 +515,9 @@ public final class BoardPrinter {
   /**
    * Prints a game board.
    * @param board the board with the game map to print
-   * @param ownerColor the color of the player who will see the printed game board
    */
-  static void print(Board board, PlayerColor ownerColor) {
-    String[][] map = buildMap(board, ownerColor);
+  static void print(Board board) {
+    String[][] map = buildMap(board);
     for (int y = 0; y < 3 * SQUARE_HEIGHT + 2; y++) {
       for (int x = 0; x < 4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5; x++) {
         if (map[x][y] != null) {

@@ -469,6 +469,12 @@ public class Player extends Observable implements Target, Serializable {
     }
     powerUps.remove(powerUp);
     powerUpCount--;
+    try {
+      notifyObservers(new OwnPowerUpUpdate(color, getPowerUps()));
+      notifyObservers(new EnemyPowerUpUpdate(color, powerUpCount));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public void updatePowerUps(List<PowerUp> newPowerUps) {
@@ -525,7 +531,11 @@ public class Player extends Observable implements Target, Serializable {
     if (! weapons.contains(weapon)) {
       throw new IllegalArgumentException("Player does not have this weapon");
     }
+    weapons.remove(weapon);
+    weaponCount--;
     try {
+      notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+      notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
       weapon.removeObserver(client.getBoardView());
       weapon.removeObserver(client.getPlayerDashboardsView());
       weapon.removeObserver(client.getCharactersView());
@@ -534,7 +544,6 @@ public class Player extends Observable implements Target, Serializable {
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    weapons.remove(weapon);
   }
 
   public void updateWeapons(List<Weapon> newWeapons) {

@@ -223,41 +223,41 @@ public abstract class PlayerDashboardsView extends Observable implements
     }
   }
 
-  private List<PowerUp> addNewtons(Map<AmmoColor, Integer> entrySet) {
+  private List<PowerUp> addNewtons(Map<AmmoColor, Integer> powerUpData) {
     List<PowerUp> powerUps = new ArrayList<>();
-    for (AmmoColor color : AmmoColor.values()) {
-      for (int i = 0; i < entrySet.get(color); i++) {
-        powerUps.add(new Newton(color));
+    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
+      for (int i = 0; i < entrySet.getValue(); i++) {
+        powerUps.add(new Newton(entrySet.getKey()));
       }
     }
     return powerUps;
   }
 
-  private List<PowerUp> addTargetingScopes(Map<AmmoColor, Integer> entrySet) {
+  private List<PowerUp> addTargetingScopes(Map<AmmoColor, Integer> powerUpData) {
     List<PowerUp> powerUps = new ArrayList<>();
-    for (AmmoColor color : AmmoColor.values()) {
-      for (int i = 0; i < entrySet.get(color); i++) {
-        powerUps.add(new TargetingScope(color));
+    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
+      for (int i = 0; i < entrySet.getValue(); i++) {
+        powerUps.add(new TargetingScope(entrySet.getKey()));
       }
     }
     return powerUps;
   }
 
-  private List<PowerUp> addTagbackGranades(Map<AmmoColor, Integer> entrySet) {
+  private List<PowerUp> addTagbackGranades(Map<AmmoColor, Integer> powerUpData) {
     List<PowerUp> powerUps = new ArrayList<>();
-    for (AmmoColor color : AmmoColor.values()) {
-      for (int i = 0; i < entrySet.get(color); i++) {
-        powerUps.add(new TagbackGrenade(color));
+    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
+      for (int i = 0; i < entrySet.getValue(); i++) {
+        powerUps.add(new TagbackGrenade(entrySet.getKey()));
       }
     }
     return powerUps;
   }
 
-  private List<PowerUp> addTeleporters(Map<AmmoColor, Integer> entrySet) {
+  private List<PowerUp> addTeleporters(Map<AmmoColor, Integer> powerUpData) {
     List<PowerUp> powerUps = new ArrayList<>();
-    for (AmmoColor color : AmmoColor.values()) {
-      for (int i = 0; i < entrySet.get(color); i++) {
-        powerUps.add(new Teleporter(color));
+    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
+      for (int i = 0; i < entrySet.getValue(); i++) {
+        powerUps.add(new Teleporter(entrySet.getKey()));
       }
     }
     return powerUps;

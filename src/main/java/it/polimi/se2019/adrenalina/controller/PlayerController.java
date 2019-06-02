@@ -234,7 +234,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
     }
 
-
+    /*
     // CHEAT SUITE
     // TODO CANCELLARE
     //player.addAmmo(AmmoColor.RED, 3);
@@ -250,6 +250,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     board.takeWeapon(weapon2);
     player.addWeapon(weapon2);
     // END CHEAT SUITE
+    */
 
     boardController.getTurnController().executeGameActionQueue();
   }
