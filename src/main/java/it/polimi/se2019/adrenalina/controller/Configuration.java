@@ -14,6 +14,18 @@ public class Configuration {
   private Integer joinTimeout;
   private Integer turnTimeout;
   private Integer powerUpTimeout;
+  private Integer tuiDashboardWidth;
+  private Integer tuiDashboardHeight;
+  private Integer tuiSquareWidth;
+  private Integer tuiDoorWidth;
+  private String tuiHorizontalLine;
+  private String tuiPlayerIcon;
+  private Integer tuiDoorHeight;
+  private Integer tuiSquareHeight;
+  private String tuiVerticalLine;
+  private String tuiSpawnPointIcon;
+  private String tuiTagIcon;
+  private String tuiDamageIcon;
 
   private static Configuration instance = null;
 
@@ -59,6 +71,54 @@ public class Configuration {
 
   public Integer getPowerUpTimeout() {
     return powerUpTimeout;
+  }
+
+  public Integer getTuiDashboardWidth() {
+    return tuiDashboardWidth;
+  }
+
+  public Integer getTuiDashboardHeight() {
+    return tuiDashboardHeight;
+  }
+
+  public Integer getTuiSquareWidth() {
+    return tuiSquareWidth;
+  }
+
+  public Integer getTuiDoorWidth() {
+    return tuiDoorWidth;
+  }
+
+  public String getTuiHorizontalLine() {
+    return tuiHorizontalLine;
+  }
+
+  public String getTuiPlayerIcon() {
+    return tuiPlayerIcon;
+  }
+
+  public Integer getTuiDoorHeight() {
+    return tuiDoorHeight;
+  }
+
+  public Integer getTuiSquareHeight() {
+    return tuiSquareHeight;
+  }
+
+  public String getTuiVerticalLine() {
+    return tuiVerticalLine;
+  }
+
+  public String getTuiSpawnPointIcon() {
+    return tuiSpawnPointIcon;
+  }
+
+  public String getTuiTagIcon() {
+    return tuiTagIcon;
+  }
+
+  public String getTuiDamageIcon() {
+    return tuiDamageIcon;
   }
 
 }

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Direction;
@@ -21,18 +22,18 @@ import java.util.List;
  */
 public final class BoardPrinter {
 
-  private static final int SQUARE_WIDTH = 13;
-  private static final int SQUARE_HEIGHT = 6;
-  private static final int DOOR_HEIGHT = 2;
-  private static final int DOOR_WIDTH = 5;
-  private static final int DASHBOARD_WIDTH = 22;
-  private static final int DASHBOARD_HEIGHT = 4;
-  private static final String HORIZONTAL_LINE = "━";
-  private static final String VERTICAL_LINE = "┃";
-  private static final String PLAYER_ICON = "⚑";
-  private static final String SPAWN_POINT = "⊡";
-  private static final String TAG_SYMBOL = "✦";
-  private static final String DAMAGE_SYMBOL = "✚";
+  private static final int SQUARE_WIDTH = Configuration.getInstance().getTuiSquareWidth();
+  private static final int SQUARE_HEIGHT = Configuration.getInstance().getTuiSquareHeight();
+  private static final int DOOR_HEIGHT = Configuration.getInstance().getTuiDoorHeight();
+  private static final int DOOR_WIDTH = Configuration.getInstance().getTuiDoorWidth();
+  private static final int DASHBOARD_WIDTH = Configuration.getInstance().getTuiDashboardWidth();
+  private static final int DASHBOARD_HEIGHT = Configuration.getInstance().getTuiDashboardHeight();
+  private static final String HORIZONTAL_LINE = Configuration.getInstance().getTuiHorizontalLine();
+  private static final String VERTICAL_LINE = Configuration.getInstance().getTuiVerticalLine();
+  private static final String PLAYER_ICON = Configuration.getInstance().getTuiPlayerIcon();
+  private static final String SPAWN_POINT_ICON = Configuration.getInstance().getTuiSpawnPointIcon();
+  private static final String TAG_ICON = Configuration.getInstance().getTuiTagIcon();
+  private static final String DAMAGE_ICON = Configuration.getInstance().getTuiDamageIcon();
 
   private BoardPrinter() {
     throw new IllegalStateException("BoardPrinter cannot be instantiated");
@@ -196,7 +197,7 @@ public final class BoardPrinter {
     int centerX = (square.getPosX() * SQUARE_WIDTH) + 2 + (SQUARE_WIDTH - 1) / 2;
     int centerY = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT;
     if (square.isSpawnPoint()) {
-      map[centerX][centerY] = square.getColor().getAnsiColor() + SPAWN_POINT;
+      map[centerX][centerY] = square.getColor().getAnsiColor() + SPAWN_POINT_ICON;
     } else if (square.getAmmoCard() != null) {
       map[centerX - 1][centerY] = ANSIColor.RESET.toString() + square.getAmmoCard().toString().substring(0, 1);
       map[centerX][centerY] = ANSIColor.RESET.toString() + square.getAmmoCard().toString().substring(1, 2);
@@ -400,7 +401,7 @@ public final class BoardPrinter {
 
     // Tags
     for (PlayerColor tagColor : player.getTags()) {
-      map[posX][posY] = tagColor.getAnsiColor().toString(dim) + TAG_SYMBOL;
+      map[posX][posY] = tagColor.getAnsiColor().toString(dim) + TAG_ICON;
       posX++;
     }
 
@@ -431,7 +432,7 @@ public final class BoardPrinter {
 
     // Damages
     for (PlayerColor damageColor : player.getDamages()) {
-      map[posX][posY] = damageColor.getAnsiColor().toString(dim) + DAMAGE_SYMBOL;
+      map[posX][posY] = damageColor.getAnsiColor().toString(dim) + DAMAGE_ICON;
       posX++;
     }
 
