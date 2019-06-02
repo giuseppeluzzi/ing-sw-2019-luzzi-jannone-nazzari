@@ -299,6 +299,27 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     run();
   }
 
+  /**
+   * Create every square for a map from the template in the GameMap
+   * @param gameMap the map template
+   */
+  public void createSquares(GameMap gameMap) {
+    for (Square square : gameMap.getSquares()) {
+      Square realSquare = new Square(square.getPosX(),
+          square.getPosY(),
+          square.getColor(),
+          square.getEdge(Direction.NORTH),
+          square.getEdge(Direction.EAST),
+          square.getEdge(Direction.SOUTH),
+          square.getEdge(Direction.WEST),
+          board);
+      if (square.isSpawnPoint()) {
+        realSquare.setSpawnPoint(true);
+      }
+      board.setSquare(realSquare);
+    }
+  }
+
   private void prepareMap(GameMap map) {
     for (Player player : board.getPlayers()) {
       try {
@@ -317,21 +338,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
     board.notifyInitialStatus();
 
-    for (Square square : map.getSquares()) {
-      Square realSquare = new Square(square.getPosX(),
-          square.getPosY(),
-          square.getColor(),
-          square.getEdge(Direction.NORTH),
-          square.getEdge(Direction.EAST),
-          square.getEdge(Direction.SOUTH),
-          square.getEdge(Direction.WEST),
-          board);
-      if (square.isSpawnPoint()) {
-        realSquare.setSpawnPoint(true);
-      }
-      board.setSquare(realSquare);
-    }
-
+    createSquares(map);
     placeAmmoCard();
   }
 

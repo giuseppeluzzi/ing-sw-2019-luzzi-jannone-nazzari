@@ -74,22 +74,6 @@ public class ClientRMI extends Client {
   }
 
   @Override
-  public void showMessage(MessageSeverity severity, String title, String message) {
-    Log.println(severity + ": " + title);
-    Log.println(message);
-  }
-
-  @Override
-  public void showMessage(MessageSeverity severity, String message) {
-    showMessage(severity, "", message);
-  }
-
-  @Override
-  public void showGameMessage(String message) {
-    showMessage(MessageSeverity.GAME, "", message);
-  }
-
-  @Override
   public void disconnect() {
     running = false;
   }

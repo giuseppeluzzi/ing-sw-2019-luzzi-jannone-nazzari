@@ -89,22 +89,6 @@ public class ClientSocket extends Client implements Runnable, Observer {
   }
 
   @Override
-  public void showMessage(MessageSeverity severity, String title, String message) {
-    Log.println(severity + ": " + title);
-    Log.println(message);
-  }
-
-  @Override
-  public void showMessage(MessageSeverity severity, String message) {
-    showMessage(severity, "", message);
-  }
-
-  @Override
-  public void showGameMessage(String message) throws RemoteException {
-    showMessage(MessageSeverity.GAME, "", message);
-  }
-
-  @Override
   public void disconnect() {
     try {
       bufferedReader.close();

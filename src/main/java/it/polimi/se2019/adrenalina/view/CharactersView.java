@@ -50,6 +50,23 @@ public abstract class CharactersView extends Observable implements CharactersVie
   public void update(PlayerPositionUpdate event) {
     Square newSquare = boardView.getBoard().getSquare(event.getPosX(), event.getPosY());
     try {
+      Player player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+      if (player.getSquare() == null) {
+        boardView.getClient().showGameMessage(
+            String.format(
+                "%s%s%s ha scartato un %sPowerUp%s!",
+                event.getPlayerColor().getAnsiColor(),
+                player.getName(),
+                ANSIColor.RESET,
+                newSquare.getColor().getAnsiColor(),
+                ANSIColor.RESET
+            ));
+      }
+    } catch (RemoteException | InvalidPlayerException ignored) {
+      //
+    }
+
+    try {
       boardView.getBoard().getPlayerByColor(event.getPlayerColor()).setSquare(newSquare);
     } catch (InvalidPlayerException e) {
       Log.critical("Player not found!");

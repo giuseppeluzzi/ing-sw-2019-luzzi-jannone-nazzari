@@ -11,12 +11,14 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Timer;
@@ -85,6 +87,16 @@ public abstract class BoardView extends Observable implements BoardViewInterface
   }
 
   public void update(BoardAddPlayerUpdate event) {
+    try {
+      client.showGameMessage(
+          String.format(
+              "%s%s%s si è unito alla partita!",
+              event.getPlayerColor().getAnsiColor(),
+              event.getPlayerName(),
+              ANSIColor.RESET));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
     board.addPlayer(new Player(event.getPlayerName(), event.getPlayerColor(), board));
   }
 
