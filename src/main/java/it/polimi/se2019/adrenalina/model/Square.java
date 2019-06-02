@@ -136,9 +136,13 @@ public class Square extends Observable implements Target {
   public void setAmmoCard(AmmoCard ammoCard) {
     this.ammoCard = ammoCard;
     try {
-      notifyObservers(new SquareAmmoCardUpdate(posX, posY, ammoCard.getAmmo(AmmoColor.BLUE),
-          ammoCard.getAmmo(AmmoColor.RED), ammoCard.getAmmo(AmmoColor.YELLOW),
-          ammoCard.getPowerUp()));
+      if (ammoCard == null) {
+        notifyObservers(new SquareAmmoCardUpdate(posX, posY, 0,0,0,0));
+      } else {
+        notifyObservers(new SquareAmmoCardUpdate(posX, posY, ammoCard.getAmmo(AmmoColor.BLUE),
+            ammoCard.getAmmo(AmmoColor.RED), ammoCard.getAmmo(AmmoColor.YELLOW),
+            ammoCard.getPowerUp()));
+      }
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -382,11 +386,17 @@ public class Square extends Observable implements Target {
     return y >= 0 && y < 3;
   }
 
-  public List<Square> getSquaresInRange(int min, int max) {
+  public List<Square> getSquaresInRange(int min, int max, boolean fetch) {
     List<Square> output = new ArrayList<>();
     for (Square square : board.getSquares()) {
       if (getDistance(square) >= min && getDistance(square) <= max) {
-        output.add(square);
+        if (fetch) {
+          if (square.getAmmoCard() != null) {
+            output.add(square);
+          }
+        } else {
+          output.add(square);
+        }
       }
     }
     return output;

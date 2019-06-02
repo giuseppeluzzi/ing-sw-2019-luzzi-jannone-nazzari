@@ -46,6 +46,7 @@ public class ObjectPickup extends GameAction {
   }
 
   private void fetchAmmoCard(Board board) {
+    Log.debug("ciaone");
     AmmoCard ammoCard = getPlayer().getSquare().getAmmoCard();
 
     getPlayer().addAmmo(AmmoColor.RED, ammoCard.getAmmo(AmmoColor.RED));
@@ -62,7 +63,6 @@ public class ObjectPickup extends GameAction {
         break;
       }
     }
-
     getPlayer().getSquare().setAmmoCard(null);
   }
 

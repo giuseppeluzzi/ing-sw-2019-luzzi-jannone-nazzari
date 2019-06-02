@@ -160,15 +160,15 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     List<GameAction> actions = new ArrayList<>();
     switch (event.getTurnAction()) {
       case RUN:
-        actions.add(new SquareSelection(player, 3));
+        actions.add(new SquareSelection(player, 3, false));
         break;
       case WALK_FETCH:
-        actions.add(new SquareSelection(player, 1));
+        actions.add(new SquareSelection(player, 1, true));
         actions.add(new ObjectPickup(player));
         break;
       case WALK_FETCH3:
       case FF_RUN_FETCH:
-        actions.add(new SquareSelection(player, 2));
+        actions.add(new SquareSelection(player, 2, true));
         actions.add(new ObjectPickup(player));
         break;
       case SHOOT:
@@ -176,25 +176,25 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         actions.add(new SelectEffect(player));
         break;
       case SHOOT6:
-        actions.add(new SquareSelection(player, 1));
+        actions.add(new SquareSelection(player, 1, false));
         actions.add(new SelectWeapon(player));
         actions.add(new SelectEffect(player));
         break;
       case FF_RUN:
-        actions.add(new SquareSelection(player, 4));
+        actions.add(new SquareSelection(player, 4, false));
         break;
       case FF_RUN_RELOAD_SHOOT:
-        actions.add(new SquareSelection(player, 1));
+        actions.add(new SquareSelection(player, 1, false));
         actions.add(new CheckReloadWeapons(boardController.getTurnController(), player));
         actions.add(new SelectWeapon(player));
         actions.add(new SelectEffect(player));
         break;
       case FF_WALK_FETCH:
-        actions.add(new SquareSelection(player, 3));
+        actions.add(new SquareSelection(player, 3, true));
         actions.add(new ObjectPickup(player));
         break;
       case FF_WALK_RELOAD_SHOOT:
-        actions.add(new SquareSelection(player, 2));
+        actions.add(new SquareSelection(player, 2, false));
         actions.add(new CheckReloadWeapons(boardController.getTurnController(), player));
         actions.add(new SelectWeapon(player));
         actions.add(new SelectEffect(player));
@@ -237,9 +237,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     // CHEAT SUITE
     // TODO CANCELLARE
-    player.addAmmo(AmmoColor.RED, 3);
-    player.addAmmo(AmmoColor.BLUE, 3);
-    player.addAmmo(AmmoColor.YELLOW, 3);
+    //player.addAmmo(AmmoColor.RED, 3);
+    //player.addAmmo(AmmoColor.BLUE, 3);
+    //player.addAmmo(AmmoColor.YELLOW, 3);
     Weapon weapon = board.getWeapons().get(0);
     Weapon weapon1 = board.getWeapons().get(1);
     Weapon weapon2 = board.getWeapons().get(2);

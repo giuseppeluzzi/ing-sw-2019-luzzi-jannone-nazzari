@@ -11,7 +11,6 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
-import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
@@ -133,6 +132,11 @@ public abstract class BoardView extends Observable implements BoardViewInterface
   }
 
   public void update(SquareAmmoCardUpdate event) {
+    if (event.getBlue() == 0 && event.getRed() == 0 &&
+        event.getYellow() == 0 && event.getPowerUps() == 0) {
+      board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(null);
+    }
+
     board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(
         new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
   }
