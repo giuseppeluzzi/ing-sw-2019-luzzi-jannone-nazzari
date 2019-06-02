@@ -2,7 +2,10 @@ package it.polimi.se2019.adrenalina.model;
 
 import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
@@ -12,6 +15,8 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
+import java.rmi.RemoteException;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -85,7 +90,21 @@ public class SquareTest {
 
   @Test
   public void testIsVisible() {
-    // TODO
+    BoardController boardController = null;
+    List<GameMap> mappe;
+    Board board;
+    Square square1;
+    Square square2;
+    try {
+      boardController = new BoardController(false);
+    } catch (RemoteException e) {
+      fail("Eccezione");
+    }
+    mappe = boardController.getValidMaps(2);
+    boardController.createSquares(mappe.get(0));
+    board = boardController.getBoard();
+    assertTrue(board.getSquare(0,0).isVisible(board.getSquare(0,1)));
+    assertFalse(board.getSquare(0,0).isVisible(board.getSquare(3,2)));
   }
 
   @Test
@@ -115,7 +134,21 @@ public class SquareTest {
 
   @Test
   public void testGetDistance() {
-    // TODO: complete test
+    BoardController boardController = null;
+    List<GameMap> mappe;
+    Board board;
+    Square square1;
+    Square square2;
+    try {
+     boardController = new BoardController(false);
+    } catch (RemoteException e) {
+      fail("Eccezione");
+    }
+    mappe = boardController.getValidMaps(2);
+    boardController.createSquares(mappe.get(0));
+    board = boardController.getBoard();
+    assertEquals(5, board.getSquare(0,0).getDistance(board.getSquare(3,2)));
+    assertNotEquals(5,board.getSquare(0, 0).getDistance(board.getSquare(3, 1)));
   }
 
   @Test(expected = IllegalArgumentException.class)

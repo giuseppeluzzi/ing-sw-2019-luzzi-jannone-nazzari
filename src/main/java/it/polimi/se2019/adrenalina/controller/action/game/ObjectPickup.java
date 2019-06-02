@@ -41,11 +41,11 @@ public class ObjectPickup extends GameAction {
         }
       }
     } else {
-      executePowerUp(board);
+      fetchAmmoCard(board);
     }
   }
 
-  private void executePowerUp(Board board) {
+  private void fetchAmmoCard(Board board) {
     AmmoCard ammoCard = getPlayer().getSquare().getAmmoCard();
 
     getPlayer().addAmmo(AmmoColor.RED, ammoCard.getAmmo(AmmoColor.RED));
