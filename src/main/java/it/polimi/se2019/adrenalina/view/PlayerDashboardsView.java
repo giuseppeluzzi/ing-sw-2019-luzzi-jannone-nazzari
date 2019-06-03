@@ -310,4 +310,14 @@ public abstract class PlayerDashboardsView extends Observable implements
       //
     }
   }
+
+  @Override
+  public PlayerColor getPrivatePlayerColor() {
+    try {
+      return boardView.getClient().getPlayerColor();
+    } catch (RemoteException e) {
+      Log.exception(e);
+      return null;
+    }
+  }
 }

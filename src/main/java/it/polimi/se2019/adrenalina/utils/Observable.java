@@ -30,8 +30,10 @@ public class Observable implements RemoteObservable {
   }
 
   protected void notifyObservers(Event event) throws RemoteException {
-    for (Observer observer : observers){
-      observer.update(event);
+    for (Observer observer : observers) {
+      if (event.getPrivatePlayerColor() == null || observer.getPrivatePlayerColor() == event.getPrivatePlayerColor()) {
+        observer.update(event);
+      }
     }
   }
 }

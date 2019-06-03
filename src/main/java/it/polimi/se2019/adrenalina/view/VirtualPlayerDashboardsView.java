@@ -98,4 +98,9 @@ public class VirtualPlayerDashboardsView extends Observable implements
       Log.exception(e);
     }
   }
+
+  @Override
+  public PlayerColor getPrivatePlayerColor() {
+    return clientSocket.getPlayerColor();
+  }
 }

@@ -48,4 +48,9 @@ public class OwnPowerUpUpdate implements Event {
   public EventType getEventType() {
     return EventType.OWN_POWER_UP_UPDATE;
   }
+
+  @Override
+  public PlayerColor getPrivatePlayerColor() {
+    return getPlayerColor();
+  }
 }

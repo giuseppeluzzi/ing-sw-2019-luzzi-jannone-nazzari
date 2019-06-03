@@ -37,4 +37,9 @@ public class OwnWeaponUpdate implements Event {
   public EventType getEventType() {
     return EventType.PLAYER_WEAPON_UPDATE;
   }
+
+  @Override
+  public PlayerColor getPrivatePlayerColor() {
+    return getPlayerColor();
+  }
 }
