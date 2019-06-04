@@ -1,13 +1,14 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Configuration {
+
   private String serverIP;
   private Integer rmiPort;
   private Integer socketPort;
@@ -26,8 +27,10 @@ public class Configuration {
   private String tuiSpawnPointIcon;
   private String tuiTagIcon;
   private String tuiDamageIcon;
+  private List<String> weaponFiles;
+  private List<String> mapFiles;
 
-  private static Configuration instance = null;
+  private static Configuration instance;
 
   private Configuration() {
     // private constructor
@@ -37,8 +40,7 @@ public class Configuration {
     if (instance == null) {
       String json = null;
       try {
-        File file = new File(Configuration.class.getResource("/config.json").getFile());
-        json = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        json = IOUtils.readFile("config.json");
       } catch (IOException e) {
         Log.severe("Configuration file not found!");
         System.exit(0);
@@ -121,4 +123,11 @@ public class Configuration {
     return tuiDamageIcon;
   }
 
+  public List<String> getWeaponFiles() {
+    return new ArrayList<>(weaponFiles);
+  }
+
+  public List<String> getMapFiles() {
+    return new ArrayList<>(mapFiles);
+  }
 }

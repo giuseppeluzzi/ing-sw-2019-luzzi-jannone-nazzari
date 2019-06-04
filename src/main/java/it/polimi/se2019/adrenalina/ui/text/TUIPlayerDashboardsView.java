@@ -273,9 +273,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps) {
+    try {
+      boardView.showBoard();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
     int targetIndex;
     int chosenTarget;
-
     do {
       targetIndex = 1;
       Log.println("Seleziona un PowerUp");

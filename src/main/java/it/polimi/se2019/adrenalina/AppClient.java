@@ -9,10 +9,13 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
 
 public class AppClient {
   public static void main(String... args) {
     Log.setName("ClientRMI");
+    AnsiConsole.systemInstall();
 
     // Verify if the configuration exists
     Configuration.getInstance();
@@ -82,7 +85,8 @@ public class AppClient {
       } catch (IOException e) {
         Log.exception(e);
       }
-
     }
+
+    AnsiConsole.systemUninstall();
   }
 }

@@ -1,21 +1,26 @@
 package it.polimi.se2019.adrenalina.utils;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
+import org.fusesource.jansi.Ansi.Attribute;
+import org.fusesource.jansi.Ansi.Color;
+
 public enum ANSIColor {
-  BLACK("\u001b[30m", "\u001b[30m"),
-  RED("\u001b[91m", "\u001b[2;91m"),
-  GREEN("\u001b[92m", "\u001b[2;92m"),
-  YELLOW("\u001b[93m", "\u001b[2;93m"),
-  BLUE("\u001b[96m", "\u001b[2;96m"), // using 96 (cyan) instead of 94 for visibility
-  MAGENTA("\u001b[95m", "\u001b[2;95m"),
-  CYAN("\u001b[96m", "\u001b[2;96m"),
-  WHITE("\u001b[37m", "\u001b[2;97m"),
-  RESET("\u001b[0m", "\u001b[0m");
+  BLACK(ansi().fgBlack().toString(), ansi().fgBrightBlack().toString()),
+  RED(ansi().fgBrightRed().toString(), ansi().fgBrightRed().a(Attribute.INTENSITY_FAINT).toString()),
+  GREEN(ansi().fgBrightGreen().toString(), ansi().fgBrightGreen().a(Attribute.INTENSITY_FAINT).toString()),
+  YELLOW(ansi().fgBrightYellow().toString(), ansi().fgBrightYellow().a(Attribute.INTENSITY_FAINT).toString()),
+  BLUE(ansi().fgBrightCyan().toString(), ansi().fgBrightCyan().a(Attribute.INTENSITY_FAINT).toString()), // using cyan instead of blue for visibility
+  MAGENTA(ansi().fgBrightMagenta().toString(), ansi().fgBrightMagenta().a(Attribute.INTENSITY_FAINT).toString()),
+  CYAN(ansi().fgBrightCyan().toString(), ansi().fgBrightCyan().a(Attribute.INTENSITY_FAINT).toString()),
+  WHITE(ansi().fg(Color.WHITE).toString(), ansi().fg(Color.WHITE).a(Attribute.INTENSITY_FAINT).toString()),
+  RESET(ansi().reset().toString(), ansi().reset().toString());
 
   private final String normalColor;
   private final String dimColor;
 
   ANSIColor(String ansiColor, String dimColor) {
-    this.normalColor = ansiColor;
+    normalColor = ansiColor;
     this.dimColor = dimColor;
   }
 
