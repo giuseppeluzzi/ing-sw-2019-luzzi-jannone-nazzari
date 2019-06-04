@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
@@ -229,6 +230,12 @@ public class ClientSocket extends Client implements Runnable, Observer {
                   .fromJson(message, ShowSwapWeaponSelectionInvocation.class);
               playerDashboardsView.showSwapWeaponSelection(showSwapWeaponSelectionInvocation
                   .getOwnWeapons(), showSwapWeaponSelectionInvocation.getSquareWeapons());
+              break;
+            case SHOW_MESSAGE_INVOCATION:
+              ShowMessageInvocation showMessageInvocation = gson
+                  .fromJson(message, ShowMessageInvocation.class);
+              showMessage(showMessageInvocation.getSeverity(),
+                  showMessageInvocation.getMessage(), showMessageInvocation.getTitle());
               break;
             default:
               boardView.update(event);

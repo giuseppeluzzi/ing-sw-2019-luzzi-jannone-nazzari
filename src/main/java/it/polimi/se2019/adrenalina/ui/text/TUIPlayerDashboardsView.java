@@ -240,13 +240,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
           TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
     }
 
-    Log.debug("aa2");
 
     for (Effect effect : chosenEffects) {
       chosenEffectsNames.add(effect.getName());
     }
 
-    Log.debug("aa3");
     try {
       notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(),
           chosenEffectsNames));

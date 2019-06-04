@@ -25,6 +25,7 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -234,13 +235,13 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
     }
 
-    /*
+
     // CHEAT SUITE
     // TODO CANCELLARE
     //player.addAmmo(AmmoColor.RED, 3);
     //player.addAmmo(AmmoColor.BLUE, 3);
     //player.addAmmo(AmmoColor.YELLOW, 3);
-    Weapon weapon = board.getWeapons().get(0);
+    /*Weapon weapon = board.getWeapons().get(0);
     Weapon weapon1 = board.getWeapons().get(1);
     Weapon weapon2 = board.getWeapons().get(2);
     board.takeWeapon(weapon);
@@ -249,8 +250,15 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     player.addWeapon(weapon1);
     board.takeWeapon(weapon2);
     player.addWeapon(weapon2);
+    if ("nazza".equals(player.getName())){
+      player.addWeapon(board.getWeaponByName("Fucile laser"));
+      player.addAmmo(AmmoColor.RED, 3);
+      player.addAmmo(AmmoColor.BLUE, 3);
+      player.addAmmo(AmmoColor.YELLOW, 3);
+
+    }*/
     // END CHEAT SUITE
-    */
+
 
     boardController.getTurnController().executeGameActionQueue();
   }

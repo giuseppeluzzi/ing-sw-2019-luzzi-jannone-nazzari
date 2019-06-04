@@ -96,12 +96,12 @@ public abstract class PlayerDashboardsView extends Observable implements
           boardView.getClient().showGameMessage(
               String.format(
                   "%s%s%s ha inflitto %d danni a %s%s%s!",
-                  event.getPlayerColor().getAnsiColor(),
-                  playerName,
-                  ANSIColor.RESET,
-                  newDamages.size(),
                   event.getKillerColor().getAnsiColor(),
                   killerName,
+                  ANSIColor.RESET,
+                  newDamages.size(),
+                  event.getPlayerColor().getAnsiColor(),
+                  playerName,
                   ANSIColor.RESET));
         }
       }
