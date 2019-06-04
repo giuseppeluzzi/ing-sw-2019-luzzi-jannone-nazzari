@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
+import it.polimi.se2019.adrenalina.event.PlayerDisconnectEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
@@ -88,7 +89,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
   }
 
   @Override
-  public void disconnect() {
+  public void disconnect(String message) {
     try {
       bufferedReader.close();
       printWriter.close();
@@ -96,6 +97,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
     } catch (IOException e) {
       Log.exception(e);
     }
+    super.disconnect(message);
   }
 
   @Override
@@ -143,6 +145,11 @@ public class ClientSocket extends Client implements Runnable, Observer {
           Event event = gson.fromJson(message, eventType.getEventClass());
 
           switch (eventType) {
+            case PLAYER_DISCONNECT_EVENT:
+              PlayerDisconnectEvent disconnectEvent = gson
+                  .fromJson(message, PlayerDisconnectEvent.class);
+              disconnect(disconnectEvent.getMessage());
+              break;
             case TIMER_SET_EVENT:
               TimerSetEvent timerSetEvent = gson.fromJson(message, TimerSetEvent.class);
               if (timerSetEvent.getTimer() == 0) {

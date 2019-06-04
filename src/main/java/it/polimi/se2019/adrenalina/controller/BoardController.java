@@ -328,7 +328,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
-
   /**
    * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
    * the game on that board is already in progress.

@@ -10,12 +10,8 @@ import java.rmi.registry.Registry;
 import org.fusesource.jansi.AnsiConsole;
 
 public class AppServer {
-  public static void main(String... args) {
+  public AppServer() {
     Log.setName("ServerRMI");
-    AnsiConsole.systemInstall();
-
-    // Verify if the configuration exists
-    Configuration.getInstance();
 
     try {
       Server server = new Server();
@@ -28,6 +24,5 @@ public class AppServer {
     } catch (RemoteException e) {
       Log.severe("RMI connection error: " + e.getMessage());
     }
-    AnsiConsole.systemUninstall();
   }
 }

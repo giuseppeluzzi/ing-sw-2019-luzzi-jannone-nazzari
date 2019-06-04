@@ -66,6 +66,7 @@ public enum EventType {
   PLAYER_COLLECT_WEAPON_EVENT(PlayerCollectWeaponEvent.class),
   PLAYER_COLOR_SELECTION_EVENT(PlayerColorSelectionEvent.class),
   PLAYER_CONNECT_EVENT(PlayerConnectEvent.class),
+  PLAYER_DISCONNECT_EVENT(PlayerDisconnectEvent.class),
   PLAYER_DISCARD_POWERUP_EVENT(PlayerDiscardPowerUpEvent.class),
   PLAYER_NO_COLLECT_EVENT(PlayerNoCollectEvent.class),
   PLAYER_PAYMENT_EVENT(PlayerPaymentEvent.class),

@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
+import it.polimi.se2019.adrenalina.event.PlayerDisconnectEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -160,7 +161,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   }
 
   @Override
-  public void disconnect() {
+  public void disconnect(String message) {
+    sendEvent(new PlayerDisconnectEvent(message));
     try {
       bufferedReader.close();
       printWriter.close();

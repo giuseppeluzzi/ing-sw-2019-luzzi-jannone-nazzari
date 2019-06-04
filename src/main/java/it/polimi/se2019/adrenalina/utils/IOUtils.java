@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 public class IOUtils {
 
   public static String readFile(String path) throws IOException {
-    Log.debug("IOUtils", "readFile: " + path);
     StringBuilder text = new StringBuilder(1);
     BufferedReader stream = new BufferedReader(new InputStreamReader(
         Configuration.class.getClassLoader().getResourceAsStream(path)));

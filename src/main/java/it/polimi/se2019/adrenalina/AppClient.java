@@ -1,24 +1,19 @@
 package it.polimi.se2019.adrenalina;
 
-import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.network.ClientRMI;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
 
 public class AppClient {
-  public static void main(String... args) {
-    Log.setName("ClientRMI");
-    AnsiConsole.systemInstall();
 
-    // Verify if the configuration exists
-    Configuration.getInstance();
+  public AppClient(String... args) {
+    Log.setName("ClientRMI");
 
     String name;
     char connectionMode;
@@ -29,7 +24,6 @@ public class AppClient {
       Log.println("Please select a connection mode");
       Log.println("  (1) RMI");
       Log.println("  (2) Socket");
-      Log.println("");
       connectionMode = scanner.nextLine().charAt(0);
 
       Log.println("Please enter your name");
@@ -52,7 +46,7 @@ public class AppClient {
         domination = true;
       } else {
         Log.severe("Invalid game mode. Supported: (1) Classic; (2) Domination");
-        return ;
+        return;
       }
     }
 
@@ -65,9 +59,10 @@ public class AppClient {
           ClientRMI clientRMI = new ClientRMI(name, domination);
           client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
           clientRMI.getServer().addClient(client);
-
         } catch (RemoteException e) {
           Log.exception(e);
+        } catch (InvalidPlayerException ignored) {
+          //
         }
         break;
       case '2':
@@ -76,7 +71,7 @@ public class AppClient {
         break;
       default:
         Log.severe("Invalid connection mode. Supported: (1) RMI; (2) Socket");
-        return ;
+        return;
     }
 
     if (client != null) {
@@ -86,7 +81,5 @@ public class AppClient {
         Log.exception(e);
       }
     }
-
-    AnsiConsole.systemUninstall();
   }
 }

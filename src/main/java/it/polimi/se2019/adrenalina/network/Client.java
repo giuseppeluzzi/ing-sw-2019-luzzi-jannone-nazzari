@@ -77,4 +77,11 @@ public abstract class Client implements ClientInterface, Serializable {
   public void showGameMessage(String message) {
     showMessage(MessageSeverity.GAME, "", message);
   }
+
+  @Override
+  public void disconnect(String message) {
+    if (!message.isEmpty()) {
+      showMessage(MessageSeverity.ERROR, "Disconnessione", message);
+    }
+  }
 }
