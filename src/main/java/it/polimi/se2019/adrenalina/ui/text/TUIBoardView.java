@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
@@ -34,6 +36,7 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void showBoard() {
+    Log.print(ansi().eraseScreen().toString());
     BoardPrinter.print(getBoard());
   }
 

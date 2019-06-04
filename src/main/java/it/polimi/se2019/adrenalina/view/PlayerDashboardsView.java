@@ -271,7 +271,7 @@ public abstract class PlayerDashboardsView extends Observable implements
       Player newPlayer = boardView.getBoard()
           .getPlayerByColor(event.getCurrentPlayerColor());
 
-      if (boardView.getBoard().getCurrentPlayer() == event.getCurrentPlayerColor()) {
+      if (boardView.getBoard().getCurrentPlayer() == boardView.getClient().getPlayerColor()) {
         boardView.getClient().showGameMessage(
             String.format(
                 "Hai terminato il turno e ora è il turno di %s%s%s!",
