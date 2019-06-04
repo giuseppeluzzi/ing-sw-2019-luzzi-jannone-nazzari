@@ -118,7 +118,6 @@ public class SelectAction implements WeaponAction {
         break;
     }
 
-    targets.addAll(board.getSquares());
     targets.remove(owner);
 
     Target fromTarget = object.getTargetHistory(from);
@@ -149,7 +148,9 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> {
         try {
           return
-              fromTarget.getSquare().getCardinalDirection(x.getSquare()) == ((Weapon) object).getLastUsageDirection();
+              fromTarget.getSquare().getCardinalDirection(x.getSquare()) == ((Weapon) object)
+                  .getLastUsageDirection() ||
+                  fromTarget.getSquare().getCardinalDirection(x.getSquare()) == null;
         } catch (InvalidSquareException e) {
           return false;
         }

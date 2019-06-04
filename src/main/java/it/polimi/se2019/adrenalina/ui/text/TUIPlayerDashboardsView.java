@@ -240,13 +240,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
           TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
     }
 
-    Log.debug("aa2");
 
     for (Effect effect : chosenEffects) {
       chosenEffectsNames.add(effect.getName());
     }
 
-    Log.debug("aa3");
     try {
       notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(),
           chosenEffectsNames));
@@ -275,9 +273,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps) {
+    try {
+      boardView.showBoard();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
     int targetIndex;
     int chosenTarget;
-
     do {
       targetIndex = 1;
       Log.println("Seleziona un PowerUp");

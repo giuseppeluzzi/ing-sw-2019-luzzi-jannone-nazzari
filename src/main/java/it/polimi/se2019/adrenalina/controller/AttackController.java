@@ -33,6 +33,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.SELECT_PLAYER_EVENT);
     registeredEvents.add(EventType.SELECT_SQUARE_EVENT);
     registeredEvents.add(EventType.SQUARE_MOVE_SELECTION_EVENT);
+    registeredEvents.add(EventType.SELECT_DIRECTION_EVENT);
   }
 
   /**
@@ -104,6 +105,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       return;
     }
     player.getCurrentWeapon().setLastUsageDirection(event.getSelectedDirection());
+    boardController.getTurnController().executeGameActionQueue();
   }
   /**
    * Event fired when a player moves to a different square.
