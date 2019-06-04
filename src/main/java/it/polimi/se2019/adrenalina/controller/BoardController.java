@@ -22,19 +22,16 @@ import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayDeque;
@@ -47,7 +44,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BoardController extends UnicastRemoteObject implements Runnable, Observer {
 
@@ -134,13 +130,17 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * Loads maps from json
    */
   private void loadMaps() {
-    try (Stream<Path> weaponStream = Files.walk(
-        Paths.get(BoardController.class.getResource("/maps").toURI()))) {
-      weaponStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable)
-          .forEach(this::loadMap);
-    } catch (URISyntaxException | IOException e) {
-      Log.critical("No maps found");
+    Gson gson = new Gson();
+    for (String mapName : Configuration.getInstance().getMapFiles()) {
+      try {
+        String json = IOUtils.readFile("maps/" + mapName);
+        GameMap gameMap = gson.fromJson(json, GameMap.class);
+        maps.add(gameMap);
+      } catch (IOException e) {
+        Log.critical(mapName + " not found");
+      }
     }
+
     if (maps.isEmpty()) {
       Log.critical("No maps found");
     }
@@ -164,64 +164,39 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Loads a single map from a file
-   *
-   * @param mapPath Path of a map
-   */
-  private void loadMap(Path mapPath) {
-    Gson gson = new Gson();
-    try {
-      String json = new String(Files.readAllBytes(mapPath), StandardCharsets.UTF_8);
-      GameMap gameMap = gson.fromJson(json, GameMap.class);
-      maps.add(gameMap);
-    } catch (IOException e) {
-      Log.critical("Map not found");
-    }
-  }
-
-  /**
    * Load weapons from json
    */
   private void loadWeapons() {
-    try (Stream<Path> weaponStream = Files.walk(
-        Paths.get(BoardController.class.getResource("/weapons").toURI()))) {
-      weaponStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable)
-          .forEach(filePath -> {
-            String json = null;
-            try {
-              json = new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
-            } catch (IOException e) {
-              Log.severe(filePath.getFileName() + " is an invalid weapon!");
-            }
-            board.addWeapon(Weapon.deserialize(json));
-          });
-    } catch (URISyntaxException | IOException e) {
-      Log.critical("No weapons found");
+    Gson gson = new Gson();
+    for (String weaponName : Configuration.getInstance().getWeaponFiles()) {
+      try {
+        String json = IOUtils.readFile("weapons/" + weaponName);
+        board.addWeapon(Weapon.deserialize(json));
+      } catch (IOException e) {
+        Log.critical(weaponName + " not found");
+      }
     }
+
     if (board.getWeapons().isEmpty()) {
       Log.critical("No weapons found");
     }
   }
 
   private void loadAmmoCards() {
-    try (Stream<Path> ammoCardStream = Files.walk(
-        Paths.get(BoardController.class.getResource("/img/ammo").toURI()))) {
-      ammoCardStream.filter(x -> x.toFile().isFile()).filter(Files::isReadable)
-          .forEach(filePath -> {
-            String name = filePath.getFileName().toString()
-                .replace("ammo_", "")
-                .replace(".png", "");
-            if (!"back".equalsIgnoreCase(name)) {
-              int red = 3 - name.replace("R", "").length();
-              int blue = 3 - name.replace("B", "").length();
-              int yellow = 3 - name.replace("Y", "").length();
-              int powerUp = 3 - name.replace("P", "").length();
-              board.addAmmoCard(new AmmoCard(red, blue, yellow, powerUp));
-            }
-          });
-    } catch (URISyntaxException | IOException e) {
-      Log.critical("No ammo card found");
+    Gson gson = new Gson();
+    try {
+      String json = IOUtils.readFile("ammocards.json");
+      AmmoCard[] ammoCards = gson.fromJson(json, AmmoCard[].class);
+      for (AmmoCard ammoCard : ammoCards) {
+        board.addAmmoCard(
+            new AmmoCard(ammoCard.getAmmo(AmmoColor.RED), ammoCard.getAmmo(AmmoColor.BLUE),
+                ammoCard.getAmmo(AmmoColor.YELLOW),
+                ammoCard.getPowerUp()));
+      }
+    } catch (IOException e) {
+      Log.critical("No ammo cards found");
     }
+
     if (board.getAmmoCards().isEmpty()) {
       Log.critical("No ammo card found");
     }
@@ -301,6 +276,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Create every square for a map from the template in the GameMap
+   *
    * @param gameMap the map template
    */
   public void createSquares(GameMap gameMap) {

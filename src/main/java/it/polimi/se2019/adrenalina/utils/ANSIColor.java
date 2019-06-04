@@ -15,7 +15,7 @@ public enum ANSIColor {
   private final String dimColor;
 
   ANSIColor(String ansiColor, String dimColor) {
-    this.normalColor = ansiColor;
+    normalColor = ansiColor;
     this.dimColor = dimColor;
   }
 
