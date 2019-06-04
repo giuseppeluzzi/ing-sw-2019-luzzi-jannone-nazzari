@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.network;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.Serializable;
 
@@ -30,6 +31,13 @@ public abstract class Client implements ClientInterface, Serializable {
 
   @Override
   public void setPlayerColor(PlayerColor playerColor) {
+    showGameMessage(
+        String.format(
+            "Il tuo personaggio è %s%s%s!",
+            playerColor.getAnsiColor(),
+            playerColor.getCharacterName(),
+            ANSIColor.RESET
+        ));
     this.playerColor = playerColor;
   }
 
@@ -60,7 +68,7 @@ public abstract class Client implements ClientInterface, Serializable {
         Log.println(message);
         break;
       default:
-        if (!title.isEmpty()) {
+        if (!"".equalsIgnoreCase(title)) {
           Log.println(String.format("%s: %s", severity, title));
         }
         Log.println(String.format("%s: %s", severity, message));

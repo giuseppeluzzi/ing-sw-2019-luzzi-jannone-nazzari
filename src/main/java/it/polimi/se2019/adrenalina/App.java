@@ -1,20 +1,14 @@
 package it.polimi.se2019.adrenalina;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.network.ClientInterface;
-import it.polimi.se2019.adrenalina.network.ClientRMI;
-import it.polimi.se2019.adrenalina.network.ClientSocket;
-import it.polimi.se2019.adrenalina.utils.Log;
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Scanner;
 import org.fusesource.jansi.AnsiConsole;
 
 public class App {
+
   public static void main(String... args) {
-    AnsiConsole.systemInstall();
+    if (!runningFromIntelliJ()) {
+      AnsiConsole.systemInstall();
+    }
 
     // Verify if the configuration exists
     Configuration.getInstance();
@@ -25,6 +19,13 @@ public class App {
       new AppClient(args);
     }
 
-    AnsiConsole.systemUninstall();
+    if (!runningFromIntelliJ()) {
+      AnsiConsole.systemUninstall();
+    }
+  }
+
+  private static boolean runningFromIntelliJ() {
+    String classPath = System.getProperty("java.class.path");
+    return classPath.contains("idea_rt.jar");
   }
 }

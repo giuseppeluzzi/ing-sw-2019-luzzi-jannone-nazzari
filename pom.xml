@@ -101,7 +101,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>server</id>
+                        <id>app</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -109,33 +109,13 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>it.polimi.se2019.adrenalina.AppServer</mainClass>
+                                    <mainClass>it.polimi.se2019.adrenalina.App</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>AdrenalinaServer</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>client</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>it.polimi.se2019.adrenalina.AppClient</mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <finalName>AdrenalinaClient</finalName>
+                            <finalName>Adrenalina</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>

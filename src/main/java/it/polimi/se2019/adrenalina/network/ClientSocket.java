@@ -242,7 +242,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
               ShowMessageInvocation showMessageInvocation = gson
                   .fromJson(message, ShowMessageInvocation.class);
               showMessage(showMessageInvocation.getSeverity(),
-                  showMessageInvocation.getMessage(), showMessageInvocation.getTitle());
+                  showMessageInvocation.getTitle(), showMessageInvocation.getMessage());
               break;
             default:
               boardView.update(event);

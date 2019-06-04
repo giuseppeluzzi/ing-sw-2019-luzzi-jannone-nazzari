@@ -86,16 +86,6 @@ public abstract class BoardView extends Observable implements BoardViewInterface
   }
 
   public void update(BoardAddPlayerUpdate event) {
-    try {
-      client.showGameMessage(
-          String.format(
-              "%s%s%s si è unito alla partita!",
-              event.getPlayerColor().getAnsiColor(),
-              event.getPlayerName(),
-              ANSIColor.RESET));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
     board.addPlayer(new Player(event.getPlayerName(), event.getPlayerColor(), board));
   }
 

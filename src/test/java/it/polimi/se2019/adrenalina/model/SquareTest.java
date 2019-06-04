@@ -125,11 +125,11 @@ public class SquareTest {
     base.getCardinalDirection(invalid);
   }
 
-  @Test(expected = InvalidSquareException.class)
+  @Test
   public void testGetCardinalDirectionSameSquare() throws InvalidSquareException{
     Square square = new Square(2,2, SquareColor.GREEN, WALL,
         WALL, WALL, WALL, null);
-    base.getCardinalDirection(square);
+    assertNull(base.getCardinalDirection(square));
   }
 
   @Test

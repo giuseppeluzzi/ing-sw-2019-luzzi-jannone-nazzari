@@ -53,7 +53,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
       for (ClientInterface client : game.getClients().keySet()) {
         try {
           client.ping();
-          Long lastPing = client.getLastPing();
         } catch (IOException e) {
           clientDisconnect(client);
         }
@@ -105,6 +104,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
       if (game == null) {
         game = new BoardController(client.isDomination());
+        Log.info("Created game (domination: " + client.isDomination() + ")");
         games.add(game);
       }
 
@@ -229,6 +229,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         try {
           Player player = game.getPlayerByClient(client);
           Log.info("server", "A client disconnected! (Name: " + player.getName() + ")");
+          game.notifyPlayerQuit(player);
           game.removePlayer(player);
           playing.remove(player);
           break;

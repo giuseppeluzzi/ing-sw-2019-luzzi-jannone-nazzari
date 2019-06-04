@@ -22,6 +22,7 @@ import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -29,7 +30,6 @@ import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
@@ -167,7 +167,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * Load weapons from json
    */
   private void loadWeapons() {
-    Gson gson = new Gson();
     for (String weaponName : Configuration.getInstance().getWeaponFiles()) {
       try {
         String json = IOUtils.readFile("weapons/" + weaponName);
@@ -226,6 +225,8 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       board.addPlayer(player);
       player.setStatus(PlayerStatus.WAITING);
 
+      notifyPlayerJoin(player);
+
       if (board.getPlayers().size() >= 2) {
         startJoinTimer();
       }
@@ -234,6 +235,52 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         player.setStatus(PlayerStatus.PLAYING);
       } else {
         throw new PlayingBoardException("Board isn't in LOBBY status");
+      }
+    }
+  }
+
+  public void notifyPlayerJoin(Player player) {
+    for (ClientInterface client : clientsName.keySet()) {
+      try {
+        if (player.getColor() != client.getPlayerColor()) {
+          client.showMessage(MessageSeverity.INFO,
+              String.format(
+                  "%s%s%s si è unito alla partita! (%d/5)",
+                  player.getColor().getAnsiColor(),
+                  player.getName(),
+                  ANSIColor.RESET,
+                  clientsName.size())
+          );
+        }
+        if (player.getClient() != null) {
+          player.getClient().showMessage(MessageSeverity.INFO,
+              String.format(
+                  "%s%s%s partecipa alla partita!",
+                  client.getPlayerColor().getAnsiColor(),
+                  client.getName(),
+                  ANSIColor.RESET)
+          );
+        }
+      } catch (RemoteException ignored) {
+        //
+      }
+    }
+  }
+
+  public void notifyPlayerQuit(Player player) {
+    for (ClientInterface client : clientsName.keySet()) {
+      try {
+        if (player.getColor() != client.getPlayerColor()) {
+          client.showMessage(MessageSeverity.INFO,
+              String.format(
+                  "%s%s%s ha abbandonato la partita!",
+                  player.getColor().getAnsiColor(),
+                  player.getName(),
+                  ANSIColor.RESET)
+          );
+        }
+      } catch (RemoteException ignored) {
+        //
       }
     }
   }

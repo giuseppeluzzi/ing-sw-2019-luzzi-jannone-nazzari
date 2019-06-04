@@ -90,11 +90,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
           domination = connectEvent.isDomination();
           server.addClient(this);
           game = server.getGameByClient(this);
-        } else if (eventType == EventType.SHOW_MESSAGE_INVOCATION) {
-          ShowMessageInvocation showMessageInvocation = gson
-              .fromJson(message, ShowMessageInvocation.class);
-          showMessage(showMessageInvocation.getSeverity(), showMessageInvocation.getTitle(),
-              showMessageInvocation.getMessage());
         } else {
           game.update(event);
           game.getAttackController().update(event);

@@ -12,6 +12,7 @@ import org.fusesource.jansi.AnsiConsole;
 public class AppServer {
   public AppServer() {
     Log.setName("ServerRMI");
+    Log.info("Server started!");
 
     try {
       Server server = new Server();
