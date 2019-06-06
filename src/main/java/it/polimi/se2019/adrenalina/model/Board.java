@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
@@ -563,6 +564,16 @@ public class Board extends Observable implements Serializable {
       }
     }
     return null;
+  }
+
+  public List<Player> getPlayerByRoom(SquareColor roomColor) {
+    List<Player> players = new ArrayList<>();
+    for (Player player : players) {
+      if (player.getSquare().getColor() == roomColor) {
+        players.add(player);
+      }
+    }
+    return players;
   }
 
   /**

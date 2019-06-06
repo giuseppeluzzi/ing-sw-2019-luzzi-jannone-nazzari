@@ -221,7 +221,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
               ShowPowerUpSelectionInvocation showPowerUpSelectionInvocation = gson.fromJson(message,
                   ShowPowerUpSelectionInvocation.class);
               playerDashboardsView.showPowerUpSelection(showPowerUpSelectionInvocation
-                  .getPowerUps());
+                  .getPowerUps(), showPowerUpSelectionInvocation.isDiscard());
               break;
             case SHOW_TURN_ACTION_SELECTION_INVOCATION:
               ShowTurnActionSelectionInvocation showTurnActionSelectionInvocation = gson

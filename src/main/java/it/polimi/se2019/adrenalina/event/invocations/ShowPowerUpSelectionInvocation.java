@@ -16,9 +16,15 @@ public class ShowPowerUpSelectionInvocation implements Invocation {
 
   private static final long serialVersionUID = 9171282818942368354L;
   private final Map<String, List<AmmoColor>> powerUps;
+  private final boolean discard;
 
-  public ShowPowerUpSelectionInvocation(Map<String, List<AmmoColor>> powerUps) {
+  public ShowPowerUpSelectionInvocation(Map<String, List<AmmoColor>> powerUps, boolean discard) {
     this.powerUps = new HashMap<>(powerUps);
+    this.discard = discard;
+  }
+
+  public boolean isDiscard() {
+    return discard;
   }
 
   public List<PowerUp> getPowerUps() {

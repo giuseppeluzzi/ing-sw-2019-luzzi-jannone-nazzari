@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
@@ -35,12 +36,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   private static final long serialVersionUID = 572470044324855920L;
   private final transient ClientInterface client;
   private final transient Scanner scanner = new Scanner(System.in, "utf-8");
-  private final BoardViewInterface boardView;
+  private final TUIBoardView boardView;
 
   public TUIPlayerDashboardsView(ClientInterface client, BoardViewInterface boardView) {
     super((BoardView) boardView);
     this.client = client;
-    this.boardView = boardView;
+    this.boardView = (TUIBoardView) boardView;
   }
 
   private List<Spendable> setSpendable(List<PowerUp> powerUps,
@@ -163,11 +164,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     int targetIndex = 1;
     int chosenTarget = 0;
 
-    try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
+    boardView.showBoard();
+
     do {
       Log.println("Seleziona un'azione");
       for (TurnAction action : actions) {
@@ -214,11 +212,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
-    try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
+    boardView.showBoard();
     String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     try {
       notifyObservers(new PlayerSelectWeaponEvent(client.getPlayerColor(), weapon));
@@ -255,11 +249,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
-    try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
+    boardView.showBoard();
     String ownWeapon = TUIUtils
         .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);
     String squareWeapon = TUIUtils
@@ -272,30 +262,46 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showPowerUpSelection(List<PowerUp> powerUps) {
-    try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
+  public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
+
+    boardView.showBoard();
+
+    int targetIndex = 1;
+    int chosenTarget = 0;
+    String prompt;
+    List<String> choices = new ArrayList<>();
+
+    if (discard) {
+      prompt = "Seleziona quale PowerUp scartare";
+    } else {
+      prompt = "Seleziona quale PowerUp usare";
+      choices.add("Non usare nessun PowerUp");
     }
-    int targetIndex;
-    int chosenTarget;
-    do {
-      targetIndex = 1;
-      Log.println("Seleziona un PowerUp");
-      for (PowerUp powerUp : powerUps) {
-        Log.println(
-            "\t" + targetIndex + ") " + powerUp.getColor().getAnsiColor() + powerUp.getName()
-                + ANSIColor.RESET);
-        targetIndex++;
-      }
+    for (PowerUp powerUp : powerUps) {
+      choices.add(powerUp.getName());
+    }
+    boardView.getInputManager().input(prompt, choices);
+    try {
+      chosenTarget = boardView.getInputManager().waitForIntResult();
+    } catch (InterruptedException ignored) {
+      //
+    }
 
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
+    System.out.println("-->" + chosenTarget);
 
     try {
-      notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps
-          .get(chosenTarget - 1).getType(), powerUps.get(chosenTarget - 1).getColor()));
+      if (discard) {
+        System.out.println("Quale powerUp scarto: " + powerUps.get(chosenTarget - 1).getName());
+        notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps
+            .get(chosenTarget).getType(), powerUps.get(chosenTarget).getColor()));
+      } else {
+        if (chosenTarget == 0) {
+          notifyObservers(new PlayerPowerUpEvent(client.getPlayerColor(), null, null));
+        } else {
+          notifyObservers(new PlayerPowerUpEvent(client.getPlayerColor(), powerUps
+              .get(chosenTarget - 1).getType(), powerUps.get(chosenTarget - 1).getColor()));
+        }
+      }
     } catch (RemoteException e) {
       Log.exception(e);
     }

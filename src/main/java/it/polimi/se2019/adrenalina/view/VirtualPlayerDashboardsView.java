@@ -62,7 +62,7 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void showPowerUpSelection(List<PowerUp> powerUps) {
+  public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
     HashMap<String, List<AmmoColor>> powerUpsMap = new HashMap<>();
     for (PowerUp powerUp : powerUps) {
       if (powerUpsMap.containsKey(powerUp.getName())) {
@@ -75,7 +75,7 @@ public class VirtualPlayerDashboardsView extends Observable implements
         powerUpsMap.put(powerUp.getName(), elems);
       }
     }
-    clientSocket.sendEvent(new ShowPowerUpSelectionInvocation(powerUpsMap));
+    clientSocket.sendEvent(new ShowPowerUpSelectionInvocation(powerUpsMap, discard));
   }
 
   @Override

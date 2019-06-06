@@ -25,7 +25,6 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -142,13 +141,19 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (player == null) {
       return;
     }
+    if (event.getColor() == null || event.getType() == null) {
+      boardController.getTurnController().executeGameActionQueue();
+      return;
+    }
     List<GameAction> actions = new ArrayList<>();
-    actions.add(new Payment(boardController.getTurnController(), player, event.getPowerUp()));
-    for (WeaponAction action : event.getPowerUp().getActions()) {
-      actions.add(new PowerUpEffect(player, event.getPowerUp(), action));
+    PowerUp powerUp = player.getPowerUp(event.getType(), event.getColor());
+    actions.add(new Payment(boardController.getTurnController(), player, powerUp));
+    for (WeaponAction action : powerUp.getActions()) {
+      actions.add(new PowerUpEffect(player, powerUp, action));
     }
 
     boardController.getTurnController().addTurnActions(actions);
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerActionSelectionEvent event) {
