@@ -15,7 +15,6 @@ public class TUICharactersView extends CharactersView {
 
   private static final long serialVersionUID = 6283060302704172669L;
   private final transient ClientInterface client;
-  private final transient Scanner scanner = new Scanner(System.in, "utf-8");
 
   private final BoardViewInterface boardView;
 

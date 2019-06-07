@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.model.Board;

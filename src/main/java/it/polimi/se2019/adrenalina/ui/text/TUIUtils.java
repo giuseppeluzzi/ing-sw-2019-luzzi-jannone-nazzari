@@ -2,12 +2,12 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
-import it.polimi.se2019.adrenalina.utils.Log;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class TUIUtils {
 
@@ -15,91 +15,64 @@ public class TUIUtils {
     throw new IllegalStateException("Utility class");
   }
 
-  private static final Scanner scanner = new Scanner(System.in, "utf-8");
+  private static final TUIInputManager inputManager = new TUIInputManager();
 
-  static Scanner getScanner() {
-    return scanner;
+  public static TUIInputManager getInputManager() {
+    return inputManager;
   }
 
   static String selectWeapon(List<Weapon> weapons, String prompt,
-      boolean showCost) {
-    Log.println(prompt);
-
-    int targetIndex;
-    int chosenTarget;
-
-    do {
-      targetIndex = 1;
-      for (Weapon weapon : weapons) {
-        if (showCost) {
-          Log.println(
-              String.format("\t%d) %s%n\t   Costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
-                  targetIndex,
-                  weapon.getName(),
-                  AmmoColor.RED.getAnsiColor(),
-                  weapon.getCost(AmmoColor.RED),
-                  ANSIColor.RESET,
-                  AmmoColor.BLUE.getAnsiColor(),
-                  weapon.getCost(AmmoColor.BLUE),
-                  ANSIColor.RESET,
-                  AmmoColor.YELLOW.getAnsiColor(),
-                  weapon.getCost(AmmoColor.YELLOW),
-                  ANSIColor.RESET));
-        } else {
-          Log.println(String.format("\t%d) %s", targetIndex, weapon.getName()));
-        }
-        targetIndex++;
+      boolean showCost) throws InputCancelledException {
+    List<String> choices = new ArrayList<>();
+    for (Weapon weapon : weapons) {
+      if (showCost) {
+        choices.add(
+            String.format("%s%n\t   Costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
+                weapon.getName(),
+                AmmoColor.RED.getAnsiColor(),
+                weapon.getCost(AmmoColor.RED),
+                ANSIColor.RESET,
+                AmmoColor.BLUE.getAnsiColor(),
+                weapon.getCost(AmmoColor.BLUE),
+                ANSIColor.RESET,
+                AmmoColor.YELLOW.getAnsiColor(),
+                weapon.getCost(AmmoColor.YELLOW),
+                ANSIColor.RESET));
+      } else {
+        choices.add(String.format("%s", weapon.getName()));
       }
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
-
-    return weapons.get(chosenTarget - 1).getName();
+    }
+    inputManager.input(prompt, choices);
+    return weapons.get(inputManager.waitForIntResult()).getName();
   }
 
-  static AmmoColor showAmmoColorSelection(boolean anyAllowed) {
-    int targetIndex;
-    int chosenTarget;
+  static AmmoColor showAmmoColorSelection(boolean anyAllowed) throws InputCancelledException {
     List<AmmoColor> colors;
     if (anyAllowed) {
       colors = Arrays.asList(AmmoColor.values());
     } else {
       colors = AmmoColor.getValidColor();
     }
-
-    do {
-      targetIndex = 1;
-      Log.println("Seleziona un colore");
-      for (AmmoColor color : colors) {
-        Log.println("\t" + targetIndex + ") " + color);
-        targetIndex++;
-      }
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
-    return colors.get(chosenTarget - 1);
+    List<String> choices = new ArrayList<>();
+    for (AmmoColor color : colors) {
+      choices.add(color.toString());
+    }
+    inputManager.input("Scegli un colore:", choices);
+    return colors.get(inputManager.waitForIntResult());
   }
 
-  static Effect showEffectSelection(List<Effect> effects, boolean areSubEffects) {
-    Effect chosenEffect = null;
-    int targetIndex;
-    int chosenIndex;
-
-    do {
-      targetIndex = 1;
-      if (areSubEffects) {
-        Log.println("Ora scegli quali effetti secondari aggiungere");
-      } else {
-        Log.println("Scegli quale effetto usare");
-      }
-      for (Effect effect : effects) {
-        Log.println("\t" + targetIndex + ") " + effect.getName());
-        targetIndex++;
-      }
-      chosenIndex = Character.getNumericValue(scanner.nextLine().charAt(0));
-      if (chosenIndex >= 0 && chosenIndex < targetIndex){
-        chosenEffect = effects.get(chosenIndex - 1);
-      }
-    } while (chosenEffect == null);
-
-    return chosenEffect;
+  static Effect showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InputCancelledException {
+    String prompt;
+    if (areSubEffects) {
+      prompt = "Ora scegli quali effetti secondari aggiungere:";
+    } else {
+      prompt = "Scegli quale effetto usare:";
+    }
+    List<String> choices = new ArrayList<>();
+    for (Effect effect : effects) {
+      choices.add(effect.getName());
+    }
+    inputManager.input(prompt, choices);
+    return effects.get(inputManager.waitForIntResult());
   }
 }
