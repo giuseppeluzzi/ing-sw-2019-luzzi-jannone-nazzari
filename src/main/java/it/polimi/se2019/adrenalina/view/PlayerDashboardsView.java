@@ -57,16 +57,16 @@ public abstract class PlayerDashboardsView extends Observable implements
   @Override
   public abstract void showPaymentOption(BuyableType buyableType,
       Map<AmmoColor, Integer> buyableCost, List<PowerUp> budgetPowerUp,
-      Map<AmmoColor, Integer> budgetAmmo);
+      Map<AmmoColor, Integer> budgetAmmo) throws InterruptedException;
 
   @Override
-  public abstract void showTurnActionSelection(List<TurnAction> actions);
+  public abstract void showTurnActionSelection(List<TurnAction> actions) throws InterruptedException;
 
   @Override
-  public abstract void showWeaponSelection(List<Weapon> weapons);
+  public abstract void showWeaponSelection(List<Weapon> weapons) throws InterruptedException;
 
   @Override
-  public abstract void showEffectSelection(Weapon weapon, List<Effect> effects);
+  public abstract void showEffectSelection(Weapon weapon, List<Effect> effects) throws InterruptedException;
 
   @Override
   public abstract void showPowerUpSelection(List<PowerUp> powerUps, boolean discard);

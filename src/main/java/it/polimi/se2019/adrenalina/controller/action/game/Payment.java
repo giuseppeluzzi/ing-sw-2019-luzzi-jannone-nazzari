@@ -30,6 +30,8 @@ public class Payment extends GameAction {
             .showPaymentOption(item.getBuyableType(), item.getCost(), getPlayer().getPowerUps(), getPlayer().getAmmos());
       } catch (RemoteException e) {
         Log.exception(e);
+      } catch (InterruptedException e) {
+        // TODO
       }
     } else {
       item.afterPaymentCompleted(getTurnController(), board, getPlayer());

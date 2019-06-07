@@ -252,6 +252,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
         }
       } catch (IOException e) {
         Log.exception(e);
+      } catch (InterruptedException e) {
+        // TODO
       }
     }
   }

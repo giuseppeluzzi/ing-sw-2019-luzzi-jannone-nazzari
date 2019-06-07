@@ -132,6 +132,8 @@ public class TUIInputManager {
    * Interrupts the user prompt.
    */
   public void cancel() {
+    intResult = null;
+    stringResult = null;
     thread.interrupt();
   }
 }

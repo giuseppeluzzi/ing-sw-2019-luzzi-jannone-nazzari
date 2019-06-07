@@ -21,6 +21,8 @@ public class SelectWeapon extends GameAction {
       getPlayer().getClient().getPlayerDashboardsView().showWeaponSelection(weapons);
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InterruptedException e) {
+      // TODO
     }
   }
 

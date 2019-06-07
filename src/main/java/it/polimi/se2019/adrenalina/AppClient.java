@@ -4,10 +4,13 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
+import it.polimi.se2019.adrenalina.ui.text.TUIInputManager;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class AppClient {
@@ -16,36 +19,48 @@ public class AppClient {
     Log.setName("ClientRMI");
 
     String name;
-    char connectionMode;
+    Integer connectionMode;
     boolean domination = false;
 
     if (args.length < 3) {
-      Scanner scanner = new Scanner(System.in, "utf-8");
-      Log.println("Please select a connection mode");
-      Log.println("  (1) RMI");
-      Log.println("  (2) Socket");
-      connectionMode = scanner.nextLine().charAt(0);
+      TUIInputManager inputManager = new TUIInputManager();
+      inputManager.input("Please select a connection mode:", new ArrayList<>(Arrays.asList("RMI", "Socket")));
+      try {
+        connectionMode = inputManager.waitForIntResult();
+      } catch (InterruptedException e) {
+        connectionMode = null;
+        Log.severe("Interrupted Exception");
+      }
 
-      Log.println("Please enter your name");
-      name = scanner.nextLine();
+      inputManager.input("Please enter your name");
+      try {
+        name = inputManager.waitForStringResult();
+      } catch (InterruptedException e) {
+        name = null;
+        Log.severe("Interrupted Exception");
+      }
 
-      Log.println("Please select a game mode");
-      Log.println("  (1) Classic");
-      Log.println("  (2) Domination");
-      char gameMode = scanner.nextLine().charAt(0);
+      inputManager.input("Please select a game mode:", new ArrayList<>(Arrays.asList("Classic", "Domination")));
+      int gameMode = 0;
+      try {
+        gameMode = inputManager.waitForIntResult();
+      } catch (InterruptedException e) {
+        gameMode = -1;
+        Log.severe("Interrupted Exception");
+      }
 
-      if (gameMode == '2') {
+      if (gameMode == 1) {
         domination = true;
       }
     } else {
       name = args[0];
-      connectionMode = args[1].charAt(0);
-      if (args[2].charAt(0) == '1') {
+      connectionMode = Integer.parseInt(args[1]);
+      if (args[2].charAt(0) == '0') {
         domination = false;
-      } else if (args[2].charAt(0) == '2') {
+      } else if (args[2].charAt(0) == '1') {
         domination = true;
       } else {
-        Log.severe("Invalid game mode. Supported: (1) Classic; (2) Domination");
+        Log.severe("Invalid game mode. Supported: (0) Classic; (1) Domination");
         return;
       }
     }
@@ -53,7 +68,7 @@ public class AppClient {
     ClientInterface client = null;
 
     switch (connectionMode) {
-      case '1':
+      case 0:
         // RMI
         try {
           ClientRMI clientRMI = new ClientRMI(name, domination);
@@ -65,12 +80,12 @@ public class AppClient {
           //
         }
         break;
-      case '2':
+      case 1:
         // Socket
         client = new ClientSocket(name, domination);
         break;
       default:
-        Log.severe("Invalid connection mode. Supported: (1) RMI; (2) Socket");
+        Log.severe("Invalid connection mode. Supported: (0) RMI; (1) Socket");
         return;
     }
 

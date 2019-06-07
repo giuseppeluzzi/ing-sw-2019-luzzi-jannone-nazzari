@@ -40,13 +40,13 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
 
     void showBoard() throws RemoteException;
 
-    void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
+    void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException, InterruptedException;
 
-    void showDirectionSelect() throws RemoteException;
+    void showDirectionSelect() throws RemoteException, InterruptedException;
 
-    void showSquareSelect(List<Target> targets) throws RemoteException;
+    void showSquareSelect(List<Target> targets) throws RemoteException, InterruptedException;
 
-    void showBuyableWeapons(List<Weapon> weapons) throws RemoteException;
+    void showBuyableWeapons(List<Weapon> weapons) throws RemoteException, InterruptedException;
 
-    void showSpawnPointTrackSelection() throws RemoteException;
+    void showSpawnPointTrackSelection() throws RemoteException, InterruptedException;
 }

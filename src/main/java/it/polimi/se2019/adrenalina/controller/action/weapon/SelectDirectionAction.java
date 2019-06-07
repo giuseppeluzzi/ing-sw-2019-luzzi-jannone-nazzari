@@ -26,6 +26,8 @@ public class SelectDirectionAction implements WeaponAction {
       object.getOwner().getClient().getBoardView().showDirectionSelect();
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InterruptedException e) {
+      // TODO
     }
   }
 

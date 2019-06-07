@@ -28,14 +28,13 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 
 public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = 572470044324855920L;
   private final transient ClientInterface client;
-  private final transient Scanner scanner = new Scanner(System.in, "utf-8");
+  private final transient TUIInputManager inputManager = new TUIInputManager();
   private final TUIBoardView boardView;
 
   public TUIPlayerDashboardsView(ClientInterface client, BoardViewInterface boardView) {
@@ -78,7 +77,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
-      List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) {
+      List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) throws InterruptedException {
 
     int answerBlue = 0;
     int answerRed = 0;
@@ -123,15 +122,14 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
             ANSIColor.RESET));
 
     String response;
+
     do {
-      Log.println("Inserisci i numeri delle opzioni scelte separati da una virgola");
-      response = scanner.nextLine().replace(" ", "");
+      inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
+      response = inputManager.waitForStringResult().replace(" ", "");
 
       response = response.replace(" ", "");
       answers = new HashSet<>(Arrays.asList(response.split(",")));
-    } while (
-        response.isEmpty()
-        || !response.matches(inputValidationRegex)
+    } while (!response.matches(inputValidationRegex)
         || !verifyPaymentAnswers(answers, spendables)
         || !verifyPaymentFullfilled(answers, spendables, costs)
     );
@@ -160,25 +158,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showTurnActionSelection(List<TurnAction> actions) {
-    int targetIndex = 1;
-    int chosenTarget = 0;
-
+  public void showTurnActionSelection(List<TurnAction> actions) throws InterruptedException {
     boardView.showBoard();
-
-    do {
-      Log.println("Seleziona un'azione");
-      for (TurnAction action : actions) {
-        Log.println("\t" + targetIndex + ") " + action.getName() + ": " + action.getDescription());
-        targetIndex++;
-      }
-
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
-
+    List<String> choices = new ArrayList<>();
+    for (TurnAction action : actions) {
+      choices.add(action.getName() + ": " + action.getDescription());
+    }
+    inputManager.input("Seleziona un'azione:", choices);
     try {
       notifyObservers(
-          new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(chosenTarget - 1)));
+          new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(inputManager.waitForIntResult())));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -211,7 +200,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showWeaponSelection(List<Weapon> weapons) {
+  public void showWeaponSelection(List<Weapon> weapons) throws InterruptedException {
     boardView.showBoard();
     String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     try {
@@ -222,11 +211,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showEffectSelection(Weapon weapon, List<Effect> effects) {
+  public void showEffectSelection(Weapon weapon, List<Effect> effects) throws InterruptedException {
     List<Effect> chosenEffects = new ArrayList<>();
-    List<String> chosenEffectsNames = new ArrayList<>();
 
     chosenEffects.add(TUIUtils.showEffectSelection(effects, false));
+    List<String> chosenEffectsNames = new ArrayList<>();
 
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
       Log.debug("aa1 " + chosenEffects.get(chosenEffects.size()-1));
@@ -248,7 +237,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
+  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws InterruptedException {
     boardView.showBoard();
     String ownWeapon = TUIUtils
         .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);

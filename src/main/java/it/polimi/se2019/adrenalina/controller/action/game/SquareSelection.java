@@ -34,6 +34,8 @@ public class SquareSelection extends GameAction {
       getPlayer().getClient().getBoardView().showSquareSelect(targets);
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InterruptedException e) {
+      // TODO
     }
   }
 }

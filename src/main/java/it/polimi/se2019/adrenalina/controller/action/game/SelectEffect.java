@@ -19,6 +19,8 @@ public class SelectEffect extends GameAction {
           getPlayer().getCurrentWeapon().getEffects());
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InterruptedException e) {
+      // TODO
     }
   }
 }

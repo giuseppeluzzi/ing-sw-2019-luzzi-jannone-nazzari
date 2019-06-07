@@ -17,6 +17,8 @@ public class SpawnPointTrackSelection extends GameAction {
       getPlayer().getClient().getBoardView().showSpawnPointTrackSelection();
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InterruptedException e) {
+      // TODO
     }
   }
 }

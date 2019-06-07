@@ -21,6 +21,7 @@ import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Scanner;
@@ -28,8 +29,8 @@ import java.util.Scanner;
 public class TUIBoardView extends BoardView {
 
   private static final long serialVersionUID = 7696019255617335385L;
-  private final transient Scanner scanner = TUIUtils.getScanner();
-  private final transient TUIInputManager inputManager = new TUIInputManager();
+
+  private final transient TUIInputManager inputManager = TUIUtils.getInputManager();
 
   public TUIBoardView(ClientInterface client) {
     super(client);
@@ -46,7 +47,7 @@ public class TUIBoardView extends BoardView {
   }
 
   @Override
-  public void showTargetSelect(TargetType type, List<Target> targets) {
+  public void showTargetSelect(TargetType type, List<Target> targets) throws InterruptedException {
     Target chosenTarget;
 
     showBoard();
@@ -85,10 +86,7 @@ public class TUIBoardView extends BoardView {
     }
   }
 
-  private Target selectRoom(List<Target> targets) {
-    int targetIndex;
-    int chosenTarget;
-
+  private Target selectRoom(List<Target> targets) throws InterruptedException {
     EnumSet<SquareColor> squareColors = EnumSet.noneOf(SquareColor.class);
 
     for (Target target : targets) {
@@ -96,123 +94,90 @@ public class TUIBoardView extends BoardView {
     }
 
     showBoard();
-    do {
-      targetIndex = 1;
-      Log.println("Seleziona una stanza");
-      for (SquareColor color : squareColors) {
-        Log.println(
-            String.format("\t%d) %s%s%s",
-                targetIndex,
-                color.getAnsiColor(),
-                color,
-                ANSIColor.RESET)
-        );
-        targetIndex++;
-      }
+    List<String> choices = new ArrayList<>();
 
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
-
+    for (SquareColor color : squareColors) {
+      choices.add(
+          String.format("%s%s%s",
+              color.getAnsiColor(),
+              color,
+              ANSIColor.RESET)
+      );
+    }
+    inputManager.input("Seleziona una stanza:", choices);
     for (Target target : targets) {
-      if (target.getSquare().getColor() == squareColors.toArray()[targetIndex]) {
+      if (target.getSquare().getColor() == squareColors.toArray()[inputManager.waitForIntResult()]) {
         return target;
       }
     }
 
-    throw new IllegalStateException();
+    throw new IllegalStateException("");
   }
 
-  private Target selectSquare(List<Target> targets, boolean fetch) {
-    int targetIndex;
-    int chosenTarget;
-
-    Log.println("Seleziona un quadrato");
-    do {
-      targetIndex = 1;
-      for (Target target : targets) {
-        String fetchHelper = "";
-        if (target.getSquare().isSpawnPoint()) {
-          fetchHelper = "(Spawnpoint)";
-        } else if (fetch) {
-          fetchHelper =
-              "(" + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
-                  + ")";
-        }
-        Log.println(
-            String.format("\t%d) %sx: %d y:%d %s%s%s",
-                targetIndex,
-                target.getSquare().getColor().getAnsiColor(),
-                target.getSquare().getPosX(),
-                target.getSquare().getPosY(),
-                ANSIColor.RESET,
-                fetchHelper,
-                ANSIColor.RESET));
-        targetIndex++;
+  private Target selectSquare(List<Target> targets, boolean fetch) throws InterruptedException {
+    List<String> choices = new ArrayList<>();
+    for (Target target : targets) {
+      String fetchHelper = "";
+      if (target.getSquare().isSpawnPoint()) {
+        fetchHelper = "(Spawnpoint)";
+      } else if (fetch) {
+        fetchHelper =
+            "(" + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
+                + ")";
       }
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
-
-    return targets.get(chosenTarget - 1);
+      choices.add(
+          String.format("%sx: %d y:%d %s%s%s",
+              target.getSquare().getColor().getAnsiColor(),
+              target.getSquare().getPosX(),
+              target.getSquare().getPosY(),
+              ANSIColor.RESET,
+              fetchHelper,
+              ANSIColor.RESET));
+    }
+    inputManager.input("Seleziona un quadrato:", choices);
+    return targets.get(inputManager.waitForIntResult());
   }
 
-  private Target selectAttackTarget(List<Target> targets) {
-    int targetIndex;
-    int chosenTarget;
-
-    Log.println("Seleziona un bersaglio");
-    do {
-      targetIndex = 1;
-      for (Target target : targets) {
-        try {
-          if (target.isPlayer()) {
-            Log.println(String.format("\t%d) %s", targetIndex, target.getPlayer().getName()));
-          } else {
-            Log.println(
-                String
-                    .format("\t%d) %sx: %d y:%d (Spawnpoint)%s",
-                        targetIndex,
-                        target.getSquare().getColor().getAnsiColor(),
-                        target.getSquare().getPosX(),
-                        target.getSquare().getPosY(),
-                        ANSIColor.RESET));
-          }
-          targetIndex++;
-        } catch (InvalidSquareException ignored) {
-          //
+  private Target selectAttackTarget(List<Target> targets) throws InterruptedException {
+    List<String> choices = new ArrayList<>();
+    for (Target target : targets) {
+      try {
+        if (target.isPlayer()) {
+          choices.add(String.format("%s", target.getPlayer().getName()));
+        } else {
+          choices.add(
+              String
+                  .format("%sx: %d y:%d (Spawnpoint)%s",
+                      target.getSquare().getColor().getAnsiColor(),
+                      target.getSquare().getPosX(),
+                      target.getSquare().getPosY(),
+                      ANSIColor.RESET));
         }
+      } catch (InvalidSquareException ignored) {
+        //
       }
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget < 1 || chosenTarget >= targetIndex);
-
-    return targets.get(chosenTarget - 1);
+    }
+    inputManager.input("Seleziona un bersaglio:", choices);
+    return targets.get(inputManager.waitForIntResult());
   }
 
   @Override
-  public void showDirectionSelect() {
-    int targetIndex;
-    int chosenTarget;
-
-    do {
-      targetIndex = 1;
-      Log.println("Seleziona una direzione");
-      for (Direction direction : Direction.values()) {
-        Log.println("\t" + targetIndex + ") " + direction);
-        targetIndex++;
-      }
-
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
-
+  public void showDirectionSelect() throws InterruptedException {
+    List<String> choices = new ArrayList<>();
+    for (Direction direction : Direction.values()) {
+      choices.add(direction.toString());
+    }
+    inputManager.input("Seleziona una direzione:", choices);
     try {
       notifyObservers(new SelectDirectionEvent(getClient().getPlayerColor(),
-          Direction.values()[chosenTarget - 1]));
+          Direction.values()[inputManager.waitForIntResult()]));
     } catch (RemoteException e) {
       Log.exception(e);
     }
   }
 
   @Override
-  public void showSquareSelect(List<Target> targets) {
+  public void showSquareSelect(List<Target> targets) throws InterruptedException {
     Square square = (Square) selectSquare(targets, true);
     try {
       notifyObservers(new SquareMoveSelectionEvent(getClient().getPlayerColor(),
@@ -224,13 +189,13 @@ public class TUIBoardView extends BoardView {
   }
 
   @Override
-  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
+  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException, InterruptedException {
     String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi acquistare?", true);
     notifyObservers(new PlayerCollectWeaponEvent(getClient().getPlayerColor(), weapon));
   }
 
   @Override
-  public void showSpawnPointTrackSelection() {
+  public void showSpawnPointTrackSelection() throws InterruptedException {
     AmmoColor chosen = TUIUtils.showAmmoColorSelection(false);
     try {
       notifyObservers(new SpawnPointDamageEvent(getClient().getPlayerColor(), chosen));

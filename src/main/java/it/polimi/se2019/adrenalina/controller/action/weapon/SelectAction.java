@@ -93,6 +93,8 @@ public class SelectAction implements WeaponAction {
       object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets);
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InterruptedException e) {
+      // TODO
     }
   }
 

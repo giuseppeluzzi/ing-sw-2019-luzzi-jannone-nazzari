@@ -39,15 +39,15 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
 
   void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUp,
-      Map<AmmoColor, Integer> budgetAmmo) throws RemoteException;
+      Map<AmmoColor, Integer> budgetAmmo) throws RemoteException, InterruptedException;
 
-  void showTurnActionSelection(List<TurnAction> actions) throws RemoteException;
+  void showTurnActionSelection(List<TurnAction> actions) throws RemoteException, InterruptedException;
 
-  void showWeaponSelection(List<Weapon> weapons) throws RemoteException;
+  void showWeaponSelection(List<Weapon> weapons) throws RemoteException, InterruptedException;
 
-  void showEffectSelection(Weapon weapon, List<Effect> effects) throws RemoteException;
+  void showEffectSelection(Weapon weapon, List<Effect> effects) throws RemoteException, InterruptedException;
 
   void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) throws RemoteException;
 
-  void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws RemoteException;
+  void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws RemoteException, InterruptedException;
 }

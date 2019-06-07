@@ -43,6 +43,8 @@ public class ActionSelection extends GameAction {
     } catch (RemoteException e) {
       actionFailed();
       Log.exception(e);
+    } catch (InterruptedException e) {
+      // TODO
     }
   }
 

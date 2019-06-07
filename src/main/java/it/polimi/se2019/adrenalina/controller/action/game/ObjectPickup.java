@@ -32,12 +32,16 @@ public class ObjectPickup extends GameAction {
               .showSwapWeaponSelection(getPlayer().getWeapons(), buyableWeapons);
         } catch (RemoteException e) {
           Log.exception(e);
+        } catch (InterruptedException e) {
+          // TODO
         }
       } else {
         try {
           getPlayer().getClient().getBoardView().showBuyableWeapons(buyableWeapons);
         } catch (RemoteException e) {
           Log.exception(e);
+        } catch (InterruptedException e) {
+          // TODO
         }
       }
     } else {
