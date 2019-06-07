@@ -321,7 +321,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       chosenTarget = new Random().nextInt(choices.size());
     }
 
-    System.out.println("-->" + chosenTarget);
 
     try {
       if (discard) {

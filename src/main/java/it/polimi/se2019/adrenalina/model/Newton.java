@@ -2,6 +2,10 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.action.weapon.MoveAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.SelectDirectionAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 
 /**
  * Class describing a Newton powerUp card.
@@ -12,6 +16,14 @@ public class Newton extends PowerUp {
 
   public Newton(AmmoColor color) {
     super(color, false, PowerUpType.NEWTON);
+    addAction(new SelectAction(0,1, 0, -1, new int[]{0},
+       new int[]{}, null, false, false, false,
+        TargetType.ATTACK_TARGET));
+    addAction(new SelectDirectionAction());
+    addAction(new SelectAction(1, 2, 0, 2, new int[]{},
+        new int[]{}, null, false, true, false,
+        TargetType.MOVE_SQUARE));
+    addAction(new MoveAction(1,2));
   }
 
   @Override
@@ -26,12 +38,6 @@ public class Newton extends PowerUp {
   @Override
   public Newton copy() {
     return new Newton(getColor());
-  }
-
-  @Override
-  public boolean canUse(){
-    //TODO: implement function
-    return true;
   }
 
   @Override

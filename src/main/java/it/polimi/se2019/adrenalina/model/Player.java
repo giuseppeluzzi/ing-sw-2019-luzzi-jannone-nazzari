@@ -69,7 +69,7 @@ public class Player extends Observable implements Target, Serializable {
   private List<PowerUp> powerUps = new ArrayList<>();
 
   @NotExpose
-  private Weapon currentWeapon;
+  private ExecutableObject currentExecutable;
   @NotExpose
   private Buyable currentBuying;
 
@@ -100,7 +100,7 @@ public class Player extends Observable implements Target, Serializable {
     ammo.put(AmmoColor.RED, 0);
     ammo.put(AmmoColor.BLUE, 0);
     ammo.put(AmmoColor.YELLOW, 0);
-    currentWeapon = null;
+    currentExecutable = null;
     publicCopy = false;
   }
 
@@ -155,7 +155,7 @@ public class Player extends Observable implements Target, Serializable {
     status = player.status;
     powerUpCount = player.powerUpCount;
     weaponCount = player.weaponCount;
-    currentWeapon = null;
+    currentExecutable = null;
   }
 
   @Override
@@ -446,6 +446,7 @@ public class Player extends Observable implements Target, Serializable {
     if (powerUps.size() >= 3 && !force) {
       throw new InvalidPowerUpException("Player already has 3 powerUp");
     }
+    powerUp.setTargetHistory(0, this);
     powerUps.add(powerUp);
     powerUpCount++;
 
@@ -467,6 +468,7 @@ public class Player extends Observable implements Target, Serializable {
     if (! powerUps.contains(powerUp)) {
       throw new InvalidPowerUpException("Player does not own this powerUp");
     }
+    powerUp.reset();
     powerUps.remove(powerUp);
     powerUpCount--;
     try {
@@ -705,12 +707,12 @@ public class Player extends Observable implements Target, Serializable {
     this.weaponCount = weaponCount;
   }
 
-  public Weapon getCurrentWeapon() {
-    return currentWeapon;
+  public ExecutableObject getCurrentExecutable() {
+    return currentExecutable;
   }
 
-  public void setCurrentWeapon(Weapon currentWeapon) {
-    this.currentWeapon = currentWeapon;
+  public void setCurrentExecutable(ExecutableObject currentExecutable) {
+    this.currentExecutable = currentExecutable;
   }
 
   public void setKillScore(int score) {

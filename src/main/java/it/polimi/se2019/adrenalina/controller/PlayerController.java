@@ -4,11 +4,9 @@ import it.polimi.se2019.adrenalina.controller.action.game.CheckReloadWeapons;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.game.ObjectPickup;
 import it.polimi.se2019.adrenalina.controller.action.game.Payment;
-import it.polimi.se2019.adrenalina.controller.action.game.PowerUpEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectWeapon;
 import it.polimi.se2019.adrenalina.controller.action.game.SquareSelection;
-import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
@@ -25,8 +23,11 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.PowerUpType;
+import it.polimi.se2019.adrenalina.model.PowerUpUsage;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -97,7 +98,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerCollectAmmoEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }
@@ -123,7 +129,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerCollectWeaponEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }
@@ -136,8 +147,15 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   }
 
   public void update(PlayerPowerUpEvent event) {
+    List<GameAction> actions = new ArrayList<>();
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
     if (player == null) {
       return;
     }
@@ -145,20 +163,27 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       boardController.getTurnController().executeGameActionQueue();
       return;
     }
-    List<GameAction> actions = new ArrayList<>();
-    PowerUp powerUp = player.getPowerUp(event.getType(), event.getColor());
-    actions.add(new Payment(boardController.getTurnController(), player, powerUp));
-    for (WeaponAction action : powerUp.getActions()) {
-      actions.add(new PowerUpEffect(player, powerUp, action));
-    }
 
-    boardController.getTurnController().addTurnActions(actions);
+    PowerUp powerUp = player.getPowerUp(event.getType(), event.getColor());
+
+    if (powerUp.getType() == PowerUpType.TAGBACK_GRANADE) {
+      powerUp.setTargetHistory(1, getPlayerFromBoard(board, board.getCurrentPlayer()));
+    }
+    Buyable buyable = new PowerUpUsage(powerUp);
+    player.setCurrentBuying(buyable);
+    player.setCurrentExecutable(powerUp);
+    boardController.getTurnController().addTurnActions(new Payment(boardController.getTurnController(), player, buyable));
     boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerActionSelectionEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }
@@ -215,8 +240,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerDiscardPowerUpEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
-
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }
@@ -270,8 +299,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerPaymentEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
-
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }
@@ -306,13 +339,18 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerSelectWeaponEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }
     Weapon selectedWeapon = board.getWeaponByName(event.getWeaponName());
     if (selectedWeapon != null) {
-      player.setCurrentWeapon(selectedWeapon);
+      player.setCurrentExecutable(selectedWeapon);
     }
 
     boardController.getTurnController().executeGameActionQueue();
@@ -320,7 +358,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerSwapWeaponEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }
@@ -338,7 +381,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   public void update(PlayerSelectWeaponEffectEvent event) {
     Board board = boardController.getBoard();
-    Player player = getPlayerFromBoard(board, event.getPlayerColor());
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
     if (player == null) {
       return;
     }

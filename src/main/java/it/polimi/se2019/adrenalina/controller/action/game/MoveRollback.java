@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -9,20 +10,20 @@ import java.util.Map;
 
 public class MoveRollback extends GameAction {
 
-  private final Weapon weapon;
+  private final ExecutableObject executableObject;
 
-  public MoveRollback(TurnController turnController, Player player, Weapon weapon) {
+  public MoveRollback(TurnController turnController, Player player, ExecutableObject executableObject) {
     super(turnController, player);
-    this.weapon = weapon;
+    this.executableObject = executableObject;
   }
 
-  public Weapon getWeapon() {
-    return weapon;
+  public ExecutableObject getExecutableObject() {
+    return executableObject;
   }
 
   @Override
   public void execute(Board board) {
-    for (Map.Entry<Player, Square> entrySet : weapon.getInitialPlayerPositions().entrySet()) {
+    for (Map.Entry<Player, Square> entrySet : executableObject.getInitialPlayerPositions().entrySet()) {
       entrySet.getKey().setSquare(entrySet.getValue());
     }
     getTurnController().addTurnActions(new ActionSelection(getTurnController(), getPlayer()));

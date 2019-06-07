@@ -83,6 +83,10 @@ public class SelectAction implements WeaponAction {
   @Override
   public void execute(Board board, ExecutableObject object) throws NoTargetsException {
     List<Target> targets = getTargets(board, object);
+    if (targets.isEmpty()) {
+    } else {
+
+    }
     if ((selectType == TargetType.ATTACK_TARGET
         || selectType == TargetType.ATTACK_ROOM
         || selectType == TargetType.ATTACK_SQUARE) && targets.isEmpty()) {
