@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class TurnController implements Serializable {
   private static final long serialVersionUID = -2990384474014352897L;
   private final BoardController boardController;
   private final transient Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
+  private final Timer timer = new Timer();
 
   public TurnController(BoardController boardController) {
     this.boardController = boardController;
@@ -49,6 +51,7 @@ public class TurnController implements Serializable {
   }
 
   public void executeGameActionQueue() {
+    timer.stop();
     Log.debug("execute! " + turnActionsQueue.size());
     GameAction gameAction = null;
 
@@ -65,6 +68,10 @@ public class TurnController implements Serializable {
     }
 
     if (gameAction != null) {
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+        turnActionsQueue.clear();
+        executeGameActionQueue();
+      });
       gameAction.execute(boardController.getBoard());
     } else {
       endTurn();

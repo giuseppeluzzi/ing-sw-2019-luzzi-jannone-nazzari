@@ -55,12 +55,12 @@ public class Timer implements Serializable {
               }
               break;
             }
-            Log.info("Timer", "" + timerSeconds);
             timerSeconds--;
             try {
               timerLock.wait(1000);
             } catch (InterruptedException e) {
-              timerThread.interrupt();
+              Thread.currentThread().interrupt();
+              break;
             }
           }
         }

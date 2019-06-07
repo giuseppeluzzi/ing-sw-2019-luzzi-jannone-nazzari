@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.ui.text;
 import static org.fusesource.jansi.Ansi.ansi;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
@@ -20,6 +21,7 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class TUIBoardView extends BoardView {
   private static final long serialVersionUID = 7696019255617335385L;
 
   private final transient TUIInputManager inputManager = TUIUtils.getInputManager();
+  private final Timer timer = new Timer();
 
   public TUIBoardView(ClientInterface client) {
     super(client);
@@ -108,7 +111,11 @@ public class TUIBoardView extends BoardView {
       );
     }
     inputManager.input("Seleziona una stanza:", choices);
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
     int inputResult = inputManager.waitForIntResult();
+    timer.stop();
     for (Target target : targets) {
       if (target.getSquare().getColor() == squareColors.toArray()[inputResult]) {
         return target;
@@ -139,7 +146,12 @@ public class TUIBoardView extends BoardView {
               ANSIColor.RESET));
     }
     inputManager.input("Seleziona un quadrato:", choices);
-    return targets.get(inputManager.waitForIntResult());
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
+    Target result = targets.get(inputManager.waitForIntResult());
+    timer.stop();
+    return result;
   }
 
   private Target selectAttackTarget(List<Target> targets) throws InputCancelledException {
@@ -162,7 +174,12 @@ public class TUIBoardView extends BoardView {
       }
     }
     inputManager.input("Seleziona un bersaglio:", choices);
-    return targets.get(inputManager.waitForIntResult());
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
+    Target result = targets.get(inputManager.waitForIntResult());
+    timer.stop();
+    return result;
   }
 
   @Override
@@ -172,9 +189,13 @@ public class TUIBoardView extends BoardView {
       choices.add(direction.toString());
     }
     inputManager.input("Seleziona una direzione:", choices);
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
     try {
       notifyObservers(new SelectDirectionEvent(getClient().getPlayerColor(),
           Direction.values()[inputManager.waitForIntResult()]));
+      timer.stop();
     } catch (RemoteException e) {
       Log.exception(e);
     } catch (InputCancelledException e) {

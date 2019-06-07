@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
@@ -19,6 +20,7 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
@@ -29,6 +31,7 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public class TUIPlayerDashboardsView extends PlayerDashboardsView {
@@ -36,6 +39,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   private static final long serialVersionUID = 572470044324855920L;
   private final transient ClientInterface client;
   private final transient TUIInputManager inputManager = new TUIInputManager();
+  private final Timer timer = new Timer();
   private final TUIBoardView boardView;
 
   public TUIPlayerDashboardsView(ClientInterface client, BoardViewInterface boardView) {
@@ -124,10 +128,15 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     String response;
 
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
+
     do {
       inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
       try {
         response = inputManager.waitForStringResult().replace(" ", "");
+        timer.stop();
       } catch (InputCancelledException e) {
         return;
       }
@@ -169,9 +178,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       choices.add(action.getName() + ": " + action.getDescription());
     }
     inputManager.input("Seleziona un'azione:", choices);
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
     try {
       notifyObservers(
           new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(inputManager.waitForIntResult())));
+      timer.stop();
     } catch (RemoteException e) {
       Log.exception(e);
     } catch (InputCancelledException e) {
@@ -286,10 +299,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     List<String> choices = new ArrayList<>();
 
     if (discard) {
-      prompt = "Seleziona quale PowerUp scartare";
+      prompt = "Seleziona quale PowerUp scartare:";
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+        inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un powerUp a caso");
+      });
     } else {
-      prompt = "Seleziona quale PowerUp usare";
+      prompt = "Seleziona quale PowerUp usare:";
       choices.add("Non usare nessun PowerUp");
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+        inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+      });
     }
     for (PowerUp powerUp : powerUps) {
       choices.add(powerUp.getName());
@@ -297,8 +316,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     boardView.getInputManager().input(prompt, choices);
     try {
       chosenTarget = boardView.getInputManager().waitForIntResult();
+      timer.stop();
     } catch (InputCancelledException ignored) {
-      return;
+      chosenTarget = new Random().nextInt(choices.size());
     }
 
     System.out.println("-->" + chosenTarget);

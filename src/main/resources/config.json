@@ -4,7 +4,7 @@
     "joinTimeout": 5,
     "tuiSquareWidth": 13,
     "rmiPort": 1234,
-    "turnTimeout": 60,
+    "turnTimeout": 20,
     "socketPort": 2345,
     "tuiDoorWidth": 5,
     "serverIP": "127.0.0.1",
