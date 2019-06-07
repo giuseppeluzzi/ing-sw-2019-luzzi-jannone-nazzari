@@ -17,6 +17,8 @@ public class ActionSelection extends GameAction {
 
   @Override
   public void execute(Board board) {
+    getPlayer().setCurrentExecutable(null);
+    getPlayer().setCurrentBuying(null);
     List<TurnAction> turnActions = null;
     if (board.isFinalFrenzyActive()) {
       int playerIndex = board.getPlayers().indexOf(getPlayer());

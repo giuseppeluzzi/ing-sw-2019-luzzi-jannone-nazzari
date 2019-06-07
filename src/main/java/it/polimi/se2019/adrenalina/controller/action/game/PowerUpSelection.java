@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -39,15 +40,28 @@ public class PowerUpSelection extends GameAction {
     return powerUpList;
   }
 
-  private List<PowerUp> getNotAttackPowerUps() {
+  private List<PowerUp> getNotAttackPowerUps(Board board) {
     List<PowerUp> powerUpList = new ArrayList<>();
     for (PowerUp powerUp : getPlayer().getPowerUps()) {
       if (powerUp.getType() != PowerUpType.TAGBACK_GRANADE
       && powerUp.getType() != PowerUpType.TARGETING_SCOPE) {
+        if (powerUp.getType() == PowerUpType.NEWTON && getPlayingPlayers(board.getPlayers()) < 2) {
+          continue;
+        }
         powerUpList.add(powerUp);
       }
     }
     return powerUpList;
+  }
+
+  private int getPlayingPlayers(List<Player> players) {
+    int result = 0;
+    for (Player player : players) {
+      if (player.getStatus() == PlayerStatus.PLAYING) {
+        result++;
+      }
+    }
+    return result;
   }
 
   private List<PowerUp> getGranades() {
@@ -66,7 +80,7 @@ public class PowerUpSelection extends GameAction {
       if (attacking) {
         powerUps.addAll(getTargetingScopes());
       } else {
-        powerUps.addAll(getNotAttackPowerUps());
+        powerUps.addAll(getNotAttackPowerUps(board));
       }
     } else {
       powerUps.addAll(getGranades());
@@ -83,11 +97,11 @@ public class PowerUpSelection extends GameAction {
             .getPowerUps(), discard);
       } else {
         List<PowerUp> validPowerUps = getValidPowerUps(board, attack);
-        if (! validPowerUps.isEmpty()) {
+        if (validPowerUps.isEmpty()) {
+          getTurnController().executeGameActionQueue();
+        } else {
           getPlayer().getClient().getPlayerDashboardsView()
               .showPowerUpSelection(validPowerUps, discard);
-        } else {
-          getTurnController().executeGameActionQueue();
         }
       }
     } catch (RemoteException e) {

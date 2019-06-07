@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 
 /**
  * Class defining a Tagback Grenade powerup card
@@ -12,6 +13,7 @@ public class TagbackGrenade extends PowerUp {
 
   public TagbackGrenade(AmmoColor color) {
     super(color, false, PowerUpType.TAGBACK_GRANADE);
+    addAction(new ShootAction(1,0,0));
   }
 
   @Override
@@ -22,12 +24,6 @@ public class TagbackGrenade extends PowerUp {
   @Override
   public String getName() {
     return "Granata a frammentazione";
-  }
-
-  @Override
-  public boolean canUse(){
-    //TODO: implement function
-    return true;
   }
 
   @Override

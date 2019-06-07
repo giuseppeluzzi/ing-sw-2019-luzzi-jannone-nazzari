@@ -287,11 +287,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       //
     }
 
-    System.out.println("-->" + chosenTarget);
 
     try {
       if (discard) {
-        System.out.println("Quale powerUp scarto: " + powerUps.get(chosenTarget - 1).getName());
         notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps
             .get(chosenTarget).getType(), powerUps.get(chosenTarget).getColor()));
       } else {

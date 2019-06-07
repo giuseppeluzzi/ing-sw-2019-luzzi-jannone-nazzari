@@ -5,7 +5,6 @@ import it.polimi.se2019.adrenalina.controller.action.game.CheckRespawn;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.game.PickPowerUp;
 import it.polimi.se2019.adrenalina.controller.action.game.PowerUpSelection;
-import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -94,6 +93,9 @@ public class TurnController implements Serializable {
       return;
     }
 
+    currentPlayer.setCurrentBuying(null);
+    currentPlayer.setCurrentExecutable(null);
+
     for (Weapon weapon : currentPlayer.getWeapons()) {
       weapon.reset();
     }
@@ -120,10 +122,12 @@ public class TurnController implements Serializable {
   }
 
   private void addFirstSpawn(Player player) {
+    player.setStatus(PlayerStatus.PLAYING);
     addTurnActions(new PickPowerUp(player), new PickPowerUp(player), new PowerUpSelection(this, player, true, false));
   }
 
   public void addRespawn(Player player) {
+    player.setStatus(PlayerStatus.PLAYING);
     addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, true, false));
   }
 
