@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -47,7 +48,7 @@ public class TUIBoardView extends BoardView {
   }
 
   @Override
-  public void showTargetSelect(TargetType type, List<Target> targets) throws InterruptedException {
+  public void showTargetSelect(TargetType type, List<Target> targets) {
     Target chosenTarget;
 
     showBoard();
@@ -83,10 +84,12 @@ public class TUIBoardView extends BoardView {
       Log.exception(e);
     } catch (InvalidSquareException ignored) {
       //
+    } catch (InputCancelledException e) {
+      // return
     }
   }
 
-  private Target selectRoom(List<Target> targets) throws InterruptedException {
+  private Target selectRoom(List<Target> targets) throws InputCancelledException {
     EnumSet<SquareColor> squareColors = EnumSet.noneOf(SquareColor.class);
 
     for (Target target : targets) {
@@ -105,8 +108,9 @@ public class TUIBoardView extends BoardView {
       );
     }
     inputManager.input("Seleziona una stanza:", choices);
+    int inputResult = inputManager.waitForIntResult();
     for (Target target : targets) {
-      if (target.getSquare().getColor() == squareColors.toArray()[inputManager.waitForIntResult()]) {
+      if (target.getSquare().getColor() == squareColors.toArray()[inputResult]) {
         return target;
       }
     }
@@ -114,7 +118,7 @@ public class TUIBoardView extends BoardView {
     throw new IllegalStateException("");
   }
 
-  private Target selectSquare(List<Target> targets, boolean fetch) throws InterruptedException {
+  private Target selectSquare(List<Target> targets, boolean fetch) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Target target : targets) {
       String fetchHelper = "";
@@ -138,7 +142,7 @@ public class TUIBoardView extends BoardView {
     return targets.get(inputManager.waitForIntResult());
   }
 
-  private Target selectAttackTarget(List<Target> targets) throws InterruptedException {
+  private Target selectAttackTarget(List<Target> targets) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Target target : targets) {
       try {
@@ -162,7 +166,7 @@ public class TUIBoardView extends BoardView {
   }
 
   @Override
-  public void showDirectionSelect() throws InterruptedException {
+  public void showDirectionSelect() {
     List<String> choices = new ArrayList<>();
     for (Direction direction : Direction.values()) {
       choices.add(direction.toString());
@@ -173,12 +177,19 @@ public class TUIBoardView extends BoardView {
           Direction.values()[inputManager.waitForIntResult()]));
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InputCancelledException e) {
+      // return
     }
   }
 
   @Override
-  public void showSquareSelect(List<Target> targets) throws InterruptedException {
-    Square square = (Square) selectSquare(targets, true);
+  public void showSquareSelect(List<Target> targets) {
+    Square square = null;
+    try {
+      square = (Square) selectSquare(targets, true);
+    } catch (InputCancelledException e) {
+      return;
+    }
     try {
       notifyObservers(new SquareMoveSelectionEvent(getClient().getPlayerColor(),
           square.getPosX(),
@@ -189,14 +200,24 @@ public class TUIBoardView extends BoardView {
   }
 
   @Override
-  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException, InterruptedException {
-    String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi acquistare?", true);
+  public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
+    String weapon = null;
+    try {
+      weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi acquistare?", true);
+    } catch (InputCancelledException e) {
+      return;
+    }
     notifyObservers(new PlayerCollectWeaponEvent(getClient().getPlayerColor(), weapon));
   }
 
   @Override
-  public void showSpawnPointTrackSelection() throws InterruptedException {
-    AmmoColor chosen = TUIUtils.showAmmoColorSelection(false);
+  public void showSpawnPointTrackSelection() {
+    AmmoColor chosen = null;
+    try {
+      chosen = TUIUtils.showAmmoColorSelection(false);
+    } catch (InputCancelledException e) {
+      return;
+    }
     try {
       notifyObservers(new SpawnPointDamageEvent(getClient().getPlayerColor(), chosen));
     } catch (RemoteException e) {

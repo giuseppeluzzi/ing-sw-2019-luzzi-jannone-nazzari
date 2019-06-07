@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -30,8 +31,6 @@ public class Payment extends GameAction {
             .showPaymentOption(item.getBuyableType(), item.getCost(), getPlayer().getPowerUps(), getPlayer().getAmmos());
       } catch (RemoteException e) {
         Log.exception(e);
-      } catch (InterruptedException e) {
-        // TODO
       }
     } else {
       item.afterPaymentCompleted(getTurnController(), board, getPlayer());

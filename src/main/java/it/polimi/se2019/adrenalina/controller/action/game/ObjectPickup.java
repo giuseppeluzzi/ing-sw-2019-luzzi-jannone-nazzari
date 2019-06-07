@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -32,16 +33,12 @@ public class ObjectPickup extends GameAction {
               .showSwapWeaponSelection(getPlayer().getWeapons(), buyableWeapons);
         } catch (RemoteException e) {
           Log.exception(e);
-        } catch (InterruptedException e) {
-          // TODO
         }
       } else {
         try {
           getPlayer().getClient().getBoardView().showBuyableWeapons(buyableWeapons);
         } catch (RemoteException e) {
           Log.exception(e);
-        } catch (InterruptedException e) {
-          // TODO
         }
       }
     } else {

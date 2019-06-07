@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
@@ -77,13 +78,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
-      List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) throws InterruptedException {
+      List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) {
 
     int answerBlue = 0;
     int answerRed = 0;
     int answerYellow = 0;
     int index = 1;
-    String inputValidationRegex = "^[0-9,]*$";
+    String inputValidationRegex = "^(\\d+(,\\d+)*)?$";
 
     Map<AmmoColor, Integer> costs = new EnumMap<>(AmmoColor.class);
     costs.put(AmmoColor.BLUE, buyableCost.get(AmmoColor.BLUE));
@@ -125,13 +126,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     do {
       inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
-      response = inputManager.waitForStringResult().replace(" ", "");
+      try {
+        response = inputManager.waitForStringResult().replace(" ", "");
+      } catch (InputCancelledException e) {
+        return;
+      }
 
-      response = response.replace(" ", "");
       answers = new HashSet<>(Arrays.asList(response.split(",")));
     } while (!response.matches(inputValidationRegex)
-        || !verifyPaymentAnswers(answers, spendables)
-        || !verifyPaymentFullfilled(answers, spendables, costs)
+          || !verifyPaymentAnswers(answers, spendables)
+          || !verifyPaymentFullfilled(answers, spendables, costs)
     );
 
     for (String element : answers) {
@@ -158,7 +162,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showTurnActionSelection(List<TurnAction> actions) throws InterruptedException {
+  public void showTurnActionSelection(List<TurnAction> actions) {
     boardView.showBoard();
     List<String> choices = new ArrayList<>();
     for (TurnAction action : actions) {
@@ -170,6 +174,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
           new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(inputManager.waitForIntResult())));
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InputCancelledException e) {
+      // return
     }
   }
 
@@ -200,9 +206,14 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showWeaponSelection(List<Weapon> weapons) throws InterruptedException {
+  public void showWeaponSelection(List<Weapon> weapons) {
     boardView.showBoard();
-    String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
+    String weapon = null;
+    try {
+      weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
+    } catch (InputCancelledException e) {
+      return;
+    }
     try {
       notifyObservers(new PlayerSelectWeaponEvent(client.getPlayerColor(), weapon));
     } catch (RemoteException e) {
@@ -211,16 +222,24 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showEffectSelection(Weapon weapon, List<Effect> effects) throws InterruptedException {
+  public void showEffectSelection(Weapon weapon, List<Effect> effects) {
     List<Effect> chosenEffects = new ArrayList<>();
 
-    chosenEffects.add(TUIUtils.showEffectSelection(effects, false));
+    try {
+      chosenEffects.add(TUIUtils.showEffectSelection(effects, false));
+    } catch (InputCancelledException e) {
+      return;
+    }
     List<String> chosenEffectsNames = new ArrayList<>();
 
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
       Log.debug("aa1 " + chosenEffects.get(chosenEffects.size()-1));
-      chosenEffects.add(
-          TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
+      try {
+        chosenEffects.add(
+            TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
+      } catch (InputCancelledException e) {
+        // return
+      }
     }
 
 
@@ -237,12 +256,18 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws InterruptedException {
+  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
     boardView.showBoard();
-    String ownWeapon = TUIUtils
-        .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);
-    String squareWeapon = TUIUtils
-        .selectWeapon(squareWeapons, "Quale arma vuoi prendere?", true);
+    String ownWeapon;
+    String squareWeapon;
+    try {
+      ownWeapon = TUIUtils
+          .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);
+      squareWeapon = TUIUtils
+          .selectWeapon(squareWeapons, "Quale arma vuoi prendere?", true);
+    } catch (InputCancelledException e) {
+      return;
+    }
     try {
       notifyObservers(new PlayerSwapWeaponEvent(client.getPlayerColor(), ownWeapon, squareWeapon));
     } catch (RemoteException e) {
@@ -272,15 +297,14 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     boardView.getInputManager().input(prompt, choices);
     try {
       chosenTarget = boardView.getInputManager().waitForIntResult();
-    } catch (InterruptedException ignored) {
-      //
+    } catch (InputCancelledException ignored) {
+      return;
     }
 
     System.out.println("-->" + chosenTarget);
 
     try {
       if (discard) {
-        System.out.println("Quale powerUp scarto: " + powerUps.get(chosenTarget - 1).getName());
         notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps
             .get(chosenTarget).getType(), powerUps.get(chosenTarget).getColor()));
       } else {

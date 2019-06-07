@@ -23,6 +23,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocati
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
@@ -252,8 +253,6 @@ public class ClientSocket extends Client implements Runnable, Observer {
         }
       } catch (IOException e) {
         Log.exception(e);
-      } catch (InterruptedException e) {
-        // TODO
       }
     }
   }

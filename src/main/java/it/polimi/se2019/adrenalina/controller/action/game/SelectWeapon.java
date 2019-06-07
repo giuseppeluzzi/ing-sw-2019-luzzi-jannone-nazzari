@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -21,8 +22,6 @@ public class SelectWeapon extends GameAction {
       getPlayer().getClient().getPlayerDashboardsView().showWeaponSelection(weapons);
     } catch (RemoteException e) {
       Log.exception(e);
-    } catch (InterruptedException e) {
-      // TODO
     }
   }
 

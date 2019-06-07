@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina;
 
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
@@ -27,26 +28,26 @@ public class AppClient {
       inputManager.input("Please select a connection mode:", new ArrayList<>(Arrays.asList("RMI", "Socket")));
       try {
         connectionMode = inputManager.waitForIntResult();
-      } catch (InterruptedException e) {
-        connectionMode = null;
-        Log.severe("Interrupted Exception");
+      } catch (InputCancelledException e) {
+        Log.severe("Connection mode input interrupted");
+        return;
       }
 
       inputManager.input("Please enter your name");
       try {
         name = inputManager.waitForStringResult();
-      } catch (InterruptedException e) {
-        name = null;
-        Log.severe("Interrupted Exception");
+      } catch (InputCancelledException e) {
+        Log.severe("Name input interrupted");
+        return;
       }
 
       inputManager.input("Please select a game mode:", new ArrayList<>(Arrays.asList("Classic", "Domination")));
       int gameMode = 0;
       try {
         gameMode = inputManager.waitForIntResult();
-      } catch (InterruptedException e) {
-        gameMode = -1;
-        Log.severe("Interrupted Exception");
+      } catch (InputCancelledException e) {
+        Log.severe("Game mode input interrupted");
+        return;
       }
 
       if (gameMode == 1) {

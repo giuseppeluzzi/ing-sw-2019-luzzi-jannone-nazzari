@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -39,15 +40,15 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
 
   void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUp,
-      Map<AmmoColor, Integer> budgetAmmo) throws RemoteException, InterruptedException;
+      Map<AmmoColor, Integer> budgetAmmo) throws RemoteException;
 
-  void showTurnActionSelection(List<TurnAction> actions) throws RemoteException, InterruptedException;
+  void showTurnActionSelection(List<TurnAction> actions) throws RemoteException;
 
-  void showWeaponSelection(List<Weapon> weapons) throws RemoteException, InterruptedException;
+  void showWeaponSelection(List<Weapon> weapons) throws RemoteException;
 
-  void showEffectSelection(Weapon weapon, List<Effect> effects) throws RemoteException, InterruptedException;
+  void showEffectSelection(Weapon weapon, List<Effect> effects) throws RemoteException;
 
   void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) throws RemoteException;
 
-  void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws RemoteException, InterruptedException;
+  void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws RemoteException;
 }

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class TUIUtils {
   }
 
   static String selectWeapon(List<Weapon> weapons, String prompt,
-      boolean showCost) throws InterruptedException {
+      boolean showCost) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Weapon weapon : weapons) {
       if (showCost) {
@@ -45,7 +46,7 @@ public class TUIUtils {
     return weapons.get(inputManager.waitForIntResult()).getName();
   }
 
-  static AmmoColor showAmmoColorSelection(boolean anyAllowed) throws InterruptedException {
+  static AmmoColor showAmmoColorSelection(boolean anyAllowed) throws InputCancelledException {
     List<AmmoColor> colors;
     if (anyAllowed) {
       colors = Arrays.asList(AmmoColor.values());
@@ -60,7 +61,7 @@ public class TUIUtils {
     return colors.get(inputManager.waitForIntResult());
   }
 
-  static Effect showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InterruptedException {
+  static Effect showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InputCancelledException {
     String prompt;
     if (areSubEffects) {
       prompt = "Ora scegli quali effetti secondari aggiungere:";

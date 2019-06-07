@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -40,13 +41,13 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
 
     void showBoard() throws RemoteException;
 
-    void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException, InterruptedException;
+    void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
 
-    void showDirectionSelect() throws RemoteException, InterruptedException;
+    void showDirectionSelect() throws RemoteException;
 
-    void showSquareSelect(List<Target> targets) throws RemoteException, InterruptedException;
+    void showSquareSelect(List<Target> targets) throws RemoteException;
 
-    void showBuyableWeapons(List<Weapon> weapons) throws RemoteException, InterruptedException;
+    void showBuyableWeapons(List<Weapon> weapons) throws RemoteException;
 
-    void showSpawnPointTrackSelection() throws RemoteException, InterruptedException;
+    void showSpawnPointTrackSelection() throws RemoteException;
 }
