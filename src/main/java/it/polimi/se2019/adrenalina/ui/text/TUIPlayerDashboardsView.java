@@ -290,7 +290,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
-
     boardView.showBoard();
 
     int targetIndex = 1;
