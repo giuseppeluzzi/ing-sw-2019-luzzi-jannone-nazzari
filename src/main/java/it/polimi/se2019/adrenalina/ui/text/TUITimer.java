@@ -21,7 +21,7 @@ public class TUITimer extends Timer {
     try {
       client.showGameMessage(
           "La partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
-              + " secondi");
+              + " second" + (getRemainingSeconds() != 1 ? "i" : "o"));
     } catch (RemoteException e) {
       Log.exception(e);
     }

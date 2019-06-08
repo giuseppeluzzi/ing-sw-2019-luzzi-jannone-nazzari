@@ -17,10 +17,6 @@ public class TUIUtils {
 
   private static final TUIInputManager inputManager = new TUIInputManager();
 
-  public static TUIInputManager getInputManager() {
-    return inputManager;
-  }
-
   static String selectWeapon(List<Weapon> weapons, String prompt,
       boolean showCost) throws InputCancelledException {
     List<String> choices = new ArrayList<>();

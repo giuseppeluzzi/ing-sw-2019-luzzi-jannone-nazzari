@@ -32,7 +32,7 @@ public class TUIBoardView extends BoardView {
 
   private static final long serialVersionUID = 7696019255617335385L;
 
-  private final transient TUIInputManager inputManager = TUIUtils.getInputManager();
+  private final transient TUIInputManager inputManager = new TUIInputManager();
   private final Timer timer = new Timer();
 
   public TUIBoardView(Client client) {
@@ -43,10 +43,6 @@ public class TUIBoardView extends BoardView {
   public void showBoard() {
     Log.print(ansi().eraseScreen().toString());
     BoardPrinter.print(getBoard());
-  }
-
-  public TUIInputManager getInputManager() {
-    return inputManager;
   }
 
   @Override

@@ -292,7 +292,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
     boardView.showBoard();
 
-    int targetIndex = 1;
     int chosenTarget = 0;
     String prompt;
     List<String> choices = new ArrayList<>();
@@ -312,12 +311,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     for (PowerUp powerUp : powerUps) {
       choices.add(powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
     }
-    boardView.getInputManager().input(prompt, choices);
+    inputManager.input(prompt, choices);
     try {
-      chosenTarget = boardView.getInputManager().waitForIntResult();
+      chosenTarget = inputManager.waitForIntResult();
       timer.stop();
-    } catch (InputCancelledException ignored) {
-      chosenTarget = new Random().nextInt(choices.size());
+    } catch (InputCancelledException e) {
+      return;
     }
 
 

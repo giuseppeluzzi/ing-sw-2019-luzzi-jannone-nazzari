@@ -42,4 +42,8 @@ public abstract class GameAction {
 
     turnController.executeGameActionQueue();
   }
+
+  public void handleTimeout() {
+    // in the general case, do nothing
+  }
 }

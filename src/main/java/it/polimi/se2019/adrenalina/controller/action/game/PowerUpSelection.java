@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
@@ -10,6 +11,7 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PowerUpSelection extends GameAction {
 
@@ -106,6 +108,26 @@ public class PowerUpSelection extends GameAction {
       }
     } catch (RemoteException e) {
       Log.exception(e);
+    }
+  }
+
+  @Override
+  public void handleTimeout() {
+    if (isDiscard()) {
+      int randomPowerUpIndex = new Random().nextInt(getPlayer().getPowerUps().size());
+      PowerUp powerUp = getPlayer().getPowerUps().get(randomPowerUpIndex);
+      try {
+        getPlayer().removePowerUp(powerUp);
+      } catch (InvalidPowerUpException ignored) {
+        return;
+      }
+      getPlayer().getBoard().undrawPowerUp(powerUp);
+
+      if (getPlayer().getBoard().getTurnCounter() > 1) {
+        getPlayer().respawn(powerUp.getColor());
+      } else {
+        getPlayer().setSquare(getPlayer().getBoard().getSpawnPointSquare(powerUp.getColor()));
+      }
     }
   }
 }

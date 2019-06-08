@@ -14,6 +14,7 @@ public class TUIInputManager {
   private Integer intResult;
   private String stringResult;
   private Thread thread;
+  private boolean cancelled;
   private final Object lock = new Object();
 
   /**
@@ -24,17 +25,17 @@ public class TUIInputManager {
    */
   public int waitForIntResult() throws InputCancelledException {
     synchronized (lock) {
-      while (intResult == null) {
+      while (intResult == null && ! cancelled) {
         try {
           lock.wait();
         } catch (InterruptedException e) {
           Thread.currentThread().interrupt();
-          throw new InputCancelledException();
         }
       }
-      Integer result = intResult;
-      intResult = null; // cleanup for next use
-      return result;
+      if (cancelled) {
+        throw new InputCancelledException();
+      }
+      return intResult;
     }
   }
 
@@ -46,17 +47,17 @@ public class TUIInputManager {
    */
   public String waitForStringResult() throws InputCancelledException {
     synchronized (lock) {
-      while (stringResult == null) {
+      while (stringResult == null && ! cancelled) {
         try {
           lock.wait();
         } catch (InterruptedException e) {
           Thread.currentThread().interrupt();
-          throw new InputCancelledException();
         }
       }
-      String result = stringResult;
-      stringResult = null; // cleanup for next use
-      return result;
+      if (cancelled) {
+        throw new InputCancelledException();
+      }
+      return stringResult;
     }
   }
 
@@ -67,36 +68,44 @@ public class TUIInputManager {
    * @param choices a list of possible choices
    */
   public void input(String prompt, List<String> choices) {
-      thread = new Thread(() -> {
-        Log.println(prompt);
-        for (int i = 0; i < choices.size(); i++) {
-          Log.println(String.format("    [%2d] %s", i+1, choices.get(i)));
-        }
-        while (true) {
-          Log.print("> ");
-          String input;
-          try {
-            input = scanner.call().trim();
-          } catch (InterruptedException e) {
+    intResult = null;
+    stringResult = null;
+    cancelled = false;
+    thread = new Thread(() -> {
+      Log.println(prompt);
+      for (int i = 0; i < choices.size(); i++) {
+        Log.println(String.format("    [%2d] %s", i+1, choices.get(i)));
+      }
+      while (true) {
+        Log.print("> ");
+        String input;
+        try {
+          input = scanner.call().trim();
+        } catch (InterruptedException e) {
+          synchronized (lock) {
+            cancelled = true;
+            lock.notifyAll();
+            Thread.currentThread().interrupt();
             return;
           }
-          if (input.matches("\\d+")) {
-            int choice = Integer.parseInt(input);
-            if (choice >= 1 && choice <= choices.size()) {
-              synchronized (lock) {
-                intResult = choice - 1;
-                lock.notifyAll();
-              }
-              return;
-            } else {
-              Log.println(INVALID_SELECTION_TEXT);
+        }
+        if (input.matches("\\d+")) {
+          int choice = Integer.parseInt(input);
+          if (choice >= 1 && choice <= choices.size()) {
+            synchronized (lock) {
+              intResult = choice - 1;
+              lock.notifyAll();
             }
+            return;
           } else {
             Log.println(INVALID_SELECTION_TEXT);
           }
+        } else {
+          Log.println(INVALID_SELECTION_TEXT);
         }
-      });
-      thread.start();
+      }
+    });
+    thread.start();
   }
 
   /**
@@ -106,28 +115,36 @@ public class TUIInputManager {
    * @param maxLength the maximum input string length
    */
   public void input(String prompt, int maxLength) {
-      thread = new Thread(() -> {
-        Log.println(prompt);
-        while (true) {
-          Log.print("> ");
-          String input;
-          try {
-            input = scanner.call().trim();
-          } catch (InterruptedException e) {
+    intResult = null;
+    stringResult = null;
+    cancelled = false;
+    thread = new Thread(() -> {
+      Log.println(prompt);
+      while (true) {
+        Log.print("> ");
+        String input;
+        try {
+          input = scanner.call().trim();
+        } catch (InterruptedException e) {
+          synchronized (lock) {
+            cancelled = true;
+            lock.notifyAll();
+            Thread.currentThread().interrupt();
             return;
-          }
-          if (input.length() >= 1 && input.length() <= maxLength) {
-            synchronized (lock) {
-              stringResult = input;
-              lock.notifyAll();
-            }
-            return;
-          } else {
-            Log.println(INVALID_SELECTION_TEXT);
           }
         }
-      });
-      thread.start();
+        if (input.length() >= 1 && input.length() <= maxLength) {
+          synchronized (lock) {
+            stringResult = input;
+            lock.notifyAll();
+          }
+          return;
+        } else {
+          Log.println(INVALID_SELECTION_TEXT);
+        }
+      }
+    });
+    thread.start();
   }
 
   /**
@@ -144,8 +161,6 @@ public class TUIInputManager {
    */
   public void cancel(String message) {
     Log.println(message);
-    intResult = null;
-    stringResult = null;
     if (thread != null) {
       thread.interrupt();
     }

@@ -84,7 +84,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   public void update(BoardStatusUpdate event) {
     board.setStatus(event.getStatus());
-    client.showGameMessage("E' iniziata la frenesia finale!");
+    client.showGameMessage("È iniziata la frenesia finale!");
   }
 
   public void update(BoardAddPlayerUpdate event) {

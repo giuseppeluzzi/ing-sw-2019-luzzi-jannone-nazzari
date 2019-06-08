@@ -67,7 +67,9 @@ public class TurnController implements Serializable {
     }
 
     if (gameAction != null) {
+      final GameAction gameAction1 = gameAction;
       timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+        gameAction1.handleTimeout();
         turnActionsQueue.clear();
         executeGameActionQueue();
       });
