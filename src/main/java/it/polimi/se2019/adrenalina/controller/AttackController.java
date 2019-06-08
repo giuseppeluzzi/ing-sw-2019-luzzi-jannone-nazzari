@@ -108,6 +108,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     player.getCurrentExecutable().setLastUsageDirection(event.getSelectedDirection());
     boardController.getTurnController().executeGameActionQueue();
   }
+  
   /**
    * Event fired when a player moves to a different square.
    *

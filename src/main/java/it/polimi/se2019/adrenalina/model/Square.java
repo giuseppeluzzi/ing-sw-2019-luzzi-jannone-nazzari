@@ -305,8 +305,8 @@ public class Square extends Observable implements Target {
    * @return direction between the squares, null if the input is the same square as this
    */
   public Direction getCardinalDirection(Square square) throws InvalidSquareException {
-    int diffX = posX - square.posX;
-    int diffY = posY - square.posY;
+    int diffX = square.posX - posX;
+    int diffY = square.posY - posY;
 
     if (diffX == 0 && diffY == 0) {
       return null;

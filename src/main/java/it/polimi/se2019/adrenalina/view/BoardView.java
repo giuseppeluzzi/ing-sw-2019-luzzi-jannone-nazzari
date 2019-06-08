@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
@@ -84,7 +85,9 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   public void update(BoardStatusUpdate event) {
     board.setStatus(event.getStatus());
-    client.showGameMessage("E' iniziata la frenesia finale!");
+    if (board.getStatus() == BoardStatus.FINAL_FRENZY) {
+      client.showGameMessage("E' iniziata la frenesia finale!");
+    }
   }
 
   public void update(BoardAddPlayerUpdate event) {

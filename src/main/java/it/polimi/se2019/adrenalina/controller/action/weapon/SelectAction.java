@@ -132,7 +132,6 @@ public class SelectAction implements WeaponAction {
 
     // between
     whitelist(targets, between, object);
-
     Stream<Target> targetStream = targets.stream();
 
     // minDistance
@@ -153,8 +152,7 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> {
         try {
           return
-              fromTarget.getSquare().getCardinalDirection(x.getSquare()) == ((Weapon) object)
-                  .getLastUsageDirection() ||
+              fromTarget.getSquare().getCardinalDirection(x.getSquare()) == object.getLastUsageDirection() ||
                   fromTarget.getSquare().getCardinalDirection(x.getSquare()) == null;
         } catch (InvalidSquareException e) {
           return false;
@@ -167,7 +165,15 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> fromTarget.getSquare().getColor() == x.getSquare().getColor());
     }
 
-    return targetStream.collect(Collectors.toList());
+    List<Target> resultTargets;
+    try {
+      resultTargets = targetStream.collect(Collectors.toList());
+      Log.debug("RTS: " + resultTargets.size());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+    return resultTargets;
   }
 
   @Override

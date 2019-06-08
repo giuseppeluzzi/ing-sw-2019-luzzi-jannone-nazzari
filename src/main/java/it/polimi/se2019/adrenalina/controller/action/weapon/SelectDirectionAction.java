@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 public class SelectDirectionAction implements WeaponAction {
 
   private static final long serialVersionUID = 9176126026908579498L;
-  private final WeaponActionType type;
+  private WeaponActionType type = WeaponActionType.SELECT_DIRECTION;
 
   public SelectDirectionAction() {
     type = WeaponActionType.SELECT_DIRECTION;
