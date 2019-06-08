@@ -1,15 +1,18 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
@@ -17,6 +20,7 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
@@ -27,20 +31,21 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.Random;
 import java.util.Set;
 
 public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = 572470044324855920L;
   private final transient ClientInterface client;
-  private final transient Scanner scanner = new Scanner(System.in, "utf-8");
-  private final BoardViewInterface boardView;
+  private final transient TUIInputManager inputManager = new TUIInputManager();
+  private final Timer timer = new Timer();
+  private final TUIBoardView boardView;
 
   public TUIPlayerDashboardsView(ClientInterface client, BoardViewInterface boardView) {
     super((BoardView) boardView);
     this.client = client;
-    this.boardView = boardView;
+    this.boardView = (TUIBoardView) boardView;
   }
 
   private List<Spendable> setSpendable(List<PowerUp> powerUps,
@@ -83,7 +88,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     int answerRed = 0;
     int answerYellow = 0;
     int index = 1;
-    String inputValidationRegex = "^[0-9,]*$";
+    String inputValidationRegex = "^(\\d+(,\\d+)*)?$";
 
     Map<AmmoColor, Integer> costs = new EnumMap<>(AmmoColor.class);
     costs.put(AmmoColor.BLUE, buyableCost.get(AmmoColor.BLUE));
@@ -122,17 +127,24 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
             ANSIColor.RESET));
 
     String response;
-    do {
-      Log.println("Inserisci i numeri delle opzioni scelte separati da una virgola");
-      response = scanner.nextLine().replace(" ", "");
 
-      response = response.replace(" ", "");
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
+
+    do {
+      inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
+      try {
+        response = inputManager.waitForStringResult().replace(" ", "");
+        timer.stop();
+      } catch (InputCancelledException e) {
+        return;
+      }
+
       answers = new HashSet<>(Arrays.asList(response.split(",")));
-    } while (
-        response.isEmpty()
-        || !response.matches(inputValidationRegex)
-        || !verifyPaymentAnswers(answers, spendables)
-        || !verifyPaymentFullfilled(answers, spendables, costs)
+    } while (!response.matches(inputValidationRegex)
+          || !verifyPaymentAnswers(answers, spendables)
+          || !verifyPaymentFullfilled(answers, spendables, costs)
     );
 
     for (String element : answers) {
@@ -160,29 +172,23 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
-    int targetIndex = 1;
-    int chosenTarget = 0;
-
-    try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
+    boardView.showBoard();
+    List<String> choices = new ArrayList<>();
+    for (TurnAction action : actions) {
+      choices.add(action.getName() + ": " + action.getDescription());
     }
-    do {
-      Log.println("Seleziona un'azione");
-      for (TurnAction action : actions) {
-        Log.println("\t" + targetIndex + ") " + action.getName() + ": " + action.getDescription());
-        targetIndex++;
-      }
-
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
-
+    inputManager.input("Seleziona un'azione:", choices);
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+    });
     try {
       notifyObservers(
-          new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(chosenTarget - 1)));
+          new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(inputManager.waitForIntResult())));
+      timer.stop();
     } catch (RemoteException e) {
       Log.exception(e);
+    } catch (InputCancelledException e) {
+      // return
     }
   }
 
@@ -214,12 +220,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
+    boardView.showBoard();
+    String weapon = null;
     try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
+      weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
+    } catch (InputCancelledException e) {
+      return;
     }
-    String weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     try {
       notifyObservers(new PlayerSelectWeaponEvent(client.getPlayerColor(), weapon));
     } catch (RemoteException e) {
@@ -230,14 +237,22 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   @Override
   public void showEffectSelection(Weapon weapon, List<Effect> effects) {
     List<Effect> chosenEffects = new ArrayList<>();
-    List<String> chosenEffectsNames = new ArrayList<>();
 
-    chosenEffects.add(TUIUtils.showEffectSelection(effects, false));
+    try {
+      chosenEffects.add(TUIUtils.showEffectSelection(effects, false));
+    } catch (InputCancelledException e) {
+      return;
+    }
+    List<String> chosenEffectsNames = new ArrayList<>();
 
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
       Log.debug("aa1 " + chosenEffects.get(chosenEffects.size()-1));
-      chosenEffects.add(
-          TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
+      try {
+        chosenEffects.add(
+            TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
+      } catch (InputCancelledException e) {
+        // return
+      }
     }
 
 
@@ -255,15 +270,17 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
+    boardView.showBoard();
+    String ownWeapon;
+    String squareWeapon;
     try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
+      ownWeapon = TUIUtils
+          .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);
+      squareWeapon = TUIUtils
+          .selectWeapon(squareWeapons, "Quale arma vuoi prendere?", true);
+    } catch (InputCancelledException e) {
+      return;
     }
-    String ownWeapon = TUIUtils
-        .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);
-    String squareWeapon = TUIUtils
-        .selectWeapon(squareWeapons, "Quale arma vuoi prendere?", true);
     try {
       notifyObservers(new PlayerSwapWeaponEvent(client.getPlayerColor(), ownWeapon, squareWeapon));
     } catch (RemoteException e) {
@@ -272,30 +289,51 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showPowerUpSelection(List<PowerUp> powerUps) {
-    try {
-      boardView.showBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
+  public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
+
+    boardView.showBoard();
+
+    int targetIndex = 1;
+    int chosenTarget = 0;
+    String prompt;
+    List<String> choices = new ArrayList<>();
+
+    if (discard) {
+      prompt = "Seleziona quale PowerUp scartare:";
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+        inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un powerUp a caso");
+      });
+    } else {
+      prompt = "Seleziona quale PowerUp usare:";
+      choices.add("Non usare nessun PowerUp");
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+        inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
+      });
     }
-    int targetIndex;
-    int chosenTarget;
-    do {
-      targetIndex = 1;
-      Log.println("Seleziona un PowerUp");
-      for (PowerUp powerUp : powerUps) {
-        Log.println(
-            "\t" + targetIndex + ") " + powerUp.getColor().getAnsiColor() + powerUp.getName()
-                + ANSIColor.RESET);
-        targetIndex++;
-      }
+    for (PowerUp powerUp : powerUps) {
+      choices.add(powerUp.getName());
+    }
+    boardView.getInputManager().input(prompt, choices);
+    try {
+      chosenTarget = boardView.getInputManager().waitForIntResult();
+      timer.stop();
+    } catch (InputCancelledException ignored) {
+      chosenTarget = new Random().nextInt(choices.size());
+    }
 
-      chosenTarget = Character.getNumericValue(scanner.nextLine().charAt(0));
-    } while (chosenTarget == 0 || chosenTarget >= targetIndex);
 
     try {
-      notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps
-          .get(chosenTarget - 1).getType(), powerUps.get(chosenTarget - 1).getColor()));
+      if (discard) {
+        notifyObservers(new PlayerDiscardPowerUpEvent(client.getPlayerColor(), powerUps
+            .get(chosenTarget).getType(), powerUps.get(chosenTarget).getColor()));
+      } else {
+        if (chosenTarget == 0) {
+          notifyObservers(new PlayerPowerUpEvent(client.getPlayerColor(), null, null));
+        } else {
+          notifyObservers(new PlayerPowerUpEvent(client.getPlayerColor(), powerUps
+              .get(chosenTarget - 1).getType(), powerUps.get(chosenTarget - 1).getColor()));
+        }
+      }
     } catch (RemoteException e) {
       Log.exception(e);
     }

@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.List;
 
@@ -18,13 +19,18 @@ public class TUIInputManager {
   /**
    * Blocking method that waits for an Integer result to be available, then returns it.
    * @return the Integer result of the user prompt
-   * @throws InterruptedException thrown if the prompt thread is interrupted before the input
+   * @throws InputCancelledException thrown if the prompt thread is interrupted before the input
    * data is available
    */
-  public int waitForIntResult() throws InterruptedException {
+  public int waitForIntResult() throws InputCancelledException {
     synchronized (lock) {
       while (intResult == null) {
-        lock.wait();
+        try {
+          lock.wait();
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw new InputCancelledException();
+        }
       }
       Integer result = intResult;
       intResult = null; // cleanup for next use
@@ -35,13 +41,18 @@ public class TUIInputManager {
   /**
    * Blocking method that waits for a String result to be available, then returns it.
    * @return the String result of the user prompt
-   * @throws InterruptedException thrown if the prompt thread is interrupted before the input
+   * @throws InputCancelledException thrown if the prompt thread is interrupted before the input
    * data is available
    */
-  public String waitForStringResult() throws InterruptedException {
+  public String waitForStringResult() throws InputCancelledException {
     synchronized (lock) {
       while (stringResult == null) {
-        lock.wait();
+        try {
+          lock.wait();
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw new InputCancelledException();
+        }
       }
       String result = stringResult;
       stringResult = null; // cleanup for next use
@@ -131,7 +142,12 @@ public class TUIInputManager {
   /**
    * Interrupts the user prompt.
    */
-  public void cancel() {
-    thread.interrupt();
+  public void cancel(String message) {
+    Log.println(message);
+    intResult = null;
+    stringResult = null;
+    if (thread != null) {
+      thread.interrupt();
+    }
   }
 }

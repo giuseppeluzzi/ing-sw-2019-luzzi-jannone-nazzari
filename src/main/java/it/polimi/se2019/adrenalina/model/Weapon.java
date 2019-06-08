@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Class defining a weapon.
  */
-public class Weapon extends Observable implements ExecutableObject, Buyable {
+public class Weapon extends ExecutableObject implements Buyable {
 
   private static final long serialVersionUID = -5264181345540286103L;
   private final AmmoColor baseCost;
@@ -26,21 +26,14 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
   private boolean loaded;
   private final String name;
   private final HashMap<AmmoColor, Integer> cost;
-  private Integer currentSelectTargetSlot;
   @NotExpose
   private HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
   private List<Effect> effects = new ArrayList<>();
 
   // Usage information
   @NotExpose
-  private HashMap<Integer, Target> targetHistory = new HashMap<>();
-  @NotExpose
   private final List<Effect> selectedEffects = new ArrayList<>();
-  private boolean didShoot;
-  private Direction lastUsageDirection;
-  private boolean cancelled;
-  @NotExpose
-  private HashMap<Player, Square> initialPlayerPositions = new HashMap<>();
+
   private final String symbol;
   // TODO: attribute to count if the optionalmoveaction is used
 
@@ -49,7 +42,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
     this.baseCost = baseCost;
     this.name = name;
     loaded = true;
-    didShoot = false;
     this.symbol = symbol;
 
     cost = new HashMap<>();
@@ -66,19 +58,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
     loaded = weapon.loaded;
     cost = new HashMap<>();
     symbol = weapon.symbol;
-
-    for (Map.Entry<Integer, Target> entry : weapon.targetHistory.entrySet()) {
-      Integer key = entry.getKey();
-      Target value = entry.getValue();
-      if (value.isPlayer()) {
-        targetHistory.put(key, new Player((Player) value, true));
-      } else {
-        targetHistory.put(key, new Square((Square) value));
-      }
-    }
-
-    didShoot = weapon.didShoot;
-    initialPlayerPositions = new HashMap<>(weapon.initialPlayerPositions);
 
     optMoveGroups.putAll(weapon.optMoveGroups);
 
@@ -130,16 +109,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
    */
   public String getName() {
     return name;
-  }
-
-  @Override
-  public Target getTargetHistory(Integer key) {
-    return targetHistory.get(key);
-  }
-
-  @Override
-  public void setTargetHistory(Integer key, Target value) {
-    targetHistory.put(key, value);
   }
 
   /**
@@ -253,43 +222,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
     return cost.get(color);
   }
 
-  /**
-   * Return last direction used from an effect of the weapon.
-   *
-   * @return lastUsageDirection
-   */
-  public Direction getLastUsageDirection() {
-    return lastUsageDirection;
-  }
-
-  /**
-   * Set last direction used.
-   *
-   * @param lastUsageDirection last direction used
-   */
-  public void setLastUsageDirection(Direction lastUsageDirection) {
-    this.lastUsageDirection = lastUsageDirection;
-  }
-
-  /**
-   * Sets currentSelectTargetSlot value.
-   * @param slot
-   */
-  @Override
-  public void setCurrentSelectTargetSlot(Integer slot) {
-    currentSelectTargetSlot = slot;
-  }
-
-  /**
-   * Return currentSelectTargetSlot value.
-   *
-   * @return currentSelectTargetSlot
-   */
-  @Override
-  public Integer getCurrentSelectTargetSlot() {
-    return currentSelectTargetSlot;
-  }
-
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
     if (player.hasWeapon(this)) {
@@ -304,50 +236,6 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
 
       player.addWeapon(this);
     }
-  }
-
-  @Override
-  public void setDidShoot() {
-    didShoot = true;
-  }
-
-  @Override
-  public boolean didShoot() {
-    return didShoot;
-  }
-
-  @Override
-  public Map<Player, Square> getInitialPlayerPositions() {
-    return new HashMap<>(initialPlayerPositions);
-  }
-
-  @Override
-  public void setInitialPlayerPosition(Player player, Square position) {
-    initialPlayerPositions.put(player, position);
-  }
-
-  @Override
-  public boolean isInitialPositionSet(Player player) {
-    return initialPlayerPositions.containsKey(player);
-  }
-
-  public void setCancelled() {
-    cancelled = true;
-  }
-
-  public boolean isCancelled() {
-    return cancelled;
-  }
-
-  @Override
-  public void reset() {
-    Target currentOwner = targetHistory.get(0);
-    targetHistory.clear();
-    setTargetHistory(0, currentOwner);
-    setCurrentSelectTargetSlot(null);
-    didShoot = false;
-    initialPlayerPositions = new HashMap<>();
-    cancelled = false;
   }
 
   @Override
@@ -387,8 +275,7 @@ public class Weapon extends Observable implements ExecutableObject, Buyable {
 
     weapon.setObservers(new ArrayList<>());
     weapon.optMoveGroups = new HashMap<>();
-    weapon.targetHistory = new HashMap<>();
-    weapon.initialPlayerPositions = new HashMap<>();
+    weapon.reset();
 
     for (Effect effect : weapon.effects) {
       effect.reconcileDeserialization(weapon, null);

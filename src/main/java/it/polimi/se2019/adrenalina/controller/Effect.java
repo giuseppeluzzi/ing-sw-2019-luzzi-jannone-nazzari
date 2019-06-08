@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
-import it.polimi.se2019.adrenalina.controller.action.game.WeaponEffect;
+import it.polimi.se2019.adrenalina.controller.action.game.ExecutableEffect;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Buyable;
@@ -163,7 +163,7 @@ public class Effect implements Buyable {
     List<GameAction> turnActions = new ArrayList<>();
 
     for (WeaponAction action : localWeapon.getEffectByName(name).getActions()) {
-      turnActions.add(new WeaponEffect(player, localWeapon, action));
+      turnActions.add(new ExecutableEffect(player, localWeapon, action));
     }
 
     turnController.addTurnActions(turnActions);

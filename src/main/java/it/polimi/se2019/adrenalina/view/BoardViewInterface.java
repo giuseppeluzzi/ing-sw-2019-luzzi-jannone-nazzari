@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;

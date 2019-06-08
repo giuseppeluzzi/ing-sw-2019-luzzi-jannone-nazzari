@@ -5,6 +5,8 @@ import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShootRoomAction extends ShootAction {
 
@@ -17,13 +19,22 @@ public class ShootRoomAction extends ShootAction {
 
   @Override
   public void execute(Board board, ExecutableObject object) {
+    List<Player> players = getPlayers(board, object);
+    for (Player player : players) {
+      player.addDamages(object.getOwner().getColor(), getDamages());
+      player.addTags(object.getOwner().getColor(), getTag());
+    }
+  }
+
+  public List<Player> getPlayers(Board board, ExecutableObject object) {
     SquareColor roomColor = object.getTargetHistory(getTarget()).getSquare().getColor();
+    List<Player> players = new ArrayList<>();
     for (Player player : board.getPlayers()) {
       if (player.getSquare().getColor() == roomColor) {
-        player.addDamages(object.getOwner().getColor(), getDamages());
-        player.addTags(object.getOwner().getColor(), getTag());
+        players.add(player);
       }
     }
+    return players;
   }
 
   @Override

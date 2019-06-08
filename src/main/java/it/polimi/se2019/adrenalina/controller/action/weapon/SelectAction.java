@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 import com.google.gson.Gson;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -82,6 +83,10 @@ public class SelectAction implements WeaponAction {
   @Override
   public void execute(Board board, ExecutableObject object) throws NoTargetsException {
     List<Target> targets = getTargets(board, object);
+    if (targets.isEmpty()) {
+    } else {
+
+    }
     if ((selectType == TargetType.ATTACK_TARGET
         || selectType == TargetType.ATTACK_ROOM
         || selectType == TargetType.ATTACK_SQUARE) && targets.isEmpty()) {

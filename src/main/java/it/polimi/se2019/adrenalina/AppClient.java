@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina;
 
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
@@ -10,6 +11,9 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class AppClient {
 
@@ -52,10 +56,10 @@ public class AppClient {
       }
     } else {
       name = args[0];
-      connectionMode = args[1].charAt(0);
-      if (args[2].charAt(0) == '1') {
+      connectionMode = Integer.parseInt(args[1]);
+      if (args[2].charAt(0) == '0') {
         domination = false;
-      } else if (args[2].charAt(0) == '2') {
+      } else if (args[2].charAt(0) == '1') {
         domination = true;
       } else {
         Log.severe("Modalità di gioco non valida. Supportate: (1) Classica; (2) Dominazione");
@@ -83,7 +87,7 @@ public class AppClient {
         client = new ClientSocket(name, domination);
         break;
       default:
-        Log.severe("Modalità di connessione non valida.");
+        Log.severe("Invalid connection mode. Supported: (0) RMI; (1) Socket");
         return;
     }
 

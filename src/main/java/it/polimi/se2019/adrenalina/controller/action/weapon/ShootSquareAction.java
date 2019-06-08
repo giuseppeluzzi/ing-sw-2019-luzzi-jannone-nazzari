@@ -26,7 +26,16 @@ public class ShootSquareAction extends ShootAction {
 
   @Override
   public void execute(Board board, ExecutableObject object) {
+    List<Player> players = getPlayers(board, object);
+    for (Player player : players) {
+      player.addDamages(object.getOwner().getColor(), getDamages());
+      player.addTags(object.getOwner().getColor(), getTag());
+    }
+  }
+
+  public List<Player> getPlayers(Board board, ExecutableObject object) {
     List<Player> playersToExclude = new ArrayList<>();
+    List<Player> players = new ArrayList<>();
     for (int player : exclude) {
       try {
         playersToExclude.add(object.getTargetHistory(player).getPlayer());
@@ -38,12 +47,12 @@ public class ShootSquareAction extends ShootAction {
       if (object.getTargetHistory(getTarget()).getSquare().getDistance(square) == distance) {
         for (Player player : square.getPlayers()) {
           if (! playersToExclude.contains(player)) {
-            player.addDamages(object.getOwner().getColor(), getDamages());
-            player.addTags(object.getOwner().getColor(), getTag());
+            players.add(player);
           }
         }
       }
     }
+    return players;
   }
 
   @Override

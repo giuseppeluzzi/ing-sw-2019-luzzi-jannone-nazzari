@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -62,7 +63,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select another player.
-   *
    * @param event event specifing selected target
    */
   public void update(SelectPlayerEvent event) {
@@ -74,8 +74,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
-    Weapon weapon = player.getCurrentWeapon();
-    weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), target);
+    ExecutableObject executableObject = player.getCurrentExecutable();
+    executableObject.setTargetHistory(executableObject.getCurrentSelectTargetSlot(), target);
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -91,9 +91,10 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
+
     Square square = boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY());
-    Weapon weapon = player.getCurrentWeapon();
-    weapon.setTargetHistory(weapon.getCurrentSelectTargetSlot(), square);
+    ExecutableObject executableObject = player.getCurrentExecutable();
+    executableObject.setTargetHistory(executableObject.getCurrentSelectTargetSlot(), square);
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -104,7 +105,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
-    player.getCurrentWeapon().setLastUsageDirection(event.getSelectedDirection());
+    player.getCurrentExecutable().setLastUsageDirection(event.getSelectedDirection());
     boardController.getTurnController().executeGameActionQueue();
   }
   /**

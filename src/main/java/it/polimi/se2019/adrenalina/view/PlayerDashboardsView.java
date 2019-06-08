@@ -70,7 +70,7 @@ public abstract class PlayerDashboardsView extends Observable implements
   public abstract void showEffectSelection(Weapon weapon, List<Effect> effects);
 
   @Override
-  public abstract void showPowerUpSelection(List<PowerUp> powerUps);
+  public abstract void showPowerUpSelection(List<PowerUp> powerUps, boolean discard);
 
   public void update(PlayerDamagesTagsUpdate event) {
     Player player = getPlayerByColor(event.getPlayerColor());

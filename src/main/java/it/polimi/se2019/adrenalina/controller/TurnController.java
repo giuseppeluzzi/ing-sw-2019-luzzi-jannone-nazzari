@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class TurnController implements Serializable {
   private static final long serialVersionUID = -2990384474014352897L;
   private final BoardController boardController;
   private final transient Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
+  private final Timer timer = new Timer();
 
   public TurnController(BoardController boardController) {
     this.boardController = boardController;
@@ -48,6 +50,7 @@ public class TurnController implements Serializable {
   }
 
   public void executeGameActionQueue() {
+    timer.stop();
     Log.debug("execute! " + turnActionsQueue.size());
     GameAction gameAction = null;
 
@@ -64,6 +67,10 @@ public class TurnController implements Serializable {
     }
 
     if (gameAction != null) {
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+        turnActionsQueue.clear();
+        executeGameActionQueue();
+      });
       gameAction.execute(boardController.getBoard());
     } else {
       endTurn();
@@ -94,6 +101,9 @@ public class TurnController implements Serializable {
       return;
     }
 
+    currentPlayer.setCurrentBuying(null);
+    currentPlayer.setCurrentExecutable(null);
+
     for (Weapon weapon : currentPlayer.getWeapons()) {
       weapon.reset();
     }
@@ -120,11 +130,13 @@ public class TurnController implements Serializable {
   }
 
   private void addFirstSpawn(Player player) {
-    addTurnActions(new PickPowerUp(player), new PickPowerUp(player), new PowerUpSelection(player));
+    player.setStatus(PlayerStatus.PLAYING);
+    addTurnActions(new PickPowerUp(player), new PickPowerUp(player), new PowerUpSelection(this, player, true, false));
   }
 
   public void addRespawn(Player player) {
-    addTurnActions(new PickPowerUp(player), new PowerUpSelection(player));
+    player.setStatus(PlayerStatus.PLAYING);
+    addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, true, false));
   }
 
   private void addGameTurn(Player player) {
@@ -133,35 +145,54 @@ public class TurnController implements Serializable {
         // TODO CHEAT SUITE CANCELLARE
         addTurnActions(new CheckRespawn(this, player, true));
       } else {
-        addTurnActions(new ActionSelection(this, player),
-            new ActionSelection(this, player),
-            new CheckRespawn(this, player, true));
+        player.addAmmo(AmmoColor.BLUE, 1);
+        player.addAmmo(AmmoColor.RED, 1);
+        player.addAmmo(AmmoColor.YELLOW, 1);
+
+        addBaseGameTurnActions(player);
       }
       addFirstSpawn(player);
     } else {
       if (boardController.getBoard().isFinalFrenzySelected() &&
           boardController.getBoard().isFinalFrenzyActive()) {
 
+        int playerIndex = boardController.getBoard().getPlayers().indexOf(player);
+        int finalFrenzyActivator;
+
         try {
-          Player activatorIndex = boardController.getBoard().getPlayerByColor(boardController.getBoard().getFinalFrenzyActivator());
+          finalFrenzyActivator = boardController.getBoard().getPlayers()
+              .indexOf(
+                  boardController.getBoard().getPlayerByColor(
+                      boardController.getBoard().getFinalFrenzyActivator()));
         } catch (InvalidPlayerException e) {
-          add
+          // Shouldn't happen
+          Log.critical("Player doesn't exists anymore!");
+          return;
         }
 
-        int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(player);
-
-        int ffActivatorIndex = boardController.getBoard().getPlayers()
-            .indexOf(boardController.getBoard().getFinalFrenzyActivator());
-
-        if (boardController.getBoard().getFinalFrenzyActivator() == player.getColor()) {
-          addTurnActions();
+        if (playerIndex > finalFrenzyActivator) {
+          addTurnActions(
+              new PowerUpSelection(this, player, false, false),
+              new ActionSelection(this, player),
+              new PowerUpSelection(this, player, false, false),
+              new CheckRespawn(this, player, true));
+        } else {
+          addBaseGameTurnActions(player);
         }
       } else {
-        addTurnActions(new ActionSelection(this, player),
-            new ActionSelection(this, player),
-            new CheckRespawn(this, player, true));
+        addBaseGameTurnActions(player);
       }
     }
+  }
+
+  private void addBaseGameTurnActions(Player player) {
+    addTurnActions(
+        new PowerUpSelection(this, player, false, false),
+        new ActionSelection(this, player),
+        new PowerUpSelection(this, player, false, false),
+        new ActionSelection(this, player),
+        new PowerUpSelection(this, player, false, false),
+        new CheckRespawn(this, player, true));
   }
 
   private void refillMap() {

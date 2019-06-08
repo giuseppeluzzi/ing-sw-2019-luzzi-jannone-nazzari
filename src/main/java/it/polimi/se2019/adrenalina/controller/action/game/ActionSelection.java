@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -17,7 +18,8 @@ public class ActionSelection extends GameAction {
 
   @Override
   public void execute(Board board) {
-    getPlayer().setCurrentWeapon(null);
+    getPlayer().setCurrentExecutable(null);
+    getPlayer().setCurrentBuying(null);
     List<TurnAction> turnActions = null;
     if (board.isFinalFrenzyActive()) {
       int playerIndex = board.getPlayers().indexOf(getPlayer());

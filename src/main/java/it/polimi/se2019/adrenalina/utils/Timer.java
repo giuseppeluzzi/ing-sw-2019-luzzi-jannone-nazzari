@@ -61,7 +61,8 @@ public class Timer implements Serializable {
             try {
               timerLock.wait(1000);
             } catch (InterruptedException e) {
-              timerThread.interrupt();
+              Thread.currentThread().interrupt();
+              break;
             }
           }
         }
@@ -82,7 +83,7 @@ public class Timer implements Serializable {
   }
 
   public void tick() {
-    Log.info("timer", "" + timerSeconds);
+    //
   }
 
   private void writeObject(ObjectOutputStream out) throws IOException {
