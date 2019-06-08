@@ -165,15 +165,7 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> fromTarget.getSquare().getColor() == x.getSquare().getColor());
     }
 
-    List<Target> resultTargets;
-    try {
-      resultTargets = targetStream.collect(Collectors.toList());
-      Log.debug("RTS: " + resultTargets.size());
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-    return resultTargets;
+    return targetStream.collect(Collectors.toList());
   }
 
   @Override
