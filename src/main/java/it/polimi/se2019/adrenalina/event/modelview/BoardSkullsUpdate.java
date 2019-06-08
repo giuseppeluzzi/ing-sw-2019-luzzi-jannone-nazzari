@@ -18,6 +18,6 @@ public class BoardSkullsUpdate implements Event {
 
   @Override
   public EventType getEventType() {
-    return EventType.BOARD_HAS_WEAPON_UPDATE;
+    return EventType.BOARD_SKULLS_UPDATE;
   }
 }
