@@ -18,7 +18,7 @@ import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
@@ -27,7 +27,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Scanner;
 
 public class TUIBoardView extends BoardView {
 
@@ -36,7 +35,7 @@ public class TUIBoardView extends BoardView {
   private final transient TUIInputManager inputManager = TUIUtils.getInputManager();
   private final Timer timer = new Timer();
 
-  public TUIBoardView(ClientInterface client) {
+  public TUIBoardView(Client client) {
     super(client, new TUITimer(client));
   }
 
@@ -159,7 +158,8 @@ public class TUIBoardView extends BoardView {
     for (Target target : targets) {
       try {
         if (target.isPlayer()) {
-          choices.add(String.format("%s", target.getPlayer().getName()));
+          choices.add(String.format("%s%s%s", target.getPlayer().getColor().getAnsiColor(),
+              target.getPlayer().getName(), ANSIColor.RESET));
         } else {
           choices.add(
               String
