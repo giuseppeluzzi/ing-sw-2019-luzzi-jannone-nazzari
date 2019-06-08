@@ -32,23 +32,23 @@ public class AppClient {
       inputManager.input("Vuoi giocare tramite RMI o Socket?", Arrays.asList(connectionModes));
       try {
         connectionMode = inputManager.waitForIntResult();
-      } catch (InterruptedException ignored) {
-        inputManager.cancel();
+      } catch (InputCancelledException ignored) {
+        inputManager.cancel("");
       }
 
       inputManager.input("Come ti chiami? (max. 12 caratteri)", 12);
       try {
         name = inputManager.waitForStringResult();
-      } catch (InterruptedException ignored) {
-        inputManager.cancel();
+      } catch (InputCancelledException ignored) {
+        inputManager.cancel("");
       }
 
       String[] gameModes = {"Classica", "Dominazione"};
       inputManager.input("In che modalità vuoi giocare?", Arrays.asList(gameModes));
       try {
         gameMode = inputManager.waitForIntResult();
-      } catch (InterruptedException ignored) {
-        inputManager.cancel();
+      } catch (InputCancelledException ignored) {
+        inputManager.cancel("");
       }
 
       if (gameMode == 1) {
@@ -87,7 +87,7 @@ public class AppClient {
         client = new ClientSocket(name, domination);
         break;
       default:
-        Log.severe("Invalid connection mode. Supported: (0) RMI; (1) Socket");
+        Log.severe("Modalità di connessione non valida. Supportate: (0) RMI; (1) Socket");
         return;
     }
 

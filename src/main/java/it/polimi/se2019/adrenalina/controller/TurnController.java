@@ -95,7 +95,8 @@ public class TurnController implements Serializable {
     try {
       currentPlayer = boardController.getBoard()
           .getPlayerByColor(boardController.getBoard().getCurrentPlayer());
-      currentPlayer.setCurrentWeapon(null);
+      currentPlayer.setCurrentExecutable(null);
+      currentPlayer.setCurrentBuying(null);
     } catch (InvalidPlayerException e) {
       Log.critical("Player doesn't exists anymore!");
       return;
