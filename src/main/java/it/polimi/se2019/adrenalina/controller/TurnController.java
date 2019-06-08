@@ -31,6 +31,10 @@ public class TurnController implements Serializable {
     this.boardController = boardController;
   }
 
+  public BoardController getBoardController() {
+    return boardController;
+  }
+
   public void prepare() {
     Player currentPlayer;
     if (boardController.getBoard().getCurrentPlayer() == null) {

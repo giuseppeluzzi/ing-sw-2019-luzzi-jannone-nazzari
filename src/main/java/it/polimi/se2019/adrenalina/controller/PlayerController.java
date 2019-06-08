@@ -256,18 +256,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
 
-    try {
-      player.removePowerUp(powerUp);
-    } catch (InvalidPowerUpException ignored) {
-      return;
-    }
-    board.undrawPowerUp(powerUp);
-
-    if (board.getTurnCounter() > 1) {
-      player.respawn(event.getPowerUpColor());
-    } else {
-      player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
-    }
+    spawn(player, powerUp);
 
 
     // CHEAT SUITE
@@ -426,5 +415,21 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   @Override
   public int hashCode() {
     return boardController.hashCode();
+  }
+
+  public void spawn(Player player, PowerUp powerUp) {
+    Board board = boardController.getBoard();
+    try {
+      player.removePowerUp(powerUp);
+    } catch (InvalidPowerUpException ignored) {
+      return;
+    }
+    board.undrawPowerUp(powerUp);
+
+    if (board.getTurnCounter() > 1) {
+      player.respawn(powerUp.getColor());
+    } else {
+      player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
+    }
   }
 }

@@ -116,18 +116,7 @@ public class PowerUpSelection extends GameAction {
     if (isDiscard()) {
       int randomPowerUpIndex = new Random().nextInt(getPlayer().getPowerUps().size());
       PowerUp powerUp = getPlayer().getPowerUps().get(randomPowerUpIndex);
-      try {
-        getPlayer().removePowerUp(powerUp);
-      } catch (InvalidPowerUpException ignored) {
-        return;
-      }
-      getPlayer().getBoard().undrawPowerUp(powerUp);
-
-      if (getPlayer().getBoard().getTurnCounter() > 1) {
-        getPlayer().respawn(powerUp.getColor());
-      } else {
-        getPlayer().setSquare(getPlayer().getBoard().getSpawnPointSquare(powerUp.getColor()));
-      }
+      getTurnController().getBoardController().getPlayerController().spawn(getPlayer(), powerUp);
     }
   }
 }
