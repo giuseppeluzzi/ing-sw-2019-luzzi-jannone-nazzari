@@ -88,6 +88,7 @@ public class TurnController implements Serializable {
     try {
       currentPlayer = boardController.getBoard()
           .getPlayerByColor(boardController.getBoard().getCurrentPlayer());
+      currentPlayer.setCurrentWeapon(null);
     } catch (InvalidPlayerException e) {
       Log.critical("Player doesn't exists anymore!");
       return;
@@ -140,7 +141,21 @@ public class TurnController implements Serializable {
     } else {
       if (boardController.getBoard().isFinalFrenzySelected() &&
           boardController.getBoard().isFinalFrenzyActive()) {
-        // TODO
+
+        try {
+          Player activatorIndex = boardController.getBoard().getPlayerByColor(boardController.getBoard().getFinalFrenzyActivator());
+        } catch (InvalidPlayerException e) {
+          add
+        }
+
+        int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(player);
+
+        int ffActivatorIndex = boardController.getBoard().getPlayers()
+            .indexOf(boardController.getBoard().getFinalFrenzyActivator());
+
+        if (boardController.getBoard().getFinalFrenzyActivator() == player.getColor()) {
+          addTurnActions();
+        }
       } else {
         addTurnActions(new ActionSelection(this, player),
             new ActionSelection(this, player),

@@ -78,6 +78,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     if (client.getName().length() > MAX_NAME_LENGTH) {
       client.disconnect("Nome troppo lungo (max. 12 caratteri), cambia nome e riprova!");
       Log.severe("Tried to add a player with a too long name (" + client.getName() + ")");
+      return;
     }
 
     if (isPlayerConnected(client.getName())) {

@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
@@ -16,8 +17,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.network.ClientInterface;
-import it.polimi.se2019.adrenalina.utils.ANSIColor;
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Timer;
@@ -28,12 +28,13 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   private static final long serialVersionUID = 2545732483334205102L;
 
-  private final transient ClientInterface client;
+  private final transient Client client;
   private Board board;
-  private final Timer timer = new Timer();
+  private final Timer timer;
 
-  protected BoardView(ClientInterface client) {
+  protected BoardView(Client client, Timer timer) {
     this.client = client;
+    this.timer = timer;
     try {
       initializeBoard();
     } catch (RemoteException e) {
@@ -49,7 +50,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     }
   }
 
-  public ClientInterface getClient() {
+  public Client getClient() {
     return client;
   }
 
@@ -83,6 +84,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   public void update(BoardStatusUpdate event) {
     board.setStatus(event.getStatus());
+    client.showGameMessage("E' iniziata la frenesia finale!");
   }
 
   public void update(BoardAddPlayerUpdate event) {
@@ -115,6 +117,10 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   public void update(BoardKillShotsUpdate event) {
     board.updateKillShots(event.getPlayers());
+  }
+
+  public void update(BoardSkullsUpdate event) {
+    board.setSkulls(event.getSkulls());
   }
 
   public void update(DominationBoardDamagesUpdate event) {

@@ -22,6 +22,7 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
     List<EventType> registeredEvents = new ArrayList<>();
 
     registeredEvents.add(EventType.PLAYER_DAMAGES_TAGS_UPDATE);
+    registeredEvents.add(EventType.PLAYER_FRENZY_UPDATE);
     registeredEvents.add(EventType.PLAYER_SCORE_UPDATE);
     registeredEvents.add(EventType.PLAYER_KILL_SCORE_UPDATE);
     registeredEvents.add(EventType.PLAYER_STATUS_UPDATE);

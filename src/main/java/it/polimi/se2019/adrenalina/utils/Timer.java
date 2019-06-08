@@ -36,7 +36,7 @@ public class Timer implements Serializable {
   /**
    * Starts a timerSeconds and executes the runnable at the end of the timerSeconds
    * @param seconds length of the timerSeconds
-   * @param runnable function to be executed
+   * @param runnable function to be executed at the end
    */
   public void start(int seconds, Runnable runnable) {
     synchronized (timerLock) {
@@ -55,8 +55,9 @@ public class Timer implements Serializable {
               }
               break;
             }
-            Log.info("Timer", "" + timerSeconds);
+            tick();
             timerSeconds--;
+
             try {
               timerLock.wait(1000);
             } catch (InterruptedException e) {
@@ -78,6 +79,10 @@ public class Timer implements Serializable {
         timerThread.interrupt();
       }
     }
+  }
+
+  public void tick() {
+    Log.info("timer", "" + timerSeconds);
   }
 
   private void writeObject(ObjectOutputStream out) throws IOException {

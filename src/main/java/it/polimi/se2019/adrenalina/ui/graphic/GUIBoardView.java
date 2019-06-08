@@ -12,7 +12,7 @@ public class GUIBoardView extends BoardView {
   private static final long serialVersionUID = -5469323461908447838L;
 
   public GUIBoardView(ClientInterface client) {
-    super(client);
+    super(client, new GUITimer(client));
   }
 
   @Override

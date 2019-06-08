@@ -31,7 +31,7 @@ public class TUIBoardView extends BoardView {
   private final transient Scanner scanner = TUIUtils.getScanner();
 
   public TUIBoardView(ClientInterface client) {
-    super(client);
+    super(client, new TUITimer(client));
   }
 
   @Override

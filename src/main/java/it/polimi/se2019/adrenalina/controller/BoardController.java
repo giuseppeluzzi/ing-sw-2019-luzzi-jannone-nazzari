@@ -174,6 +174,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       } catch (IOException e) {
         Log.critical(weaponName + " not found");
       }
+      Log.info("ws: " + board.getWeapons().size());
     }
 
     if (board.getWeapons().isEmpty()) {
@@ -469,7 +470,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   @Override
   public void run() {
     board.setStatus(BoardStatus.MATCH);
-    board.setFinalFrenzyActive(false);
     board.setCurrentPlayer(null);
 
     Deque<PlayerColor> freeColors = new ArrayDeque<>(board.getFreePlayerColors());

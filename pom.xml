@@ -101,7 +101,6 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>app</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>

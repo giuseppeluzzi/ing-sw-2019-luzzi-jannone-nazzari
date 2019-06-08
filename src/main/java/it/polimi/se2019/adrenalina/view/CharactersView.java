@@ -17,7 +17,6 @@ import java.rmi.RemoteException;
 public abstract class CharactersView extends Observable implements CharactersViewInterface {
 
   private static final long serialVersionUID = 3820277997554969634L;
-
   private final BoardView boardView;
 
   protected CharactersView(BoardView boardView) {
@@ -61,7 +60,7 @@ public abstract class CharactersView extends Observable implements CharactersVie
                 ANSIColor.RESET
             ));
       }
-    } catch (RemoteException | InvalidPlayerException ignored) {
+    } catch (InvalidPlayerException ignored) {
       //
     }
 
@@ -103,7 +102,7 @@ public abstract class CharactersView extends Observable implements CharactersVie
                 killerName,
                 ANSIColor.RESET));
       }
-    } catch (InvalidPlayerException | RemoteException ignored) {
+    } catch (InvalidPlayerException ignored) {
       //
     }
     showDeath(event.getPlayerColor());

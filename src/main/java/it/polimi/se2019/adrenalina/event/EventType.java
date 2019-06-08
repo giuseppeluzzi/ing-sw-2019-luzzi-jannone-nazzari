@@ -21,6 +21,7 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
@@ -30,6 +31,7 @@ import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
@@ -100,6 +102,7 @@ public enum EventType {
   SHOW_SWAP_WEAPON_SELECTION_INVOCATION(ShowSwapWeaponSelectionInvocation.class),
   // Model View Events
   PLAYER_POSITION_UPDATE(PlayerPositionUpdate.class),
+  PLAYER_FRENZY_UPDATE(PlayerFrenzyUpdate.class),
   PLAYER_DAMAGES_TAGS_UPDATE(PlayerDamagesTagsUpdate.class),
   PLAYER_SCORE_UPDATE(PlayerScoreUpdate.class),
   PLAYER_KILL_SCORE_UPDATE(PlayerKillScoreUpdate.class),
@@ -113,6 +116,7 @@ public enum EventType {
   SQUARE_WEAPON_UPDATE(SquareWeaponUpdate.class),
   CURRENT_PLAYER_UPDATE(CurrentPlayerUpdate.class),
   BOARD_STATUS_UPDATE(BoardStatusUpdate.class),
+  BOARD_SKULLS_UPDATE(BoardSkullsUpdate.class),
   BOARD_HAS_WEAPON_UPDATE(BoardHasWeaponsUpdate.class),
   BOARD_HAS_AMMO_CARDS_UPDATE(BoardHasAmmoCardsUpdate.class),
   BOARD_KILL_SHOTS_UPDATE(BoardKillShotsUpdate.class),

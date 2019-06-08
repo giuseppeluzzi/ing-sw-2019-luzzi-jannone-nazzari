@@ -340,6 +340,7 @@ public class Square extends Observable implements Target {
       throw new IllegalStateException("Square is not a spawnPoint");
     }
     weapons.add(weapon);
+    Log.info("Aggiunta " + weapon.getName() + " in " + posX + " - " + posY);
   }
 
   public void removeWeapon(Weapon weapon) {
@@ -388,7 +389,7 @@ public class Square extends Observable implements Target {
     for (Square square : board.getSquares()) {
       if (getDistance(square) >= min && getDistance(square) <= max) {
         if (fetch) {
-          if (square.getAmmoCard() != null) {
+          if (square.spawnPoint || square.ammoCard != null) {
             output.add(square);
           }
         } else {

@@ -41,6 +41,7 @@ public class WeaponEffect extends GameAction {
             Log.exception(remoteException);
           }
           getTurnController().addTurnActions(new MoveRollback(getTurnController(), getPlayer(), weapon));
+          getTurnController().executeGameActionQueue();
         }
         weapon.setCancelled();
       }

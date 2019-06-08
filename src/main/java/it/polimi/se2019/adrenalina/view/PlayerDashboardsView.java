@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
@@ -128,12 +129,16 @@ public abstract class PlayerDashboardsView extends Observable implements
                   ANSIColor.RESET));
         }
       }
-    } catch (InvalidPlayerException | RemoteException ignored) {
+    } catch (InvalidPlayerException ignored) {
       //
     }
 
     player.updateDamages(event.getDamages());
     player.updateTags(event.getTags());
+  }
+
+  public void update(PlayerFrenzyUpdate event) {
+    getPlayerByColor(event.getPlayerColor()).setFrenzy(event.isFrenzy());
   }
 
   public void update(PlayerScoreUpdate event) {
@@ -154,32 +159,28 @@ public abstract class PlayerDashboardsView extends Observable implements
       return ;
     }
 
-    try {
-      if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
-        boardView.getClient().showGameMessage(
-            String.format(
-              "Munizioni attuali: %s%d (%d) rosse%s, %s%d (%d) blu%s, %s%d (%d) gialle%s",
-                ANSIColor.RED,
-                event.getRed(),
-                (player.getAmmo(AmmoColor.RED) + event.getRed()) % 3,
-                ANSIColor.RESET,
-                ANSIColor.BLUE,
-                event.getBlue(),
-                (player.getAmmo(AmmoColor.BLUE) + event.getBlue()) % 3,
-                ANSIColor.RESET,
-                ANSIColor.YELLOW,
-                event.getYellow(),
-                (player.getAmmo(AmmoColor.YELLOW) + event.getYellow()) % 3,
-                ANSIColor.RESET
-        ));
-      }
-
-      player.updateAmmo(AmmoColor.BLUE, event.getBlue());
-      player.updateAmmo(AmmoColor.RED, event.getRed());
-      player.updateAmmo(AmmoColor.YELLOW, event.getYellow());
-    } catch (RemoteException e) {
-      Log.exception(e);
+    if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
+      boardView.getClient().showGameMessage(
+          String.format(
+            "Munizioni attuali: %s%d (%d) rosse%s, %s%d (%d) blu%s, %s%d (%d) gialle%s",
+              ANSIColor.RED,
+              event.getRed(),
+              (player.getAmmo(AmmoColor.RED) + event.getRed()) % 3,
+              ANSIColor.RESET,
+              ANSIColor.BLUE,
+              event.getBlue(),
+              (player.getAmmo(AmmoColor.BLUE) + event.getBlue()) % 3,
+              ANSIColor.RESET,
+              ANSIColor.YELLOW,
+              event.getYellow(),
+              (player.getAmmo(AmmoColor.YELLOW) + event.getYellow()) % 3,
+              ANSIColor.RESET
+      ));
     }
+
+    player.updateAmmo(AmmoColor.BLUE, event.getBlue());
+    player.updateAmmo(AmmoColor.RED, event.getRed());
+    player.updateAmmo(AmmoColor.YELLOW, event.getYellow());
   }
 
   public void update(OwnWeaponUpdate event) {
@@ -212,16 +213,12 @@ public abstract class PlayerDashboardsView extends Observable implements
     }
     getPlayerByColor(event.getPlayerColor()).updatePowerUps(powerUps);
 
-    try {
-      if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
-        String powerUpDesc = powerUps.stream().map(x -> x.getColor().getAnsiColor() + x.getName() + ANSIColor.RESET).collect(
-            Collectors.joining(", "));
-        boardView.getClient().showGameMessage("PowerUp attuali: " + powerUpDesc);
-      }
-    } catch (RemoteException e) {
-      Log.exception(e);
+    if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
+      String powerUpDesc = powerUps.stream().map(x -> x.getColor().getAnsiColor() + x.getName() + ANSIColor.RESET).collect(
+          Collectors.joining(", "));
+      boardView.getClient().showGameMessage("PowerUp attuali: " + powerUpDesc);
     }
-  }
+}
 
   private List<PowerUp> addNewtons(Map<AmmoColor, Integer> powerUpData) {
     List<PowerUp> powerUps = new ArrayList<>();
@@ -289,7 +286,7 @@ public abstract class PlayerDashboardsView extends Observable implements
                 newPlayer.getName(),
                 ANSIColor.RESET));
       }
-    } catch (InvalidPlayerException | RemoteException ignored) {
+    } catch (InvalidPlayerException ignored) {
       //
     }
     boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());
@@ -313,11 +310,6 @@ public abstract class PlayerDashboardsView extends Observable implements
 
   @Override
   public PlayerColor getPrivatePlayerColor() {
-    try {
-      return boardView.getClient().getPlayerColor();
-    } catch (RemoteException e) {
-      Log.exception(e);
-      return null;
-    }
+    return boardView.getClient().getPlayerColor();
   }
 }

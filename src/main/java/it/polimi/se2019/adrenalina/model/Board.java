@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -36,6 +37,7 @@ public class Board extends Observable implements Serializable {
   private BoardStatus status;
   private long turnStartTime;
   private int turnCounter = 1;
+  private int skulls = 8;
 
   private PlayerColor currentPlayer;
   private final List<Player> players;
@@ -52,7 +54,6 @@ public class Board extends Observable implements Serializable {
   private Player doubleKill;
   private List<Kill> killShots;
 
-  private boolean finalFrenzyActive;
   private boolean finalFrenzySelected;
   private PlayerColor finalFrenzyActivator;
 
@@ -133,7 +134,6 @@ public class Board extends Observable implements Serializable {
     }
 
     status = board.status;
-    finalFrenzyActive = board.finalFrenzyActive;
     finalFrenzySelected = board.finalFrenzySelected;
     turnStartTime = board.turnStartTime;
     currentPlayer = board.currentPlayer;
@@ -353,17 +353,7 @@ public class Board extends Observable implements Serializable {
    * @return true if the current game mode is "Final Frenzy", false otherwise
    */
   public boolean isFinalFrenzyActive() {
-    return finalFrenzyActive;
-  }
-
-  /**
-   * Sets or unsets the current game mode to "Final Frenzy".
-   *
-   * @param finalFrenzyActive true if the game mode has to be set to "Final Frenzy", false
-   * otherwhise
-   */
-  public void setFinalFrenzyActive(boolean finalFrenzyActive) {
-    this.finalFrenzyActive = finalFrenzyActive;
+    return status == BoardStatus.FINAL_FRENZY;
   }
 
   /**
@@ -407,12 +397,13 @@ public class Board extends Observable implements Serializable {
    * Notifies the initial state to every observer
    */
   public void notifyInitialStatus() {
-    for (Player player : getPlayers()) {
-      try {
+    try {
+      for (Player player : getPlayers()) {
         notifyObservers(new BoardAddPlayerUpdate(player.getName(), player.getColor()));
-      } catch (RemoteException e) {
-        Log.exception(e);
       }
+      notifyObservers(new BoardSkullsUpdate(skulls));
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 
@@ -656,6 +647,27 @@ public class Board extends Observable implements Serializable {
    */
   public Player getDoubleKill() {
     return doubleKill;
+  }
+
+  /**
+   * Gets the remaining skulls
+   * @return number of skulls
+   */
+  public int getSkulls() {
+    return skulls;
+  }
+
+  /**
+   * Sets the remaining skull of the killshot track
+   * @param skulls number of skulls
+   */
+  public void setSkulls(int skulls) {
+    this.skulls = skulls;
+    try {
+      notifyObservers(new BoardSkullsUpdate(skulls));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**

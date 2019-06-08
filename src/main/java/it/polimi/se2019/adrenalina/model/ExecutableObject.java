@@ -1,9 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
 
-
 import java.util.Map;
 
 public interface ExecutableObject {
+
   /**
    * Clear data of previous targets.
    */

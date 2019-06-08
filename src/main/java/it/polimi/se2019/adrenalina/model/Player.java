@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
@@ -10,6 +11,7 @@ import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
@@ -279,6 +281,25 @@ public class Player extends Observable implements Target, Serializable {
       Log.exception(e);
     }
     if (damages.size() >= NORMAL_DEATH) {
+      setStatus(PlayerStatus.WAITING);
+      if (board.getSkulls() > 1) {
+        board.setSkulls(board.getSkulls() - 1);
+      } else if (board.getSkulls() == 1) {
+        board.setSkulls(0);
+        if (board.isFinalFrenzySelected()) {
+          // Attivazione frenesia finale
+          if (! board.isFinalFrenzyActive()) {
+            board.setStatus(BoardStatus.FINAL_FRENZY);
+            board.setFinalFrenzyActivator(color);
+          }
+          if (! frenzy) {
+            setFrenzy(true);
+          }
+        } else {
+          // Fine partita
+        }
+      }
+
       try {
         notifyObservers(new PlayerDeathUpdate(color, killerColor));
       } catch (RemoteException e) {
@@ -683,6 +704,11 @@ public class Player extends Observable implements Target, Serializable {
 
   public void setFrenzy(boolean frenzy) {
     this.frenzy = frenzy;
+    try {
+      notifyObservers(new PlayerFrenzyUpdate(color, frenzy));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public boolean isPublicCopy() {

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 public class ClientSocket extends Client implements Runnable, Observer {
 
   private static final long serialVersionUID = 5069992236971339205L;
+  private boolean running;
   private transient Socket socket;
   private transient PrintWriter printWriter;
   private transient BufferedReader bufferedReader;
@@ -60,6 +61,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
 
   public ClientSocket(String name, boolean domination) {
     super(name, domination);
+
+    running = true;
 
     boardView = new TUIBoardView(this);
     charactersView = new TUICharactersView(this, boardView);
@@ -91,6 +94,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
 
   @Override
   public void disconnect(String message) {
+    super.disconnect(message);
+    running = false;
     try {
       bufferedReader.close();
       printWriter.close();
@@ -98,7 +103,6 @@ public class ClientSocket extends Client implements Runnable, Observer {
     } catch (IOException e) {
       Log.exception(e);
     }
-    super.disconnect(message);
   }
 
   @Override
@@ -130,7 +134,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
   public final void run() {
     if (socket != null) {
       try {
-        while (socket.isConnected()) {
+        while (socket.isConnected() && running) {
           String message = bufferedReader.readLine();
 
           GsonBuilder gsonBuilder = new GsonBuilder();
