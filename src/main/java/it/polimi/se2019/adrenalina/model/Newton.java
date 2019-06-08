@@ -28,7 +28,7 @@ public class Newton extends PowerUp {
 
   @Override
   public String getName() {
-    return "Raggio traente";
+    return "Raggio cinetico";
   }
 
   /**

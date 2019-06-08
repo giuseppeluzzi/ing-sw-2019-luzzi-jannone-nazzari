@@ -23,7 +23,7 @@ public class TagbackGrenade extends PowerUp {
 
   @Override
   public String getName() {
-    return "Granata a frammentazione";
+    return "Granata venom";
   }
 
   @Override

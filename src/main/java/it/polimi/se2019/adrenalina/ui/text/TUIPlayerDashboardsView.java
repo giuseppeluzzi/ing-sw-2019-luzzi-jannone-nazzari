@@ -311,7 +311,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       });
     }
     for (PowerUp powerUp : powerUps) {
-      choices.add(powerUp.getName());
+      choices.add(powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
     }
     boardView.getInputManager().input(prompt, choices);
     try {
