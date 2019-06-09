@@ -15,7 +15,8 @@ public class EndGame extends GameActionAsync {
   public void execute(Board board) {
     for (Player player : board.getPlayers()) {
       try {
-        player.getClient().showGameMessage("Partita terminata icao");
+        player.getClient().showGameMessage("Partita terminata ciao");
+        player.getClient().getBoardView().showFinalRanks();
       } catch (RemoteException e) {
         Log.exception(e);
       }

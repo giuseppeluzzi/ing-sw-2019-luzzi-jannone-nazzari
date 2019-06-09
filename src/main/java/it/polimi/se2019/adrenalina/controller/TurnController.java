@@ -23,6 +23,7 @@ import java.util.List;
 public class TurnController implements Serializable {
 
   private static final long serialVersionUID = -2990384474014352897L;
+  private static final String PLAYER_NOT_EXIST_MSG = "Player doesn't exists anymore!";
   private final BoardController boardController;
   private final transient Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
   private final Timer timer = new Timer();
@@ -45,7 +46,7 @@ public class TurnController implements Serializable {
         currentPlayer = boardController.getBoard()
             .getPlayerByColor(boardController.getBoard().getCurrentPlayer());
       } catch (InvalidPlayerException e) {
-        Log.critical("Player doesn't exists anymore!");
+        Log.critical(PLAYER_NOT_EXIST_MSG);
         return;
       }
     }
@@ -104,7 +105,7 @@ public class TurnController implements Serializable {
       currentPlayer.setCurrentExecutable(null);
       currentPlayer.setCurrentBuying(null);
     } catch (InvalidPlayerException e) {
-      Log.critical("Player doesn't exists anymore!");
+      Log.critical(PLAYER_NOT_EXIST_MSG);
       return;
     }
 
@@ -173,7 +174,7 @@ public class TurnController implements Serializable {
                       boardController.getBoard().getFinalFrenzyActivator()));
         } catch (InvalidPlayerException e) {
           // Shouldn't happen
-          Log.critical("Player doesn't exists anymore!");
+          Log.critical(PLAYER_NOT_EXIST_MSG);
           return;
         }
 

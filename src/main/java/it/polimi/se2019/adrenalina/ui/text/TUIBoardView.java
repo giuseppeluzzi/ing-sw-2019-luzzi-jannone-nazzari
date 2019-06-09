@@ -35,6 +35,7 @@ import java.util.List;
 public class TUIBoardView extends BoardView {
 
   private static final long serialVersionUID = 7696019255617335385L;
+  private static final String WAIT_TIMEOUT_MSG = "Tempo di attesa scaduto! Salti il turno!";
 
   private final transient TUIInputManager inputManager = new TUIInputManager();
   private final Timer timer = new Timer();
@@ -84,10 +85,8 @@ public class TUIBoardView extends BoardView {
       }
     } catch (RemoteException e) {
       Log.exception(e);
-    } catch (InvalidSquareException ignored) {
+    } catch (InvalidSquareException | InputCancelledException e) {
       //
-    } catch (InputCancelledException e) {
-      // return
     }
   }
 
@@ -110,9 +109,8 @@ public class TUIBoardView extends BoardView {
       );
     }
     inputManager.input("Seleziona una stanza:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
-    });
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+        WAIT_TIMEOUT_MSG));
     int inputResult = inputManager.waitForIntResult();
     timer.stop();
     for (Target target : targets) {
@@ -145,9 +143,7 @@ public class TUIBoardView extends BoardView {
               ANSIColor.RESET));
     }
     inputManager.input("Seleziona un quadrato:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
-    });
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     Target result = targets.get(inputManager.waitForIntResult());
     timer.stop();
     return result;
@@ -174,9 +170,7 @@ public class TUIBoardView extends BoardView {
       }
     }
     inputManager.input("Seleziona un bersaglio:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
-    });
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     Target result = targets.get(inputManager.waitForIntResult());
     timer.stop();
     return result;
@@ -189,9 +183,7 @@ public class TUIBoardView extends BoardView {
       choices.add(direction.getName());
     }
     inputManager.input("Seleziona una direzione:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
-    });
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     try {
       notifyObservers(new SelectDirectionEvent(getClient().getPlayerColor(),
           Direction.values()[inputManager.waitForIntResult()]));

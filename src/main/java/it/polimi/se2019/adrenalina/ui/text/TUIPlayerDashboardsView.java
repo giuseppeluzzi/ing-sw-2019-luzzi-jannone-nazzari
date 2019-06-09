@@ -36,6 +36,7 @@ import java.util.Set;
 public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = 572470044324855920L;
+  private static final String WAIT_TIMEOUT_MSG = "Tempo di attesa scaduto! Salti il turno!";
   private final transient ClientInterface client;
   private final transient TUIInputManager inputManager = new TUIInputManager();
   private final Timer timer = new Timer();
@@ -127,9 +128,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     String response;
 
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
-    });
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+        WAIT_TIMEOUT_MSG));
 
     do {
       inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
@@ -177,9 +177,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       choices.add(action.getName() + ": " + action.getDescription());
     }
     inputManager.input("Seleziona un'azione:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-      inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
-    });
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+        WAIT_TIMEOUT_MSG));
     try {
       notifyObservers(
           new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(inputManager.waitForIntResult())));
@@ -297,15 +296,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     if (discard) {
       prompt = "Seleziona quale PowerUp scartare:";
-      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-        inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un powerUp a caso");
-      });
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un powerUp a caso"));
     } else {
       prompt = "Seleziona quale PowerUp usare:";
       choices.add("Non usare nessun PowerUp");
-      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
-        inputManager.cancel("Tempo di attesa scaduto! Salti il turno!");
-      });
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+          WAIT_TIMEOUT_MSG));
     }
     for (PowerUp powerUp : powerUps) {
       choices.add(powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
