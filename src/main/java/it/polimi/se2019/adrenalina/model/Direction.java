@@ -15,8 +15,7 @@ public enum Direction {
     this.name = name;
   }
 
-  @Override
-  public String toString() {
+  public String getName() {
     return name;
   }
 }

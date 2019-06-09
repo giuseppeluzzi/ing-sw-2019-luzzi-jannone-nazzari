@@ -182,7 +182,7 @@ public class TUIBoardView extends BoardView {
   public void showDirectionSelect() {
     List<String> choices = new ArrayList<>();
     for (Direction direction : Direction.values()) {
-      choices.add(direction.toString());
+      choices.add(direction.getName());
     }
     inputManager.input("Seleziona una direzione:", choices);
     timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
