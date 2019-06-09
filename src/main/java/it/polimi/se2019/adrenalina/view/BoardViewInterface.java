@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,4 +52,6 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
     void showBuyableWeapons(List<Weapon> weapons) throws RemoteException;
 
     void showSpawnPointTrackSelection() throws RemoteException;
+
+    void showFinalRanks() throws RemoteException;
 }

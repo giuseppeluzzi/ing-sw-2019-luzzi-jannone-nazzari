@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBoardInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowFinalRanksInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
@@ -91,6 +92,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
   @Override
   public void showSpawnPointTrackSelection() {
     clientSocket.sendEvent(new ShowSpawnPointTrackSelectionInvocation());
+  }
+
+  @Override
+  public void showFinalRanks() {
+    clientSocket.sendEvent(new ShowFinalRanksInvocation());
   }
 
 

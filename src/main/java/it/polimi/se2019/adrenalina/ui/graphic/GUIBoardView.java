@@ -44,4 +44,9 @@ public class GUIBoardView extends BoardView {
   public void showSpawnPointTrackSelection() {
     // TODO
   }
+
+  @Override
+  public void showFinalRanks() {
+    // TODO
+  }
 }

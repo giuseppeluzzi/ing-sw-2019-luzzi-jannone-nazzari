@@ -4,6 +4,7 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
@@ -15,6 +16,8 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Direction;
+import it.polimi.se2019.adrenalina.model.Kill;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -25,8 +28,12 @@ import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TUIBoardView extends BoardView {
 
@@ -239,6 +246,40 @@ public class TUIBoardView extends BoardView {
       notifyObservers(new SpawnPointDamageEvent(getClient().getPlayerColor(), chosen));
     } catch (RemoteException e) {
       Log.exception(e);
+    }
+  }
+
+  private int getFirstKillshotIndex(List<Kill> kills, PlayerColor playerColor) {
+    for (int i = 0; i < kills.size(); i++) {
+      if (kills.get(i).getPlayerColor() == playerColor) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  @Override
+  public void showFinalRanks() {
+    Log.println("Classifica finale\n");
+    List<Player> players = new ArrayList<>(getBoard().getPlayers());
+    Collections.sort(players, (p1, p2) -> {
+      if (p1.getScore() == p2.getScore()) {
+        int p1Index = getFirstKillshotIndex(getBoard().getKillShots(), p1.getColor());
+        int p2Index = getFirstKillshotIndex(getBoard().getKillShots(), p2.getColor());
+        if (p1Index == p2Index) {
+          return 0;
+        }
+        return p1Index < p2Index ? -1 : 1;
+      }
+      return p1.getScore() > p2.getScore() ? -1 : 1;
+    });
+    for (int i = 0; i < players.size(); i++) {
+      Log.println(String.format("    %s#%d %s (%d punti)%s",
+          players.get(i).getColor().getAnsiColor(),
+          i + 1,
+          players.get(i).getName(),
+          players.get(i).getScore(),
+          ANSIColor.RESET));
     }
   }
 }

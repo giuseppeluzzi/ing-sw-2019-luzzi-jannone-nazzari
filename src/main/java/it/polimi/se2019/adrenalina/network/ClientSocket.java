@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.event.PlayerDisconnectEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowFinalRanksInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
@@ -248,6 +249,9 @@ public class ClientSocket extends Client implements Runnable, Observer {
                   .fromJson(message, ShowMessageInvocation.class);
               showMessage(showMessageInvocation.getSeverity(),
                   showMessageInvocation.getTitle(), showMessageInvocation.getMessage());
+              break;
+            case SHOW_FINAL_RANKS_INVOCATION:
+              boardView.showFinalRanks();
               break;
             default:
               boardView.update(event);
