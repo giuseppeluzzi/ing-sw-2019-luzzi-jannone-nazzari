@@ -110,10 +110,10 @@ public class SquareTest {
   @Test
   public void testGetCardinalDirection() {
     try {
-      assertEquals(Direction.NORTH, base.getCardinalDirection(north));
-      assertEquals(Direction.SOUTH, base.getCardinalDirection(south));
-      assertEquals(Direction.WEST, base.getCardinalDirection(west));
-      assertEquals(Direction.EAST, base.getCardinalDirection(east));
+      assertEquals(Direction.NORTH, north.getCardinalDirection(base));
+      assertEquals(Direction.SOUTH, south.getCardinalDirection(base));
+      assertEquals(Direction.WEST, west.getCardinalDirection(base));
+      assertEquals(Direction.EAST, east.getCardinalDirection(base));
     } catch (InvalidSquareException e) {
       fail();
     }

@@ -1,11 +1,9 @@
 package it.polimi.se2019.adrenalina.model;
 
-import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.controller.action.weapon.OptionalMoveAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
-import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,10 +76,5 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
     throw new IllegalStateException("Must use a decorator");
-  }
-
-  public String serialize() {
-    Gson gson = new Gson();
-    return gson.toJson(this);
   }
 }

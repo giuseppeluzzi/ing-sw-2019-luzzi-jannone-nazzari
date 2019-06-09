@@ -7,7 +7,6 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import org.fusesource.jansi.AnsiConsole;
 
 public class AppServer {
   public AppServer() {

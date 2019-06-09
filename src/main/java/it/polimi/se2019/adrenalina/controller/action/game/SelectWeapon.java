@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
-import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
