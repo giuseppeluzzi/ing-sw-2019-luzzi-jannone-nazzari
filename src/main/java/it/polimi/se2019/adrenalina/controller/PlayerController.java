@@ -256,7 +256,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
 
-    spawn(player, powerUp);
+    spawnPlayer(player, powerUp);
 
 
     // CHEAT SUITE
@@ -300,8 +300,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     if (player.getAmmo(AmmoColor.BLUE) >= event.getBlue()
         && player.getAmmo(AmmoColor.RED) >= event.getRed()
-        && player.getAmmo(AmmoColor.YELLOW) >= event.getYellow()
-        && player.getPowerUps().containsAll(event.getPowerUps())) {
+        && player.getAmmo(AmmoColor.YELLOW) >= event.getYellow()) {
 
       player.addAmmo(AmmoColor.BLUE, - event.getBlue());
       player.addAmmo(AmmoColor.RED, - event.getRed());
@@ -323,7 +322,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
           .afterPaymentCompleted(turnController, board, player);
       player.setCurrentBuying(null);
     }
-    boardController.getTurnController().executeGameActionQueue();
   }
 
   public void update(PlayerSelectWeaponEvent event) {
@@ -417,7 +415,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     return boardController.hashCode();
   }
 
-  public void spawn(Player player, PowerUp powerUp) {
+  public void spawnPlayer(Player player, PowerUp powerUp) {
     Board board = boardController.getBoard();
     try {
       player.removePowerUp(powerUp);

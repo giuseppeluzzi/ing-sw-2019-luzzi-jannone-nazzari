@@ -115,7 +115,7 @@ public class PowerUpSelection extends GameAction {
     if (isDiscard()) {
       int randomPowerUpIndex = new Random().nextInt(getPlayer().getPowerUps().size());
       PowerUp powerUp = getPlayer().getPowerUps().get(randomPowerUpIndex);
-      getTurnController().getBoardController().getPlayerController().spawn(getPlayer(), powerUp);
+      getTurnController().getBoardController().getPlayerController().spawnPlayer(getPlayer(), powerUp);
     }
   }
 }
