@@ -234,6 +234,7 @@ public class Weapon extends ExecutableObject implements Buyable {
 
       player.addWeapon(this);
     }
+    turnController.executeGameActionQueue();
   }
 
   @Override

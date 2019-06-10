@@ -98,6 +98,7 @@ public class SelectAction implements WeaponAction {
   public List<Target> getTargets(Board board, ExecutableObject object) {
     Player owner = object.getOwner();
     List<Target> targets = new ArrayList<>();
+    List<Target> out = new ArrayList<>();
 
     switch (selectType) {
       case ATTACK_TARGET:
@@ -159,7 +160,8 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> fromTarget.getSquare().getColor() == x.getSquare().getColor());
     }
 
-    return targetStream.collect(Collectors.toList());
+    out = targetStream.collect(Collectors.toList());
+    return out;
   }
 
   @Override

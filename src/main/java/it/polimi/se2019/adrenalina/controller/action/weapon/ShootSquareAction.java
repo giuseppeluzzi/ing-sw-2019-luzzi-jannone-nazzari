@@ -31,16 +31,19 @@ public class ShootSquareAction extends ShootAction {
       player.addDamages(object.getOwner().getColor(), getDamages());
       player.addTags(object.getOwner().getColor(), getTag());
     }
+    Log.debug("aaa");
   }
 
   public List<Player> getPlayers(Board board, ExecutableObject object) {
     List<Player> playersToExclude = new ArrayList<>();
     List<Player> players = new ArrayList<>();
-    for (int player : exclude) {
-      try {
-        playersToExclude.add(object.getTargetHistory(player).getPlayer());
-      } catch (InvalidSquareException e) {
-        Log.severe("ShootSquareAction: one of the targets in exclude[] is not a player; ignoring it");
+    if (exclude != null) {
+      for (int player : exclude) {
+        try {
+          playersToExclude.add(object.getTargetHistory(player).getPlayer());
+        } catch (InvalidSquareException e) {
+          Log.severe("ShootSquareAction: one of the targets in exclude[] is not a player; ignoring it");
+        }
       }
     }
     for (Square square : board.getSquares()) {

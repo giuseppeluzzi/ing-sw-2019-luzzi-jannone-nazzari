@@ -320,7 +320,7 @@ public class Square extends Observable implements Target {
       }
     }
     if (diffY == 0) {
-      if (diffX < 0) {
+      if (diffX > 0) {
         return Direction.EAST;
       } else {
         return Direction.WEST;

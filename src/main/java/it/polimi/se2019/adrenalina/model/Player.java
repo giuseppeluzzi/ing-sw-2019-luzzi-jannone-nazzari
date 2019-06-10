@@ -530,6 +530,7 @@ public class Player extends Observable implements Target, Serializable {
     }
     weapons.add(weapon);
     weaponCount++;
+    weapon.setTargetHistory(0, this);
     if (client != null) {
       try {
         weapon.addObserver(client.getBoardView());
@@ -537,7 +538,6 @@ public class Player extends Observable implements Target, Serializable {
         weapon.addObserver(client.getCharactersView());
         notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
         notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
-        weapon.setTargetHistory(0, this);
       } catch (RemoteException e) {
         Log.exception(e);
       }

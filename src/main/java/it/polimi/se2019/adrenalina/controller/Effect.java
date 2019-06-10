@@ -167,5 +167,6 @@ public class Effect implements Buyable {
     }
 
     turnController.addTurnActions(turnActions);
+    turnController.executeGameActionQueue();
   }
 }

@@ -27,13 +27,15 @@ public abstract class ExecutableObject extends Observable {
    * Clear data of previous targets.
    */
   public void reset() {
-    didShoot = false;
-    targetHistory = new HashMap<>();
-    initialPlayerPositions = new HashMap<>();
     if (targetHistory != null && targetHistory.get(0) != null) {
       Target owner = targetHistory.get(0);
+      targetHistory.clear();
       targetHistory.put(0, owner);
+    } else {
+      targetHistory = new HashMap<>();
     }
+    didShoot = false;
+    initialPlayerPositions = new HashMap<>();
     currentSelectTargetSlot = null;
     lastUsageDirection = null;
     cancelled = false;
