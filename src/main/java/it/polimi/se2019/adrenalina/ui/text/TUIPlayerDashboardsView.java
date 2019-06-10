@@ -142,8 +142,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
       answers = new HashSet<>(Arrays.asList(response.split(",")));
     } while (!response.matches(inputValidationRegex)
-          || !verifyPaymentAnswers(answers, spendables)
-          || !verifyPaymentFullfilled(answers, spendables, costs)
+        || !verifyPaymentAnswers(answers, spendables)
+        || !verifyPaymentFullfilled(answers, spendables, costs)
     );
 
     for (String element : answers) {
@@ -181,11 +181,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
         WAIT_TIMEOUT_MSG));
     try {
       notifyObservers(
-          new PlayerActionSelectionEvent(client.getPlayerColor(), actions.get(inputManager.waitForIntResult())));
+          new PlayerActionSelectionEvent(client.getPlayerColor(),
+              actions.get(inputManager.waitForIntResult())));
       timer.stop();
     } catch (RemoteException e) {
       Log.exception(e);
-    } catch (InputCancelledException e) {
+    } catch (InputCancelledException ignored) {
       // return
     }
   }
@@ -196,7 +197,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       return false;
     }
     for (String answer : answers) {
-      if (Integer.parseInt(answer) > spendables.size() - 1) {
+      if (Integer.parseInt(answer) - 1 > spendables.size()) {
         Log.println("Hai selezionato un'opzione non valida!");
         return false;
       }
@@ -244,15 +245,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     List<String> chosenEffectsNames = new ArrayList<>();
 
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
-      Log.debug("aa1 " + chosenEffects.get(chosenEffects.size()-1));
+      Log.debug("aa1 " + chosenEffects.get(chosenEffects.size() - 1));
       try {
         chosenEffects.add(
-            TUIUtils.showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(), true));
-      } catch (InputCancelledException e) {
+            TUIUtils
+                .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
+                    true));
+      } catch (InputCancelledException ignored) {
         // return
       }
     }
-
 
     for (Effect effect : chosenEffects) {
       chosenEffectsNames.add(effect.getName());
@@ -296,7 +298,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     if (discard) {
       prompt = "Seleziona quale PowerUp scartare:";
-      timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un powerUp a caso"));
+      timer.start(Configuration.getInstance().getTurnTimeout(),
+          () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un powerUp a caso"));
     } else {
       prompt = "Seleziona quale PowerUp usare:";
       choices.add("Non usare nessun PowerUp");
@@ -313,7 +316,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (InputCancelledException e) {
       return;
     }
-
 
     try {
       if (discard) {
