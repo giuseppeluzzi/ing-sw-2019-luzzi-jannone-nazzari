@@ -79,6 +79,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
         Gson gson = gsonBuilder.create();
         JsonObject json = gson.fromJson(message, JsonObject.class);
 
+        Log.debug(message);
         EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
         Event event = gson.fromJson(message, eventType.getEventClass());
 

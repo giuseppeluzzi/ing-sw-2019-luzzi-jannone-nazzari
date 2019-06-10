@@ -144,7 +144,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
           gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
           Gson gson = gsonBuilder.create();
           JsonObject json = gson.fromJson(message, JsonObject.class);
-
+          Log.debug(message);
           EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
           Log.debug("Received: " + eventType);
           Event event = gson.fromJson(message, eventType.getEventClass());

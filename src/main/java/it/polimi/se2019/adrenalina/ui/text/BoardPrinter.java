@@ -337,7 +337,7 @@ public final class BoardPrinter {
       posX++;
     }
     for (int i = 0; i < powerUpCount - powerUps.size(); i++) {
-      map[posX][posY] = playerColor + "P";
+      map[posX][posY] = playerColor + "+";
       posX++;
     }
     for (int i = 0; i < 4 - powerUpCount; i++) {

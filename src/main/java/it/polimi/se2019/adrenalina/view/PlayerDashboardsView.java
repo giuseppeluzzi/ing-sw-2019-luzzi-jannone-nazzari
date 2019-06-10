@@ -188,12 +188,20 @@ public abstract class PlayerDashboardsView extends Observable implements
   }
 
   public void update(EnemyWeaponUpdate event) {
+    if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
+      // This update is not for me
+      return;
+    }
     Player player = getPlayerByColor(event.getPlayerColor());
     player.updateWeapons(event.getUnloadedWeapons());
     player.setWeaponCount(event.getNumWeapons());
   }
 
   public void update(EnemyPowerUpUpdate event) {
+    if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
+      // This update is not for me
+      return;
+    }
     getPlayerByColor(event.getPlayerColor()).setPowerUpCount(event.getPowerUpsNum());
   }
 
