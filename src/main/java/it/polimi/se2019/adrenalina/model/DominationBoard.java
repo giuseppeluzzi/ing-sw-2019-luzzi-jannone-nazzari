@@ -44,7 +44,7 @@ public class DominationBoard extends Board {
 
   /**
    * Adds a blue damage to the Board.
-   * @param color the color of the Player who scored the damage.
+   * @param color the color of the Player who scored the damage
    */
   public void addBlueDamage(PlayerColor color) {
     blueDamages.add(color);
@@ -65,7 +65,7 @@ public class DominationBoard extends Board {
 
   /**
    * Adds a red damage to the Board.
-   * @param color the color of the Player who scored the damage.
+   * @param color the color of the Player who scored the damage
    */
   public void addRedDamage(PlayerColor color) {
     redDamages.add(color);
@@ -86,7 +86,7 @@ public class DominationBoard extends Board {
 
   /**
    * Adds a yellow damage to the Board.
-   * @param color the color of the Player who scored the damage.
+   * @param color the color of the Player who scored the damage
    */
   public void addYellowDamage(PlayerColor color) {
     yellowDamages.add(color);
@@ -94,6 +94,27 @@ public class DominationBoard extends Board {
       notifyObservers(new DominationBoardDamagesUpdate(AmmoColor.YELLOW, getYellowDamages()));
     } catch (RemoteException e) {
       Log.exception(e);
+    }
+  }
+
+  /**
+   * Adds a damage to a speicfied spawnpoint color
+   * @param color AmmoColor for the spawnpoint
+   * @param playerColor the color of the player who scored the damage
+   */
+  public void addDamage(AmmoColor color, PlayerColor playerColor) {
+    switch (color) {
+      case BLUE:
+        addBlueDamage(playerColor);
+        break;
+      case RED:
+        addRedDamage(playerColor);
+        break;
+      case YELLOW:
+        addYellowDamage(playerColor);
+        break;
+      case ANY:
+        break;
     }
   }
 

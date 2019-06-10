@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;

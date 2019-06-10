@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -21,8 +22,6 @@ import java.util.Map.Entry;
 public class Server extends UnicastRemoteObject implements ServerInterface {
 
   private static final long serialVersionUID = 1666613338633244401L;
-  private static final int PING_INTERVAL = 500;
-  public static final int MAX_NAME_LENGTH = 12;
 
   private final ArrayList<BoardController> games;
   private final HashMap<Player, BoardController> playing;
@@ -36,7 +35,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
       while (running) {
         pingAll();
         try {
-          sleep(PING_INTERVAL);
+          sleep(Constants.PING_INTERVAL);
         } catch (InterruptedException e) {
           Log.severe("Server", "Pinging interrupted! Thread stopped.");
           Thread.currentThread().interrupt();
@@ -75,7 +74,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         "New client connected! (Name: " + client.getName() + " - Domination: " + client
             .isDomination() + ")");
 
-    if (client.getName().length() > MAX_NAME_LENGTH) {
+    if (client.getName().length() > Constants.MAX_NAME_LENGTH) {
       client.disconnect("Nome troppo lungo (max. 12 caratteri), cambia nome e riprova!");
       Log.severe("Tried to add a player with a too long name (" + client.getName() + ")");
       return;

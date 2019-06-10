@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.ui.text.TUIInputManager;
+import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -33,7 +34,7 @@ public class AppClient {
         inputManager.cancel("");
       }
 
-      inputManager.input("Come ti chiami? (max. 12 caratteri)", 12);
+      inputManager.input("Come ti chiami? (max. 12 caratteri)", Constants.MAX_NAME_LENGTH);
       try {
         name = inputManager.waitForStringResult();
       } catch (InputCancelledException ignored) {
@@ -59,7 +60,7 @@ public class AppClient {
       } else if (args[2].charAt(0) == '1') {
         domination = true;
       } else {
-        Log.severe("Modalità di gioco non valida. Supportate: (1) Classica; (2) Dominazione");
+        Log.severe("Modalità di gioco non valida. Supportate: (0) Classica; (1) Dominazione");
         return;
       }
     }

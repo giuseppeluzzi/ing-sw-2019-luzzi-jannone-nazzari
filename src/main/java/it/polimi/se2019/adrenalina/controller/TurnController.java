@@ -5,11 +5,14 @@ import it.polimi.se2019.adrenalina.controller.action.game.CheckRespawn;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.game.PickPowerUp;
 import it.polimi.se2019.adrenalina.controller.action.game.PowerUpSelection;
+import it.polimi.se2019.adrenalina.controller.action.game.SpawnPointTrackSelection;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import java.io.Serializable;
@@ -99,6 +102,7 @@ public class TurnController implements Serializable {
 
   private void endTurn() {
     Player currentPlayer;
+
     try {
       currentPlayer = boardController.getBoard()
           .getPlayerByColor(boardController.getBoard().getCurrentPlayer());
@@ -111,6 +115,18 @@ public class TurnController implements Serializable {
 
     currentPlayer.setCurrentBuying(null);
     currentPlayer.setCurrentExecutable(null);
+
+    if (boardController.getBoard().isDominationBoard()) {
+      if (currentPlayer.getSquare().getPlayers().size() == 1
+          && currentPlayer.getSquare().isSpawnPoint()
+          && currentPlayer.getSquare().getColor().getEquivalentAmmoColor() != null) {
+        ((DominationBoard) boardController.getBoard())
+            .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
+                currentPlayer.getColor());
+      }
+
+      currentPlayer.addDamages(currentPlayer.getColor(), 1);
+    }
 
     for (Weapon weapon : currentPlayer.getWeapons()) {
       weapon.reset();
@@ -139,12 +155,24 @@ public class TurnController implements Serializable {
 
   private void addFirstSpawn(Player player) {
     player.setStatus(PlayerStatus.PLAYING);
-    addTurnActions(new PickPowerUp(player), new PickPowerUp(player), new PowerUpSelection(this, player, true, false));
+    addTurnActions(new PickPowerUp(player), new PickPowerUp(player),
+        new PowerUpSelection(this, player, true, false));
   }
 
   public void addRespawn(Player player) {
     player.setStatus(PlayerStatus.PLAYING);
     addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, true, false));
+    if (boardController.getBoard().isDominationBoard()
+        && player.getDamages().size() == Constants.OVERKILL_DEATH) {
+      Player killer = null;
+      try {
+        killer = boardController.getBoard()
+            .getPlayerByColor(player.getDamages().get(player.getDamages().size() - 1));
+        addTurnActions(new SpawnPointTrackSelection(killer));
+      } catch (InvalidPlayerException ignored) {
+        //
+      }
+    }
   }
 
   private void addGameTurn(Player player) {

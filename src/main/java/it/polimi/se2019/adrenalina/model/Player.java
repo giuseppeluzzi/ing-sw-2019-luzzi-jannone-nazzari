@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
@@ -15,14 +16,13 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.Observable;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,13 +37,10 @@ import java.util.stream.Collectors;
 /**
  * Class defining a single player.
  */
-public class Player extends Observable implements Target, Serializable {
+public class Player extends Observable implements Target {
 
   // TODO: powerUps and weapon should have a remove*() method (with which parameter?)
   private static final long serialVersionUID = -3827252611045096143L;
-
-  public static final int OVERKILL_DEATH = 12;
-  public static final int NORMAL_DEATH = 11;
 
   private final transient Board board;
 
@@ -64,7 +61,7 @@ public class Player extends Observable implements Target, Serializable {
 
   private List<PlayerColor> damages;
   private List<PlayerColor> tags;
-  private HashMap<AmmoColor, Integer> ammo;
+  private final HashMap<AmmoColor, Integer> ammo;
   @NotExpose
   private List<Weapon> weapons = new ArrayList<>();
   @NotExpose
@@ -81,6 +78,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Class constructor.
+   *
    * @param name User chosen name, must be not null
    * @param color User chosen color
    * @param board The game board
@@ -108,10 +106,10 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Copy constructor, creates an exact clone of a Player.
+   *
    * @param player the Player to be cloned, has to be not null
-   * @param publicCopy if true, a public copy of the Player will be created
-   * instead of a clone. The public copy will not contain the player's private
-   * information
+   * @param publicCopy if true, a public copy of the Player will be created instead of a clone. The
+   * public copy will not contain the player's private information
    */
   public Player(Player player, boolean publicCopy) {
     // TODO: find error with, see testCopyConstructor for reference
@@ -131,7 +129,7 @@ public class Player extends Observable implements Target, Serializable {
 
     setObservers(player.getObservers());
 
-    if (! publicCopy) {
+    if (!publicCopy) {
       for (PowerUp powerUp : player.powerUps) {
         powerUps.add(powerUp.copy());
       }
@@ -251,26 +249,27 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a new damage to a player including damages given by tags and, possibly, inflicts death.
+   *
    * @param killerColor color of the killer that inflicted the damage
    */
   @Override
   public void addDamages(PlayerColor killerColor, int num) {
-    int maxDamages = OVERKILL_DEATH - damages.size();
+    int maxDamages = Constants.OVERKILL_DEATH - damages.size();
     for (int i = 0; i < Math.min(num, maxDamages); i++) {
       damages.add(killerColor);
     }
     for (PlayerColor tag : new ArrayList<>(tags)) {
       if (tag == killerColor) {
 
-        if (damages.size() < OVERKILL_DEATH) {
+        if (damages.size() < Constants.OVERKILL_DEATH) {
           damages.add(killerColor);
         }
         tags.remove(tag);
       }
     }
-    if (damages.size() == OVERKILL_DEATH) {
+    if (damages.size() == Constants.OVERKILL_DEATH) {
       try {
-        board.getPlayerByColor(damages.get(NORMAL_DEATH)).addTags(color, 1);
+        board.getPlayerByColor(damages.get(Constants.NORMAL_DEATH)).addTags(color, 1);
       } catch (InvalidPlayerException ignored) {
         //
       }
@@ -280,7 +279,7 @@ public class Player extends Observable implements Target, Serializable {
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    if (damages.size() >= NORMAL_DEATH) {
+    if (damages.size() >= Constants.NORMAL_DEATH) {
       setStatus(PlayerStatus.WAITING);
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
@@ -288,11 +287,11 @@ public class Player extends Observable implements Target, Serializable {
         board.setSkulls(0);
         if (board.isFinalFrenzySelected()) {
           // Attivazione frenesia finale
-          if (! board.isFinalFrenzyActive()) {
+          if (!board.isFinalFrenzyActive()) {
             board.setStatus(BoardStatus.FINAL_FRENZY);
             board.setFinalFrenzyActivator(color);
           }
-          if (! frenzy) {
+          if (!frenzy) {
             setFrenzy(true);
           }
         } else {
@@ -317,12 +316,13 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   public boolean isDead() {
-    return damages.size() >= NORMAL_DEATH;
+    return damages.size() >= Constants.NORMAL_DEATH;
   }
 
   /**
-   * Builds an list of unique PlayerColors who damaged this player. The list is ordered based on
-   * the points that each player should get as a reward.
+   * Builds an list of unique PlayerColors who damaged this player. The list is ordered based on the
+   * points that each player should get as a reward.
+   *
    * @return the list of PlayerColors
    */
   private List<PlayerColor> getPlayerRankings() {
@@ -332,7 +332,7 @@ public class Player extends Observable implements Target, Serializable {
     for (PlayerColor player : distinctPlayers) {
       damageCount.put(player, Collections.frequency(damages, player));
     }
-    while (! damageCount.isEmpty()) {
+    while (!damageCount.isEmpty()) {
       int max = Collections.max(damageCount.values());
       List<PlayerColor> maxPlayers = new ArrayList<>();
       Set<Map.Entry<PlayerColor, Integer>> entrySet = damageCount.entrySet();
@@ -349,10 +349,10 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   public void respawn(AmmoColor spawnColor) {
-    if (! isDead()) {
+    if (!isDead()) {
       throw new IllegalStateException("Player is not dead");
     }
-    if (! board.isFinalFrenzyActive()) {
+    if (!board.isFinalFrenzyActive()) {
       try {
         board.getPlayerByColor(damages.get(0)).setScore(score + 1); // first blood
       } catch (InvalidPlayerException ignored) {
@@ -361,10 +361,12 @@ public class Player extends Observable implements Target, Serializable {
     }
     int awardedScore = killScore;
     for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
-      try {
-        board.getPlayerByColor(playerColor).setScore(score + awardedScore);
-      } catch (InvalidPlayerException ignored) {
-        //
+      if (playerColor != color) {
+        try {
+          board.getPlayerByColor(playerColor).setScore(score + awardedScore);
+        } catch (InvalidPlayerException ignored) {
+          //
+        }
       }
       if (awardedScore > 1) {
         awardedScore -= 2;
@@ -373,10 +375,8 @@ public class Player extends Observable implements Target, Serializable {
     if (board.getDoubleKill().color == color) {
       score += 1;
     }
-    if (! board.isDominationBoard()) {
-      board.addKillShot(new Kill(damages.get(10), damages.get(NORMAL_DEATH) == damages.get(10)));
-    } else if (damages.get(NORMAL_DEATH) == damages.get(10)) {
-      // TODO: choose a spawnpoint track and put a token there
+    if (!board.isDominationBoard()) {
+      board.addKillShot(new Kill(damages.get(10), damages.get(Constants.NORMAL_DEATH) == damages.get(10)));
     }
     if (killScore > 1) {
       killScore -= 2;
@@ -396,6 +396,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a new tag to a player if that player does not already have 3 tags from its attacker.
+   *
    * @param player color of the player that gave the tag
    */
   @Override
@@ -415,6 +416,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Return Weapon whose name matches specified one.
+   *
    * @param weaponName name of the weapon
    * @return Weapon if present, null otherwise
    */
@@ -429,6 +431,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Return a PowerUp that matches type and color if present.
+   *
    * @param powerUpType Type of chosen powerup
    * @param powerUpColor Color of chosen powerup
    * @return PowerUp chosen.
@@ -443,13 +446,13 @@ public class Player extends Observable implements Target, Serializable {
   }
 
 
-
   public List<PowerUp> getPowerUps() {
     return new ArrayList<>(powerUps);
   }
 
   /**
    * Adds a powerUp to the list of powerUps of this player.
+   *
    * @param powerUp collected powerUp
    * @throws InvalidPowerUpException thrown if a player already has 3 powerUps
    */
@@ -459,11 +462,12 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a powerUp to the list of powerUps of this player.
+   *
    * @param powerUp collected powerUp
    * @param force should ignore the powerup limit
    * @throws InvalidPowerUpException thrown if a player already has 3 powerUps and force is false
    */
-  public void addPowerUp(PowerUp powerUp, boolean force) throws InvalidPowerUpException  {
+  public void addPowerUp(PowerUp powerUp, boolean force) throws InvalidPowerUpException {
     if (powerUps.size() >= 3 && !force) {
       throw new InvalidPowerUpException("Player already has 3 powerUp");
     }
@@ -482,11 +486,12 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Removes a powerUp from a player.
+   *
    * @param powerUp the powerUp to remove
    * @throws InvalidPowerUpException thrown if the player does not own that powerUp
    */
   public void removePowerUp(PowerUp powerUp) throws InvalidPowerUpException {
-    if (! powerUps.contains(powerUp)) {
+    if (!powerUps.contains(powerUp)) {
       throw new InvalidPowerUpException("Player does not own this powerUp");
     }
     powerUp.reset();
@@ -512,7 +517,7 @@ public class Player extends Observable implements Target, Serializable {
   public List<Weapon> getUnloadedWeapons() {
     List<Weapon> returnWeapons = new ArrayList<>();
     for (Weapon weapon : getWeapons()) {
-      if (! weapon.isLoaded()) {
+      if (!weapon.isLoaded()) {
         returnWeapons.add(weapon);
       }
     }
@@ -521,6 +526,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds a weapon to the list of weapons of this player.
+   *
    * @param weapon collected weapon
    * @throws IllegalStateException thrown if a player already has 3 weapons
    */
@@ -547,11 +553,12 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Removes specified weapon if owned by the player.
+   *
    * @param weapon removed weapon
    * @throws IllegalArgumentException throw if the player doesn't own the weapon
    */
   public void removeWeapon(Weapon weapon) {
-    if (! weapons.contains(weapon)) {
+    if (!weapons.contains(weapon)) {
       throw new IllegalArgumentException("Player does not have this weapon");
     }
     weapons.remove(weapon);
@@ -576,6 +583,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Check if Player has collected a specific weapon.
+   *
    * @param weapon Weapon checked
    * @return true if the player holds the weapon, false otherwise
    */
@@ -590,10 +598,11 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Check if Player has at least one loaded weapon
+   *
    * @return true if the player holds a loaded weapon, false otherwise
    */
   public boolean hasLoadedWeapons() {
-    for (Weapon weapon: weapons) {
+    for (Weapon weapon : weapons) {
       if (weapon.isLoaded()) {
         return true;
       }
@@ -603,6 +612,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Check if Player can pay to reload weapon.
+   *
    * @param weapon Weapon reloading
    * @return true if possible, false otherwise
    */
@@ -626,6 +636,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Adds the quantity for an AmmoColor, ammo will be added only up to three unit per color.
+   *
    * @param ammoColor key
    * @param value how many ammo will be added
    */
@@ -652,8 +663,9 @@ public class Player extends Observable implements Target, Serializable {
   }
 
   /**
-   * Private method, creates an EnumMap associating each AmmoColor to an integer value
-   * representing how many powerUps of that color the player possesses.
+   * Private method, creates an EnumMap associating each AmmoColor to an integer value representing
+   * how many powerUps of that color the player possesses.
+   *
    * @return the EnumMap
    */
   private EnumMap<AmmoColor, Integer> getPowerUpAmmo() {
@@ -678,6 +690,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Check if player can collect a specific weapon.
+   *
    * @param weapon weapon to check
    * @return true if it's possible, false otherwise.
    */
@@ -755,6 +768,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Gson serialization.
+   *
    * @return JSON string containing serialized object
    */
   public String serialize() {
@@ -764,6 +778,7 @@ public class Player extends Observable implements Target, Serializable {
 
   /**
    * Creates Player object from a JSON serialized object.
+   *
    * @param json JSON input String
    * @return Player object
    */
