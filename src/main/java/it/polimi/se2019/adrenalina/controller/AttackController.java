@@ -6,8 +6,10 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -35,6 +37,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.SELECT_SQUARE_EVENT);
     registeredEvents.add(EventType.SQUARE_MOVE_SELECTION_EVENT);
     registeredEvents.add(EventType.SELECT_DIRECTION_EVENT);
+    registeredEvents.add(EventType.SPAWN_POINT_DAMAGE_EVENT);
   }
 
   /**
@@ -63,6 +66,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select another player.
+   *
    * @param event event specifing selected target
    */
   public void update(SelectPlayerEvent event) {
@@ -108,7 +112,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     player.getCurrentExecutable().setLastUsageDirection(event.getSelectedDirection());
     boardController.getTurnController().executeGameActionQueue();
   }
-  
+
   /**
    * Event fired when a player moves to a different square.
    *
@@ -122,6 +126,21 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       return;
     }
     player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
+
+    boardController.getTurnController().executeGameActionQueue();
+  }
+
+
+  /**
+   * Event fired when a player decides a spawnpoint in domination mode
+   *
+   * @param event event specifing the spawnpoint color
+   */
+  public void update(SpawnPointDamageEvent event) {
+    if (boardController.getBoard().isDominationBoard()) {
+      ((DominationBoard) boardController.getBoard())
+          .addDamage(event.getAmmoColor(), event.getPlayerColor());
+    }
 
     boardController.getTurnController().executeGameActionQueue();
   }

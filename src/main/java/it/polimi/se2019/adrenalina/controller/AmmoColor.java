@@ -42,6 +42,7 @@ public enum AmmoColor implements Spendable {
   public SquareColor getEquivalentSquareColor() {
     return equivalentSquareColor;
   }
+  
   @Override
   public AmmoColor getColor() {
     return this;
