@@ -1,11 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import it.polimi.se2019.adrenalina.controller.action.game.ActionSelection;
-import it.polimi.se2019.adrenalina.controller.action.game.CheckRespawn;
-import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
-import it.polimi.se2019.adrenalina.controller.action.game.PickPowerUp;
-import it.polimi.se2019.adrenalina.controller.action.game.PowerUpSelection;
-import it.polimi.se2019.adrenalina.controller.action.game.SpawnPointTrackSelection;
+import it.polimi.se2019.adrenalina.controller.action.game.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
@@ -30,6 +25,7 @@ public class TurnController implements Serializable {
   private final BoardController boardController;
   private final transient Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
   private final Timer timer = new Timer();
+  private boolean endGame;
 
   public TurnController(BoardController boardController) {
     this.boardController = boardController;
@@ -79,10 +75,14 @@ public class TurnController implements Serializable {
       timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
         gameAction1.handleTimeout();
         turnActionsQueue.clear();
+        gameAction1.getPlayer().incrementTimeoutCount();
+        if (gameAction1.getPlayer().getTimeoutCount() >= Configuration.getInstance().getSuspendTimeoutCount()) {
+          gameAction1.getPlayer().setStatus(PlayerStatus.SUSPENDED);
+        }
         executeGameActionQueue();
       });
       gameAction.execute(boardController.getBoard());
-    } else {
+    } else if (! endGame) {
       endTurn();
     }
   }
@@ -100,7 +100,11 @@ public class TurnController implements Serializable {
     addTurnActions(Arrays.asList(gameActions));
   }
 
-  private void endTurn() {
+  public void clearActionsQueue() {
+    turnActionsQueue.clear();
+  }
+
+  public void endTurn() {
     Player currentPlayer;
 
     try {
@@ -136,16 +140,29 @@ public class TurnController implements Serializable {
 
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);
 
-    if (currentPlayerIndex + 1 == boardController.getBoard().getPlayers().size()) {
-      currentPlayerIndex = 0;
-      boardController.getBoard().incrementTurnCounter();
-    } else {
-      currentPlayerIndex++;
-    }
-
     boardController.getBoard().removeDoubleKill();
 
-    currentPlayer = boardController.getBoard().getPlayers().get(currentPlayerIndex);
+    if (boardController.getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()) {
+      // Terminate game
+      Log.debug("Il numero di giocatori attivi è sceso sotto alla soglia minima");
+      endGame = true;
+      turnActionsQueue.add(new EndGame());
+      executeGameActionQueue();
+      return;
+    }
+
+    boolean next = true;
+    while (next) {
+      if (currentPlayerIndex + 1 == boardController.getBoard().getPlayers().size()) {
+        currentPlayerIndex = 0;
+        boardController.getBoard().incrementTurnCounter();
+      } else {
+        currentPlayerIndex++;
+      }
+      currentPlayer = boardController.getBoard().getPlayers().get(currentPlayerIndex);
+      next = currentPlayer.getStatus() == PlayerStatus.SUSPENDED;
+    }
+
     boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
 
     refillMap();

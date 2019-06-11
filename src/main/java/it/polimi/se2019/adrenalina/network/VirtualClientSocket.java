@@ -79,6 +79,9 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
     try {
       while (clientSocket.isConnected()) {
         String message = bufferedReader.readLine();
+        if (message == null) {
+          break;
+        }
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Effect.class, new JsonEffectDeserializer());

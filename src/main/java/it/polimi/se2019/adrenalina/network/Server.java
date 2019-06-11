@@ -12,7 +12,10 @@ import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
+
+import java.io.EOFException;
 import java.io.IOException;
+import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -232,6 +235,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
           game.notifyPlayerQuit(player);
           game.removePlayer(player);
           playing.remove(player);
+          game.handleDisconnect(player.getColor());
           break;
         } catch (InvalidPlayerException ignored) {
           //

@@ -22,6 +22,7 @@ import it.polimi.se2019.adrenalina.model.TagbackGrenade;
 import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.IOUtils;
@@ -287,6 +288,14 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  public void handleDisconnect(PlayerColor player) {
+    Log.println("DISCONNESSO");
+    if (player == board.getCurrentPlayer()) {
+      turnController.clearActionsQueue();
+      turnController.endTurn();
+    }
+  }
+
   /**
    * Starts a timer both server-side and on each client
    */
@@ -400,7 +409,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    */
   public List<Player> getActivePlayers() {
     return board.getPlayers().stream()
-        .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED)
+        .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED && x.getStatus() != PlayerStatus.SUSPENDED)
         .collect(Collectors.toList());
   }
 
