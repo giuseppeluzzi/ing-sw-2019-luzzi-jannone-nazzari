@@ -14,6 +14,7 @@
                     "target": 0,
                     "damages": 1,
                     "tag": 0,
+                    "differentFrom" : [0],
                     "type": "SHOOT_SQUARE"
                 }
             ],
@@ -30,6 +31,7 @@
                     "target": 0,
                     "damages": 2,
                     "tag": 0,
+                    "differentFrom" : [0],
                     "type": "SHOOT_SQUARE"
                 }
             ],

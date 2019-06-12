@@ -59,6 +59,7 @@ public class TUIUtils {
 
   static Effect showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InputCancelledException {
     String prompt;
+    int result;
     if (areSubEffects) {
       prompt = "Ora scegli quali effetti secondari aggiungere:";
     } else {
@@ -68,7 +69,16 @@ public class TUIUtils {
     for (Effect effect : effects) {
       choices.add(effect.getName());
     }
+    if (areSubEffects) {
+      choices.add("Non usare nessun powerup");
+    }
     inputManager.input(prompt, choices);
-    return effects.get(inputManager.waitForIntResult());
+    result = inputManager.waitForIntResult();
+    if (areSubEffects) {
+      if (result >= effects.size()) {
+        return null;
+      }
+    }
+    return effects.get(result);
   }
 }

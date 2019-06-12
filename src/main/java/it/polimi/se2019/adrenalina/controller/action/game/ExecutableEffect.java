@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootRoomAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootSquareAction;
@@ -19,8 +20,8 @@ public class ExecutableEffect extends GameAction {
   private final ExecutableObject executableObject;
   private final WeaponAction weaponAction;
 
-  public ExecutableEffect(Player player, ExecutableObject executableObject, WeaponAction weaponAction) {
-    super(player);
+  public ExecutableEffect(TurnController turnController, Player player, ExecutableObject executableObject, WeaponAction weaponAction) {
+    super(turnController, player);
     this.executableObject = executableObject;
     this.weaponAction = weaponAction;
   }
@@ -43,18 +44,21 @@ public class ExecutableEffect extends GameAction {
         switch (weaponAction.getActionType()) {
           case SHOOT:
             Target target = executableObject.getTargetHistory(((ShootAction) weaponAction).getTarget());
-            getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), target.getPlayer(), false, false));
+            getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), getPlayer(), false, true));
+            getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), target.getPlayer(), false, true));
             break;
           case SHOOT_SQUARE:
             players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
             for (Player player : players) {
-              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), player, false, false));
+              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), getPlayer(), false, true));
+              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), player, false, true));
             }
             break;
           case SHOOT_ROOM:
             players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
             for (Player player : players) {
-              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), player, false, false));
+              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), getPlayer(), false, true));
+              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), player, false, true));
             }
             break;
         }

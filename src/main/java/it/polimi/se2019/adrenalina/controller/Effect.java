@@ -163,7 +163,7 @@ public class Effect implements Buyable {
     List<GameAction> turnActions = new ArrayList<>();
 
     for (WeaponAction action : localWeapon.getEffectByName(name).getActions()) {
-      turnActions.add(new ExecutableEffect(player, localWeapon, action));
+      turnActions.add(new ExecutableEffect(turnController, player, localWeapon, action));
     }
 
     turnController.addTurnActions(turnActions);

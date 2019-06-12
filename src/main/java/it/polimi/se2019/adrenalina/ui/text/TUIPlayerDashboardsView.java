@@ -207,6 +207,41 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static boolean verifyPaymentFullfilled(Set<String> answers, List<Spendable> spendables,
       Map<AmmoColor, Integer> costs) {
+
+    int blueCost = costs.get(AmmoColor.BLUE);
+    int redCost = costs.get(AmmoColor.RED);
+    int yellowCost = costs.get(AmmoColor.YELLOW);
+    int anyCost = costs.get(AmmoColor.ANY);
+
+    for (String answer : answers) {
+      if (spendables.get(Integer.parseInt(answer) - 1).getColor() == AmmoColor.BLUE) {
+        if (blueCost > 0) {
+          blueCost--;
+        } else if (anyCost > 0) {
+          anyCost--;
+        }
+      } else if (spendables.get(Integer.parseInt(answer) - 1).getColor() == AmmoColor.RED) {
+        if (redCost > 0) {
+          redCost--;
+        } else if (anyCost > 0) {
+          anyCost--;
+        }
+      } else if (spendables.get(Integer.parseInt(answer) - 1).getColor() == AmmoColor.YELLOW) {
+        if (yellowCost > 0) {
+          yellowCost--;
+        } else if (anyCost > 0) {
+          anyCost--;
+        }
+      }
+    }
+
+    if (blueCost + redCost + yellowCost + anyCost == 0) {
+      return true;
+    }
+
+    return false;
+
+/*
     for (AmmoColor ammoColor : AmmoColor.values()) {
       if (answers.stream().filter(x -> spendables.get(Integer.parseInt(x) - 1).getColor()
           == ammoColor).count() != costs.get(ammoColor)) {
@@ -215,6 +250,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       }
     }
     return true;
+*/
   }
 
   @Override
@@ -243,14 +279,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       return;
     }
     List<String> chosenEffectsNames = new ArrayList<>();
-
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
       Log.debug("aa1 " + chosenEffects.get(chosenEffects.size() - 1));
       try {
-        chosenEffects.add(
-            TUIUtils
-                .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
-                    true));
+        Effect toAdd = TUIUtils
+            .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
+                true);
+        if (toAdd == null) {
+          break;
+        }
+        chosenEffects.add(toAdd);
       } catch (InputCancelledException ignored) {
         // return
       }
