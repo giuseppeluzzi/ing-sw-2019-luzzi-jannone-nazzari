@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.PowerUpType;
+import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -16,11 +17,13 @@ public class PowerUpSelection extends GameAction {
 
   private final boolean discard;
   private final boolean attack;
+  private final Target target;
 
-  public PowerUpSelection(TurnController turnController, Player player, boolean discard, boolean attack) {
+  public PowerUpSelection(TurnController turnController, Player player, Target target, boolean discard, boolean attack) {
     super(turnController, player);
     this.discard = discard;
     this.attack = attack;
+    this.target = target;
   }
 
   public boolean isDiscard() {
@@ -35,6 +38,7 @@ public class PowerUpSelection extends GameAction {
     List<PowerUp> powerUpList = new ArrayList<>();
     for (PowerUp powerUp : getPlayer().getPowerUps()) {
       if (powerUp.getType() == PowerUpType.TARGETING_SCOPE) {
+        powerUp.setTargetHistory(1, target);
         powerUpList.add(powerUp);
       }
     }
@@ -65,10 +69,11 @@ public class PowerUpSelection extends GameAction {
     return result;
   }
 
-  private List<PowerUp> getGranades() {
+  private List<PowerUp> getGranades(Board board) {
     List<PowerUp> powerUpList = new ArrayList<>();
     for (PowerUp powerUp : getPlayer().getPowerUps()) {
       if (powerUp.getType() == PowerUpType.TAGBACK_GRANADE) {
+        powerUp.setTargetHistory(1, getPlayer());
         powerUpList.add(powerUp);
       }
     }
@@ -84,7 +89,7 @@ public class PowerUpSelection extends GameAction {
         powerUps.addAll(getNotAttackPowerUps(board));
       }
     } else {
-      powerUps.addAll(getGranades());
+      powerUps.addAll(getGranades(board));
     }
 
     return powerUps;

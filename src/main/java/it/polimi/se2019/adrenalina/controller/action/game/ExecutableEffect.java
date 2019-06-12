@@ -19,11 +19,14 @@ public class ExecutableEffect extends GameAction {
 
   private final ExecutableObject executableObject;
   private final WeaponAction weaponAction;
+  private final boolean isWeapon;
 
-  public ExecutableEffect(TurnController turnController, Player player, ExecutableObject executableObject, WeaponAction weaponAction) {
+  public ExecutableEffect(TurnController turnController, Player player,
+      ExecutableObject executableObject, WeaponAction weaponAction, boolean isWeapon) {
     super(turnController, player);
     this.executableObject = executableObject;
     this.weaponAction = weaponAction;
+    this.isWeapon = isWeapon;
   }
 
   public ExecutableObject getExecutableObject() {
@@ -41,26 +44,41 @@ public class ExecutableEffect extends GameAction {
         Log.debug("WA: " + weaponAction.getActionType());
         List<Player> players;
         weaponAction.execute(board, executableObject);
-        switch (weaponAction.getActionType()) {
-          case SHOOT:
-            Target target = executableObject.getTargetHistory(((ShootAction) weaponAction).getTarget());
-            getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), getPlayer(), false, true));
-            getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), target.getPlayer(), false, true));
-            break;
-          case SHOOT_SQUARE:
-            players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
-            for (Player player : players) {
-              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), getPlayer(), false, true));
-              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), player, false, true));
-            }
-            break;
-          case SHOOT_ROOM:
-            players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
-            for (Player player : players) {
-              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), getPlayer(), false, true));
-              getTurnController().addTurnActions(new PowerUpSelection(getTurnController(), player, false, true));
-            }
-            break;
+        if (isWeapon) {
+          switch (weaponAction.getActionType()) {
+            case SHOOT:
+              Target target = executableObject
+                  .getTargetHistory(((ShootAction) weaponAction).getTarget());
+              getTurnController().addTurnActions(
+                  new PowerUpSelection(getTurnController(), getPlayer(), target,
+                      false, true));
+              getTurnController().addTurnActions(
+                  new PowerUpSelection(getTurnController(), target.getPlayer(),
+                      null, false, false));
+              break;
+            case SHOOT_SQUARE:
+              players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
+              for (Player player : players) {
+                getTurnController().addTurnActions(
+                    new PowerUpSelection(getTurnController(), getPlayer(),
+                        player, false, true));
+                getTurnController().addTurnActions(
+                    new PowerUpSelection(getTurnController(), player,
+                        getPlayer(), false, false));
+              }
+              break;
+            case SHOOT_ROOM:
+              players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
+              for (Player player : players) {
+                getTurnController().addTurnActions(
+                    new PowerUpSelection(getTurnController(), getPlayer(), player,
+                        false, true));
+                getTurnController().addTurnActions(
+                    new PowerUpSelection(getTurnController(), player,
+                        getPlayer(), false, false));
+              }
+              break;
+          }
         }
       } catch (NoTargetsException e) {
         if (e.isRollback()) {

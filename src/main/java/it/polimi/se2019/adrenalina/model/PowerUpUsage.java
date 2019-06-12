@@ -41,7 +41,7 @@ public class PowerUpUsage implements Buyable {
     List<GameAction> actions = new ArrayList<>();
 
     for (WeaponAction action : powerUp.getActions()) {
-      actions.add(new ExecutableEffect(turnController, player, powerUp, action));
+      actions.add(new ExecutableEffect(turnController, player, powerUp, action, false));
       Log.println(action.getActionType().toString());
     }
     actions.add(new DiscardPowerUp(turnController, player, powerUp));

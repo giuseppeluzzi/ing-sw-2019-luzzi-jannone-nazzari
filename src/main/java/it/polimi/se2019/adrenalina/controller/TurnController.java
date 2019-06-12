@@ -173,12 +173,12 @@ public class TurnController implements Serializable {
   private void addFirstSpawn(Player player) {
     player.setStatus(PlayerStatus.PLAYING);
     addTurnActions(new PickPowerUp(player), new PickPowerUp(player),
-        new PowerUpSelection(this, player, true, false));
+        new PowerUpSelection(this, player, null, true, false));
   }
 
   public void addRespawn(Player player) {
     player.setStatus(PlayerStatus.PLAYING);
-    addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, true, false));
+    addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, null, true, false));
     if (boardController.getBoard().isDominationBoard()
         && player.getDamages().size() == Constants.OVERKILL_DEATH) {
       Player killer = null;
@@ -225,9 +225,9 @@ public class TurnController implements Serializable {
 
         if (playerIndex > finalFrenzyActivator) {
           addTurnActions(
-              new PowerUpSelection(this, player, false, false),
+              new PowerUpSelection(this, player, null, false, false),
               new ActionSelection(this, player),
-              new PowerUpSelection(this, player, false, false),
+              new PowerUpSelection(this, player, null, false, false),
               new CheckRespawn(this, player, true));
         } else {
           addBaseGameTurnActions(player);
@@ -240,11 +240,11 @@ public class TurnController implements Serializable {
 
   private void addBaseGameTurnActions(Player player) {
     addTurnActions(
-        new PowerUpSelection(this, player, false, false),
+        new PowerUpSelection(this, player, null, false, false),
         new ActionSelection(this, player),
-        new PowerUpSelection(this, player, false, false),
+        new PowerUpSelection(this, player, null, false, false),
         new ActionSelection(this, player),
-        new PowerUpSelection(this, player, false, false),
+        new PowerUpSelection(this, player, null, false, false),
         new CheckRespawn(this, player, true));
   }
 
