@@ -26,6 +26,7 @@ public class ClientRMI extends Client {
   private BoardViewInterface boardView;
   private CharactersViewInterface charactersView;
   private PlayerDashboardsViewInterface playerDashboardsView;
+  private Thread pooler;
 
   public ClientRMI(String name, boolean domination) {
     super(name, domination);
@@ -53,18 +54,19 @@ public class ClientRMI extends Client {
       return;
     }
 
-    final Thread pooling = new Thread(() -> {
+    pooler = new Thread(() -> {
       while (running) {
         try {
           sleep(1000);
         } catch (InterruptedException e) {
           Log.severe("ClientRMI", "Pooling interrupted! Thread stopped.");
           Thread.currentThread().interrupt();
+          break;
         }
       }
     });
 
-    pooling.start();
+    pooler.start();
   }
 
   public ServerInterface getServer() {
@@ -74,7 +76,7 @@ public class ClientRMI extends Client {
   @Override
   public void disconnect(String message) {
     super.disconnect(message);
-    running = false;
+    pooler.interrupt();
   }
 
   @Override

@@ -56,6 +56,7 @@ public class Player extends Observable implements Target {
   private int powerUpCount;
   private int weaponCount;
   private int score;
+  private int timeoutCount;
 
   private int killScore; // TODO: this should be updated in Final Frenzy mode
 
@@ -228,6 +229,18 @@ public class Player extends Observable implements Target {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+  }
+
+  public int getTimeoutCount() {
+    return timeoutCount;
+  }
+
+  public void incrementTimeoutCount() {
+    timeoutCount++;
+  }
+
+  public void resetTimeoutCount() {
+    timeoutCount = 0;
   }
 
   public List<PlayerColor> getDamages() {

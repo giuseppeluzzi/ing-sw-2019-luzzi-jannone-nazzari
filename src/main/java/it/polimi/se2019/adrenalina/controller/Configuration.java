@@ -29,6 +29,8 @@ public class Configuration {
   private String tuiDamageIcon;
   private List<String> weaponFiles;
   private List<String> mapFiles;
+  private Integer suspendTimeoutCount;
+  private Integer minNumPlayers;
 
   private static Configuration instance;
 
@@ -129,5 +131,13 @@ public class Configuration {
 
   public List<String> getMapFiles() {
     return new ArrayList<>(mapFiles);
+  }
+
+  public Integer getSuspendTimeoutCount() {
+    return suspendTimeoutCount;
+  }
+
+  public Integer getMinNumPlayers() {
+    return minNumPlayers;
   }
 }
