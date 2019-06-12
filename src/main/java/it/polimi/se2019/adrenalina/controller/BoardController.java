@@ -289,7 +289,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   public void handleDisconnect(PlayerColor player) {
-    Log.println("DISCONNESSO");
     if (player == board.getCurrentPlayer()) {
       turnController.clearActionsQueue();
       turnController.endTurn();
@@ -396,6 +395,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     clientsName.remove(player.getClient());
     if (board.getStatus() == BoardStatus.LOBBY) {
       board.removePlayer(player.getColor());
+      if (board.getPlayers().size() >= 2) {
+        startJoinTimer();
+      } else {
+        timer.stop();
+      }
     } else {
       player.setStatus(PlayerStatus.DISCONNECTED);
       player.setClient(null);

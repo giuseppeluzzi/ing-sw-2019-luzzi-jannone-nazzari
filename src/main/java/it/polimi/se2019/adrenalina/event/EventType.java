@@ -125,7 +125,8 @@ public enum EventType {
   DOMINATION_BOARD_DAMAGES_UPDATE(DominationBoardDamagesUpdate.class),
   PLAYER_DEATH_UPDATE(PlayerDeathUpdate.class),
   BOARD_SET_SQUARE_UPDATE(BoardSetSquareUpdate.class),
-  BOARD_ADD_PLAYER_UPDATE(BoardAddPlayerUpdate.class);
+  BOARD_ADD_PLAYER_UPDATE(BoardAddPlayerUpdate.class),
+  PING_EVENT(PingEvent.class);
 
   private final Class<? extends Event> eventClass;
 

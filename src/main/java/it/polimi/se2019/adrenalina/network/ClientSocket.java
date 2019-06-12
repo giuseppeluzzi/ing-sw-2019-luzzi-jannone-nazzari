@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
-import it.polimi.se2019.adrenalina.event.PlayerDisconnectEvent;
+import it.polimi.se2019.adrenalina.event.*;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
@@ -28,12 +25,7 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
 import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
-import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
-import it.polimi.se2019.adrenalina.utils.JsonPowerUpDeserializer;
-import it.polimi.se2019.adrenalina.utils.JsonTargetDeserializer;
-import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
-import it.polimi.se2019.adrenalina.utils.Observer;
+import it.polimi.se2019.adrenalina.utils.*;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
@@ -46,6 +38,8 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+
+import static java.lang.Thread.sleep;
 
 public class ClientSocket extends Client implements Runnable, Observer {
 
@@ -133,6 +127,16 @@ public class ClientSocket extends Client implements Runnable, Observer {
   @Override
   public final void run() {
     if (socket != null) {
+      new Thread(() -> {
+        while (running) {
+          sendEvent(new PingEvent());
+          try {
+            sleep(Constants.PING_INTERVAL);
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+          }
+        }
+      }).start();
       try {
         while (socket.isConnected() && running) {
           String message = bufferedReader.readLine();
