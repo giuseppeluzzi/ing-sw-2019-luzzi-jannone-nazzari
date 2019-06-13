@@ -119,15 +119,6 @@ public class PlayerTest {
 
     player2 = Player.deserialize(json);
 
-    if (player2.getWeapons().isEmpty()) {
-      fail("Deserialized class attributes not matching with actual class attributes");
-    }
-
-    assertEquals(
-        "Deserialized class attributes not matching with actual class attributes",
-        "testWeapon",
-        player2.getWeapons().get(0).getName());
-
     List<PlayerColor> damages = new ArrayList<>();
     damages.add(PlayerColor.BLUE);
     damages.add(PlayerColor.BLUE);

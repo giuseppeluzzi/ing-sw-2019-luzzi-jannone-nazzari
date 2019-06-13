@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
@@ -22,6 +23,7 @@ import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -785,7 +787,9 @@ public class Player extends Observable implements Target {
    * @return JSON string containing serialized object
    */
   public String serialize() {
-    Gson gson = new Gson();
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy());
+    Gson gson = gsonBuilder.create();
     return gson.toJson(this);
   }
 

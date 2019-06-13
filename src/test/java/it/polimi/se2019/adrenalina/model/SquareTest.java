@@ -33,8 +33,8 @@ public class SquareTest {
     base = new Square(2, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
     north = new Square(2, 3, SquareColor.RED, WALL, WALL, WALL, WALL, null);
     south = new Square(2, 1, SquareColor.RED, WALL, WALL, WALL, WALL, null);
-    west = new Square(1, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
-    east = new Square(3, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+    west = new Square(3, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+    east = new Square(1, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
   }
 
   @Test(expected = IllegalStateException.class)

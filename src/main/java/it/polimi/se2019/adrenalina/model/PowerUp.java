@@ -11,7 +11,7 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
 
   private static final long serialVersionUID = 8948751912601215729L;
   private final AmmoColor color;
-  private final List<WeaponAction> actions;
+  private final transient List<WeaponAction> actions;
   private final boolean doesCost;
   private final PowerUpType type;
 
