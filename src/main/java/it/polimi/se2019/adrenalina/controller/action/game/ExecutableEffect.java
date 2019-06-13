@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -19,14 +20,12 @@ public class ExecutableEffect extends GameAction {
 
   private final ExecutableObject executableObject;
   private final WeaponAction weaponAction;
-  private final boolean isWeapon;
 
   public ExecutableEffect(TurnController turnController, Player player,
-      ExecutableObject executableObject, WeaponAction weaponAction, boolean isWeapon) {
+      ExecutableObject executableObject, WeaponAction weaponAction) {
     super(turnController, player);
     this.executableObject = executableObject;
     this.weaponAction = weaponAction;
-    this.isWeapon = isWeapon;
   }
 
   public ExecutableObject getExecutableObject() {
@@ -44,7 +43,7 @@ public class ExecutableEffect extends GameAction {
         Log.debug("WA: " + weaponAction.getActionType());
         List<Player> players;
         weaponAction.execute(board, executableObject);
-        if (isWeapon) {
+        if (executableObject.isWeapon()) {
           switch (weaponAction.getActionType()) {
             case SHOOT:
               Target target = executableObject
@@ -55,6 +54,7 @@ public class ExecutableEffect extends GameAction {
               getTurnController().addTurnActions(
                   new PowerUpSelection(getTurnController(), target.getPlayer(),
                       null, false, false));
+              ((Weapon) executableObject).setLoaded(false);
               break;
             case SHOOT_SQUARE:
               players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
@@ -66,6 +66,7 @@ public class ExecutableEffect extends GameAction {
                     new PowerUpSelection(getTurnController(), player,
                         getPlayer(), false, false));
               }
+              ((Weapon) executableObject).setLoaded(false);
               break;
             case SHOOT_ROOM:
               players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
@@ -77,6 +78,7 @@ public class ExecutableEffect extends GameAction {
                     new PowerUpSelection(getTurnController(), player,
                         getPlayer(), false, false));
               }
+              ((Weapon) executableObject).setLoaded(false);
               break;
           }
         }

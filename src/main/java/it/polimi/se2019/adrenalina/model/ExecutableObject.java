@@ -135,4 +135,6 @@ public abstract class ExecutableObject extends Observable {
   }
 
   public abstract String getSymbol();
+
+  public abstract boolean isWeapon();
 }

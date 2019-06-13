@@ -70,7 +70,7 @@ public class TUIUtils {
       choices.add(effect.getName());
     }
     if (areSubEffects) {
-      choices.add("Non usare nessun powerup");
+      choices.add("Non aggiungere nessun effetto");
     }
     inputManager.input(prompt, choices);
     result = inputManager.waitForIntResult();

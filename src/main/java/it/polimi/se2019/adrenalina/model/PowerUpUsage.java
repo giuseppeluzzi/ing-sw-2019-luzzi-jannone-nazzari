@@ -2,7 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
-import it.polimi.se2019.adrenalina.controller.action.game.DiscardPowerUp;
+import it.polimi.se2019.adrenalina.controller.action.game.AfterUsageExecutable;
 import it.polimi.se2019.adrenalina.controller.action.game.ExecutableEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
@@ -41,10 +41,10 @@ public class PowerUpUsage implements Buyable {
     List<GameAction> actions = new ArrayList<>();
 
     for (WeaponAction action : powerUp.getActions()) {
-      actions.add(new ExecutableEffect(turnController, player, powerUp, action, false));
+      actions.add(new ExecutableEffect(turnController, player, powerUp, action));
       Log.println(action.getActionType().toString());
     }
-    actions.add(new DiscardPowerUp(turnController, player, powerUp));
+    actions.add(new AfterUsageExecutable(turnController, player, powerUp));
     turnController.addTurnActions(actions);
     turnController.executeGameActionQueue();
   }

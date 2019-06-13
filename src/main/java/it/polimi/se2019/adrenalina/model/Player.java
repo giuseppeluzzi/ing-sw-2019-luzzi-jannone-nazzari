@@ -19,6 +19,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -343,7 +344,7 @@ public class Player extends Observable implements Target {
   private List<PlayerColor> getPlayerRankings() {
     List<PlayerColor> output = new ArrayList<>();
     List<PlayerColor> distinctPlayers = damages.stream().distinct().collect(Collectors.toList());
-    EnumMap<PlayerColor, Integer> damageCount = new EnumMap<>(PlayerColor.class);
+    Map<PlayerColor, Integer> damageCount = new EnumMap<>(PlayerColor.class);
     for (PlayerColor player : distinctPlayers) {
       damageCount.put(player, Collections.frequency(damages, player));
     }
@@ -553,15 +554,17 @@ public class Player extends Observable implements Target {
     weapons.add(weapon);
     weaponCount++;
     weapon.setTargetHistory(0, this);
-    if (client != null) {
-      try {
-        weapon.addObserver(client.getBoardView());
-        weapon.addObserver(client.getPlayerDashboardsView());
-        weapon.addObserver(client.getCharactersView());
-        notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
-        notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
-      } catch (RemoteException e) {
-        Log.exception(e);
+    for (Player player : board.getPlayers()) {
+      if (player.client != null) {
+        try {
+          weapon.addObserver(player.client.getBoardView());
+          weapon.addObserver(player.client.getPlayerDashboardsView());
+          weapon.addObserver(player.client.getCharactersView());
+          notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+          notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
       }
     }
   }

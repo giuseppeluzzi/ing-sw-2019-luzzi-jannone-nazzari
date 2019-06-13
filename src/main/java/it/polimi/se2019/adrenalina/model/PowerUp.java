@@ -77,4 +77,9 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
     throw new IllegalStateException("Must use a decorator");
   }
+
+  @Override
+  public boolean isWeapon() {
+    return false;
+  }
 }

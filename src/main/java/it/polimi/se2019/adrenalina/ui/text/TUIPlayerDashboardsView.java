@@ -240,17 +240,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
 
     return false;
-
-/*
-    for (AmmoColor ammoColor : AmmoColor.values()) {
-      if (answers.stream().filter(x -> spendables.get(Integer.parseInt(x) - 1).getColor()
-          == ammoColor).count() != costs.get(ammoColor)) {
-        Log.println("Non hai pagato l'intera somma!");
-        return false;
-      }
-    }
-    return true;
-*/
   }
 
   @Override

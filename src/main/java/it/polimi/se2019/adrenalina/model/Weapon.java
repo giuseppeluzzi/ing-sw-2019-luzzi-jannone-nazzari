@@ -6,9 +6,13 @@ import com.google.gson.JsonDeserializer;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +93,20 @@ public class Weapon extends ExecutableObject implements Buyable {
    */
   public void setLoaded(boolean loaded) {
     this.loaded = loaded;
+    try {
+      Player owner = getOwner();
+      if (owner.getClient() != null) {
+        try {
+          notifyObservers(new OwnWeaponUpdate(owner.getColor(), owner.getWeapons()));
+          notifyObservers(new EnemyWeaponUpdate(owner.getColor(),
+              owner.getWeaponCount(), owner.getUnloadedWeapons()));
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
+      }
+    } catch (IllegalStateException ignore) {
+      //
+    }
   }
 
   /**
@@ -231,7 +249,6 @@ public class Weapon extends ExecutableObject implements Buyable {
           break;
         }
       }
-
       player.addWeapon(this);
     }
     turnController.executeGameActionQueue();
@@ -240,6 +257,11 @@ public class Weapon extends ExecutableObject implements Buyable {
   @Override
   public String getSymbol() {
     return symbol;
+  }
+
+  @Override
+  public boolean isWeapon() {
+    return true;
   }
 
   /**

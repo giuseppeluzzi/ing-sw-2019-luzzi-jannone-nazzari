@@ -149,6 +149,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   @Override
   public void ping() {
     if (clientSocket.isClosed() || !clientSocket.isConnected() || System.currentTimeMillis() - lastPing > 2 * Constants.PING_INTERVAL) {
+      // TODO commentare le due righe seguenti in caso di debug, non committare senza prima decommentare!
       Log.warn("Client " + name + " has stopped pinging; disconnecting");
       server.clientDisconnect(this);
     }
