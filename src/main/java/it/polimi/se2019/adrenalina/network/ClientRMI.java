@@ -10,8 +10,8 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+
+import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -33,7 +33,7 @@ public class ClientRMI extends Client {
 
     try {
       Registry registry = LocateRegistry.getRegistry(Configuration.getInstance().getServerIP(),
-          Configuration.getInstance().getRmiPort());
+              Configuration.getInstance().getRmiPort());
       server = (ServerInterface) registry.lookup("MyServer");
 
       boardView = new TUIBoardView(this);
@@ -77,6 +77,7 @@ public class ClientRMI extends Client {
   public void disconnect(String message) {
     super.disconnect(message);
     pooler.interrupt();
+    System.exit(0);
   }
 
   @Override

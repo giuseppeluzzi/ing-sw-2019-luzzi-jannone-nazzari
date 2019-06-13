@@ -137,9 +137,7 @@ public class TurnController implements Serializable {
     }
 
     Log.debug(currentPlayer.getName() + " ha terminato il turno!");
-
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);
-
     boardController.getBoard().removeDoubleKill();
 
     if (boardController.getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()) {
@@ -150,7 +148,6 @@ public class TurnController implements Serializable {
       executeGameActionQueue();
       return;
     }
-
     boolean next = true;
     while (next) {
       if (currentPlayerIndex + 1 == boardController.getBoard().getPlayers().size()) {
@@ -162,9 +159,7 @@ public class TurnController implements Serializable {
       currentPlayer = boardController.getBoard().getPlayers().get(currentPlayerIndex);
       next = currentPlayer.getStatus() == PlayerStatus.SUSPENDED;
     }
-
     boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
-
     refillMap();
     addGameTurn(currentPlayer);
     executeGameActionQueue();

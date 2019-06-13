@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.event.*;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
@@ -262,7 +263,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
           }
         }
       } catch (IOException e) {
-        Log.exception(e);
+        disconnect("La connessione con il server è stata persa!");
       }
     }
   }

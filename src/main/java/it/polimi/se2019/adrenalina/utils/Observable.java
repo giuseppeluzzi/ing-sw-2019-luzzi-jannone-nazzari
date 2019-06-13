@@ -1,6 +1,8 @@
 package it.polimi.se2019.adrenalina.utils;
 
 import it.polimi.se2019.adrenalina.event.Event;
+
+import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +32,13 @@ public class Observable implements RemoteObservable {
   }
 
   protected void notifyObservers(Event event) throws RemoteException {
-    for (Observer observer : observers) {
+    for (Observer observer : new ArrayList<>(observers)) {
       if (event.getPrivatePlayerColor() == null || observer.getPrivatePlayerColor() == event.getPrivatePlayerColor()) {
-        observer.update(event);
+        try {
+          observer.update(event);
+        } catch (ConnectException e) {
+          observers.remove(observer);
+        }
       }
     }
   }
