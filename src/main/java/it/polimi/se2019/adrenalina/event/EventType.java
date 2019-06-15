@@ -1,22 +1,6 @@
 package it.polimi.se2019.adrenalina.event;
 
-import it.polimi.se2019.adrenalina.event.invocations.ShowBoardInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowFinalRanksInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.invocations.*;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
@@ -40,26 +24,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
-import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectAmmoEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerNoCollectEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 
 public enum EventType {
   FINAL_FRENZY_TOGGLE_EVENT(FinalFrenzyToggleEvent.class),
@@ -85,6 +50,7 @@ public enum EventType {
   SPAWN_POINT_DAMAGE_EVENT(SpawnPointDamageEvent.class),
   SQUARE_MOVE_SELECTION_EVENT(SquareMoveSelectionEvent.class),
   TIMER_SET_EVENT(TimerSetEvent.class),
+  PLAYER_UNSUSPEND_EVENT(PlayerUnsuspendEvent.class),
   // Invocations
   SHOW_BOARD_INVOCATION(ShowBoardInvocation.class),
   SHOW_MESSAGE_INVOCATION(ShowMessageInvocation.class),
@@ -102,6 +68,7 @@ public enum EventType {
   SWITCH_TO_FINAL_FRENZY_INVOCATION(SwitchToFinalFrenzyInvocation.class),
   SHOW_SWAP_WEAPON_SELECTION_INVOCATION(ShowSwapWeaponSelectionInvocation.class),
   SHOW_FINAL_RANKS_INVOCATION(ShowFinalRanksInvocation.class),
+  SHOW_UNSUSPEND_PROMPT_INVOCATION(ShowUnsuspendPromptInvocation.class),
   // Model View Events
   PLAYER_POSITION_UPDATE(PlayerPositionUpdate.class),
   PLAYER_FRENZY_UPDATE(PlayerFrenzyUpdate.class),

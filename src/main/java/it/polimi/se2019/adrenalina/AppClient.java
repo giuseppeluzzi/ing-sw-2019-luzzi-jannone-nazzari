@@ -34,7 +34,7 @@ public class AppClient {
         inputManager.cancel("");
       }
 
-      inputManager.input("Come ti chiami? (max. 12 caratteri)", Constants.MAX_NAME_LENGTH);
+      inputManager.input("Come ti chiami? (max. 12 caratteri)", 1, Constants.MAX_NAME_LENGTH);
       try {
         name = inputManager.waitForStringResult();
       } catch (InputCancelledException ignored) {

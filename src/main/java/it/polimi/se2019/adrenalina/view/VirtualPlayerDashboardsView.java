@@ -5,13 +5,7 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.*;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -73,6 +67,11 @@ public class VirtualPlayerDashboardsView extends Observable implements
   @Override
   public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
     clientSocket.sendEvent(new ShowSwapWeaponSelectionInvocation(ownWeapons, squareWeapons));
+  }
+
+  @Override
+  public void showUnsuspendPrompt() {
+    clientSocket.sendEvent(new ShowUnsuspendPromptInvocation());
   }
 
   @Override

@@ -6,17 +6,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
-import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.network.Client;
@@ -215,6 +205,11 @@ public class Player extends Observable implements Target {
 
   public void setStatus(PlayerStatus status) {
     this.status = status;
+    try {
+      notifyObservers(new PlayerStatusUpdate(color, status));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public int getScore() {

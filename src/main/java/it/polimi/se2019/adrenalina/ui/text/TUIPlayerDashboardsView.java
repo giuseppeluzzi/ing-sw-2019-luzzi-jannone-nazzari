@@ -5,13 +5,7 @@ import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
@@ -356,6 +350,21 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
               .get(chosenTarget - 1).getType(), powerUps.get(chosenTarget - 1).getColor()));
         }
       }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  @Override
+  public void showUnsuspendPrompt() {
+    inputManager.input("Sei stato sospeso dalla partita. Premi invio per ricominciare a giocare...", 0, Integer.MAX_VALUE);
+    try {
+      inputManager.waitForStringResult();
+    } catch (InputCancelledException e) {
+      return;
+    }
+    try {
+      notifyObservers(new PlayerUnsuspendEvent(client.getPlayerColor()));
     } catch (RemoteException e) {
       Log.exception(e);
     }

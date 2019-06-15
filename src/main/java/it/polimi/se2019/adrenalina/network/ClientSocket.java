@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
+import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.event.*;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
@@ -20,6 +21,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvo
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Target;
@@ -255,6 +257,11 @@ public class ClientSocket extends Client implements Runnable, Observer {
               break;
             case SHOW_FINAL_RANKS_INVOCATION:
               boardView.showFinalRanks();
+              break;
+            case PLAYER_STATUS_UPDATE:
+              if (((PlayerStatusUpdate) event).getPlayerStatus() == PlayerStatus.SUSPENDED) {
+                playerDashboardsView.showUnsuspendPrompt();
+              }
               break;
             default:
               boardView.update(event);
