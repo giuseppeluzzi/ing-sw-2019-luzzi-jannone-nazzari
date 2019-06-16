@@ -272,14 +272,13 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     board.takeWeapon(weapon1);
     player.addWeapon(weapon1);
     board.takeWeapon(weapon2);
-    player.addWeapon(weapon2);
+    player.addWeapon(weapon2);*/
     if ("nazza".equals(player.getName())){
-      player.addWeapon(board.getWeaponByName("Fucile laser"));
       player.addAmmo(AmmoColor.RED, 3);
       player.addAmmo(AmmoColor.BLUE, 3);
       player.addAmmo(AmmoColor.YELLOW, 3);
 
-    }*/
+    }
     // END CHEAT SUITE
 
 

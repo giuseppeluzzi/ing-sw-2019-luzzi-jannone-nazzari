@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowFinalRanksInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowReloadWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
@@ -102,6 +103,7 @@ public enum EventType {
   SWITCH_TO_FINAL_FRENZY_INVOCATION(SwitchToFinalFrenzyInvocation.class),
   SHOW_SWAP_WEAPON_SELECTION_INVOCATION(ShowSwapWeaponSelectionInvocation.class),
   SHOW_FINAL_RANKS_INVOCATION(ShowFinalRanksInvocation.class),
+  SHOW_RELOAD_WEAPON_SELECTION_INVOCATION(ShowReloadWeaponSelectionInvocation.class),
   // Model View Events
   PLAYER_POSITION_UPDATE(PlayerPositionUpdate.class),
   PLAYER_FRENZY_UPDATE(PlayerFrenzyUpdate.class),

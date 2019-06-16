@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEve
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
@@ -32,6 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.Ansi.Color;
 
 public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
@@ -310,6 +313,67 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
     try {
       notifyObservers(new PlayerSwapWeaponEvent(client.getPlayerColor(), ownWeapon, squareWeapon));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  @Override
+  public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
+    int chosenTarget = 0;
+    String prompt;
+    List<String> choices = new ArrayList<>();
+
+    for (Weapon weapon : unloadedWeapons) {
+      int costRed = weapon.getCost(AmmoColor.RED);
+      int costBlue = weapon.getCost(AmmoColor.BLUE);
+      int costYellow = weapon.getCost(AmmoColor.YELLOW);
+
+      switch (weapon.getBaseCost()) {
+        case BLUE:
+          costBlue++;
+          break;
+        case RED:
+          costRed++;
+          break;
+        case YELLOW:
+          costYellow++;
+          break;
+        default:
+          break;
+      }
+
+      String current = String.format(weapon.getName() +
+              ", Costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
+          AmmoColor.RED.getAnsiColor(),
+          costRed,
+          ANSIColor.RESET,
+          AmmoColor.BLUE.getAnsiColor(),
+          costBlue,
+          ANSIColor.RESET,
+          AmmoColor.YELLOW.getAnsiColor(),
+          costYellow,
+          ANSIColor.RESET);
+      choices.add(current);
+    }
+
+    choices.add("Non ricaricare nessun'arma");
+    prompt = "Seleziona quali armi vuoi ricaricare";
+
+    inputManager.input(prompt, choices);
+    try {
+      chosenTarget = inputManager.waitForIntResult();
+      timer.stop();
+    } catch (InputCancelledException e) {
+      return;
+    }
+
+    try {
+      if (chosenTarget == unloadedWeapons.size()) {
+        notifyObservers(new PlayerReloadEvent(getPrivatePlayerColor(), null));
+      } else {
+        notifyObservers(new PlayerReloadEvent(getPrivatePlayerColor(), unloadedWeapons.get(chosenTarget).getName()));
+      }
     } catch (RemoteException e) {
       Log.exception(e);
     }

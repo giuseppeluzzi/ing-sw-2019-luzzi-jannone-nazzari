@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowReloadWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
@@ -73,6 +74,11 @@ public class VirtualPlayerDashboardsView extends Observable implements
   @Override
   public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
     clientSocket.sendEvent(new ShowSwapWeaponSelectionInvocation(ownWeapons, squareWeapons));
+  }
+
+  @Override
+  public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
+    clientSocket.sendEvent(new ShowReloadWeaponSelectionInvocation(unloadedWeapons));
   }
 
   @Override

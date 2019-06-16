@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.controller.action.game.ReloadWeapon;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
@@ -20,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class AttackController extends UnicastRemoteObject implements Observer {
@@ -52,16 +54,36 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
-    Weapon weapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
+    List<Weapon> weapons = player.getUnloadedWeapons();
 
-    if (player.hasWeapon(weapon) && player.canReload(weapon)) {
-      for (AmmoColor color : AmmoColor.getValidColor()) {
-        player.addAmmo(color, player.getAmmo(color) - weapon.getCost(color));
+    for (Weapon currWeapon : weapons) {
+      if (!player.canReload(currWeapon)) {
+        weapons.remove(currWeapon);
       }
-      player.addAmmo(weapon.getBaseCost(), player.getAmmo(weapon.getBaseCost()) - 1);
     }
 
-    boardController.getTurnController().executeGameActionQueue();
+    if (event.getWeaponName() != null && !weapons.isEmpty()) {
+      Weapon weapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
+
+      if (player.hasWeapon(weapon) && player.canReload(weapon)) {
+        for (AmmoColor color : AmmoColor.getValidColor()) {
+          player.addAmmo(color, -weapon.getCost(color));
+        }
+        player.addAmmo(weapon.getBaseCost(), -1);
+      }
+      try {
+        weapons.remove(weapon);
+
+        player.getClient().getPlayerDashboardsView().showReloadWeaponSelection(weapons);
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+      boardController.getTurnController().addTurnActions(new ReloadWeapon(player, weapon));
+    } else {
+
+      boardController.getTurnController().executeGameActionQueue();
+    }
+
   }
 
   /**

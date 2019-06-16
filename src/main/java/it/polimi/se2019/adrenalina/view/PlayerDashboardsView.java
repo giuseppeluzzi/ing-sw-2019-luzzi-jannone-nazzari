@@ -72,6 +72,9 @@ public abstract class PlayerDashboardsView extends Observable implements
   @Override
   public abstract void showPowerUpSelection(List<PowerUp> powerUps, boolean discard);
 
+  @Override
+  public abstract void showReloadWeaponSelection(List<Weapon> unloadedWeapons);
+
   public void update(PlayerDamagesTagsUpdate event) {
     Player player = getPlayerByColor(event.getPlayerColor());
 

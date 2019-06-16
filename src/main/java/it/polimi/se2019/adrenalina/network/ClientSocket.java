@@ -13,6 +13,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocati
 import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowReloadWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
@@ -255,6 +256,12 @@ public class ClientSocket extends Client implements Runnable, Observer {
               break;
             case SHOW_FINAL_RANKS_INVOCATION:
               boardView.showFinalRanks();
+              break;
+            case SHOW_RELOAD_WEAPON_SELECTION_INVOCATION:
+              ShowReloadWeaponSelectionInvocation showReloadWeaponSelectionInvocation = gson
+                  .fromJson(message, ShowReloadWeaponSelectionInvocation.class);
+              playerDashboardsView.showReloadWeaponSelection(
+                  showReloadWeaponSelectionInvocation.getUnloadedWeapons());
               break;
             default:
               boardView.update(event);
