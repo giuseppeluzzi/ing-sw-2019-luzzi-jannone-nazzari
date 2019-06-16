@@ -51,6 +51,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EVENT);
     registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EFFECT_EVENT);
     registeredEvents.add(EventType.PLAYER_SWAP_WEAPON_EVENT);
+    registeredEvents.add(EventType.PLAYER_UNSUSPEND_EVENT);
   }
 
   private Player getPlayerFromBoard(Board board, PlayerColor playerColor) {
@@ -390,7 +391,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException e) {
       return;
     }
-    player.setStatus(PlayerStatus.WAITING);
+    player.setStatus(PlayerStatus.PLAYING);
+    player.resetTimeoutCount();
   }
 
   @Override

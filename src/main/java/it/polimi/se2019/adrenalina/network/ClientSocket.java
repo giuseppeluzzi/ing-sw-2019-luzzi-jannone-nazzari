@@ -258,11 +258,6 @@ public class ClientSocket extends Client implements Runnable, Observer {
             case SHOW_FINAL_RANKS_INVOCATION:
               boardView.showFinalRanks();
               break;
-            case PLAYER_STATUS_UPDATE:
-              if (((PlayerStatusUpdate) event).getPlayerStatus() == PlayerStatus.SUSPENDED) {
-                playerDashboardsView.showUnsuspendPrompt();
-              }
-              break;
             default:
               boardView.update(event);
               charactersView.update(event);
