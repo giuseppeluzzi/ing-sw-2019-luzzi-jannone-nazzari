@@ -424,4 +424,19 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       Log.exception(e);
     }
   }
+
+  @Override
+  public void showUnsuspendPrompt() {
+    inputManager.input("Sei stato sospeso dalla partita. Premi invio per ricominciare a giocare...", 0, Integer.MAX_VALUE);
+    try {
+      inputManager.waitForStringResult();
+    } catch (InputCancelledException e) {
+      return;
+    }
+    try {
+      notifyObservers(new PlayerUnsuspendEvent(client.getPlayerColor()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
 }

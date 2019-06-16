@@ -53,4 +53,6 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
   void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) throws RemoteException;
 
   void showReloadWeaponSelection(List<Weapon> unloadedWeapons) throws RemoteException;
+  
+  void showUnsuspendPrompt() throws RemoteException;
 }

@@ -79,6 +79,9 @@ public class VirtualPlayerDashboardsView extends Observable implements
   @Override
   public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
     clientSocket.sendEvent(new ShowReloadWeaponSelectionInvocation(unloadedWeapons));
+    
+  public void showUnsuspendPrompt() {
+    clientSocket.sendEvent(new ShowUnsuspendPromptInvocation());
   }
 
   @Override

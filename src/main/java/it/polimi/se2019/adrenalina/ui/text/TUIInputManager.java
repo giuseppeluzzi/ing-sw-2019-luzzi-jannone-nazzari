@@ -109,12 +109,13 @@ public class TUIInputManager {
   }
 
   /**
-   * Non-blocking method that prompts the user for a string with a maximum length. Reads
+   * Non-blocking method that prompts the user for a string with length constrains. Reads
    * and validates the user's input and stores it in {@code stringResult}.
    * @param prompt the prompt text
+   * @param minLength the minimum input string length
    * @param maxLength the maximum input string length
    */
-  public void input(String prompt, int maxLength) {
+  public void input(String prompt, int minLength, int maxLength) {
     intResult = null;
     stringResult = null;
     cancelled = false;
@@ -133,7 +134,7 @@ public class TUIInputManager {
             return;
           }
         }
-        if (input.length() >= 1 && input.length() <= maxLength) {
+        if (input.length() >= minLength && input.length() <= maxLength) {
           synchronized (lock) {
             stringResult = input;
             lock.notifyAll();
@@ -148,12 +149,12 @@ public class TUIInputManager {
   }
 
   /**
-   * Non-blocking method that prompts the user for a string. Alias for
-   * {@code input(prompt, Integer.MAX_VALUE)}.
+   * Non-blocking method that prompts the user for a non-empty string. Alias for
+   * {@code input(prompt, 1, Integer.MAX_VALUE)}.
    * @param prompt the prompt text
    */
   public void input(String prompt) {
-    input(prompt, Integer.MAX_VALUE);
+    input(prompt, 1, Integer.MAX_VALUE);
   }
 
   /**

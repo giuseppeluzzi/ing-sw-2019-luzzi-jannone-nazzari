@@ -9,16 +9,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.SelectWeapon;
 import it.polimi.se2019.adrenalina.controller.action.game.SquareSelection;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectAmmoEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerNoCollectEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -60,6 +51,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EVENT);
     registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EFFECT_EVENT);
     registeredEvents.add(EventType.PLAYER_SWAP_WEAPON_EVENT);
+    registeredEvents.add(EventType.PLAYER_UNSUSPEND_EVENT);
   }
 
   private Player getPlayerFromBoard(Board board, PlayerColor playerColor) {
@@ -388,6 +380,18 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
 
     boardController.getTurnController().executeGameActionQueue();
+  }
+
+  public void update(PlayerUnsuspendEvent event) {
+    Board board = boardController.getBoard();
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+    player.setStatus(PlayerStatus.PLAYING);
+    player.resetTimeoutCount();
   }
 
   @Override
