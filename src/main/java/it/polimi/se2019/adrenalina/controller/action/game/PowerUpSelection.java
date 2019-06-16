@@ -97,6 +97,11 @@ public class PowerUpSelection extends GameAction {
 
   @Override
   public void execute(Board board) {
+
+    for (PowerUp powerUp : getPlayer().getPowerUps()) {
+      powerUp.reset();
+    }
+
     try {
       if (discard) {
         getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer()

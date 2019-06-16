@@ -3,14 +3,24 @@ package it.polimi.se2019.adrenalina.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import it.polimi.se2019.adrenalina.controller.*;
-import it.polimi.se2019.adrenalina.event.*;
+import it.polimi.se2019.adrenalina.controller.BoardController;
+import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.controller.MessageSeverity;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
+import it.polimi.se2019.adrenalina.event.PlayerDisconnectEvent;
 import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Target;
-import it.polimi.se2019.adrenalina.utils.*;
+import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonPowerUpDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonTargetDeserializer;
+import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
@@ -149,9 +159,9 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   @Override
   public void ping() {
     //if (clientSocket.isClosed() || !clientSocket.isConnected() || System.currentTimeMillis() - lastPing > 2 * Constants.PING_INTERVAL) {
-      // TODO commentare le due righe seguenti in caso di debug, non committare senza prima decommentare!
-      //Log.warn("Client " + name + " has stopped pinging; disconnecting");
-      //server.clientDisconnect(this);
+    // TODO commentare le due righe seguenti in caso di debug, non committare senza prima decommentare!
+    //Log.warn("Client " + name + " has stopped pinging; disconnecting");
+    //server.clientDisconnect(this);
     //}
   }
 

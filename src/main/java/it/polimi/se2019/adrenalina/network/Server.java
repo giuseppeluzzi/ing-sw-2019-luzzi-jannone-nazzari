@@ -5,6 +5,7 @@ import static java.lang.Thread.sleep;
 import it.polimi.se2019.adrenalina.controller.BoardController;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -12,10 +13,7 @@ import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
-
-import java.io.EOFException;
 import java.io.IOException;
-import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -190,8 +188,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
    */
   public boolean isPlayerConnected(String name) {
     for (BoardController game : games) {
-      for (Player activePlayer : game.getActivePlayers()) {
-        if (activePlayer.getName().equals(name)) {
+      for (Player activePlayer : game.getBoard().getPlayers()) {
+        if (activePlayer.getStatus() != PlayerStatus.DISCONNECTED && activePlayer.getName()
+            .equals(name)) {
           return true;
         }
       }

@@ -6,10 +6,20 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
-import it.polimi.se2019.adrenalina.event.modelview.*;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
-import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -387,7 +397,8 @@ public class Player extends Observable implements Target {
       score += 1;
     }
     if (!board.isDominationBoard()) {
-      board.addKillShot(new Kill(damages.get(10), damages.get(Constants.NORMAL_DEATH) == damages.get(10)));
+      board.addKillShot(
+          new Kill(damages.get(10), damages.get(Constants.NORMAL_DEATH) == damages.get(10)));
     }
     if (killScore > 1) {
       killScore -= 2;
@@ -549,16 +560,18 @@ public class Player extends Observable implements Target {
     weapons.add(weapon);
     weaponCount++;
     weapon.setTargetHistory(0, this);
-    for (Player player : board.getPlayers()) {
-      if (player.client != null) {
-        try {
-          weapon.addObserver(player.client.getBoardView());
-          weapon.addObserver(player.client.getPlayerDashboardsView());
-          weapon.addObserver(player.client.getCharactersView());
-          notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
-          notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
-        } catch (RemoteException e) {
-          Log.exception(e);
+    if (board != null) {
+      for (Player player : board.getPlayers()) {
+        if (player.client != null) {
+          try {
+            weapon.addObserver(player.client.getBoardView());
+            weapon.addObserver(player.client.getPlayerDashboardsView());
+            weapon.addObserver(player.client.getCharactersView());
+            notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+            notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
+          } catch (RemoteException e) {
+            Log.exception(e);
+          }
         }
       }
     }

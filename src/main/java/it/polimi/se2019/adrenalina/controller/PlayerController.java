@@ -9,7 +9,17 @@ import it.polimi.se2019.adrenalina.controller.action.game.SelectWeapon;
 import it.polimi.se2019.adrenalina.controller.action.game.SquareSelection;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.viewcontroller.*;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectAmmoEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerNoCollectEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerUnsuspendEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -139,7 +149,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   }
 
   public void update(PlayerPowerUpEvent event) {
-    List<GameAction> actions = new ArrayList<>();
     Board board = boardController.getBoard();
     Player player;
     try {
@@ -164,7 +173,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     Buyable buyable = new PowerUpUsage(powerUp);
     player.setCurrentBuying(buyable);
     player.setCurrentExecutable(powerUp);
-    boardController.getTurnController().addTurnActions(new Payment(boardController.getTurnController(), player, buyable));
+    boardController.getTurnController()
+        .addTurnActions(new Payment(boardController.getTurnController(), player, buyable));
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -250,7 +260,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     spawnPlayer(player, powerUp);
 
-
     // CHEAT SUITE
     // TODO CANCELLARE
     //player.addAmmo(AmmoColor.RED, 3);
@@ -265,14 +274,13 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     player.addWeapon(weapon1);
     board.takeWeapon(weapon2);
     player.addWeapon(weapon2);*/
-    if ("nazza".equals(player.getName())){
+    if ("nazza".equals(player.getName())) {
       player.addAmmo(AmmoColor.RED, 3);
       player.addAmmo(AmmoColor.BLUE, 3);
       player.addAmmo(AmmoColor.YELLOW, 3);
 
     }
     // END CHEAT SUITE
-
 
     boardController.getTurnController().executeGameActionQueue();
   }
@@ -293,9 +301,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         && player.getAmmo(AmmoColor.RED) >= event.getRed()
         && player.getAmmo(AmmoColor.YELLOW) >= event.getYellow()) {
 
-      player.addAmmo(AmmoColor.BLUE, - event.getBlue());
-      player.addAmmo(AmmoColor.RED, - event.getRed());
-      player.addAmmo(AmmoColor.YELLOW, - event.getYellow());
+      player.addAmmo(AmmoColor.BLUE, -event.getBlue());
+      player.addAmmo(AmmoColor.RED, -event.getRed());
+      player.addAmmo(AmmoColor.YELLOW, -event.getYellow());
 
       for (PowerUp powerUp : event.getPowerUps()) {
         PowerUp localPowerUp = player.getPowerUp(powerUp.getType(), powerUp.getColor());

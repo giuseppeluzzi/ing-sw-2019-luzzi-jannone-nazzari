@@ -93,6 +93,7 @@ public class ExecutableEffect extends GameAction {
               executableObject));
         }
         executableObject.setCancelled(true);
+        getTurnController().executeGameActionQueue();
       } catch (InvalidSquareException ignored) {
         //
       }

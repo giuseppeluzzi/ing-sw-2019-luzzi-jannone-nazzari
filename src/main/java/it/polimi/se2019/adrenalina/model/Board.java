@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class describes a game board.
@@ -229,6 +231,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set northern neighbour of a square if it exists.
+   *
    * @param square whose neighbour will be set
    */
   private static void setNorthNeighbour(Square square, Board board, boolean reciprocal) {
@@ -245,6 +248,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set southern neighbour of a square if it exists.
+   *
    * @param square whose neighbour will be set
    */
   private static void setSouthNeighbour(Square square, Board board, boolean reciprocal) {
@@ -429,6 +433,18 @@ public class Board extends Observable implements Serializable {
    */
   public List<Player> getPlayers() {
     return new ArrayList<>(players);
+  }
+
+  /**
+   * Gets a list of online player of this board
+   *
+   * @return a list of Player
+   */
+  public List<Player> getActivePlayers() {
+    return players.stream()
+        .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED
+            && x.getStatus() != PlayerStatus.SUSPENDED && x.getStatus() != PlayerStatus.WAITING)
+        .collect(Collectors.toList());
   }
 
   /**
@@ -662,6 +678,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Gets the remaining skulls
+   *
    * @return number of skulls
    */
   public int getSkulls() {
@@ -670,6 +687,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Sets the remaining skull of the killshot track
+   *
    * @param skulls number of skulls
    */
   public void setSkulls(int skulls) {

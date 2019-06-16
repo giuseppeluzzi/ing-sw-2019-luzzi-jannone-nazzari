@@ -140,7 +140,7 @@ public class TurnController implements Serializable {
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);
     boardController.getBoard().removeDoubleKill();
 
-    if (boardController.getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()) {
+    if (boardController.getBoard().getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()) {
       // Terminate game
       Log.debug("Il numero di giocatori attivi è sceso sotto alla soglia minima");
       endGame = true;

@@ -6,7 +6,6 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -15,14 +14,10 @@ import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
-import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.TagbackGrenade;
-import it.polimi.se2019.adrenalina.model.TargetingScope;
-import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.IOUtils;
@@ -45,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BoardController extends UnicastRemoteObject implements Runnable, Observer {
 
@@ -176,7 +170,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       } catch (IOException e) {
         Log.critical(weaponName + " not found");
       }
-      Log.info("ws: " + board.getWeapons().size());
     }
 
     if (board.getWeapons().isEmpty()) {
@@ -301,7 +294,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void startJoinTimer() {
     timer.start(Configuration.getInstance().getJoinTimeout(), this::chooseMap);
 
-    getActivePlayers().stream().forEach(p -> {
+    board.getPlayers().stream().forEach(p -> {
       try {
         boardViews.get(p.getClient()).startTimer(Configuration.getInstance().getJoinTimeout());
       } catch (RemoteException e) {
@@ -404,17 +397,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       player.setStatus(PlayerStatus.DISCONNECTED);
       player.setClient(null);
     }
-  }
-
-  /**
-   * Gets a list of online player of this board
-   *
-   * @return a list of Player
-   */
-  public List<Player> getActivePlayers() {
-    return board.getPlayers().stream()
-        .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED && x.getStatus() != PlayerStatus.SUSPENDED)
-        .collect(Collectors.toList());
   }
 
   /**

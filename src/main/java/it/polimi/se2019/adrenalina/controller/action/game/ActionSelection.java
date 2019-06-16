@@ -4,6 +4,8 @@ import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -20,6 +22,15 @@ public class ActionSelection extends GameAction {
     getPlayer().setCurrentExecutable(null);
     getPlayer().setCurrentBuying(null);
     List<TurnAction> turnActions = null;
+
+    for (Weapon weapon : getPlayer().getWeapons()) {
+      weapon.reset();
+    }
+
+    for (PowerUp powerUp : getPlayer().getPowerUps()) {
+      powerUp.reset();
+    }
+
     if (board.isFinalFrenzyActive()) {
       int playerIndex = board.getPlayers().indexOf(getPlayer());
       int finalFrenzyActivator;
