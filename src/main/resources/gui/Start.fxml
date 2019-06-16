@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" styleClass="startBody"
+  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="it.polimi.se2019.adrenalina.ui.graphic.controller.StartFXController">
+  <children>
+    <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <top>
+        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="startLogo"
+          BorderPane.alignment="CENTER"/>
+      </top>
+      <center>
+        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+          <children>
+            <BorderPane fx:id="startGameModeSelector" cache="true" cacheHint="SPEED"
+              prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="false"
+              BorderPane.alignment="CENTER">
+              <center>
+                <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                    <children>
+                      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+                        <children>
+                          <Circle fill="DODGERBLUE" radius="100.0" stroke="BLACK"
+                            strokeType="INSIDE"/>
+                          <RadioButton fx:id="gamemodeClassic" mnemonicParsing="false"
+                            selected="true" text="Classica">
+                            <toggleGroup>
+                              <ToggleGroup fx:id="gamemode"/>
+                            </toggleGroup>
+                          </RadioButton>
+                        </children>
+                      </VBox>
+                      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+                        <children>
+                          <Circle fill="#ffcf1f" radius="100.0" stroke="#393939"
+                            strokeType="INSIDE"/>
+                          <RadioButton fx:id="gamemodeDomination" mnemonicParsing="false"
+                            text="Dominazione" toggleGroup="$gamemode"/>
+                        </children>
+                      </VBox>
+                    </children>
+                  </HBox>
+                </VBox>
+              </center>
+              <top>
+                <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                  <children>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Benvenuto!">
+                      <styleClass>
+                        <String fx:value="text"/>
+                        <String fx:value="title"/>
+                      </styleClass>
+                    </Text>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Seleziona la modalità di gioco">
+                      <styleClass>
+                        <String fx:value="text"/>
+                        <String fx:value="subtitle"/>
+                      </styleClass>
+                    </Text>
+                  </children>
+                </VBox>
+              </top>
+              <bottom>
+                <Button alignment="BOTTOM_RIGHT" defaultButton="true" mnemonicParsing="false"
+                  onAction="#next1" text="Avanti" BorderPane.alignment="BOTTOM_RIGHT"/>
+              </bottom>
+            </BorderPane>
+
+
+            <BorderPane fx:id="startNameSelector" cache="true" cacheHint="SPEED" prefHeight="200.0"
+              prefWidth="200.0" styleClass="startContainer" visible="false">
+              <center>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0"
+                    BorderPane.alignment="CENTER">
+                    <children>
+                      <Circle fill="#80130f" radius="100.0" stroke="BLACK" strokeType="INSIDE"/>
+                      <TextField fx:id="textFieldName" alignment="CENTER" promptText="Nome"/>
+                      <CheckBox fx:id="checkBoxRMI" mnemonicParsing="false" prefWidth="200.0"
+                        text="Usa RMI"/>
+                    </children>
+                  </VBox>
+                </HBox>
+              </center>
+              <top>
+                <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                  <children>
+                    <Text fx:id="textNameTitle" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Benvenuto!">
+                      <styleClass>
+                        <String fx:value="text"/>
+                        <String fx:value="title"/>
+                      </styleClass>
+                    </Text>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Come ti chiami?">
+                      <styleClass>
+                        <String fx:value="text"/>
+                        <String fx:value="subtitle"/>
+                      </styleClass>
+                    </Text>
+                  </children>
+                </VBox>
+              </top>
+              <bottom>
+                <Button alignment="BOTTOM_RIGHT" defaultButton="true" mnemonicParsing="false"
+                  onAction="#next2" text="Connetti" BorderPane.alignment="BOTTOM_RIGHT"/>
+              </bottom>
+            </BorderPane>
+          </children>
+        </StackPane>
+      </center>
+    </BorderPane>
+  </children>
+</AnchorPane>

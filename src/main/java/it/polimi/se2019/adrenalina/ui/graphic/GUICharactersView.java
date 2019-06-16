@@ -1,0 +1,19 @@
+package it.polimi.se2019.adrenalina.ui.graphic;
+
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.view.BoardView;
+import it.polimi.se2019.adrenalina.view.CharactersView;
+
+public class GUICharactersView extends CharactersView {
+
+  private static final long serialVersionUID = -2544028250019433844L;
+
+  protected GUICharactersView(BoardView boardView) {
+    super(boardView);
+  }
+
+  @Override
+  public void showDeath(PlayerColor playerColor) {
+
+  }
+}

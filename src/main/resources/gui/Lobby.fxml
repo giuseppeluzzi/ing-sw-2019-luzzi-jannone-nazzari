@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" styleClass="startBody" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController">
+  <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <top>
+      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="startLogo" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <children>
+          <BorderPane fx:id="lobbyConnecting" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="false" BorderPane.alignment="CENTER">
+            <center>
+            </center>
+            <top>
+              <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connessione in corso...">
+                    <styleClass>
+                      <String fx:value="text" />
+                      <String fx:value="title" />
+                    </styleClass>
+                  </Text>
+                </children>
+              </VBox>
+            </top>
+                  <center>
+                     <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" styleClass="loadingImg"/>
+                  </center>
+          </BorderPane>
+        </children>
+      </StackPane>
+    </center>
+  </BorderPane>
+
+</AnchorPane>

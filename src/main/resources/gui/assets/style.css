@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'Roboto-Light';
+    font-weight: normal;
+    src: url('fonts/Roboto-Light.ttf');
+}
+
+@font-face {
+    font-family: 'Exo';
+    src: url('fonts/Exo.ttf');
+}
+
+.startLogo {
+  -fx-background-image: url("img/adrenalina_logo.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center top;
+  -fx-background-size: contain;
+  -fx-padding: 40 0 0 0;
+}
+
+.startBody {
+  -fx-background-image: url("img/adrenalina_cover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center top;
+  -fx-background-size: cover;
+  -fx-padding: 20 200 100 200;
+}
+
+.startContainer {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 5;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 10, 0.38, 0, 5);
+  -fx-padding: 30;
+  -fx-text-align: center;
+}
+
+.text {
+  -fx-font-family: "Exo";
+  -fx-font-weight: 600;
+  -fx-text-fill: #393939;
+}
+
+.title {
+  -fx-font-size: 36;
+}
+
+.subtitle {
+  -fx-font-size: 24;
+}
+
+.loadingImg {
+  -fx-background-image: url("img/loading.gif");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center center;
+}
