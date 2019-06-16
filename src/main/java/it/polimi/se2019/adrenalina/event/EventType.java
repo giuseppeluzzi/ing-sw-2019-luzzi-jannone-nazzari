@@ -15,6 +15,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowUnsuspendPromptInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
