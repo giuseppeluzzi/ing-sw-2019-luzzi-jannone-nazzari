@@ -71,15 +71,6 @@ public abstract class CharactersView extends Observable implements CharactersVie
     }
   }
 
-  public void update(PlayerStatusUpdate event) {
-    try {
-      boardView.getBoard().getPlayerByColor(event.getPlayerColor())
-          .setStatus(event.getPlayerStatus());
-    } catch (InvalidPlayerException e) {
-      Log.critical("Player not found!");
-    }
-  }
-
   public void update(PlayerDeathUpdate event) {
     try {
       String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();

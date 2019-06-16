@@ -15,7 +15,6 @@ public interface CharactersViewInterface extends Observer, RemoteObservable, Ser
     List<EventType> registeredEvents = new ArrayList<>();
 
     registeredEvents.add(EventType.PLAYER_POSITION_UPDATE);
-    registeredEvents.add(EventType.PLAYER_STATUS_UPDATE);
 
     return registeredEvents;
   }
