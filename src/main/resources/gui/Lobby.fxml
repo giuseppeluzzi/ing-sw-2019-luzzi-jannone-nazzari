@@ -35,6 +35,25 @@
                      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" styleClass="loadingImg"/>
                   </center>
           </BorderPane>
+          <BorderPane fx:id="lobbyMapC" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="false" BorderPane.alignment="CENTER">
+            <center>
+            </center>
+            <top>
+              <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connessione in corso...">
+                    <styleClass>
+                      <String fx:value="text" />
+                      <String fx:value="title" />
+                    </styleClass>
+                  </Text>
+                </children>
+              </VBox>
+            </top>
+                  <center>
+                     <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" styleClass="loadingImg"/>
+                  </center>
+          </BorderPane>
         </children>
       </StackPane>
     </center>

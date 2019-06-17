@@ -48,6 +48,11 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
+  public void showUnsuspendPrompt() {
+
+  }
+
+  @Override
   public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
 
   }

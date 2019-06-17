@@ -47,6 +47,11 @@
   -fx-font-size: 24;
 }
 
+.wrong-field {
+  -fx-text-box-border: red ;
+  -fx-focus-color: red ;
+}
+
 .loadingImg {
   -fx-background-image: url("img/loading.gif");
   -fx-background-repeat: no-repeat;
