@@ -22,7 +22,7 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void switchToFinalFrenzy(PlayerColor playerColor) throws RemoteException {
+  public void switchToFinalFrenzy(PlayerColor playerColor) {
 
   }
 
@@ -58,13 +58,12 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
+  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
 
   }
 
   @Override
-  public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons)
-      throws RemoteException {
+  public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
 
   }
 }
