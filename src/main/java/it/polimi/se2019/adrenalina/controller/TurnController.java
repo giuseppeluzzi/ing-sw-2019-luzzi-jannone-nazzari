@@ -26,6 +26,7 @@ public class TurnController implements Serializable {
   private final transient Deque<GameAction> turnActionsQueue = new ArrayDeque<>();
   private final Timer timer = new Timer();
   private boolean endGame;
+  private boolean suspendPlayer;
 
   public TurnController(BoardController boardController) {
     this.boardController = boardController;
@@ -77,7 +78,7 @@ public class TurnController implements Serializable {
         turnActionsQueue.clear();
         gameAction1.getPlayer().incrementTimeoutCount();
         if (gameAction1.getPlayer().getTimeoutCount() >= Configuration.getInstance().getSuspendTimeoutCount()) {
-          gameAction1.getPlayer().setStatus(PlayerStatus.SUSPENDED);
+          suspendPlayer = true;
         }
         executeGameActionQueue();
       });
@@ -147,6 +148,10 @@ public class TurnController implements Serializable {
       turnActionsQueue.add(new EndGame());
       executeGameActionQueue();
       return;
+    }
+    if (suspendPlayer) {
+      currentPlayer.setStatus(PlayerStatus.SUSPENDED);
+      suspendPlayer = false;
     }
     boolean next = true;
     while (next) {

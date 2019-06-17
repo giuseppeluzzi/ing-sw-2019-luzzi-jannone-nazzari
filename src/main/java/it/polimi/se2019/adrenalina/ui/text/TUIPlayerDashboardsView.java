@@ -428,10 +428,14 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showUnsuspendPrompt() {
+    // If the view's timer has not expired yet, let's stop it manually and cancel user input
+    timer.stop();
+    inputManager.cancel(WAIT_TIMEOUT_MSG);
     inputManager.input("Sei stato sospeso dalla partita. Premi invio per ricominciare a giocare...", 0, Integer.MAX_VALUE);
     try {
       inputManager.waitForStringResult();
     } catch (InputCancelledException e) {
+      // TODO: this should not happen
       return;
     }
     try {

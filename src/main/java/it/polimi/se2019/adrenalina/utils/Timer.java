@@ -9,7 +9,6 @@ public class Timer implements Serializable {
 
   private static final long serialVersionUID = -1689799953239659194L;
   private volatile int timerSeconds;
-  private final Object timerLock = new Object();
   private Thread timerThread;
 
   public Timer() {
@@ -39,46 +38,40 @@ public class Timer implements Serializable {
    * @param runnable function to be executed at the end
    */
   public void start(int seconds, Runnable runnable) {
-    synchronized (timerLock) {
-      if (timerSeconds != 0) {
-        timerThread.interrupt();
-        timerThread = null;
-      }
-      timerSeconds = seconds;
-
-      timerThread = new Thread(() -> {
-        while (true) {
-          synchronized (timerLock) {
-            if (timerSeconds <= 0) {
-              if (runnable != null) {
-                runnable.run();
-              }
-              break;
-            }
-            tick();
-            timerSeconds--;
-
-            try {
-              timerLock.wait(1000);
-            } catch (InterruptedException e) {
-              Thread.currentThread().interrupt();
-              break;
-            }
-          }
-        }
-      });
-      timerThread.start();
+    if (timerSeconds != 0) {
+      timerThread.interrupt();
+      timerThread = null;
     }
+    timerSeconds = seconds;
+
+    timerThread = new Thread(() -> {
+      while (true) {
+        if (timerSeconds <= 0) {
+          if (runnable != null) {
+            runnable.run();
+          }
+          break;
+        }
+        tick();
+        timerSeconds--;
+
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          break;
+        }
+      }
+    });
+    timerThread.start();
   }
 
   /**
    * Stops a running timerSeconds
    */
   public void stop() {
-    synchronized (timerLock) {
-      if (timerThread != null) {
-        timerThread.interrupt();
-      }
+    if (timerThread != null) {
+      timerThread.interrupt();
     }
   }
 
@@ -92,8 +85,6 @@ public class Timer implements Serializable {
 
   private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
     in.defaultReadObject();
-    synchronized (timerLock) {
-      timerThread = null;
-    }
+    timerThread = null;
   }
 }

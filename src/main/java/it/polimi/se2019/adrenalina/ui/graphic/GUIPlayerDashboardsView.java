@@ -58,6 +58,11 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
+  public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
+
+  }
+
+  @Override
   public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons)
       throws RemoteException {
 

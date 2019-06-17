@@ -161,7 +161,9 @@ public class TUIInputManager {
    * Interrupts the user prompt.
    */
   public void cancel(String message) {
-    Log.println(message);
+    if (message != null) {
+      Log.println(message);
+    }
     if (thread != null) {
       thread.interrupt();
     }
