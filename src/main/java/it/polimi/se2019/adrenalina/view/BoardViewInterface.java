@@ -17,6 +17,7 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
     default List<EventType> getHandledEvents() throws RemoteException {
       List<EventType> registeredEvents = new ArrayList<>();
 
+      registeredEvents.add(EventType.PLAYER_MASTER_UPDATE);
       registeredEvents.add(EventType.BOARD_STATUS_UPDATE);
       registeredEvents.add(EventType.BOARD_SKULLS_UPDATE);
       registeredEvents.add(EventType.BOARD_HAS_WEAPON_UPDATE);

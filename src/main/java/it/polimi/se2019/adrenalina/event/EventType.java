@@ -36,6 +36,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
@@ -89,6 +90,7 @@ public enum EventType {
   SHOW_RELOAD_WEAPON_SELECTION_INVOCATION(ShowReloadWeaponSelectionInvocation.class),
   SHOW_UNSUSPEND_PROMPT_INVOCATION(ShowUnsuspendPromptInvocation.class),
   // Model View Events
+  PLAYER_MASTER_UPDATE(PlayerMasterUpdate.class),
   PLAYER_POSITION_UPDATE(PlayerPositionUpdate.class),
   PLAYER_FRENZY_UPDATE(PlayerFrenzyUpdate.class),
   PLAYER_DAMAGES_TAGS_UPDATE(PlayerDamagesTagsUpdate.class),

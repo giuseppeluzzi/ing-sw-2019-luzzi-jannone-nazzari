@@ -16,11 +16,13 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -401,14 +403,18 @@ public class Board extends Observable implements Serializable {
   /**
    * Notifies the initial state to every observer
    */
-  public void notifyInitialStatus() {
-    try {
-      for (Player player : getPlayers()) {
-        notifyObservers(new BoardAddPlayerUpdate(player.getName(), player.getColor()));
+  public void addObserver(Observer observer, boolean notify) {
+    addObserver(observer);
+    if (notify) {
+      try {
+        for (Player player : getPlayers()) {
+          observer.update(new BoardAddPlayerUpdate(player.getName(), player.getColor()));
+          observer.update(new PlayerMasterUpdate(player.getColor(), player.isMaster()));
+        }
+        observer.update(new BoardSkullsUpdate(skulls));
+      } catch (RemoteException e) {
+        Log.exception(e);
       }
-      notifyObservers(new BoardSkullsUpdate(skulls));
-    } catch (RemoteException e) {
-      Log.exception(e);
     }
   }
 
@@ -421,6 +427,7 @@ public class Board extends Observable implements Serializable {
     players.add(player);
     try {
       notifyObservers(new BoardAddPlayerUpdate(player.getName(), player.getColor()));
+      notifyObservers(new PlayerMasterUpdate(player.getColor(), player.isMaster()));
     } catch (RemoteException e) {
       Log.exception(e);
     }
