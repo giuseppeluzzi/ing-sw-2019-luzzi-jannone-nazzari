@@ -47,15 +47,6 @@ public abstract class PlayerDashboardsView extends Observable implements
     this.boardView = boardView;
   }
 
-  public Player getPlayerByColor(PlayerColor playerColor) {
-    for (Player player : boardView.getBoard().getPlayers()) {
-      if (player.getColor() == playerColor) {
-        return player;
-      }
-    }
-    return null;
-  }
-
   @Override
   public abstract void showPaymentOption(BuyableType buyableType,
       Map<AmmoColor, Integer> buyableCost, List<PowerUp> budgetPowerUp,
@@ -80,7 +71,12 @@ public abstract class PlayerDashboardsView extends Observable implements
   public abstract void showReloadWeaponSelection(List<Weapon> unloadedWeapons);
 
   public void update(PlayerDamagesTagsUpdate event) {
-    Player player = getPlayerByColor(event.getPlayerColor());
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
 
     List<PlayerColor> newDamages = new ArrayList<>(event.getDamages());
     List<PlayerColor> newTags = new ArrayList<>(event.getTags());
@@ -145,34 +141,64 @@ public abstract class PlayerDashboardsView extends Observable implements
   }
 
   public void update(PlayerFrenzyUpdate event) {
-    getPlayerByColor(event.getPlayerColor()).setFrenzy(event.isFrenzy());
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.setFrenzy(event.isFrenzy());
   }
 
   public void update(PlayerScoreUpdate event) {
-    getPlayerByColor(event.getPlayerColor()).setScore(event.getScore());
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.setScore(event.getScore());
   }
 
   public void update(PlayerKillScoreUpdate event) {
-    getPlayerByColor(event.getPlayerColor()).setKillScore(event.getKillScore());
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.setKillScore(event.getKillScore());
   }
 
   public void update(PlayerStatusUpdate event) {
-    getPlayerByColor(event.getPlayerColor()).setStatus(event.getPlayerStatus());
-    if ((event.getPlayerColor() == boardView.getClient().getPlayerColor()) && (event.getPlayerStatus() == PlayerStatus.SUSPENDED)) {
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.setStatus(event.getPlayerStatus());
+    if (event.getPlayerColor() == boardView.getClient().getPlayerColor() && event.getPlayerStatus() == PlayerStatus.SUSPENDED) {
       showUnsuspendPrompt();
     }
   }
 
   public void update(PlayerAmmoUpdate event) {
-    Player player = getPlayerByColor(event.getPlayerColor());
-    if (player == null) {
-      return ;
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
     }
 
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
       boardView.getClient().showGameMessage(
           String.format(
-            "Munizioni attuali: %s%d (%d) rosse%s, %s%d (%d) blu%s, %s%d (%d) gialle%s",
+              "Munizioni attuali: %s%d (%d) rosse%s, %s%d (%d) blu%s, %s%d (%d) gialle%s",
               ANSIColor.RED,
               event.getRed(),
               (player.getAmmo(AmmoColor.RED) + event.getRed()) % 3,
@@ -185,7 +211,7 @@ public abstract class PlayerDashboardsView extends Observable implements
               event.getYellow(),
               (player.getAmmo(AmmoColor.YELLOW) + event.getYellow()) % 3,
               ANSIColor.RESET
-      ));
+          ));
     }
 
     player.updateAmmo(AmmoColor.BLUE, event.getBlue());
@@ -194,15 +220,30 @@ public abstract class PlayerDashboardsView extends Observable implements
   }
 
   public void update(OwnWeaponUpdate event) {
-    getPlayerByColor(event.getPlayerColor()).updateWeapons(event.getWeapons());
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.updateWeapons(event.getWeapons());
   }
 
   public void update(EnemyWeaponUpdate event) {
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
       // This update is not for me
+      // Already filtered by Observable, just another level of security
       return;
     }
-    Player player = getPlayerByColor(event.getPlayerColor());
+
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
     player.updateWeapons(event.getUnloadedWeapons());
     player.setWeaponCount(event.getNumWeapons());
   }
@@ -210,9 +251,18 @@ public abstract class PlayerDashboardsView extends Observable implements
   public void update(EnemyPowerUpUpdate event) {
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
       // This update is not for me
+      // Already filtered by Observable, just another level of security
       return;
     }
-    getPlayerByColor(event.getPlayerColor()).setPowerUpCount(event.getPowerUpsNum());
+
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.setPowerUpCount(event.getPowerUpsNum());
   }
 
   public void update(OwnPowerUpUpdate event) {
@@ -229,14 +279,23 @@ public abstract class PlayerDashboardsView extends Observable implements
         powerUps.addAll(addTargetingScopes(entrySet.getValue()));
       }
     }
-    getPlayerByColor(event.getPlayerColor()).updatePowerUps(powerUps);
+
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.updatePowerUps(powerUps);
 
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
-      String powerUpDesc = powerUps.stream().map(x -> x.getColor().getAnsiColor() + x.getName() + ANSIColor.RESET).collect(
-          Collectors.joining(", "));
+      String powerUpDesc = powerUps.stream()
+          .map(x -> x.getColor().getAnsiColor() + x.getName() + ANSIColor.RESET).collect(
+              Collectors.joining(", "));
       boardView.getClient().showGameMessage("PowerUp attuali: " + powerUpDesc);
     }
-}
+  }
 
   private List<PowerUp> addNewtons(Map<AmmoColor, Integer> powerUpData) {
     List<PowerUp> powerUps = new ArrayList<>();
