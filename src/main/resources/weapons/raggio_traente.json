@@ -47,7 +47,16 @@
                     "damages": 1,
                     "tag": 0,
                     "type": "SHOOT"
-                },
+                }
+            ],
+            "subEffects": []
+        },
+        {
+            "costRed": 1,
+            "costBlue": 0,
+            "costYellow": 1,
+            "name": "Modalità punitore",
+            "actions": [
                 {
                     "from": 0,
                     "target": 3,
@@ -74,14 +83,6 @@
                     "type": "SHOOT"
                 }
             ],
-            "subEffects": []
-        },
-        {
-            "costRed": 1,
-            "costBlue": 0,
-            "costYellow": 1,
-            "name": "Modalità punitore",
-            "actions": [],
             "subEffects": []
         }
     ],
