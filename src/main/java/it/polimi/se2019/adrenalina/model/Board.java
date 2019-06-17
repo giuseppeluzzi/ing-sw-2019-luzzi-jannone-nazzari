@@ -443,6 +443,18 @@ public class Board extends Observable implements Serializable {
   public List<Player> getActivePlayers() {
     return players.stream()
         .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED
+            && x.getStatus() != PlayerStatus.SUSPENDED)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Gets a list of playing (spawned) player of this board
+   *
+   * @return a list of Player
+   */
+  public List<Player> getPlayingPlayers() {
+    return players.stream()
+        .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED
             && x.getStatus() != PlayerStatus.SUSPENDED && x.getStatus() != PlayerStatus.WAITING)
         .collect(Collectors.toList());
   }

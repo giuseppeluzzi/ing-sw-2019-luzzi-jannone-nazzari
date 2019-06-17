@@ -102,7 +102,7 @@ public class SelectAction implements WeaponAction {
 
     switch (selectType) {
       case ATTACK_TARGET:
-        targets.addAll(board.getActivePlayers());
+        targets.addAll(board.getPlayingPlayers());
         if (board.isDominationBoard()) {
           for (Square square: board.getSquares()) {
             if (square.isSpawnPoint()) {

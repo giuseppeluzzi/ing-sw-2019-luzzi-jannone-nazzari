@@ -223,7 +223,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
       notifyPlayerJoin(player);
 
-      if (board.getPlayers().size() >= 2) {
+      if (board.getPlayers().size() >= Configuration.getInstance().getMinNumPlayers()) {
         startJoinTimer();
       }
     } else {
