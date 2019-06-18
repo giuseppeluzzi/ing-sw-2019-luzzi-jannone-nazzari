@@ -72,40 +72,49 @@ public class TUIInputManager {
     stringResult = null;
     cancelled = false;
     thread = new Thread(() -> {
-      Log.println(prompt);
-      for (int i = 0; i < choices.size(); i++) {
-        Log.println(String.format("    [%2d] %s", i+1, choices.get(i)));
-      }
-      while (true) {
-        Log.print("> ");
-        String input;
-        try {
-          input = scanner.call().trim();
-        } catch (InterruptedException e) {
-          synchronized (lock) {
-            cancelled = true;
-            lock.notifyAll();
-            Thread.currentThread().interrupt();
-            return;
-          }
+      askIntInputThread(prompt, choices);
+    });
+    thread.start();
+  }
+
+  /**
+   * Actual runner thread for choice input
+   * @param prompt the prompt text
+   * @param choices a list of possible choices
+   */
+  private void askIntInputThread(String prompt, List<String> choices) {
+    Log.println(prompt);
+    for (int i = 0; i < choices.size(); i++) {
+      Log.println(String.format("    [%2d] %s", i+1, choices.get(i)));
+    }
+    while (true) {
+      Log.print("> ");
+      String intInput;
+      try {
+        intInput = scanner.call().trim();
+      } catch (InterruptedException e) {
+        synchronized (lock) {
+          cancelled = true;
+          lock.notifyAll();
+          Thread.currentThread().interrupt();
+          return;
         }
-        if (input.matches("\\d+")) {
-          int choice = Integer.parseInt(input);
-          if (choice >= 1 && choice <= choices.size()) {
-            synchronized (lock) {
-              intResult = choice - 1;
-              lock.notifyAll();
-            }
-            return;
-          } else {
-            Log.println(INVALID_SELECTION_TEXT);
+      }
+      if (intInput.matches("\\d+")) {
+        int choice = Integer.parseInt(intInput);
+        if (choice >= 1 && choice <= choices.size()) {
+          synchronized (lock) {
+            intResult = choice - 1;
+            lock.notifyAll();
           }
+          return;
         } else {
           Log.println(INVALID_SELECTION_TEXT);
         }
+      } else {
+        Log.println(INVALID_SELECTION_TEXT);
       }
-    });
-    thread.start();
+    }
   }
 
   /**
