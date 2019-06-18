@@ -506,39 +506,21 @@ public final class BoardPrinter {
   /**
    * Generates a list of weapons sorted by color and adds it to the print matrix.
    * @param map the print matrix to be updated
-   * @param weapons a list of weapons in the board
+   * @param board the game board
    */
-  private static void printWeapons(String[][] map, List<Weapon> weapons) {
-    int redCount = 0;
-    int blueCount = 0;
-    int yellowCount = 0;
-    for (Weapon weapon : weapons) {
-      int offset = 0;
-      switch (weapon.getBaseCost()) {
-        case RED:
-          for (char c : weapon.getName().toCharArray()) {
-            map[offset][3 * SQUARE_HEIGHT + 2 + redCount] = ANSIColor.RED + Character.toString(c) + ANSIColor.RESET;
-            offset++;
-          }
-          redCount++;
-          break;
-        case YELLOW:
-          for (char c : weapon.getName().toCharArray()) {
-            map[WEAPON_NAME_WIDTH + offset][3 * SQUARE_HEIGHT + 2 + yellowCount] = ANSIColor.YELLOW + Character.toString(c) + ANSIColor.RESET;
-            offset++;
-          }
-          yellowCount++;
-          break;
-        case BLUE:
-          for (char c : weapon.getName().toCharArray()) {
-            map[WEAPON_NAME_WIDTH * 2 + offset][3 * SQUARE_HEIGHT + 2 + blueCount] = ANSIColor.BLUE + Character.toString(c) + ANSIColor.RESET;
-            offset++;
-          }
-          blueCount++;
-          break;
-        default:
-          throw new IllegalStateException("Illegal weapon base cost");
+  private static void printWeapons(String[][] map, Board board) {
+    int i = 0;
+    for (AmmoColor color : new AmmoColor[]{AmmoColor.RED, AmmoColor.BLUE, AmmoColor.YELLOW}) {
+      int colorCount = 0;
+      for (Weapon weapon : board.getSpawnPointSquare(color).getWeapons()) {
+        int offset = 0;
+        for (char c : weapon.getName().toCharArray()) {
+          map[offset + i * WEAPON_NAME_WIDTH][3 * SQUARE_HEIGHT + 2 + colorCount] = color.getAnsiColor() + Character.toString(c) + ANSIColor.RESET;
+          offset++;
+        }
+        colorCount++;
       }
+      i++;
     }
   }
 
@@ -559,7 +541,7 @@ public final class BoardPrinter {
       drawDashboard(map, num, board, player);
       num++;
     }
-    printWeapons(map, board.getWeapons());
+    printWeapons(map, board);
     return map;
   }
 

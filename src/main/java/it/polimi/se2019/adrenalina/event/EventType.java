@@ -19,30 +19,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowUnsuspendPromptInvocati
 import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.*;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 
 public enum EventType {

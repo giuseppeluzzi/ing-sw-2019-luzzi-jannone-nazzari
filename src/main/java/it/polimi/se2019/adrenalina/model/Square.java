@@ -341,10 +341,20 @@ public class Square extends Observable implements Target {
     }
     weapons.add(weapon);
     Log.info("Aggiunta " + weapon.getName() + " in " + posX + " - " + posY);
+    try {
+      notifyObservers(new SquareWeaponUpdate(posX, posY, getWeapons()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public void removeWeapon(Weapon weapon) {
     weapons.remove(weapon);
+    try {
+      notifyObservers(new SquareWeaponUpdate(posX, posY, getWeapons()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   @Override
