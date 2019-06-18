@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Event sent when the list of weapons on a spawn point is updated.
+ */
 public class SquareWeaponUpdate implements Event {
 
   private static final long serialVersionUID = -777315149155987994L;

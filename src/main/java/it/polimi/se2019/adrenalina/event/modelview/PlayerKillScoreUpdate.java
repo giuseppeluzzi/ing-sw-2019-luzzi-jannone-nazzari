@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the kill score of a player is updated.
+ */
 public class PlayerKillScoreUpdate implements Event {
 
   private static final long serialVersionUID = -4970596236550079643L;

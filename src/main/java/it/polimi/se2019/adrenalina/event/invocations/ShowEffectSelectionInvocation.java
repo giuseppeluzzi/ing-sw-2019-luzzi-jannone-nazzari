@@ -6,6 +6,10 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Invocation that has the client show the effect selection for a weapon.
+ * @see Invocation
+ */
 public class ShowEffectSelectionInvocation implements Invocation {
 
   private static final long serialVersionUID = 2421777681566272744L;

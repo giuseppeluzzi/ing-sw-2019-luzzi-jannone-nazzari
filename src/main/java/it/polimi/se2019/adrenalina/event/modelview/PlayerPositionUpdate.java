@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the position of a player is updated.
+ */
 public class PlayerPositionUpdate implements Event {
 
   private static final long serialVersionUID = -3086636605968304095L;

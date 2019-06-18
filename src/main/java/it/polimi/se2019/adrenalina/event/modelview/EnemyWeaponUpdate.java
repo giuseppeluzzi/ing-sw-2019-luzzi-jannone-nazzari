@@ -8,6 +8,10 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Event sent when the number or status of weapons of a player changes. This event is used by the player's
+ * enemies who cannot see what the actual loaded weapons are.
+ */
 public class EnemyWeaponUpdate implements Event {
 
   private static final long serialVersionUID = -60076482096933990L;

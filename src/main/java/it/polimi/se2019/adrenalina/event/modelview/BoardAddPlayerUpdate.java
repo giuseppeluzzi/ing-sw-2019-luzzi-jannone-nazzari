@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when a player is added to the game board.
+ */
 public class BoardAddPlayerUpdate implements Event {
 
   private static final long serialVersionUID = -2702366364883643012L;

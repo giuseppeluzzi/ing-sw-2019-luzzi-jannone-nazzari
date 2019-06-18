@@ -5,6 +5,10 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Invocation that has the client show a list of buyable weapons.
+ * @see Invocation
+ */
 public class ShowBuyableWeaponsInvocation implements Invocation {
 
   private static final long serialVersionUID = -3599685014999260921L;

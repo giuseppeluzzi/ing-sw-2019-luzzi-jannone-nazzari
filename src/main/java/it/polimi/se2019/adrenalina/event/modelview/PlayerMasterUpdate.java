@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * This event informs players about the color the master player (the game creator).
+ */
 public class PlayerMasterUpdate implements Event {
 
   private static final long serialVersionUID = -571718616952529807L;

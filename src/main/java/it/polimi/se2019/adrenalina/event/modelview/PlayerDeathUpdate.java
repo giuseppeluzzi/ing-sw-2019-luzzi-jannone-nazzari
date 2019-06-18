@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when a player is killed.
+ */
 public class PlayerDeathUpdate implements Event {
 
   private static final long serialVersionUID = -8987048353974663246L;

@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the player currently playing its turn changes.
+ */
 public class CurrentPlayerUpdate implements Event {
 
   private static final long serialVersionUID = -4472876069196135327L;

@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the status of the board is updated.
+ */
 public class BoardStatusUpdate implements Event {
 
   private static final long serialVersionUID = -7116650564967462703L;

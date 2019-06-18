@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Invocation that has the client print the player's payment options.
+ * @see Invocation
+ */
 public class ShowPaymentOptionInvocation implements Invocation {
 
   private static final long serialVersionUID = 6348887252528342959L;

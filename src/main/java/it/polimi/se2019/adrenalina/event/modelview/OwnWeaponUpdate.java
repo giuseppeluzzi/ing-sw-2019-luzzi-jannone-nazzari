@@ -8,6 +8,9 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Event sent when the list of weapons of a player changes. This event is only sent to the player itself.
+ */
 public class OwnWeaponUpdate implements Event {
 
   private static final long serialVersionUID = -4678079189320950629L;

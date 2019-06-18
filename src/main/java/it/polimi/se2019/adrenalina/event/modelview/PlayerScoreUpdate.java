@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the score of a player is updated
+ */
 public class PlayerScoreUpdate implements Event {
 
   private static final long serialVersionUID = -3766423338803118999L;

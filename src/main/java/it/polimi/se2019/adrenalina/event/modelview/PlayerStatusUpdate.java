@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the status of a player changes.
+ */
 public class PlayerStatusUpdate implements Event {
 
   private static final long serialVersionUID = 2472359537454785873L;

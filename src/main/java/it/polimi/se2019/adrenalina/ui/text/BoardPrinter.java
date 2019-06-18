@@ -310,7 +310,11 @@ public final class BoardPrinter {
    */
   private static int printDashboardWeapons(String[][] map, List<Weapon> weapons, String playerColor, int weaponCount, int posX, int posY) {
     for (Weapon weapon : weapons) {
-      map[posX][posY] = playerColor + weapon.getSymbol();
+      if (weapon.isLoaded()) {
+        map[posX][posY] = playerColor + weapon.getSymbol();
+      } else {
+        map[posX][posY] = playerColor + weapon.getSymbol().toLowerCase();
+      }
       posX++;
     }
     for (int i = 0; i < weaponCount - weapons.size(); i++) {

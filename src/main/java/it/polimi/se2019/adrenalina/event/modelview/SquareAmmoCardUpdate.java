@@ -3,6 +3,9 @@ package it.polimi.se2019.adrenalina.event.modelview;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the ammo card on a square is updated.
+ */
 public class SquareAmmoCardUpdate implements Event {
 
   private static final long serialVersionUID = 6103073463511121388L;

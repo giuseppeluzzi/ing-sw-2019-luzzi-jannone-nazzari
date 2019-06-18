@@ -6,6 +6,10 @@ import it.polimi.se2019.adrenalina.model.Target;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Invocation that has the client show target selection for shooting.
+ * @see Invocation
+ */
 public class ShowTargetSelectInvocation implements Invocation {
 
   private static final long serialVersionUID = 8037594543903190668L;
