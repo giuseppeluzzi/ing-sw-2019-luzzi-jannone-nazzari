@@ -12,6 +12,8 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +30,7 @@ public final class BoardPrinter {
   private static final int DOOR_WIDTH = Configuration.getInstance().getTuiDoorWidth();
   private static final int DASHBOARD_WIDTH = Configuration.getInstance().getTuiDashboardWidth();
   private static final int DASHBOARD_HEIGHT = Configuration.getInstance().getTuiDashboardHeight();
+  private static final int WEAPON_NAME_WIDTH = 26;
   private static final String HORIZONTAL_LINE = Configuration.getInstance().getTuiHorizontalLine();
   private static final String VERTICAL_LINE = Configuration.getInstance().getTuiVerticalLine();
   private static final String PLAYER_ICON = Configuration.getInstance().getTuiPlayerIcon();
@@ -347,6 +350,13 @@ public final class BoardPrinter {
     return posX;
   }
 
+  /**
+   * Generates player dashboards and adds them to the print matrix.
+   * @param map the print matrix to be updated
+   * @param num the ordinal number of the dashboard to be printed
+   * @param board the game board
+   * @param player the player who owns the dashboard
+   */
   private static void drawDashboard(String[][] map, int num, Board board, Player player) {
     boolean dim = board.getCurrentPlayer() != player.getColor();
     String playerColor = player.getColor().getAnsiColor().toString(dim);
@@ -494,12 +504,51 @@ public final class BoardPrinter {
   }
 
   /**
+   * Generates a list of weapons sorted by color and adds it to the print matrix.
+   * @param map the print matrix to be updated
+   * @param weapons a list of weapons in the board
+   */
+  private static void printWeapons(String[][] map, List<Weapon> weapons) {
+    int redCount = 0;
+    int blueCount = 0;
+    int yellowCount = 0;
+    for (Weapon weapon : weapons) {
+      int offset = 0;
+      switch (weapon.getBaseCost()) {
+        case RED:
+          for (char c : weapon.getName().toCharArray()) {
+            map[offset][3 * SQUARE_HEIGHT + 2 + redCount] = ANSIColor.RED + Character.toString(c) + ANSIColor.RESET;
+            offset++;
+          }
+          redCount++;
+          break;
+        case YELLOW:
+          for (char c : weapon.getName().toCharArray()) {
+            map[WEAPON_NAME_WIDTH + offset][3 * SQUARE_HEIGHT + 2 + yellowCount] = ANSIColor.YELLOW + Character.toString(c) + ANSIColor.RESET;
+            offset++;
+          }
+          yellowCount++;
+          break;
+        case BLUE:
+          for (char c : weapon.getName().toCharArray()) {
+            map[WEAPON_NAME_WIDTH * 2 + offset][3 * SQUARE_HEIGHT + 2 + blueCount] = ANSIColor.BLUE + Character.toString(c) + ANSIColor.RESET;
+            offset++;
+          }
+          blueCount++;
+          break;
+        default:
+          throw new IllegalStateException("Illegal weapon base cost");
+      }
+    }
+  }
+
+  /**
    * Generates a print matrix.
    * @param board the board with the game map to draw
    * @return a print matrix for the game board
    */
   static String[][] buildMap(Board board) {
-    String[][] map = new String[4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5][3 * SQUARE_HEIGHT + 2];
+    String[][] map = new String[4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5][3 * SQUARE_HEIGHT + 6];
     for (Square square : board.getSquares()) {
       drawSquare(map, square);
       drawPlayers(map, square);
@@ -510,6 +559,7 @@ public final class BoardPrinter {
       drawDashboard(map, num, board, player);
       num++;
     }
+    printWeapons(map, board.getWeapons());
     return map;
   }
 
@@ -519,7 +569,7 @@ public final class BoardPrinter {
    */
   static void print(Board board) {
     String[][] map = buildMap(board);
-    for (int y = 0; y < 3 * SQUARE_HEIGHT + 2; y++) {
+    for (int y = 0; y < 3 * SQUARE_HEIGHT + 6; y++) {
       for (int x = 0; x < 4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5; x++) {
         if (map[x][y] != null) {
           Log.print(map[x][y]);
