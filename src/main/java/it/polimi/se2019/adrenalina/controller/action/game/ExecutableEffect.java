@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.ShootSquareAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
+import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -20,12 +21,14 @@ public class ExecutableEffect extends GameAction {
 
   private final ExecutableObject executableObject;
   private final WeaponAction weaponAction;
+  private boolean enabled;
 
   public ExecutableEffect(TurnController turnController, Player player,
       ExecutableObject executableObject, WeaponAction weaponAction) {
     super(turnController, player);
     this.executableObject = executableObject;
     this.weaponAction = weaponAction;
+    enabled = true;
   }
 
   public ExecutableObject getExecutableObject() {
@@ -38,67 +41,78 @@ public class ExecutableEffect extends GameAction {
 
   @Override
   public void execute(Board board) {
-    if (! executableObject.isCancelled()) {
-      try {
-        Log.debug("WA: " + weaponAction.getActionType());
-        List<Player> players;
-        weaponAction.execute(board, executableObject);
-        if (executableObject.isWeapon()) {
-          switch (weaponAction.getActionType()) {
-            case SHOOT:
-              Target target = executableObject
-                  .getTargetHistory(((ShootAction) weaponAction).getTarget());
-              getTurnController().addTurnActions(
-                  new PowerUpSelection(getTurnController(), getPlayer(), target,
-                      false, true));
-              getTurnController().addTurnActions(
-                  new PowerUpSelection(getTurnController(), target.getPlayer(),
-                      null, false, false));
-              ((Weapon) executableObject).setLoaded(false);
-              break;
-            case SHOOT_SQUARE:
-              players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
-              for (Player player : players) {
+    if (isEnabled()) {
+      if (!executableObject.isCancelled()) {
+        try {
+          Log.debug("WA: " + weaponAction.getActionType());
+          List<Player> players;
+          weaponAction.execute(board, executableObject);
+          if (executableObject.isWeapon()) {
+            switch (weaponAction.getActionType()) {
+              case SHOOT:
+                Target target = executableObject
+                    .getTargetHistory(((ShootAction) weaponAction).getTarget());
                 getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), getPlayer(),
-                        player, false, true));
-                getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), player,
-                        getPlayer(), false, false));
-              }
-              ((Weapon) executableObject).setLoaded(false);
-              break;
-            case SHOOT_ROOM:
-              players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
-              for (Player player : players) {
-                getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), getPlayer(), player,
+                    new PowerUpSelection(getTurnController(), getPlayer(), target,
                         false, true));
                 getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), player,
-                        getPlayer(), false, false));
-              }
-              ((Weapon) executableObject).setLoaded(false);
-              break;
+                    new PowerUpSelection(getTurnController(), target.getPlayer(),
+                        null, false, false));
+                ((Weapon) executableObject).setLoaded(false);
+                break;
+              case SHOOT_SQUARE:
+                players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
+                for (Player player : players) {
+                  getTurnController().addTurnActions(
+                      new PowerUpSelection(getTurnController(), getPlayer(),
+                          player, false, true));
+                  getTurnController().addTurnActions(
+                      new PowerUpSelection(getTurnController(), player,
+                          getPlayer(), false, false));
+                }
+                ((Weapon) executableObject).setLoaded(false);
+                break;
+              case SHOOT_ROOM:
+                players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
+                for (Player player : players) {
+                  getTurnController().addTurnActions(
+                      new PowerUpSelection(getTurnController(), getPlayer(), player,
+                          false, true));
+                  getTurnController().addTurnActions(
+                      new PowerUpSelection(getTurnController(), player,
+                          getPlayer(), false, false));
+                }
+                ((Weapon) executableObject).setLoaded(false);
+                break;
+            }
           }
-        }
-      } catch (NoTargetsException e) {
-        if (e.isRollback()) {
-          try {
-            getPlayer().getClient().showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione.");
-          } catch (RemoteException remoteException) {
-            Log.exception(remoteException);
+        } catch (NoTargetsException e) {
+          if (e.isRollback()) {
+            try {
+              getPlayer().getClient()
+                  .showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione.");
+            } catch (RemoteException remoteException) {
+              Log.exception(remoteException);
+            }
+            getTurnController().addTurnActions(new MoveRollback(getTurnController(), getPlayer(),
+                executableObject));
           }
-          getTurnController().addTurnActions(new MoveRollback(getTurnController(), getPlayer(),
-              executableObject));
+          executableObject.setCancelled(true);
+          getTurnController().executeGameActionQueue();
+        } catch (InvalidSquareException ignored) {
+          //
+        } catch (NoTargetsExceptionOptional e) {
+          getTurnController().resetUntilPowerup();
+          getTurnController().executeGameActionQueue();
         }
-        executableObject.setCancelled(true);
+      }
+    } else {
+      if (isSync()) {
         getTurnController().executeGameActionQueue();
-      } catch (InvalidSquareException ignored) {
-        //
       }
     }
   }
+
 
   @Override
   public boolean isSync() {

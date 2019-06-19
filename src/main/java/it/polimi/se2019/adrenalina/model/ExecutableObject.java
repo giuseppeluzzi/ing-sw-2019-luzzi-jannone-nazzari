@@ -50,6 +50,14 @@ public abstract class ExecutableObject extends Observable {
     return targetHistory.get(key);
   }
 
+  public boolean targetHistoryContainsKey(Integer key) {
+    return targetHistory.containsKey(key);
+  }
+
+  public boolean targetHistoryContainsValue(Target value) {
+    return targetHistory.containsValue(value);
+  }
+
   /**
    * Insert in targetHistory at index "key" Target "value".
    * @param key index where Target has to be inserted

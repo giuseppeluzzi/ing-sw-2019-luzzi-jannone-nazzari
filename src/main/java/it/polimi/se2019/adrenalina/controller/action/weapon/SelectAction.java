@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
+import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -79,19 +80,26 @@ public class SelectAction implements WeaponAction {
   }
 
   @Override
-  public void execute(Board board, ExecutableObject object) throws NoTargetsException {
+  public void execute(Board board, ExecutableObject object) throws NoTargetsException, NoTargetsExceptionOptional {
     List<Target> targets = getTargets(board, object);
+
     if ((selectType == TargetType.ATTACK_TARGET
         || selectType == TargetType.ATTACK_ROOM
-        || selectType == TargetType.ATTACK_SQUARE) && targets.isEmpty()) {
+        || selectType == TargetType.ATTACK_SQUARE) && !optional && targets.isEmpty()) {
       throw new NoTargetsException("No targets available", ! object.didShoot());
     }
 
-    object.setCurrentSelectTargetSlot(target);
-    try {
-      object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets);
-    } catch (RemoteException e) {
-      Log.exception(e);
+    if (optional && targets.isEmpty()) {
+      throw new NoTargetsExceptionOptional("No targets available in optional SelectAction");
+    }
+
+    if (!optional || !targets.isEmpty()) {
+      object.setCurrentSelectTargetSlot(target);
+      try {
+        object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets);
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
   }
 

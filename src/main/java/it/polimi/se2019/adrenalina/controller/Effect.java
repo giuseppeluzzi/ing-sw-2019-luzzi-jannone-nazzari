@@ -103,6 +103,22 @@ public class Effect implements Buyable {
     return new ArrayList<>(subEffects);
   }
 
+  public Effect getSubEffectByName(String effectName) {
+    for (Effect subEffect : subEffects) {
+      if (subEffect.name.equalsIgnoreCase(effectName)) {
+        return subEffect;
+      } else {
+        if (!subEffect.getSubEffects().isEmpty()) {
+          Effect subEffect2 = subEffect.getSubEffectByName(effectName);
+          if (subEffect2 != null) {
+            return subEffect2;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public void addSubEffect(Effect effect) {
     subEffects.add(effect);
     effect.setRequiredEffect(this);

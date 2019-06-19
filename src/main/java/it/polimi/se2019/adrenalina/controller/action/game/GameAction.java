@@ -3,11 +3,13 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.utils.Log;
 
 public abstract class GameAction {
 
   private final TurnController turnController;
   private final Player player;
+  private boolean enabled = true;
 
   protected GameAction(Player player) {
     this(null, player);
@@ -16,6 +18,7 @@ public abstract class GameAction {
   protected GameAction(TurnController turnController, Player player) {
     this.turnController = turnController;
     this.player = player;
+    enabled = true;
   }
 
   public TurnController getTurnController() {
@@ -41,6 +44,15 @@ public abstract class GameAction {
     }
 
     turnController.executeGameActionQueue();
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    Log.println("Disabilitata");
+    this.enabled = enabled;
   }
 
   public void handleTimeout() {

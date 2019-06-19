@@ -26,8 +26,10 @@ public class ShootAction implements WeaponAction {
 
   @Override
   public void execute(Board board, ExecutableObject object) {
-    object.getTargetHistory(target).addDamages(object.getOwner().getColor(), damages);
-    object.getTargetHistory(target).addTags(object.getOwner().getColor(), tag);
+    if (object.targetHistoryContainsKey(target)) {
+      object.getTargetHistory(target).addDamages(object.getOwner().getColor(), damages);
+      object.getTargetHistory(target).addTags(object.getOwner().getColor(), tag);
+    }
   }
 
   @Override
