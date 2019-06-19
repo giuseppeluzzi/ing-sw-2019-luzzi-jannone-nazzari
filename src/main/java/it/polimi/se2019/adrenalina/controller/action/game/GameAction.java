@@ -51,4 +51,13 @@ public abstract class GameAction {
   public void handleTimeout() {
     // in the general case, do nothing
   }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    Log.println("Disabilitata");
+    this.enabled = enabled;
+  }
 }
