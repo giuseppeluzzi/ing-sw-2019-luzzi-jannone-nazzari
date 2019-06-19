@@ -47,7 +47,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player reloads a weapon.
-   * @param event event specifing the weapon reloaded
+   * @param event event specifying the weapon reloaded
    */
   public void update(PlayerReloadEvent event) {
     Player player;
@@ -90,7 +90,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select another player.
-   * @param event event specifing selected target
+   * @param event event specifying selected target
    */
   public void update(SelectPlayerEvent event) {
     Player player;
@@ -107,9 +107,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
   }
 
   /**
-   * Event fired when a player select a square.
-   *
-   * @param event event specifing selected target
+   * Event fired when a player selects a square.
+   * @param event event specifying selected target
    */
   public void update(SelectSquareEvent event) {
     Player player;
@@ -125,6 +124,10 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event fired when a player selects a direction.
+   * @param event event specifying selected direction
+   */
   public void update(SelectDirectionEvent event) {
     Player player;
     try {
@@ -138,7 +141,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player moves to a different square.
-   * @param event event specifing selected square
+   * @param event event specifying selected square
    */
   public void update(SquareMoveSelectionEvent event) {
     Player player;
@@ -155,7 +158,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player decides a spawnpoint in domination mode.
-   * @param event event specifing the spawnpoint color
+   * @param event event specifying the spawnpoint color
    */
   public void update(SpawnPointDamageEvent event) {
     if (boardController.getBoard().isDominationBoard()) {
@@ -166,6 +169,10 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Generic event
+   * @param event event received
+   */
   @Override
   public void update(Event event) {
     if (registeredEvents.contains(event.getEventType())) {

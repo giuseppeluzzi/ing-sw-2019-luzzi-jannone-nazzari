@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.controller.TurnController;
 import java.io.Serializable;
 import java.util.HashMap;
 
+/**
+ * Any object that can be bought in exchange for something.
+ */
 public interface Buyable extends Serializable {
 
   BuyableType getBuyableType();

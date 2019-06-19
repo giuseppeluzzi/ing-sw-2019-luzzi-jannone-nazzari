@@ -205,7 +205,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Adds a new player to a board in LOBBY status or a returning player (who had previously
    * disconnected) to a board where a game is in progress.
-   *
    * @param player the player to be added.
    * @throws FullBoardException thrown if the board already has 5 players.
    * @throws PlayingBoardException thrown if the status of the board is not LOBBY (a game is already

@@ -35,6 +35,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Virtual client socket. Relays events over the network to the actual client socket.
+ */
 public class VirtualClientSocket implements ClientInterface, Runnable {
 
   private final Socket clientSocket;

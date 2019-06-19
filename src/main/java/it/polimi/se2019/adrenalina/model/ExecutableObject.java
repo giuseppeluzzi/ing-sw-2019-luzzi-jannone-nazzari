@@ -6,6 +6,9 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Any object with a list of actions that can be executed.
+ */
 public abstract class ExecutableObject extends Observable {
 
   private boolean didShoot;

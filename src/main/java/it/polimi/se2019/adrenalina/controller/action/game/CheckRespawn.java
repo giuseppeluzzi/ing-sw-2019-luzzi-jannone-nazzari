@@ -11,23 +11,14 @@ import java.util.List;
  */
 public class CheckRespawn extends GameActionAsync {
 
-  private final boolean everyPlayer; // TODO delete attribute
-
-  public CheckRespawn(TurnController turnController, Player player, boolean everyPlayer) {
+  public CheckRespawn(TurnController turnController, Player player) {
     super(turnController, player);
-    this.everyPlayer = everyPlayer;
   }
 
   @Override
   public void execute(Board board) {
-    if (everyPlayer) {
-      for (Player player : getDeadPlayers(board)) {
-        getTurnController().addRespawn(player);
-      }
-    } else {
-      if (getPlayer().isDead()) {
-        getTurnController().addRespawn(getPlayer());
-      }
+    for (Player player : getDeadPlayers(board)) {
+      getTurnController().addRespawn(player);
     }
   }
 

@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import java.rmi.RemoteException;
 
+/**
+ * Text User Interface timer with a message printed each second.
+ */
 public class TUITimer extends Timer {
 
   private static final long serialVersionUID = 3250410511772801896L;

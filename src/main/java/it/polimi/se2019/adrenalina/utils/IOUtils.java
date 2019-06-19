@@ -5,6 +5,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Input/output file utilities.
+ */
 public class IOUtils {
 
   public static String readFile(String path) throws IOException {

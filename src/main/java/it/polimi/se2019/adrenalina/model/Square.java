@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A board square.
+ */
 public class Square extends Observable implements Target {
 
   private static final long serialVersionUID = -4261049664345567097L;
@@ -65,7 +68,6 @@ public class Square extends Observable implements Target {
 
   /**
    * Copy constructor, creates an exact copy of square.
-   *
    * @param square, Square object that has to be copied, can't be null
    * @throws IllegalArgumentException thrown if square argument is null
    */
@@ -171,7 +173,6 @@ public class Square extends Observable implements Target {
 
   /**
    * Add a square as neighbour in specified direction.
-   *
    * @param direction direction in which neighbour is placed
    * @param square neighbour square
    */
@@ -186,6 +187,11 @@ public class Square extends Observable implements Target {
     neighbours = new HashMap<>();
   }
 
+  /**
+   * Get the player currently on this square.
+   * @return the player currently on this square if any, null otherwise
+   * @throws InvalidSquareException thrown if there are more than one player on this square
+   */
   @Override
   public Player getPlayer() throws InvalidSquareException {
     if (getPlayers().size() == 1) {
@@ -193,7 +199,7 @@ public class Square extends Observable implements Target {
     } else if (getPlayers().isEmpty()) {
       return null;
     } else {
-      throw new InvalidSquareException("In this square there is more than one player");
+      throw new InvalidSquareException("In this square there are more than one player");
     }
   }
 
@@ -213,6 +219,11 @@ public class Square extends Observable implements Target {
     players.remove(player);
   }
 
+  /**
+   * Add damages to the square in domination mode.
+   * @param player the player who scored the damages
+   * @param num the number of damages
+   */
   @Override
   public void addDamages(PlayerColor player, int num) {
     if (color == SquareColor.BLUE) {
@@ -232,7 +243,7 @@ public class Square extends Observable implements Target {
   }
 
   /**
-   * Verify if a square is visible
+   * Verify if a square is visible.
    * @param square a square to be checked
    * @return visibility condition
    */
@@ -247,7 +258,7 @@ public class Square extends Observable implements Target {
   }
 
   /**
-   * Calculate the distance from a specific square
+   * Calculate the distance from a specific square.
    * @param square a specific square
    * @return distance from the square
    */
@@ -258,7 +269,7 @@ public class Square extends Observable implements Target {
 
   /**
    * Creates an Hashmap where all the squares of the board are coupled with their distance from
-   * the current square
+   * the current square.
    * @return Specified Hashmap
    */
   private Map<Square, Integer> bfs() {
@@ -300,7 +311,7 @@ public class Square extends Observable implements Target {
   }
 
   /**
-   * Calculate the cardinal direction between two squares
+   * Calculate the cardinal direction between two squares.
    * @param square another square
    * @return direction between the squares, null if the input is the same square as this
    */
@@ -330,8 +341,7 @@ public class Square extends Observable implements Target {
   }
 
   /**
-   * Add a Weapon object to the square, only if it's a spawn point
-   *
+   * Add a Weapon object to the square, only if it's a spawn point.
    * @param weapon, weapon that will be added
    * @throws IllegalStateException thrown if selected square is not a spawn point
    */
@@ -376,7 +386,6 @@ public class Square extends Observable implements Target {
 
   /**
    * Check if x coordinate is within valid range.
-   *
    * @param x coordinate
    * @return true if valid, false otherwise
    */
@@ -386,7 +395,6 @@ public class Square extends Observable implements Target {
 
   /**
    * Check if y coordinate is within valid range.
-   *
    * @param y coordinate
    * @return true if valid, false otherwise
    */
@@ -419,7 +427,6 @@ public class Square extends Observable implements Target {
 
   /**
    * Create Square object from json formatted String
-   *
    * @param json json input String, can't be null
    * @return Square
    * @throws IllegalArgumentException thrown if argument json is null

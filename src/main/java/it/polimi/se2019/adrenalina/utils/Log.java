@@ -8,6 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+/**
+ * Logging and printing manager.
+ */
 public class Log {
   private static final String LOG_FORMAT = "{0}: {1}";
   private static Logger logger = Logger.getLogger("Adrenalina");
@@ -61,10 +64,18 @@ public class Log {
 
   public static void println(String message) {
     System.out.println(message);
+    /* Sonar will complaint about this, but System.out is the correct thing to use
+     * when directly printing text for the user. This function has been wrapped here
+     * in order to limit the amount of Sonar warnings.
+     */
   }
 
   public static void print(String message) {
     System.out.print(message);
+    /* Sonar will complaint about this, but System.out is the correct thing to use
+     * when directly printing text for the user. This function has been wrapped here
+     * in order to limit the amount of Sonar warnings.
+     */
   }
 
   public static void info(String message) {

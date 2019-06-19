@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 
 /**
- * Class defining a Tagback Grenade powerup card
+ * Class defining a Tagback Grenade powerup card.
  */
 public class TagbackGrenade extends PowerUp {
 

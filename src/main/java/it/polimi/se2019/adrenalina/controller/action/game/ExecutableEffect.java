@@ -105,7 +105,7 @@ public class ExecutableEffect extends GameAction {
         } catch (InvalidSquareException ignored) {
           //
         } catch (NoTargetsExceptionOptional e) {
-          getTurnController().resetUntilPowerup();
+          getTurnController().disableActionsUntilPowerup();
           getTurnController().executeGameActionQueue();
         }
       }

@@ -18,6 +18,10 @@ public class EndGame extends GameActionAsync {
   public void execute(Board board) {
     for (Player player : board.getPlayers()) {
       try {
+        if (player.isDead()) {
+          // if a player died during the last turn
+          player.assignPoints();
+        }
         if (player.getClient() != null) {
           player.getClient().showGameMessage("Partita terminata ciao");
           player.getClient().getBoardView().showFinalRanks();

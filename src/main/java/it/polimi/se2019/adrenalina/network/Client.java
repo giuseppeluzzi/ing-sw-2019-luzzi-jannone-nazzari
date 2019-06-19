@@ -18,6 +18,9 @@ import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
+/**
+ * The client object, one for each player.
+ */
 public abstract class Client implements ClientInterface, Serializable {
 
   private static final long serialVersionUID = -8182516938240148955L;
@@ -89,6 +92,12 @@ public abstract class Client implements ClientInterface, Serializable {
     return lastPing;
   }
 
+  /**
+   * Shows a message with a given title and severity.
+   * @param severity the severity of the message
+   * @param title the title of the message
+   * @param message the body of the message
+   */
   @Override
   public void showMessage(MessageSeverity severity, String title, String message) {
     switch (severity) {
@@ -104,11 +113,17 @@ public abstract class Client implements ClientInterface, Serializable {
     }
   }
 
+  /**
+   * @see #showMessage(MessageSeverity, String, String)
+   */
   @Override
   public void showMessage(MessageSeverity severity, String message) {
     showMessage(severity, "", message);
   }
 
+  /**
+   * @see #showMessage(MessageSeverity, String, String)
+   */
   @Override
   public void showGameMessage(String message) {
     showMessage(MessageSeverity.GAME, "", message);

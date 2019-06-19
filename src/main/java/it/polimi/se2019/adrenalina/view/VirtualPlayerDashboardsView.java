@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Virtual player dashboards view, relays invocations over the network to the actual player dashboards view.
+ */
 public class VirtualPlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface {
 

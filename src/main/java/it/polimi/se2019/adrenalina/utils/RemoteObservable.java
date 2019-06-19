@@ -4,6 +4,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * A remote object that can be observed.
+ */
 public interface RemoteObservable extends Remote {
 
   void addObserver(Observer observer) throws RemoteException;

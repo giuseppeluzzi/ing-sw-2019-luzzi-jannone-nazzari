@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+/**
+ * The game server.
+ */
 public class Server extends UnicastRemoteObject implements ServerInterface {
 
   private static final long serialVersionUID = 1666613338633244401L;
@@ -46,7 +49,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Pings every client in every game
+   * Pings every client in every game.
    */
   private void pingAll() {
     for (BoardController game : new ArrayList<>(games)) {
@@ -64,7 +67,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   /**
    * Adds a client to an existing board or to a new board, per game mode. If the player was already
    * playing and it's DISCONNECTED, the player will be added back to the previous board.
-   *
    * @param client to be added
    * @throws RemoteException in case of network problems
    */
@@ -132,7 +134,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
   /**
    * Finds a game in LOBBY with a free spot for a player and with a certain game mode selected.
-   *
    * @param domination determines if the game should be in domination mode.
    * @return a board controller or null no free boards exist.
    */
@@ -148,9 +149,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Gets a board of a client
-   *
-   * @param client client to be found
+   * Gets a board from a client.
+   * @param client the client to be found
    * @return the board in which the client is playing
    * @throws InvalidPlayerException if the client doesn't exists or isn't playing in any board
    */
@@ -165,9 +165,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Gets a board of a player
-   *
-   * @param client a client to be found
+   * Gets a board from a player.
+   * @param player the player to be found
    * @return the board in which the player is playing
    * @throws InvalidPlayerException if the player doesn't exists or isn't playing in any board
    */
@@ -180,11 +179,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Verifies if exists a connected player with a given name
-   *
-   * @param name name of the playe to be found
+   * Verifies if a connected player with a given name exists.
+   * @param name name of the player to be found.
    * @return true if there is a connected player (playerStatus != DISCONNECTED) with the specified
-   * name
+   * name, false otherwise
    */
   public boolean isPlayerConnected(String name) {
     for (BoardController game : games) {
@@ -199,8 +197,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Gets the board where exists a player with the specified name
-   *
+   * Gets the board where a player with the specified name exists.
    * @param name name of the playe to be found
    * @return the board in which the player is playing or null
    */
@@ -221,8 +218,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Called on client disconnection
-   *
+   * Called on client disconnection.
    * @param client disconnected client
    */
   public void clientDisconnect(ClientInterface client) {

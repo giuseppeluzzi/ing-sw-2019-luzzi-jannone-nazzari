@@ -7,7 +7,7 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 
 /**
- * Class defining a Teleporter powerup card
+ * Class defining a Teleporter powerup card.
  */
 public class Teleporter extends PowerUp {
 

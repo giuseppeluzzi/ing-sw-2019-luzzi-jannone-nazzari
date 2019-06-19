@@ -1,5 +1,8 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
+/**
+ * Enumeration of possible corner types for boxes.
+ */
 public enum CornerType {
   TOP_LEFT_CORNER("┏"),
   TOP_RIGHT_CORNER("┓"),
