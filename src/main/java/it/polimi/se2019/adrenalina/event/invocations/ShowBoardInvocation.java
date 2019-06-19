@@ -3,8 +3,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Invocation that has the client print the game board.
- * @see Invocation
+ * Invocation to print the game board on the client.
  */
 public class ShowBoardInvocation implements Invocation {
 

@@ -6,7 +6,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when a player choose his turn action
+ * Event fired when a player chooses his turn action.
  */
 public class PlayerActionSelectionEvent implements Event {
 

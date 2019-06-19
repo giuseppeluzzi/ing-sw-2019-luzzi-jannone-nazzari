@@ -10,6 +10,9 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Action used to shoot every player in a square.
+ */
 public class ShootSquareAction extends ShootAction {
 
   private static final long serialVersionUID = 2321520813151230768L;

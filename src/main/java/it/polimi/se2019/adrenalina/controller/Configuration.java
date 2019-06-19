@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Application configuration read from external file.
+ */
 public class Configuration {
 
   private String serverIP;

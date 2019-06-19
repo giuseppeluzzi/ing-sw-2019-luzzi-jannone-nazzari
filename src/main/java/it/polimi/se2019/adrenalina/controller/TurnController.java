@@ -18,6 +18,9 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+/**
+ * Controller in charge of handling a player's turn.
+ */
 public class TurnController implements Serializable {
 
   private static final long serialVersionUID = -2990384474014352897L;

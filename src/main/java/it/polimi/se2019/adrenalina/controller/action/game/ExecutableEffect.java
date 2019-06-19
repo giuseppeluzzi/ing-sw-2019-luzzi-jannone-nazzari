@@ -16,6 +16,9 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * Action used to execute executable objects.
+ */
 public class ExecutableEffect extends GameAction {
 
   private final ExecutableObject executableObject;

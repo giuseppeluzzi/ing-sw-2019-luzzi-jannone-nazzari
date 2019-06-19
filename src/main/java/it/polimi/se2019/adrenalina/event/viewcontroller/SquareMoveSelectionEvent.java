@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when a player selects a square as destination for his movement
+ * Event fired when a player selects a square as destination for his movement.
  */
 public class SquareMoveSelectionEvent implements Event {
 

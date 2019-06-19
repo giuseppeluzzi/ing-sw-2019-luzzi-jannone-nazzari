@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Action used to choose the power up to use.
+ */
 public class PowerUpSelection extends GameAction {
 
   private final boolean discard;
@@ -26,10 +29,18 @@ public class PowerUpSelection extends GameAction {
     this.target = target;
   }
 
+  /**
+   * Specifies whether the power up will be discarded for (re)spawning.
+   * @return true if the power up will be discarded, false otherwise.
+   */
   public boolean isDiscard() {
     return discard;
   }
 
+  /**
+   * Specifies whether the power up attacks other players.
+   * @return true if the power up attacks other players, false otherwise.
+   */
   public boolean isAttack() {
     return attack;
   }

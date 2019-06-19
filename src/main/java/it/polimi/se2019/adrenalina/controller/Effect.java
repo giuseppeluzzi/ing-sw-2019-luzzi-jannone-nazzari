@@ -13,6 +13,9 @@ import it.polimi.se2019.adrenalina.utils.NotExpose;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A weapons's effect.
+ */
 public class Effect implements Buyable {
 
   private static final long serialVersionUID = 2725086084597119182L;

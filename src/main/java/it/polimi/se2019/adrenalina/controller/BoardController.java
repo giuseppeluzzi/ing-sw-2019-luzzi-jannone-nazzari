@@ -41,6 +41,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Controller in charge of handling the game board.
+ */
 public class BoardController extends UnicastRemoteObject implements Runnable, Observer {
 
   private static final long serialVersionUID = 5651066204312828750L;
@@ -123,7 +126,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Loads maps from json
+   * Loads maps from json.
    */
   private void loadMaps() {
     Gson gson = new Gson();
@@ -143,8 +146,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Returns a set of valid maps for a given number of players
-   *
+   * Returns a set of valid maps for a given number of players.
    * @param players number of players
    * @return a set of GameMap
    */
@@ -160,7 +162,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Load weapons from json
+   * Load weapons from json.
    */
   private void loadWeapons() {
     for (String weaponName : Configuration.getInstance().getWeaponFiles()) {
@@ -177,6 +179,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Load ammo cards from json.
+   */
   private void loadAmmoCards() {
     Gson gson = new Gson();
     try {
@@ -260,6 +265,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Notifies clients when a player joins a game.
+   * @param player the player who just joined the game
+   */
   public void notifyPlayerJoin(Player player) {
     for (ClientInterface client : clientsName.keySet()) {
       try {
@@ -288,6 +297,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Notifies clients when a player quits a game.
+   * @param player the player who just quitted the game
+   */
   public void notifyPlayerQuit(Player player) {
     for (ClientInterface client : clientsName.keySet()) {
       try {
@@ -306,6 +319,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Handle player disconnection.
+   * @param player the player who just disconnected.
+   */
   public void handleDisconnect(PlayerColor player) {
     if (player == board.getCurrentPlayer()) {
       turnController.clearActionsQueue();
@@ -314,7 +331,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Starts a timer both server-side and on each client
+   * Starts a timer both server-side and on each client.
    */
   private void startJoinTimer() {
     timer.start(Configuration.getInstance().getJoinTimeout(), this::chooseMap);
@@ -330,7 +347,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Verifies is a map is selected otherwise one is selected taking into account the number of
-   * players
+   * players.
    */
   private void chooseMap() {
     if (selectedMap == 0) {
@@ -352,8 +369,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Create every square for a map from the template in the GameMap
-   *
+   * Create every square for a map from the template in the GameMap.
    * @param gameMap the map template
    */
   public void createSquares(GameMap gameMap) {
@@ -373,6 +389,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Places ammoCards on squares.
+   */
   private void placeAmmoCard() {
     for (Square square : board.getSquares()) {
       if (!square.isSpawnPoint()) {
@@ -386,8 +405,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
    * the game on that board is already in progress.
-   *
-   * @param player the player to be removed.
+   * @param player the player to be removed
    */
   public void removePlayer(Player player) throws InvalidPlayerException {
     clientsName.remove(player.getClient());
@@ -405,8 +423,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Sets needed views (BoardView, CharactersView and PlayerDashboardsView) on a Player
-   *
+   * Sets needed views (BoardView, CharactersView and PlayerDashboardsView) on a Player.
    * @param player a Player
    */
   private void setViews(Player player) {
@@ -468,6 +485,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     playerDashboardViews.put(client, view);
   }
 
+  /**
+   * Starts a game.
+   */
   @Override
   public void run() {
     board.setStatus(BoardStatus.MATCH);
@@ -484,16 +504,28 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     turnController.executeGameActionQueue();
   }
 
+  /**
+   * Handles the toggling of final frenzy.
+   * @param event the received event
+   */
   public void update(FinalFrenzyToggleEvent event) {
     board.setFinalFrenzySelected(event.isEnabled());
   }
 
+  /**
+   * Handles the selection of the map that will be used.
+   * @param event the received event
+   */
   public void update(MapSelectionEvent event) {
     if (event.getMap() >= 1 && event.getMap() <= 4) {
       selectedMap = event.getMap();
     }
   }
 
+  /**
+   * Handles the selection of a player's color.
+   * @param event the received event
+   */
   public void update(PlayerColorSelectionEvent event) {
     if (!board.getFreePlayerColors().contains(event.getNewPlayerColor())) {
       return;
@@ -516,6 +548,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
   }
 
+  /**
+   * Handles generic events.
+   * @param event the received event.
+   */
   @Override
   public void update(Event event) {
     if (registeredEvents.contains(event.getEventType())) {

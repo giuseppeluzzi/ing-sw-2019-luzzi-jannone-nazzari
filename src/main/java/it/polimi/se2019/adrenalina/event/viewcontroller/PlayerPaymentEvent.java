@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Event fired whena a player completes a payment
+ * Event fired when a player completes a payment.
  */
 public class PlayerPaymentEvent implements Event {
 

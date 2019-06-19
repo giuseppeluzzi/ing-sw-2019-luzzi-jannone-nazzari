@@ -24,6 +24,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Controller in charge of handling attacks.
+ */
 public class AttackController extends UnicastRemoteObject implements Observer {
 
   private static final long serialVersionUID = -5414473871887210992L;
@@ -44,7 +47,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player reloads a weapon.
-   *
    * @param event event specifing the weapon reloaded
    */
   public void update(PlayerReloadEvent event) {
@@ -88,7 +90,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player select another player.
-   *
    * @param event event specifing selected target
    */
   public void update(SelectPlayerEvent event) {
@@ -137,7 +138,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player moves to a different square.
-   *
    * @param event event specifing selected square
    */
   public void update(SquareMoveSelectionEvent event) {
@@ -154,8 +154,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
 
   /**
-   * Event fired when a player decides a spawnpoint in domination mode
-   *
+   * Event fired when a player decides a spawnpoint in domination mode.
    * @param event event specifing the spawnpoint color
    */
   public void update(SpawnPointDamageEvent event) {

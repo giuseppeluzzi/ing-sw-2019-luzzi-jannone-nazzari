@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when a player changes his player color
+ * Event fired when a player changes his color.
  */
 public class PlayerColorSelectionEvent implements Event {
 

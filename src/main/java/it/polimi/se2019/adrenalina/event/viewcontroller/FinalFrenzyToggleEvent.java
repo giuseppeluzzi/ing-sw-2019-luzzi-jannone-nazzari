@@ -4,7 +4,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when the master player toggles Final Frenzy
+ * Event fired when the master player toggles Final Frenzy.
  */
 public class FinalFrenzyToggleEvent implements Event {
 

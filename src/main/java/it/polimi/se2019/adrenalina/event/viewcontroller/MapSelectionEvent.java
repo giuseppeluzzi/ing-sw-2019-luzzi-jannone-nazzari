@@ -4,7 +4,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when the master player choose a map
+ * Event fired when the master player chooses a map.
  */
 public class MapSelectionEvent implements Event {
 

@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client show the powerUp selection for (re)spawns.
- * @see Invocation
+ * Invocation to show the powerUp selection for (re)spawns on the client.
  */
 public class ShowPowerUpSelectionInvocation implements Invocation {
 

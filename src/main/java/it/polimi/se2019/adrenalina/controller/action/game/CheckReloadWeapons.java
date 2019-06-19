@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
+/**
+ * Action used to ask player to reload weapons he can reload.
+ */
 public class CheckReloadWeapons extends GameAction {
 
 

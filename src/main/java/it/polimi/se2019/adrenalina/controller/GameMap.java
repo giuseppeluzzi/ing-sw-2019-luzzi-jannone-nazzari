@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A game map.
+ */
 public class GameMap implements Serializable {
 
   private static final long serialVersionUID = 1066718572076893345L;

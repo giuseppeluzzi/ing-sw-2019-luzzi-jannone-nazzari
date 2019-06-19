@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 
+/**
+ * Action used to print the final ranks and terminate the game.
+ */
 public class EndGame extends GameActionAsync {
 
   public EndGame() {

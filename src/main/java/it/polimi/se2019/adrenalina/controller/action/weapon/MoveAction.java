@@ -6,6 +6,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.utils.Log;
 
+/**
+ * Action used to move a player on the board.
+ */
 public class MoveAction implements WeaponAction {
 
   private static final long serialVersionUID = -2545135795207731324L;

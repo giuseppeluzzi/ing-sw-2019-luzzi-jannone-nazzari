@@ -3,8 +3,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Invocation that has the client set a timer.
- * @see Invocation
+ * Invocation to set a timer on the client.
  */
 public class TimerSetEvent implements Invocation {
 

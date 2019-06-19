@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import java.io.Serializable;
 
+/**
+ * Generic action executed as part of the usage of a weapon.
+ */
 public interface WeaponAction extends Serializable {
 
   WeaponActionType getActionType();

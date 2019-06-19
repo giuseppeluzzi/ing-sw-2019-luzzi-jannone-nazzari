@@ -1,5 +1,8 @@
 package it.polimi.se2019.adrenalina.event;
 
+/**
+ * Event sent when a new player connects via socket.
+ */
 public class PlayerConnectEvent implements Event {
 
   private static final long serialVersionUID = -6091901271781502467L;

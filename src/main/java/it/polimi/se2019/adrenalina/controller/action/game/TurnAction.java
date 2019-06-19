@@ -1,10 +1,13 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+/**
+ * List of standard turn actions.
+ */
 public enum TurnAction {
 
   RUN("Corri", "Muoviti di 1, 2, 3 passi", false),
   WALK_FETCH("Raccogliere", "Muoviti fino a 1 quadrato e raccogli", false),
-  WALK_FETCH3("Raccogliete", "Muoviti fino a 2 quadrati e raccogli", false), // If player has at least 3 damages
+  WALK_FETCH3("Raccogliere", "Muoviti fino a 2 quadrati e raccogli", false), // If player has at least 3 damages
   SHOOT("Spara", "Spara a un bersaglio", false),
   SHOOT6("Muoviti e Spara", "Muoviti fino a 1 quadrato poi spara", false), // If player has at least 6 damages
 

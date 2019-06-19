@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client show target selection for shooting.
- * @see Invocation
+ * Invocation to show target selection for shooting on the client.
  */
 public class ShowTargetSelectInvocation implements Invocation {
 

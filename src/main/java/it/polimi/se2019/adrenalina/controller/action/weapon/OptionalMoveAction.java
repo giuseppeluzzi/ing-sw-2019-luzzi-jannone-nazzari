@@ -7,6 +7,10 @@ import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 
+/**
+ * Action used to move a player on the board; only executed if no other actions of the same type and with
+ * the same group number were previously executed and if a valid target has been selected.
+ */
 public class OptionalMoveAction implements WeaponAction {
 
   private static final long serialVersionUID = -6483684905618211881L;
@@ -27,12 +31,6 @@ public class OptionalMoveAction implements WeaponAction {
     return type;
   }
 
-  /**
-   * An optional move weaponaction is executed only if no other move actions of the same group were
-   * previously executed and a valid target has been selected
-   * @param board board parameter
-   * @param weapon weapon parameter
-   */
   @Override
   public void execute(Board board, ExecutableObject object) {
     Weapon weapon = (Weapon) object;

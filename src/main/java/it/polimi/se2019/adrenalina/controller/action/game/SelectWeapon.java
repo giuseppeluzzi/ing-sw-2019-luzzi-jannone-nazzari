@@ -8,6 +8,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Action used to select a weapon to use.
+ */
 public class SelectWeapon extends GameAction {
 
   public SelectWeapon(Player player) {

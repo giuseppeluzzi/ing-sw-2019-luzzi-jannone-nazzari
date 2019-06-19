@@ -7,7 +7,7 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.PowerUpType;
 
 /**
- * Event fired when a player uses a powerup
+ * Event fired when a player uses a powerup.
  */
 public class PlayerPowerUpEvent implements Event {
 

@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 
+/**
+ * Action used to pick a power up.
+ */
 public class PickPowerUp extends GameActionAsync {
 
   public PickPowerUp(Player player) {

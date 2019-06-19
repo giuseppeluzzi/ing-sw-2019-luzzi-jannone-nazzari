@@ -9,9 +9,12 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Checks if any player needs to respawn, in that case it allows them to do so.
+ */
 public class CheckRespawn extends GameActionAsync {
 
-  private final boolean everyPlayer;
+  private final boolean everyPlayer; // TODO delete attribute
 
   public CheckRespawn(TurnController turnController, Player player, boolean everyPlayer) {
     super(turnController, player);

@@ -13,7 +13,6 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEve
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerNoCollectEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
@@ -51,7 +50,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   PlayerController(BoardController boardController) throws RemoteException {
     this.boardController = boardController;
 
-    registeredEvents.add(EventType.PLAYER_NO_COLLECT_EVENT);
     registeredEvents.add(EventType.PLAYER_COLLECT_AMMO_EVENT);
     registeredEvents.add(EventType.PLAYER_COLLECT_WEAPON_EVENT);
     registeredEvents.add(EventType.PLAYER_POWERUP_EVENT);
@@ -91,11 +89,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       }
     }
     return new Player(name, color, boardController.getBoard());
-  }
-
-  public void update(PlayerNoCollectEvent event) {
-    boardController.getTurnController().executeGameActionQueue();
-    event.getPlayerColor();
   }
 
   public void update(PlayerCollectAmmoEvent event) {

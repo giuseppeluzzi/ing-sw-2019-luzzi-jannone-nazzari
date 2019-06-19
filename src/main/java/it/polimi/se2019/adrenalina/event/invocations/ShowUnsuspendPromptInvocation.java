@@ -3,8 +3,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Invocation that has the client print the unsuspend prompt for suspended players.
- * @see Invocation
+ * Invocation to print the unsuspend prompt for suspended players on the client.
  */
 public class ShowUnsuspendPromptInvocation implements Invocation {
 

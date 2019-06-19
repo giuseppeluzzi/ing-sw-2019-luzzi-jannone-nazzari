@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import java.util.Map;
 
+/**
+ * Action used to undo any movement caused by an executableObject.
+ */
 public class MoveRollback extends GameAction {
 
   private final ExecutableObject executableObject;

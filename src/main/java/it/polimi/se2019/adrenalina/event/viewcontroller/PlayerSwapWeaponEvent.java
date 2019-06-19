@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event fired when a player swaps his weapons for another one.
+ */
 public class PlayerSwapWeaponEvent implements Event {
 
   private static final long serialVersionUID = 8252298742197699384L;

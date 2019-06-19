@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 
+/**
+ * Action used to shoot a target.
+ */
 public class ShootAction implements WeaponAction {
 
   private static final long serialVersionUID = 3519195918261269154L;

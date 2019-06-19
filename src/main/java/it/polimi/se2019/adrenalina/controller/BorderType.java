@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 /**
- * Enumeration of all Border types
+ * Enumeration of square border types.
  */
 public enum BorderType {
   WALL,

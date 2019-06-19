@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client print the weapon selection.
- * @see Invocation
+ * Invocation to print the weapon selection on the client.
  */
 public class ShowWeaponSelectionInvocation implements Invocation {
 

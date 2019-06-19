@@ -7,7 +7,7 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.PowerUpType;
 
 /**
- * Event fired a player discards a powerup to spawn
+ * Event fired a player discards a powerup for (re)spawning.
  */
 public class PlayerDiscardPowerUpEvent implements Event {
 

@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event fired when a player unsuspends himself.
+ */
 public class PlayerUnsuspendEvent implements Event {
     private static final long serialVersionUID = 5239856920032659236L;
 

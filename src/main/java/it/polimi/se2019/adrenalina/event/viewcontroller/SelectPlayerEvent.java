@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when a player selects another player as a target during a shooting
+ * Event fired when a player selects another player as a target during a shooting.
  */
 public class SelectPlayerEvent implements Event {
 

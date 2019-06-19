@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
+/**
+ * Action used to reload a weapon.
+ */
 public class ReloadWeapon extends GameAction {
 
   private final Weapon weapon;

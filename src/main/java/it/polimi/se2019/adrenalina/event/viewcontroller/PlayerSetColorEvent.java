@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event fired when a player's color is set.
+ */
 public class PlayerSetColorEvent implements Event {
 
   private static final long serialVersionUID = 203613633799913352L;

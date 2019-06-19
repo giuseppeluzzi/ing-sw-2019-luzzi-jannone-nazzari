@@ -8,6 +8,10 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
+/**
+ * Action used after the usage of an ExecutableObject for unloading weapons and
+ * removing used powerUps.
+ */
 public class AfterUsageExecutable extends GameActionAsync {
 
   private final ExecutableObject executableObject;

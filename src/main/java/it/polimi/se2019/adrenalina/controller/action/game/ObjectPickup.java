@@ -12,6 +12,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Actino used to pick up ammoCards and weapons.
+ */
 public class ObjectPickup extends GameAction {
 
   public ObjectPickup(Player player) {

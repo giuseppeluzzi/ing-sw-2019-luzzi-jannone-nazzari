@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client show the square selection for shooting.
- * @see Invocation
+ * Invocation to show the square selection for shooting on the client.
  */
 public class ShowSquareSelectInvocation implements Invocation {
 

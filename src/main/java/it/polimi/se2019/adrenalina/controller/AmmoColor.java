@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Enumeration of all possible colors of an ammo
+ * Enumeration of all possible colors of an ammo.
  */
 public enum AmmoColor implements Spendable {
   BLUE(SquareColor.BLUE, ANSIColor.BLUE),

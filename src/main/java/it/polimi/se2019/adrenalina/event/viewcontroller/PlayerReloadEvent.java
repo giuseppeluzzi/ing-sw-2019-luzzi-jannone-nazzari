@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when a player reloads a weapon
+ * Event fired when a player reloads a weapon.
  */
 public class PlayerReloadEvent implements Event {
 

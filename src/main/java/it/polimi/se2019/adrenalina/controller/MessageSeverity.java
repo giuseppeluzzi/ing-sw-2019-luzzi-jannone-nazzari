@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 /**
- * Enumeration of all possible game messages
+ * Enumeration of game messages severities.
  */
 public enum MessageSeverity {
   INFO,

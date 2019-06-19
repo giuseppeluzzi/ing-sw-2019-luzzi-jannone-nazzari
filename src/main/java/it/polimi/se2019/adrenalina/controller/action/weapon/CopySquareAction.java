@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 
+/**
+ * Action used to copy a square with a certain ordinal position to another position in the target history.
+ */
 public class CopySquareAction implements WeaponAction {
 
   private static final long serialVersionUID = 8092881078549035801L;

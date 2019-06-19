@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client show a list of buyable weapons.
- * @see Invocation
+ * Invocation to show a list of buyable weapons on the client.
  */
 public class ShowBuyableWeaponsInvocation implements Invocation {
 

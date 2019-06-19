@@ -2,6 +2,9 @@ package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 
+/**
+ * Enumeration of player colors with their names.
+ */
 public enum PlayerColor {
   GREEN(ANSIColor.GREEN, "SPROG"),
   BLUE(ANSIColor.BLUE, "BANSHEE"),

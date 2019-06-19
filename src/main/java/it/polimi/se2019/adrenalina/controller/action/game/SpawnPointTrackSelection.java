@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 
+/**
+ * Action used to select a spawn point track.
+ */
 public class SpawnPointTrackSelection extends GameAction {
 
   public SpawnPointTrackSelection(Player player) {

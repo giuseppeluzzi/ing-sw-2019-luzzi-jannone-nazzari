@@ -6,6 +6,9 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 
+/**
+ * Action used to select a weapon effect to use.
+ */
 public class SelectEffect extends GameAction {
 
   public SelectEffect(Player player) {

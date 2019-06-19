@@ -3,8 +3,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Invocation that has the client show the direction selection for a movement.
- * @see Invocation
+ * Invocation to show the direction selection for a movement on the client.
  */
 public class ShowDirectionSelectInvocation implements Invocation {
 

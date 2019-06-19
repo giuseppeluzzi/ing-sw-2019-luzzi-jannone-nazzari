@@ -1,5 +1,8 @@
 package it.polimi.se2019.adrenalina.event;
 
+/**
+ * Event sent for disconnecting a client.
+ */
 public class PlayerDisconnectEvent implements Event {
 
   private static final long serialVersionUID = -6091901271781502467L;

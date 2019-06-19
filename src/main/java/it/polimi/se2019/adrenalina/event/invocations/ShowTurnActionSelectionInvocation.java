@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client show the turn action selection.
- * @see Invocation
+ * Invocation to show the turn action selection on the client.
  */
 public class ShowTurnActionSelectionInvocation implements Invocation {
 

@@ -2,6 +2,9 @@ package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 
+/**
+ * Enumeration of square colors.
+ */
 public enum SquareColor {
   GREEN(ANSIColor.GREEN),
   BLUE(ANSIColor.BLUE, AmmoColor.BLUE),

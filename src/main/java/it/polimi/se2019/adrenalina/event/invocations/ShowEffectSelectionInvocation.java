@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client show the effect selection for a weapon.
- * @see Invocation
+ * Invocation to show the effect selection for a weapon on the client.
  */
 public class ShowEffectSelectionInvocation implements Invocation {
 

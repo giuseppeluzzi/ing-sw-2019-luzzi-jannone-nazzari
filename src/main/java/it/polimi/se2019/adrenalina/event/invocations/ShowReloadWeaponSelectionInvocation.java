@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Invocation that has the client show the weapon selection for reloading.
- * @see Invocation
+ * Invocation to show the weapon selection for reloading on the client.
  */
 public class ShowReloadWeaponSelectionInvocation implements Invocation {
 

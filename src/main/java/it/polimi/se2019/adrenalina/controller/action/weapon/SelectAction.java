@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Action used to prompt the user for a square or target selection.
+ */
 public class SelectAction implements WeaponAction {
 
   private static final long serialVersionUID = -1712202363884739599L;

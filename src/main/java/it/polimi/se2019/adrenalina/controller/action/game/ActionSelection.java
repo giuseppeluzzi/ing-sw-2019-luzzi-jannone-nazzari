@@ -11,6 +11,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Action used when a player needs to choose what to do next during his turn.
+ */
 public class ActionSelection extends GameAction {
 
   public ActionSelection(TurnController turnController, Player player) {
@@ -54,7 +57,6 @@ public class ActionSelection extends GameAction {
     try {
       getPlayer().getClient().getPlayerDashboardsView().showTurnActionSelection(turnActions);
     } catch (RemoteException e) {
-      actionFailed();
       Log.exception(e);
     }
   }

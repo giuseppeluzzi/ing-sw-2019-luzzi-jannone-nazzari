@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Event fired when a player selects an effect of a weapon
+ * Event fired when a player selects an effect of a weapon.
  */
 public class PlayerSelectWeaponEffectEvent implements Event {
 

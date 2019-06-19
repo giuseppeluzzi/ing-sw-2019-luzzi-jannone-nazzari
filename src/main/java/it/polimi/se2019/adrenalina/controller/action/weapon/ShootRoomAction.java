@@ -8,6 +8,9 @@ import it.polimi.se2019.adrenalina.model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Action used to shoot every player in a room.
+ */
 public class ShootRoomAction extends ShootAction {
 
   private static final long serialVersionUID = 3506478747182803402L;

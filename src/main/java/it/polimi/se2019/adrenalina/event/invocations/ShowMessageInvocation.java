@@ -4,8 +4,7 @@ import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Invocation that has the client print a message with a certain severity.
- * @see Invocation
+ * Invocation to print a message with a certain severity on the client.
  */
 public class ShowMessageInvocation implements Invocation {
 

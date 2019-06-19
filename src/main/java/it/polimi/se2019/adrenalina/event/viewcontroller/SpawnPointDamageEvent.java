@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event fired when a player damages a spawn point.
+ */
 public class SpawnPointDamageEvent implements Event {
 
   private static final long serialVersionUID = 2800089775218160405L;

@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.weapon;
 
 /**
- * Enumeration of all different types of possible actions
+ * Enumeration of all different types of weapon actions.
  */
 public enum WeaponActionType {
   SELECT(SelectAction.class),

@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 
+/**
+ * Generic game action that will be executed during a player's turn.
+ */
 public abstract class GameAction {
 
   private final TurnController turnController;
@@ -31,18 +34,17 @@ public abstract class GameAction {
 
   public abstract void execute(Board board);
 
+  /**
+   * Specifies whether the action is automatic or requires user interaction.
+   * @return true if the game action requires user interaction, false otherwise.
+   */
   public boolean isSync() {
     return true;
   }
 
-  public void actionFailed() {
-    if (turnController == null) {
-      throw new IllegalStateException("This action can't fail");
-    }
-
-    turnController.executeGameActionQueue();
-  }
-
+  /**
+   * Method called whenever the user input times out before he can perform a selection.
+   */
   public void handleTimeout() {
     // in the general case, do nothing
   }

@@ -4,8 +4,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Invocation that has the client print the death of a player.
- * @see Invocation
+ * Invocation to print the death of a player on the client.
  */
 public class ShowDeathInvocation implements Invocation {
 

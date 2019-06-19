@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when a player fetches a weapon from a spawnpoint
+ * Event fired when a player fetches a weapon from a spawnpoint.
  */
 public class PlayerCollectWeaponEvent implements Event {
 

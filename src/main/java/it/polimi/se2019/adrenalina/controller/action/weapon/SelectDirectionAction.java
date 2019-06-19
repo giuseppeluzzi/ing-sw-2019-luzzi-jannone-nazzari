@@ -6,6 +6,9 @@ import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 
+/**
+ * Action used to prompt the user for a direction.
+ */
 public class SelectDirectionAction implements WeaponAction {
 
   private static final long serialVersionUID = 9176126026908579498L;

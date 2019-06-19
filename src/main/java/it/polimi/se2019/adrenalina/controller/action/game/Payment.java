@@ -8,6 +8,9 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 
+/**
+ * Action used to pay for a buyable object.
+ */
 public class Payment extends GameAction {
 
   private final Buyable item;

@@ -5,7 +5,7 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Event fired when a player fetch an ammo card from a square
+ * Event fired when a player fetches an ammo card from a square.
  */
 public class PlayerCollectAmmoEvent implements Event {
 

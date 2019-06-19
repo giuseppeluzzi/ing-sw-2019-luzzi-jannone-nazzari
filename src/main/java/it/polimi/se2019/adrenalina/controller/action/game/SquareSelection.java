@@ -8,6 +8,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Action used to select a square.
+ */
 public class SquareSelection extends GameAction {
 
   private final int maxDistance;

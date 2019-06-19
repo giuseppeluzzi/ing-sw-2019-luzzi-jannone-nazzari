@@ -3,8 +3,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 import it.polimi.se2019.adrenalina.event.EventType;
 
 /**
- * Invocation that has the client print the final ranks.
- * @see Invocation
+ * Invocation to print the final ranks on the client.
  */
 public class ShowFinalRanksInvocation implements Invocation {
 
