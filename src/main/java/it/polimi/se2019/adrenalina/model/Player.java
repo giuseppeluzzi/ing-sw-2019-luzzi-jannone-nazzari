@@ -121,7 +121,6 @@ public class Player extends Observable implements Target {
    * public copy will not contain the player's private information
    */
   public Player(Player player, boolean publicCopy) {
-    // TODO: find error with, see testCopyConstructor for reference
     if (player == null) {
       throw new IllegalArgumentException("Argument player can't be null");
     }
@@ -394,6 +393,10 @@ public class Player extends Observable implements Target {
     return output;
   }
 
+  /**
+   *
+   * @param spawnColor
+   */
   public void respawn(AmmoColor spawnColor) {
     if (!isDead()) {
       throw new IllegalStateException("Player is not dead");

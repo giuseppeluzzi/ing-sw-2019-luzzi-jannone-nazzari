@@ -150,8 +150,8 @@ public class Effect implements Buyable {
   public void reconcileDeserialization(Weapon ofWeapon, Effect parentEffect) {
     weapon = ofWeapon;
     requiredEffect = parentEffect;
-    if (parentEffect != null) {
-      for (Effect effect : parentEffect.subEffects) {
+    if (subEffects != null) {
+      for (Effect effect : subEffects) {
         effect.reconcileDeserialization(ofWeapon, this);
       }
     }

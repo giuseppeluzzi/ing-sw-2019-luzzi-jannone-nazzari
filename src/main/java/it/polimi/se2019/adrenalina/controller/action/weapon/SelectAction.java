@@ -63,7 +63,9 @@ public class SelectAction implements WeaponAction {
   private void blacklist(List<Target> targets, int[] differentFrom, ExecutableObject object) {
     if (differentFrom.length > 0) {
       for (int targetIndex : differentFrom) {
-        targets.remove(object.getTargetHistory(targetIndex));
+        if (object.targetHistoryContainsKey(targetIndex)) {
+            targets.remove(object.getTargetHistory(targetIndex));
+        }
       }
     }
   }

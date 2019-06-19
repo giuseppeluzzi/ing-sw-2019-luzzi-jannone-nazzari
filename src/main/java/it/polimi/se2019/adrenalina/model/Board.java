@@ -176,6 +176,11 @@ public class Board extends Observable implements Serializable {
     }
   }
 
+  /**
+   * Given an AmmoColor returns reference to the same colored SpawnPoint, if existing
+   * @param spawnPointColor chosen color
+   * @return SpawnPoint of spawnPointColor color, null if it doesn't exist
+   */
   public Square getSpawnPointSquare(AmmoColor spawnPointColor) {
     if (spawnPointColor == AmmoColor.ANY) {
       throw new IllegalArgumentException("spawnPointColor can't be AmmoColor.ANY");
@@ -592,6 +597,11 @@ public class Board extends Observable implements Serializable {
     return null;
   }
 
+  /**
+   * Given a SquareColor representing a room returns all the player in the room.
+   * @param roomColor color of the room
+   * @return List of Player
+   */
   public List<Player> getPlayerByRoom(SquareColor roomColor) {
     List<Player> players = new ArrayList<>();
     for (Player player : players) {
