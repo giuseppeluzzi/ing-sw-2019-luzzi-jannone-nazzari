@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -100,7 +101,7 @@
               </VBox>
             </center>
           </BorderPane>
-          <BorderPane fx:id="lobbyConfigurationSkulls" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" BorderPane.alignment="CENTER">
+          <BorderPane fx:id="lobbyConfigurationSkulls" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="false" BorderPane.alignment="CENTER">
             <top>
               <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                 <children>
@@ -131,6 +132,29 @@
                   </children>
                 </VBox>
               </HBox>
+            </center>
+          </BorderPane>
+          <BorderPane fx:id="lobbyPlayers" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" BorderPane.alignment="CENTER">
+            <top>
+              <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby">
+                    <styleClass>
+                      <String fx:value="text" />
+                      <String fx:value="title" />
+                    </styleClass>
+                  </Text>
+                  <Text fx:id="lobbyPlayersSubtitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Per iniziare la partita mancano altri 5 player">
+                    <styleClass>
+                      <String fx:value="text" />
+                      <String fx:value="subtitle" />
+                    </styleClass>
+                  </Text>
+                </children>
+              </VBox>
+            </top>
+            <center>
+               <ListView fx:id="playerList" focusTraversable="false" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" styleClass="playersList" BorderPane.alignment="CENTER" />
             </center>
           </BorderPane>
         </children>

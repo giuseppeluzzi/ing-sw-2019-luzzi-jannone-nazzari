@@ -87,6 +87,7 @@ public class StartFXController {
       try {
         lobbyScene = AppGUI.getLobbyScene();
       } catch (IOException e) {
+        e.printStackTrace();
         Log.critical("Lobby scene not found");
         return;
       }

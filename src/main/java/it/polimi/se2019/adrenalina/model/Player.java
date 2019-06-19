@@ -211,7 +211,7 @@ public class Player extends Observable implements Target {
   }
 
   public void setMaster(boolean master) {
-    if (master) {
+    if (master && board != null) {
       for (Player toPlayer : board.getPlayers()) {
         if (toPlayer.color != color) {
           toPlayer.setMaster(false);

@@ -37,6 +37,7 @@
   -fx-font-family: "Exo";
   -fx-font-weight: 600;
   -fx-text-fill: #393939;
+  -fx-font-size: 18;
 }
 
 .title {
@@ -56,4 +57,19 @@
   -fx-background-image: url("img/loading.gif");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center center;
+}
+
+.playersList {
+  -fx-background-insets: 0;
+  -fx-background-color: #ffffff;
+  -fx-padding: 0;
+}
+
+.list-view .list-cell:even {
+  -fx-background-color: #ffffff;
+  -fx-text-fill: #393939;
+}
+.list-view .list-cell:odd {
+  -fx-background-color: #ffffff;
+  -fx-text-fill: #393939;
 }

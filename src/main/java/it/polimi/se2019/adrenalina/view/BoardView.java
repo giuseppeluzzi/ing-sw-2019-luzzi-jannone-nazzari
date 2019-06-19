@@ -38,14 +38,10 @@ public abstract class BoardView extends Observable implements BoardViewInterface
   protected BoardView(Client client, Timer timer) {
     this.client = client;
     this.timer = timer;
-    try {
-      initializeBoard();
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
+    initializeBoard();
   }
 
-  private void initializeBoard() throws RemoteException {
+  private void initializeBoard() {
     if (client.isDomination()) {
       board = new DominationBoard();
     } else {
@@ -97,7 +93,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
     if (event.getPlayerColor() == client.getPlayerColor()) {
       try {
-       endLoading(player.isMaster());
+        endLoading(player.isMaster());
       } catch (RemoteException e) {
         Log.exception(e);
       }
