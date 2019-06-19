@@ -33,9 +33,9 @@ public class AppGUI extends Application {
   public static void startClient(String name, boolean domination, boolean socket) {
     new Thread(() -> {
       if (socket) {
-        client = new ClientSocket(name, domination);
+        client = new ClientSocket(name, domination, false);
       } else {
-        ClientRMI clientRMI = new ClientRMI(name, domination);
+        ClientRMI clientRMI = new ClientRMI(name, domination, false);
         try {
           client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
           clientRMI.getServer().addClient(client);
@@ -92,14 +92,34 @@ public class AppGUI extends Application {
   public static Scene getLobbyScene() throws IOException {
     FXMLLoader loaderLobby = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
+    Scene scene = new Scene(loaderLobby.load());
     lobbyFXController = loaderLobby.getController();
-    return new Scene(loaderLobby.load());
+    return scene;
   }
 
   public static Scene getBoardScene() throws IOException {
     FXMLLoader loaderBoard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
+    Scene scene = new Scene(loaderBoard.load());
     boardFXController = loaderBoard.getController();
-    return new Scene(loaderBoard.load());
+    return scene;
+  }
+
+  public static LobbyFXController getLobbyFXController() {
+    return lobbyFXController;
+  }
+
+  public static BoardFXController getBoardFXController() {
+    return boardFXController;
+  }
+
+  public static void setLobbyFXController(
+      LobbyFXController lobbyFXController) {
+    AppGUI.lobbyFXController = lobbyFXController;
+  }
+
+  public static void setBoardFXController(
+      BoardFXController boardFXController) {
+    AppGUI.boardFXController = boardFXController;
   }
 }

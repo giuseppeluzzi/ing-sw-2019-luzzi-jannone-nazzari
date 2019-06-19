@@ -71,7 +71,7 @@ public class AppClient {
       case 0:
         // RMI
         try {
-          ClientRMI clientRMI = new ClientRMI(name, domination);
+          ClientRMI clientRMI = new ClientRMI(name, domination, true);
           client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
           clientRMI.getServer().addClient(client);
         } catch (RemoteException e) {
@@ -82,7 +82,7 @@ public class AppClient {
         break;
       case 1:
         // Socket
-        client = new ClientSocket(name, domination);
+        client = new ClientSocket(name, domination, true);
         break;
       default:
         Log.severe("Modalità di connessione non valida. Supportate: (0) RMI; (1) Socket");

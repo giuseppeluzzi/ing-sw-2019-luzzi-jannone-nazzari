@@ -3,15 +3,9 @@ package it.polimi.se2019.adrenalina.network;
 import static java.lang.Thread.sleep;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
-import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
-import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardViewInterface;
-import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
-import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
-
-import java.rmi.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -19,30 +13,22 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientRMI extends Client {
 
   private static final long serialVersionUID = 5097938777989686167L;
-  private volatile boolean running = true;
+  private final boolean running = true;
 
   private transient ServerInterface server;
+  private transient Thread pooler;
 
-  private BoardViewInterface boardView;
-  private CharactersViewInterface charactersView;
-  private PlayerDashboardsViewInterface playerDashboardsView;
-  private Thread pooler;
-
-  public ClientRMI(String name, boolean domination) {
-    super(name, domination);
+  public ClientRMI(String name, boolean domination, boolean tui) {
+    super(name, domination, tui);
 
     try {
       Registry registry = LocateRegistry.getRegistry(Configuration.getInstance().getServerIP(),
-              Configuration.getInstance().getRmiPort());
+          Configuration.getInstance().getRmiPort());
       server = (ServerInterface) registry.lookup("MyServer");
 
-      boardView = new TUIBoardView(this);
-      charactersView = new TUICharactersView(this, boardView);
-      playerDashboardsView = new TUIPlayerDashboardsView(this, boardView);
-
-      UnicastRemoteObject.exportObject(boardView, 0);
-      UnicastRemoteObject.exportObject(charactersView, 0);
-      UnicastRemoteObject.exportObject(playerDashboardsView, 0);
+      UnicastRemoteObject.exportObject(getBoardView(), 0);
+      UnicastRemoteObject.exportObject(getCharactersView(), 0);
+      UnicastRemoteObject.exportObject(getPlayerDashboardsView(), 0);
 
     } catch (NotBoundException e) {
       Log.severe("RMI", "Object not bound");
@@ -78,21 +64,6 @@ public class ClientRMI extends Client {
     super.disconnect(message);
     pooler.interrupt();
     System.exit(0);
-  }
-
-  @Override
-  public BoardViewInterface getBoardView() {
-    return boardView;
-  }
-
-  @Override
-  public CharactersViewInterface getCharactersView() {
-    return charactersView;
-  }
-
-  @Override
-  public PlayerDashboardsViewInterface getPlayerDashboardsView() {
-    return playerDashboardsView;
   }
 
   @Override

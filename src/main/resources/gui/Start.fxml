@@ -32,7 +32,7 @@
                       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
                         <children>
                           <Circle fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
-                          <RadioButton fx:id="gamemodeClassic" focusTraversable="false" mnemonicParsing="false" selected="true" text="Classica">
+                          <RadioButton fx:id="gamemodeClassic" focusTraversable="false" mnemonicParsing="false" selected="true" text="Classica" toggleGroup="$gamemode">
                             <toggleGroup>
                               <ToggleGroup fx:id="gamemode" />
                             </toggleGroup>

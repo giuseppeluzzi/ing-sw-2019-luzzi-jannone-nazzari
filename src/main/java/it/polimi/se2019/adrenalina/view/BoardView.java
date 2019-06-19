@@ -94,8 +94,15 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     }
 
     player.setMaster(event.isMaster());
-  }
 
+    if (event.getPlayerColor() == client.getPlayerColor()) {
+      try {
+       endLoading(player.isMaster());
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    }
+  }
 
   public void update(BoardStatusUpdate event) {
     board.setStatus(event.getStatus());

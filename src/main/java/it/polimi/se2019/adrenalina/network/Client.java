@@ -2,21 +2,47 @@ package it.polimi.se2019.adrenalina.network;
 
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
+import it.polimi.se2019.adrenalina.ui.graphic.GUICharactersView;
+import it.polimi.se2019.adrenalina.ui.graphic.GUIPlayerDashboardsView;
+import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
+import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
+import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.view.BoardView;
+import it.polimi.se2019.adrenalina.view.BoardViewInterface;
+import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
+import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 public abstract class Client implements ClientInterface, Serializable {
 
   private static final long serialVersionUID = -8182516938240148955L;
   private final String playerName;
-  private PlayerColor playerColor;
+  private PlayerColor playerColor = null;
   private boolean domination;
   private Long lastPing;
 
-  protected Client(String playerName, boolean domination) {
+  private final BoardViewInterface boardView;
+  private final CharactersViewInterface charactersView;
+  private final PlayerDashboardsViewInterface playerDashboardsView;
+
+  protected Client(String playerName, boolean domination, boolean tui) {
     this.playerName = playerName;
     this.domination = domination;
+
+    if (tui) {
+      boardView = new TUIBoardView(this);
+      charactersView = new TUICharactersView(this, boardView);
+      playerDashboardsView = new TUIPlayerDashboardsView(this, boardView);
+    } else {
+      boardView = new GUIBoardView(this);
+      charactersView = new GUICharactersView(boardView);
+      playerDashboardsView = new GUIPlayerDashboardsView(boardView);
+    }
   }
 
   @Override
@@ -31,13 +57,15 @@ public abstract class Client implements ClientInterface, Serializable {
 
   @Override
   public void setPlayerColor(PlayerColor playerColor) {
-    showGameMessage(
-        String.format(
-            "Il tuo personaggio è %s%s%s!",
-            playerColor.getAnsiColor(),
-            playerColor.getCharacterName(),
-            ANSIColor.RESET
-        ));
+    if (this.playerColor == null) {
+      showGameMessage(
+          String.format(
+              "Il tuo personaggio è %s%s%s!",
+              playerColor.getAnsiColor(),
+              playerColor.getCharacterName(),
+              ANSIColor.RESET
+          ));
+    }
     this.playerColor = playerColor;
   }
 
@@ -84,6 +112,22 @@ public abstract class Client implements ClientInterface, Serializable {
   @Override
   public void showGameMessage(String message) {
     showMessage(MessageSeverity.GAME, "", message);
+  }
+
+
+  @Override
+  public final BoardViewInterface getBoardView() {
+    return boardView;
+  }
+
+  @Override
+  public final CharactersViewInterface getCharactersView() {
+    return charactersView;
+  }
+
+  @Override
+  public final PlayerDashboardsViewInterface getPlayerDashboardsView() {
+    return playerDashboardsView;
   }
 
   @Override

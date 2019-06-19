@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="900.0" prefWidth="1400.0" styleClass="startBody" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController">
@@ -31,28 +37,101 @@
                 </children>
               </VBox>
             </top>
-                  <center>
-                     <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" styleClass="loadingImg"/>
-                  </center>
-          </BorderPane>
-          <BorderPane fx:id="lobbyMapC" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="false" BorderPane.alignment="CENTER">
             <center>
+               <Pane prefHeight="200.0" prefWidth="200.0" styleClass="loadingImg" BorderPane.alignment="CENTER" />
             </center>
+          </BorderPane>
+          <BorderPane fx:id="lobbyConfigurationMap" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="false" BorderPane.alignment="CENTER">
             <top>
               <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                 <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connessione in corso...">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Come vuoi giocare?">
                     <styleClass>
                       <String fx:value="text" />
                       <String fx:value="title" />
                     </styleClass>
                   </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seleziona la mappa">
+                    <styleClass>
+                      <String fx:value="text" />
+                      <String fx:value="subtitle" />
+                    </styleClass>
+                  </Text>
                 </children>
               </VBox>
             </top>
-                  <center>
-                     <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" styleClass="loadingImg"/>
-                  </center>
+            <bottom>
+              <Button fx:id="buttonNextMap" alignment="BOTTOM_RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#nextMap" text="Avanti" BorderPane.alignment="BOTTOM_RIGHT" />
+            </bottom>
+            <center>
+              <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                  <children>
+                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+                      <children>
+                        <Circle fx:id="map1Image" radius="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="map1Image" />
+                        <RadioButton fx:id="map1" focusTraversable="false" mnemonicParsing="false" selected="true" text="Mappa 1" toggleGroup="$map">
+                          <toggleGroup>
+                            <ToggleGroup fx:id="map" />
+                          </toggleGroup>
+                        </RadioButton>
+                      </children>
+                    </VBox>
+                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+                      <children>
+                        <Circle fx:id="map2Image" radius="100.0" stroke="#393939" strokeType="INSIDE" styleClass="map2Image" />
+                        <RadioButton fx:id="map2" focusTraversable="false" mnemonicParsing="false" text="Mappa 2" toggleGroup="$map" />
+                      </children>
+                    </VBox>
+                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+                      <children>
+                        <Circle fx:id="map3Image" radius="100.0" stroke="#393939" strokeType="INSIDE" styleClass="map3Image" />
+                        <RadioButton fx:id="map3" focusTraversable="false" mnemonicParsing="false" text="Mappa 3" toggleGroup="$map" />
+                      </children>
+                    </VBox>
+                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+                      <children>
+                        <Circle fx:id="map4Image" radius="100.0" stroke="#393939" strokeType="INSIDE" styleClass="map4Image" />
+                        <RadioButton fx:id="map4" focusTraversable="false" mnemonicParsing="false" text="Mappa 4" toggleGroup="$map" />
+                      </children>
+                    </VBox>
+                  </children>
+                </HBox>
+              </VBox>
+            </center>
+          </BorderPane>
+          <BorderPane fx:id="lobbyConfigurationSkulls" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" BorderPane.alignment="CENTER">
+            <top>
+              <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Come vuoi giocare?">
+                    <styleClass>
+                      <String fx:value="text" />
+                      <String fx:value="title" />
+                    </styleClass>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seleziona il numero di teschi">
+                    <styleClass>
+                      <String fx:value="text" />
+                      <String fx:value="subtitle" />
+                    </styleClass>
+                  </Text>
+                </children>
+              </VBox>
+            </top>
+            <bottom>
+              <Button fx:id="buttonNextSkulls" alignment="BOTTOM_RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#nextSkulls" text="Avanti" BorderPane.alignment="BOTTOM_RIGHT" />
+            </bottom>
+            <center>
+              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0" BorderPane.alignment="CENTER">
+                  <children>
+                    <Circle fx:id="skullsImage" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                    <Slider id="skullsSelector" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="5.0" />
+                  </children>
+                </VBox>
+              </HBox>
+            </center>
           </BorderPane>
         </children>
       </StackPane>

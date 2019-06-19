@@ -45,6 +45,11 @@ public class TUIBoardView extends BoardView {
   }
 
   @Override
+  public void endLoading(boolean masterPlayer) {
+
+  }
+
+  @Override
   public void showBoard() {
     Log.print(ansi().eraseScreen().toString());
     BoardPrinter.print(getBoard());
@@ -143,7 +148,8 @@ public class TUIBoardView extends BoardView {
               ANSIColor.RESET));
     }
     inputManager.input("Seleziona un quadrato:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
+    timer.start(Configuration.getInstance().getTurnTimeout(),
+        () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     Target result = targets.get(inputManager.waitForIntResult());
     timer.stop();
     return result;
@@ -170,7 +176,8 @@ public class TUIBoardView extends BoardView {
       }
     }
     inputManager.input("Seleziona un bersaglio:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
+    timer.start(Configuration.getInstance().getTurnTimeout(),
+        () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     Target result = targets.get(inputManager.waitForIntResult());
     timer.stop();
     return result;
@@ -183,7 +190,8 @@ public class TUIBoardView extends BoardView {
       choices.add(direction.getName());
     }
     inputManager.input("Seleziona una direzione:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
+    timer.start(Configuration.getInstance().getTurnTimeout(),
+        () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     try {
       notifyObservers(new SelectDirectionEvent(getClient().getPlayerColor(),
           Direction.values()[inputManager.waitForIntResult()]));

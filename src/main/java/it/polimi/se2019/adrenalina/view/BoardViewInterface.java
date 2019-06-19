@@ -40,6 +40,8 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
 
     void hideTimer() throws RemoteException;
 
+    void endLoading(boolean masterPlayer) throws RemoteException;
+
     void showBoard() throws RemoteException;
 
     void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;

@@ -8,8 +8,8 @@ import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +17,8 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = -1044436470709908758L;
 
-  protected GUIPlayerDashboardsView(BoardView boardView) {
-    super(boardView);
+  public GUIPlayerDashboardsView(BoardViewInterface boardView) {
+    super((BoardView) boardView);
   }
 
   @Override

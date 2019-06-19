@@ -1,11 +1,16 @@
 package it.polimi.se2019.adrenalina.ui.graphic;
 
+import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.rmi.RemoteException;
 import java.util.List;
+import javafx.application.Platform;
 
 public class GUIBoardView extends BoardView {
 
@@ -13,6 +18,21 @@ public class GUIBoardView extends BoardView {
 
   public GUIBoardView(Client client) {
     super(client, new GUITimer(client));
+  }
+
+  @Override
+  public void endLoading(boolean masterPlayer) {
+    Log.debug("AHUASDNASD");
+    new Thread(() -> {
+      try {
+        Thread.sleep(Constants.PING_INTERVAL * 2);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
+      Platform.runLater(() -> {
+        AppGUI.getLobbyFXController().endLoading(masterPlayer);
+      });
+    }).start();
   }
 
   @Override
