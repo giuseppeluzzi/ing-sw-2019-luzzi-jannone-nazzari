@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Event sent when the list of powerUps of a player changes. This event is only sent to the player itself.
+ */
 public class OwnPowerUpUpdate implements Event {
 
   private static final long serialVersionUID = 7471834268745266766L;

@@ -428,16 +428,23 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showUnsuspendPrompt() {
-    inputManager.input("Sei stato sospeso dalla partita. Premi invio per ricominciare a giocare...", 0, Integer.MAX_VALUE);
-    try {
-      inputManager.waitForStringResult();
-    } catch (InputCancelledException e) {
-      return;
-    }
-    try {
-      notifyObservers(new PlayerUnsuspendEvent(client.getPlayerColor()));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
+    // If the view's timer has not expired yet, let's stop it manually and cancel user input
+    timer.stop();
+    inputManager.cancel(WAIT_TIMEOUT_MSG);
+    new Thread(() -> {
+      TUIInputManager suspInputManager = new TUIInputManager();
+      suspInputManager.input("** Sei stato sospeso dalla partita\n** Premi invio in qualsiasi momento per ricominciare a giocare", 0, Integer.MAX_VALUE);
+      try {
+        suspInputManager.waitForStringResult();
+      } catch (InputCancelledException e) {
+        return;
+      }
+      Log.println("** Sei tornato in partita");
+      try {
+        notifyObservers(new PlayerUnsuspendEvent(client.getPlayerColor()));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    }).start();
   }
 }

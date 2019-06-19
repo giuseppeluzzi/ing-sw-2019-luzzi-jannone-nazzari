@@ -6,6 +6,8 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
@@ -15,6 +17,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDeathUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
@@ -34,6 +37,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,6 +54,7 @@ public class Player extends Observable implements Target {
   private final String name;
   private PlayerColor color;
   private PlayerStatus status;
+  private boolean master;
   @NotExpose
   private Square square;
 
@@ -199,6 +204,26 @@ public class Player extends Observable implements Target {
 
   public PlayerColor getColor() {
     return color;
+  }
+
+  public boolean isMaster() {
+    return master;
+  }
+
+  public void setMaster(boolean master) {
+    if (master) {
+      for (Player toPlayer : board.getPlayers()) {
+        if (toPlayer.color != color) {
+          toPlayer.setMaster(false);
+        }
+      }
+    }
+    this.master = master;
+    try {
+      notifyObservers(new PlayerMasterUpdate(color, master));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public int getDeaths() {
@@ -356,8 +381,8 @@ public class Player extends Observable implements Target {
     while (!damageCount.isEmpty()) {
       int max = Collections.max(damageCount.values());
       List<PlayerColor> maxPlayers = new ArrayList<>();
-      Set<Map.Entry<PlayerColor, Integer>> entrySet = damageCount.entrySet();
-      for (Map.Entry<PlayerColor, Integer> entry : entrySet) {
+      Set<Entry<PlayerColor, Integer>> entrySet = damageCount.entrySet();
+      for (Entry<PlayerColor, Integer> entry : entrySet) {
         if (entry.getValue() == max) {
           maxPlayers.add(entry.getKey());
           damageCount.remove(entry.getKey());

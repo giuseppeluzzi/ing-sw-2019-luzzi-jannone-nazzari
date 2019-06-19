@@ -7,6 +7,10 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.Square;
 
+
+/**
+ * Event sent when a board square is set.
+ */
 public class BoardSetSquareUpdate implements Event {
 
   private static final long serialVersionUID = -2673936916461806650L;

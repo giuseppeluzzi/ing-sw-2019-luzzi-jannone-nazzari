@@ -5,6 +5,10 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Invocation that has the client show the turn action selection.
+ * @see Invocation
+ */
 public class ShowTurnActionSelectionInvocation implements Invocation {
 
   private static final long serialVersionUID = -8445507219354141631L;

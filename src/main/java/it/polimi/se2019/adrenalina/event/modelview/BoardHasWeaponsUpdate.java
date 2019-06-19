@@ -3,6 +3,9 @@ package it.polimi.se2019.adrenalina.event.modelview;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event indicating whether the board has weapons left in the stack.
+ */
 public class BoardHasWeaponsUpdate implements Event {
 
   private static final long serialVersionUID = -1459684764328696748L;

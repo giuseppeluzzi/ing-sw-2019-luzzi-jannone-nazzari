@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when a player triggers Final Frenzy.
+ */
 public class PlayerFrenzyUpdate implements Event {
 
   private static final long serialVersionUID = -387739189095181951L;

@@ -217,13 +217,24 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       }
 
       setViews(player);
-
       board.addPlayer(player);
+
+      try {
+        addPlayerObservers(player);
+
+        board.addObserver(player.getClient().getBoardView(), true);
+        board.addObserver(player.getClient().getPlayerDashboardsView());
+        board.addObserver(player.getClient().getCharactersView());
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+
       player.setStatus(PlayerStatus.WAITING);
+      player.setMaster(board.getPlayers().size() == 1);
 
       notifyPlayerJoin(player);
 
-      if (board.getPlayers().size() >= 2) {
+      if (board.getPlayers().size() >= Configuration.getInstance().getMinNumPlayers()) {
         startJoinTimer();
       }
     } else {
@@ -231,6 +242,20 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         player.setStatus(PlayerStatus.PLAYING);
       } else {
         throw new PlayingBoardException("Board isn't in LOBBY status");
+      }
+    }
+  }
+
+  private void addPlayerObservers(Player player) throws RemoteException {
+    player.addObserver(player.getClient().getBoardView());
+    player.addObserver(player.getClient().getPlayerDashboardsView());
+    player.addObserver(player.getClient().getCharactersView());
+
+    for (Player toPlayer : board.getPlayers()) {
+      if (toPlayer.getColor() != player.getColor() && toPlayer.getClient() != null) {
+        player.addObserver(toPlayer.getClient().getBoardView());
+        player.addObserver(toPlayer.getClient().getPlayerDashboardsView());
+        player.addObserver(toPlayer.getClient().getCharactersView());
       }
     }
   }
@@ -315,10 +340,12 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
     for (GameMap map : new ArrayList<>(maps)) {
       if (map.getId() == selectedMap) {
-        prepareMap(map);
+        createSquares(map);
+        placeAmmoCard();
+        break;
       }
-      maps.remove(map);
     }
+    maps.clear();
     Log.info("Selected map #" + selectedMap);
 
     run();
@@ -344,28 +371,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       }
       board.setSquare(realSquare);
     }
-  }
-
-  private void prepareMap(GameMap map) {
-    for (Player player : board.getPlayers()) {
-      try {
-        for (Player toPlayer : board.getPlayers()) {
-          player.addObserver(toPlayer.getClient().getBoardView());
-          player.addObserver(toPlayer.getClient().getPlayerDashboardsView());
-          player.addObserver(toPlayer.getClient().getCharactersView());
-        }
-
-        board.addObserver(player.getClient().getBoardView());
-        board.addObserver(player.getClient().getPlayerDashboardsView());
-        board.addObserver(player.getClient().getCharactersView());
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
-    }
-    board.notifyInitialStatus();
-
-    createSquares(map);
-    placeAmmoCard();
   }
 
   private void placeAmmoCard() {

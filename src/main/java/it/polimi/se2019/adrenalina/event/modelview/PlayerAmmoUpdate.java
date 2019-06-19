@@ -4,6 +4,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the list of weapons of a player changes.
+ */
 public class PlayerAmmoUpdate implements Event {
 
   private static final long serialVersionUID = -7574479394997959563L;

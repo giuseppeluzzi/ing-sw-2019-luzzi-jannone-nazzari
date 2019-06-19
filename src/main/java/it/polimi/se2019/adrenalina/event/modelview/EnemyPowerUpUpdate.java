@@ -4,6 +4,10 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Event sent when the number of powerUps of a player changes. This event is used by the player's enemies who
+ * cannot see what the actual powerUps are.
+ */
 public class EnemyPowerUpUpdate implements Event {
 
   private static final long serialVersionUID = 3380422402729267446L;

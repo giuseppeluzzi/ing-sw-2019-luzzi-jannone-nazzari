@@ -6,6 +6,9 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Event sent when the list of tags or weapons of a player changes.
+ */
 public class PlayerDamagesTagsUpdate implements Event {
 
   private static final long serialVersionUID = 1014334077223621057L;

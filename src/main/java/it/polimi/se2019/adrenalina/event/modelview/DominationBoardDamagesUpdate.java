@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Event sent when the list of damages in the domination board is updated.
+ */
 public class DominationBoardDamagesUpdate implements Event {
 
   private static final long serialVersionUID = 6822873911362508716L;

@@ -11,8 +11,10 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
@@ -82,6 +84,18 @@ public abstract class BoardView extends Observable implements BoardViewInterface
       startTimer(event.getTimer());
     }
   }
+
+  public void update(PlayerMasterUpdate event) {
+    Player player;
+    try {
+      player = board.getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException e) {
+      return;
+    }
+
+    player.setMaster(event.isMaster());
+  }
+
 
   public void update(BoardStatusUpdate event) {
     board.setStatus(event.getStatus());

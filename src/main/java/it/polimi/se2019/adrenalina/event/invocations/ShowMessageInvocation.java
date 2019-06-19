@@ -3,6 +3,10 @@ package it.polimi.se2019.adrenalina.event.invocations;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.event.EventType;
 
+/**
+ * Invocation that has the client print a message with a certain severity.
+ * @see Invocation
+ */
 public class ShowMessageInvocation implements Invocation {
 
   private static final long serialVersionUID = 7814951540331867139L;
