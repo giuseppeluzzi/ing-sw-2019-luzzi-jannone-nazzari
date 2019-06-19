@@ -27,6 +27,9 @@ import it.polimi.se2019.adrenalina.utils.Timer;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 
+/**
+ * Board view.
+ */
 public abstract class BoardView extends Observable implements BoardViewInterface {
 
   private static final long serialVersionUID = 2545732483334205102L;
@@ -73,6 +76,11 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     timer.stop();
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see TimerSetEvent
+   */
   public void update(TimerSetEvent event) {
     if (event.getTimer() == 0) {
       hideTimer();
@@ -81,6 +89,11 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     }
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerMasterUpdate
+   */
   public void update(PlayerMasterUpdate event) {
     Player player;
     try {
@@ -100,6 +113,11 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     }
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardStatusUpdate
+   */
   public void update(BoardStatusUpdate event) {
     board.setStatus(event.getStatus());
     if (board.getStatus() == BoardStatus.FINAL_FRENZY) {
@@ -107,10 +125,20 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     }
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardAddPlayerUpdate
+   */
   public void update(BoardAddPlayerUpdate event) {
     board.addPlayer(new Player(event.getPlayerName(), event.getPlayerColor(), board));
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardSetSquareUpdate
+   */
   public void update(BoardSetSquareUpdate event) {
     Square square = new Square(event.getPosX(),
         event.getPosY(),
@@ -127,26 +155,56 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     board.setSquare(square);
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardHasWeaponsUpdate
+   */
   public void update(BoardHasWeaponsUpdate event) {
     board.setPublicCopyHasWeapons(event.hasWeapons());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardHasAmmoCardsUpdate
+   */
   public void update(BoardHasAmmoCardsUpdate event) {
     board.setPublicCopyHasAmmoCards(event.hasAmmoCards());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardKillShotsUpdate
+   */
   public void update(BoardKillShotsUpdate event) {
     board.updateKillShots(event.getPlayers());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardSkullsUpdate
+   */
   public void update(BoardSkullsUpdate event) {
     board.setSkulls(event.getSkulls());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see DominationBoardDamagesUpdate
+   */
   public void update(DominationBoardDamagesUpdate event) {
     ((DominationBoard) board).updateDamages(event.getSpawnPointColor(), event.getPlayers());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see SquareAmmoCardUpdate
+   */
   public void update(SquareAmmoCardUpdate event) {
     if (event.getBlue() == 0 && event.getRed() == 0 &&
         event.getYellow() == 0 && event.getPowerUps() == 0) {
@@ -157,10 +215,19 @@ public abstract class BoardView extends Observable implements BoardViewInterface
         new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see SquareWeaponUpdate
+   */
   public void update(SquareWeaponUpdate event) {
     board.getSquare(event.getPosX(), event.getPosY()).setWeapons(event.getWeapons());
   }
 
+  /**
+   * Generic weapon handling.
+   * @param event the received event.
+   */
   @Override
   public void update(Event event) {
     try {

@@ -7,7 +7,7 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 
 /**
- * Class defining a Targeting Scoper powerup card
+ * Class defining a Targeting Scoper powerup card.
  */
 public class TargetingScope extends PowerUp {
 
@@ -45,8 +45,7 @@ public class TargetingScope extends PowerUp {
   }
 
   /**
-   * Create TargetingScope object from json formatted String
-   *
+   * Create TargetingScope object from json formatted String.
    * @param json json input String
    * @return TargetingScope
    */

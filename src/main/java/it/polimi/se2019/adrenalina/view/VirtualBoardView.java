@@ -21,6 +21,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Virtual board view, relays invocations over the network to the actual board view.
+ */
 public class VirtualBoardView extends Observable implements BoardViewInterface {
 
   private static final long serialVersionUID = -4988173252714241460L;

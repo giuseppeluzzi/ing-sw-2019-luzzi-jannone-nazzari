@@ -17,6 +17,7 @@ import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.TagbackGrenade;
+import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
@@ -102,9 +103,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     for (AmmoColor color : AmmoColor.getValidColor()) {
       for (int i = 0; i < 4; i++) {
         //board.addPowerUp(new Teleporter(color));
-        board.addPowerUp(new TagbackGrenade(color));
+        //board.addPowerUp(new TagbackGrenade(color));
         //board.addPowerUp(new Newton(color));
-        //board.addPowerUp(new TargetingScope(color));
+        board.addPowerUp(new TargetingScope(color));
       }
     }
   }
@@ -205,7 +206,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Adds a new player to a board in LOBBY status or a returning player (who had previously
    * disconnected) to a board where a game is in progress.
-   *
    * @param player the player to be added.
    * @throws FullBoardException thrown if the board already has 5 players.
    * @throws PlayingBoardException thrown if the status of the board is not LOBBY (a game is already

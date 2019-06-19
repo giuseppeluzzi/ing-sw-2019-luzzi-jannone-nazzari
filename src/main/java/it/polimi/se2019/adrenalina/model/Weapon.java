@@ -60,6 +60,10 @@ public class Weapon extends ExecutableObject implements Buyable {
     cost.put(AmmoColor.ANY, 0);
   }
 
+  /**
+   * Copy constructor, creates an exact clone of the weapon.
+   * @param weapon the weapon to be copied.
+   */
   public Weapon(Weapon weapon) {
     baseCost = weapon.baseCost;
     name = weapon.name;
@@ -85,7 +89,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Returns whether the weapon is loaded or not.
-   *
    * @return true if weapon is loaded, false otherwise
    */
   public boolean isLoaded() {
@@ -94,7 +97,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Set if weapon is loaded or not.
-   *
    * @param loaded, true if weapon is loaded, false otherwise
    */
   public void setLoaded(boolean loaded) {
@@ -117,7 +119,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Returns the color of the weapon's base cost.
-   *
    * @return baseCost of weapon
    */
   public AmmoColor getBaseCost() {
@@ -126,7 +127,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Returns the weapon's name.
-   *
    * @return the weapon's name
    */
   public String getName() {
@@ -135,7 +135,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Returns whether any {@code OptionalMoveAction} from group of index "key" has been executed.
-   *
    * @param key group id
    * @return true if group id "key" has been previously executed, false otherwise
    */
@@ -146,7 +145,6 @@ public class Weapon extends ExecutableObject implements Buyable {
   /**
    * Whenever an optional move weaponaction is executed an entry with values "true, group_id" is
    * created and no more move actions of that group can be executed.
-   *
    * @param key group id of executed move weaponaction
    */
   public void setGroupMoveUsed(Integer key) {
@@ -155,7 +153,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Returns list of Effects contained in this weapon.
-   *
    * @return list of Effects
    */
   public List<Effect> getEffects() {
@@ -164,7 +161,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Returns an effect based on its name.
-   *
    * @param findName the name of the effect
    * @return the effect object
    */
@@ -184,7 +180,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Add an Effect to the weapon's list.
-   *
    * @param effect Effect to be added
    */
   public void addEffect(Effect effect) {
@@ -193,7 +188,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Select an Effect and places it in selectedEffects list.
-   *
    * @param effect Effect to be placed in selectedEffets
    */
   public void setSelectedEffect(Effect effect) {
@@ -203,20 +197,23 @@ public class Weapon extends ExecutableObject implements Buyable {
     selectedEffects.add(effect);
   }
 
+  /**
+   * Returns the owner of the weapon by checking the targetHistory.
+   * @return the owner of the weapon
+   */
   @Override
   public Player getOwner() {
     if (getTargetHistory(0) == null) {
       throw new IllegalStateException("Target 0 is missing");
     }
     if (!getTargetHistory(0).isPlayer()) {
-      throw new IllegalStateException("Target 0 is  not a player");
+      throw new IllegalStateException("Target 0 is not a player");
     }
     return (Player) getTargetHistory(0);
   }
 
   /**
    * Returns selectedEffects.
-   *
    * @return list of selected effects
    */
   public List<Effect> getSelectedEffects() {
@@ -237,7 +234,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Returns how many ammo of specified AmmoColor must be paid in order to reload the weapon.
-   *
    * @param color color of the ammo
    * @return how many ammo of specified AmmoColor must be paid
    */
@@ -249,20 +245,27 @@ public class Weapon extends ExecutableObject implements Buyable {
     return cost.get(color);
   }
 
+  /**
+   * Returns an hashmap where each entry specifies how much of the given color must be paid in order
+   * to reload or buy the weapon.
+   * @param isReload indicates if the cost is for a reloading action or not
+   * @return hashmap of colors and values
+   */
+  public HashMap<AmmoColor, Integer> getCost(boolean isReload) {
+    HashMap<AmmoColor, Integer> cost = new HashMap<>();
+    for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
+      cost.put(ammoColor, getCost(ammoColor));
+    }
+    cost.put(AmmoColor.ANY, 0);
+    if (isReload) {
+        cost.put(baseCost, cost.get(baseCost) + 1);
+    }
+    return cost;
+  }
+
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    if (player.hasWeapon(this)) {
-      setLoaded(true);
-    } else {
-      for (Square square : board.getSquares()) {
-        if (square.getWeapons().contains(this)) {
-          square.removeWeapon(this);
-          break;
-        }
-      }
-      player.addWeapon(this);
-    }
-    turnController.executeGameActionQueue();
+    throw new IllegalStateException("Must use a decorator");
   }
 
   @Override
@@ -277,7 +280,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Gson serialization.
-   *
    * @return JSON string containing serialized object
    */
   public String serialize() {
@@ -289,7 +291,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   /**
    * Create Weapon object from json formatted String
-   *
    * @param json json input String
    * @return Weapon
    * @throws IllegalArgumentException thrown if argument json is null

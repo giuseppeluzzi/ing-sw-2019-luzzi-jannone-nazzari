@@ -9,6 +9,9 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import java.lang.reflect.Type;
 
+/**
+ * Target deserialization from a JSON string.
+ */
 public class JsonTargetDeserializer implements JsonDeserializer<Target> {
 
   @Override

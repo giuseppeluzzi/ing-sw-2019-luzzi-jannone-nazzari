@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.controller.TurnController;
 import java.io.Serializable;
 import java.util.HashMap;
 
+/**
+ * Any object that can be bought in exchange for something.
+ */
 public interface Buyable extends Serializable {
 
   BuyableType getBuyableType();
@@ -20,4 +23,8 @@ public interface Buyable extends Serializable {
   int getCost(AmmoColor ammoColor);
 
   void afterPaymentCompleted(TurnController turnController, Board board, Player player);
+
+  default String promptMessage() {
+    return "";
+  }
 }

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Additional utils needed by Text User Interface.
+ */
 public class TUIUtils {
 
   private TUIUtils() {
@@ -17,6 +20,14 @@ public class TUIUtils {
 
   private static final TUIInputManager inputManager = new TUIInputManager();
 
+  /**
+   * Weapon selection prompt
+   * @param weapons the list of weapons to choose from
+   * @param prompt the prompt
+   * @param showCost whether to show the cost of each weapon
+   * @return the user's answer
+   * @throws InputCancelledException thrown if the user's input is cancelled
+   */
   static String selectWeapon(List<Weapon> weapons, String prompt,
       boolean showCost) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
@@ -42,6 +53,12 @@ public class TUIUtils {
     return weapons.get(inputManager.waitForIntResult()).getName();
   }
 
+  /**
+   * AmmoColor selection prompt
+   * @param anyAllowed whether "ANY" is an option
+   * @return the chosen ammoColor
+   * @throws InputCancelledException thrown if the user's input is cancelled
+   */
   static AmmoColor showAmmoColorSelection(boolean anyAllowed) throws InputCancelledException {
     List<AmmoColor> colors;
     if (anyAllowed) {
@@ -57,6 +74,13 @@ public class TUIUtils {
     return colors.get(inputManager.waitForIntResult());
   }
 
+  /**
+   * Effect selection prompt
+   * @param effects list of effects to choose from
+   * @param areSubEffects whether the selection is about a subeffect
+   * @return the selected effect
+   * @throws InputCancelledException thrown if the user's input is cancelled
+   */
   static Effect showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InputCancelledException {
     String prompt;
     int result;

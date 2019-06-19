@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Virtual player dashboards view, relays invocations over the network to the actual player dashboards view.
+ */
 public class VirtualPlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface {
 
@@ -41,11 +44,11 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
+  public void showPaymentOption(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUp,
       Map<AmmoColor, Integer> budgetAmmo) {
     clientSocket.sendEvent(
-        new ShowPaymentOptionInvocation(buyableType, buyableCost, budgetPowerUp, budgetAmmo));
+        new ShowPaymentOptionInvocation(buyableType, prompt, buyableCost, budgetPowerUp, budgetAmmo));
   }
 
   @Override

@@ -10,6 +10,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+/**
+ * RMI version of the client object.
+ */
 public class ClientRMI extends Client {
 
   private static final long serialVersionUID = 5097938777989686167L;

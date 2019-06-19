@@ -37,6 +37,9 @@ import java.util.Set;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 
+/**
+ * Text User Interface dashboards view
+ */
 public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = 572470044324855920L;
@@ -84,8 +87,15 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     // TODO
   }
 
+  /**
+   * Show payment options to the user.
+   * @param buyableType the type of object the user is buying
+   * @param buyableCost the cost of the object the user is buying
+   * @param budgetPowerUp the user's budget in power ups
+   * @param budgetAmmo the user's budget in ammos
+   */
   @Override
-  public void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
+  public void showPaymentOption(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) {
 
     int answerBlue = 0;
@@ -104,7 +114,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     List<PowerUp> answerPowerUp = new ArrayList<>();
     Set<String> answers = null;
 
-    Log.println("Hai a dispozione:");
+    Log.println("Hai a disposizione:");
     for (Spendable match : spendables) {
       Log.println(String
           .format("\t%d) %s%s%s", index, match.getColor().getAnsiColor(), match.getSpendableName(),
@@ -116,7 +126,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     Log.println(
         String.format(
             "Devi pagare:\t%s%d rosso%s, %s%d blu%s, %s%d giallo%s, %s%d qualsiasi colore%s%n"
-                + "Come preferisci pagare?%n",
+                + "Come preferisci pagare %s?%n",
             AmmoColor.RED.getAnsiColor(),
             buyableCost.get(AmmoColor.RED),
             ANSIColor.RESET,
@@ -128,7 +138,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
             ANSIColor.RESET,
             AmmoColor.ANY.getAnsiColor(),
             buyableCost.get(AmmoColor.ANY),
-            ANSIColor.RESET));
+            ANSIColor.RESET,
+            prompt)
+        );
 
     String response;
 
@@ -173,6 +185,10 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
   }
 
+  /**
+   * Show turn action selection prompt to the user.
+   * @param actions possible actions
+   */
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
     boardView.showBoard();
@@ -246,6 +262,10 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     return false;
   }
 
+  /**
+   * Show weapon selection prompt to the user.
+   * @param weapons the list of weapons to show
+   */
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
     boardView.showBoard();
@@ -262,6 +282,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
   }
 
+  /**
+   * Show effect selection prompt to the user.
+   * @param weapon the effects' parent weapon
+   * @param effects the list of effects to show
+   */
   @Override
   public void showEffectSelection(Weapon weapon, List<Effect> effects) {
     List<Effect> chosenEffects = new ArrayList<>();
@@ -299,6 +324,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
   }
 
+  /**
+   * Show weapon selection prompt for the user to select which weapon to swap.
+   * @param ownWeapons the list of user's weapons to show
+   * @param squareWeapons the list of collectable weapons
+   */
   @Override
   public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
     boardView.showBoard();
@@ -319,6 +349,10 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
   }
 
+  /**
+   * Show weapon reload selection prompt to the user.
+   * @param unloadedWeapons the list of unloaded weapons to show
+   */
   @Override
   public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
     int chosenTarget = 0;
@@ -380,6 +414,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
   }
 
+  /**
+   * Show power up selection prompt to the user.
+   * @param powerUps the list of power ups to show
+   * @param discard true if the selection is going to discard the power up for a (re)spwan, false otherwise
+   */
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
     boardView.showBoard();
@@ -426,6 +465,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
   }
 
+  /**
+   * Show unsuspend prompt to the (newly) suspended user.
+   */
   @Override
   public void showUnsuspendPrompt() {
     // If the view's timer has not expired yet, let's stop it manually and cancel user input

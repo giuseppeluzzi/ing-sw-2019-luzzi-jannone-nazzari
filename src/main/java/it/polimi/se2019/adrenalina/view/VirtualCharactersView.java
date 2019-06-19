@@ -8,6 +8,9 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import java.rmi.RemoteException;
 
+/**
+ * Virtual characters view, relays invocations over the network to the actual characters view.
+ */
 public class VirtualCharactersView extends Observable implements CharactersViewInterface {
 
   private static final long serialVersionUID = -6715889122608916050L;

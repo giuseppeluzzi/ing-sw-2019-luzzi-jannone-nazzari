@@ -29,6 +29,7 @@ import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.PowerUpUsage;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.WeaponBuy;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.reflect.InvocationTargetException;
@@ -39,6 +40,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Controller in charge of managing players.
+ */
 public class PlayerController extends UnicastRemoteObject implements Observer {
 
   private static final long serialVersionUID = 5970759489567761611L;
@@ -62,6 +66,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.PLAYER_UNSUSPEND_EVENT);
   }
 
+  /**
+   * Get a player of the specified color from the board.
+   * @param board the game board
+   * @param playerColor the color of the player to get
+   * @return the Player object
+   */
   private Player getPlayerFromBoard(Board board, PlayerColor playerColor) {
     Player player;
     try {
@@ -74,7 +84,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   /**
    * Instances a new player with a name and color and adds it to the board.
-   *
    * @param name the player's name.
    * @param color the player's color.
    * @return the player instance.
@@ -91,6 +100,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     return new Player(name, color, boardController.getBoard());
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerCollectAmmoEvent
+   */
   public void update(PlayerCollectAmmoEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -122,6 +136,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerCollectWeaponEvent
+   */
   public void update(PlayerCollectWeaponEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -136,11 +155,16 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     boardController.getTurnController().addTurnActions(
         new Payment(boardController.getTurnController(),
-            player,
-            board.getWeaponByName(event.getWeaponName())));
+            player, new WeaponBuy(board.getWeaponByName(event.getWeaponName()))
+            ));
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerPowerUpEvent
+   */
   public void update(PlayerPowerUpEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -171,6 +195,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerActionSelectionEvent
+   */
   public void update(PlayerActionSelectionEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -233,6 +262,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerDiscardPowerUpEvent
+   */
   public void update(PlayerDiscardPowerUpEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -277,6 +311,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerPaymentEvent
+   */
   public void update(PlayerPaymentEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -315,6 +354,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerSelectWeaponEvent
+   */
   public void update(PlayerSelectWeaponEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -334,6 +378,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerSwapWeaponEvent
+   */
   public void update(PlayerSwapWeaponEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -357,6 +406,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerSelectWeaponEffectEvent
+   */
   public void update(PlayerSelectWeaponEffectEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -382,6 +436,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event handling.
+   * @param event the received event
+   * @see PlayerUnsuspendEvent
+   */
   public void update(PlayerUnsuspendEvent event) {
     Board board = boardController.getBoard();
     Player player;
@@ -394,6 +453,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     player.resetTimeoutCount();
   }
 
+  /**
+   * Generic event handling.
+   * @param event the received event
+   */
   @Override
   public void update(Event event) {
     if (registeredEvents.contains(event.getEventType())) {
@@ -418,6 +481,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     return boardController.hashCode();
   }
 
+  /**
+   * (re)spawn a player on the board.
+   * @param player the player to (re)spawn
+   * @param powerUp the powerUp he discarded
+   */
   public void spawnPlayer(Player player, PowerUp powerUp) {
     Board board = boardController.getBoard();
     try {
@@ -426,11 +494,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
     board.undrawPowerUp(powerUp);
-
-    if (board.getTurnCounter() > 1) {
-      player.respawn(powerUp.getColor());
-    } else {
-      player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
-    }
+    player.setSquare(board.getSpawnPointSquare(powerUp.getColor()));
   }
 }

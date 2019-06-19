@@ -3,6 +3,9 @@ package it.polimi.se2019.adrenalina;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import org.fusesource.jansi.AnsiConsole;
 
+/**
+ * The main class of the application.
+ */
 public class App {
 
   public static void main(String... args) {

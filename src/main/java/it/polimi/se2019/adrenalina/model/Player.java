@@ -42,7 +42,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Class defining a single player.
+ * Class defining a player.
  */
 public class Player extends Observable implements Target {
 
@@ -115,13 +115,11 @@ public class Player extends Observable implements Target {
 
   /**
    * Copy constructor, creates an exact clone of a Player.
-   *
    * @param player the Player to be cloned, has to be not null
    * @param publicCopy if true, a public copy of the Player will be created instead of a clone. The
    * public copy will not contain the player's private information
    */
   public Player(Player player, boolean publicCopy) {
-    // TODO: find error with, see testCopyConstructor for reference
     if (player == null) {
       throw new IllegalArgumentException("Argument player can't be null");
     }
@@ -206,6 +204,10 @@ public class Player extends Observable implements Target {
     return color;
   }
 
+  /**
+   * Specifies whether this player is the one who created the game.
+   * @return true if this player is the one who created the game, false otherwise.
+   */
   public boolean isMaster() {
     return master;
   }
@@ -264,6 +266,11 @@ public class Player extends Observable implements Target {
     }
   }
 
+  /**
+   * Returns the number of times a turn has timed out for this player.
+   * The value is reset when the player is suspended.
+   * @return the number of times a turn has timed out for this player
+   */
   public int getTimeoutCount() {
     return timeoutCount;
   }
@@ -295,7 +302,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds a new damage to a player including damages given by tags and, possibly, inflicts death.
-   *
    * @param killerColor color of the killer that inflicted the damage
    */
   @Override
@@ -368,7 +374,6 @@ public class Player extends Observable implements Target {
   /**
    * Builds an list of unique PlayerColors who damaged this player. The list is ordered based on the
    * points that each player should get as a reward.
-   *
    * @return the list of PlayerColors
    */
   private List<PlayerColor> getPlayerRankings() {
@@ -394,7 +399,10 @@ public class Player extends Observable implements Target {
     return output;
   }
 
-  public void respawn(AmmoColor spawnColor) {
+  /**
+   * Handles score assignment after the death of a player and clears its status.
+   */
+  public void assignPoints() {
     if (!isDead()) {
       throw new IllegalStateException("Player is not dead");
     }
@@ -429,7 +437,6 @@ public class Player extends Observable implements Target {
       killScore -= 2;
     }
     damages.clear();
-    square = board.getSpawnPointSquare(spawnColor);
     try {
       notifyObservers(new PlayerKillScoreUpdate(color, killScore));
     } catch (RemoteException e) {
@@ -443,7 +450,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds a new tag to a player if that player does not already have 3 tags from its attacker.
-   *
    * @param player color of the player that gave the tag
    */
   @Override
@@ -463,7 +469,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Return Weapon whose name matches specified one.
-   *
    * @param weaponName name of the weapon
    * @return Weapon if present, null otherwise
    */
@@ -478,7 +483,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Return a PowerUp that matches type and color if present.
-   *
    * @param powerUpType Type of chosen powerup
    * @param powerUpColor Color of chosen powerup
    * @return PowerUp chosen.
@@ -499,7 +503,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds a powerUp to the list of powerUps of this player.
-   *
    * @param powerUp collected powerUp
    * @throws InvalidPowerUpException thrown if a player already has 3 powerUps
    */
@@ -509,7 +512,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds a powerUp to the list of powerUps of this player.
-   *
    * @param powerUp collected powerUp
    * @param force should ignore the powerup limit
    * @throws InvalidPowerUpException thrown if a player already has 3 powerUps and force is false
@@ -533,7 +535,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Removes a powerUp from a player.
-   *
    * @param powerUp the powerUp to remove
    * @throws InvalidPowerUpException thrown if the player does not own that powerUp
    */
@@ -573,7 +574,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds a weapon to the list of weapons of this player.
-   *
    * @param weapon collected weapon
    * @throws IllegalStateException thrown if a player already has 3 weapons
    */
@@ -604,7 +604,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Removes specified weapon if owned by the player.
-   *
    * @param weapon removed weapon
    * @throws IllegalArgumentException throw if the player doesn't own the weapon
    */
@@ -634,7 +633,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Check if Player has collected a specific weapon.
-   *
    * @param weapon Weapon checked
    * @return true if the player holds the weapon, false otherwise
    */
@@ -649,7 +647,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Check if Player has at least one loaded weapon
-   *
    * @return true if the player holds a loaded weapon, false otherwise
    */
   public boolean hasLoadedWeapons() {
@@ -663,7 +660,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Check if Player can pay to reload weapon.
-   *
    * @param weapon Weapon reloading
    * @return true if possible, false otherwise
    */
@@ -687,7 +683,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds the quantity for an AmmoColor, ammo will be added only up to three unit per color.
-   *
    * @param ammoColor key
    * @param value how many ammo will be added
    */
@@ -714,10 +709,9 @@ public class Player extends Observable implements Target {
   }
 
   /**
-   * Private method, creates an EnumMap associating each AmmoColor to an integer value representing
-   * how many powerUps of that color the player possesses.
-   *
-   * @return the EnumMap
+   * Creates an EnumMap associating each AmmoColor to an integer value representing
+   * how many powerUps of that color the player has.
+   * @return the described EnumMap
    */
   private EnumMap<AmmoColor, Integer> getPowerUpAmmo() {
     EnumMap<AmmoColor, Integer> powerUpAmmo = new EnumMap<>(AmmoColor.class);
@@ -741,7 +735,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Check if player can collect a specific weapon.
-   *
    * @param weapon weapon to check
    * @return true if it's possible, false otherwise.
    */
@@ -819,7 +812,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Gson serialization.
-   *
    * @return JSON string containing serialized object
    */
   public String serialize() {
@@ -831,7 +823,6 @@ public class Player extends Observable implements Target {
 
   /**
    * Creates Player object from a JSON serialized object.
-   *
    * @param json JSON input String
    * @return Player object
    */

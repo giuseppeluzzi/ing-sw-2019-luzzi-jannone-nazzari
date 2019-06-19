@@ -32,6 +32,9 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * Text User Interface board view
+ */
 public class TUIBoardView extends BoardView {
 
   private static final long serialVersionUID = 7696019255617335385L;
@@ -49,12 +52,20 @@ public class TUIBoardView extends BoardView {
 
   }
 
+  /**
+   * Print the textual game board.
+   */
   @Override
   public void showBoard() {
     Log.print(ansi().eraseScreen().toString());
     BoardPrinter.print(getBoard());
   }
 
+  /**
+   * Show target selection prompt to the user.
+   * @param type the target type
+   * @param targets a list of targets to show
+   */
   @Override
   public void showTargetSelect(TargetType type, List<Target> targets) {
     Target chosenTarget;
@@ -95,6 +106,10 @@ public class TUIBoardView extends BoardView {
     }
   }
 
+  /**
+   * Show room selection prompt to the user.
+   * @param targets a list of targets to show
+   */
   private Target selectRoom(List<Target> targets) throws InputCancelledException {
     EnumSet<SquareColor> squareColors = EnumSet.noneOf(SquareColor.class);
 
@@ -127,6 +142,11 @@ public class TUIBoardView extends BoardView {
     throw new IllegalStateException("");
   }
 
+  /**
+   * Show square selection prompt to the user.
+   * @param targets a list of targets to show
+   * @param fetch true if ammoCards on each square should be shown, false otherwise
+   */
   private Target selectSquare(List<Target> targets, boolean fetch) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Target target : targets) {
@@ -155,6 +175,10 @@ public class TUIBoardView extends BoardView {
     return result;
   }
 
+  /**
+   * Show target selection prompt to the user for attacking.
+   * @param targets a list of targets to show
+   */
   private Target selectAttackTarget(List<Target> targets) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Target target : targets) {
@@ -183,6 +207,9 @@ public class TUIBoardView extends BoardView {
     return result;
   }
 
+  /**
+   * Show direction selection prompt to the user.
+   */
   @Override
   public void showDirectionSelect() {
     List<String> choices = new ArrayList<>();
@@ -203,6 +230,10 @@ public class TUIBoardView extends BoardView {
     }
   }
 
+  /**
+   * Show square selection prompt to the user.
+   * @param targets a list of targets to show
+   */
   @Override
   public void showSquareSelect(List<Target> targets) {
     Square square = null;
@@ -220,6 +251,10 @@ public class TUIBoardView extends BoardView {
     }
   }
 
+  /**
+   * Show a list of buyable weapons to the user.
+   * @param weapons the list of weapons to show
+   */
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) throws RemoteException {
     String weapon = null;
@@ -231,6 +266,9 @@ public class TUIBoardView extends BoardView {
     notifyObservers(new PlayerCollectWeaponEvent(getClient().getPlayerColor(), weapon));
   }
 
+  /**
+   * Show spawn point track selection prompt to the user.
+   */
   @Override
   public void showSpawnPointTrackSelection() {
     AmmoColor chosen = null;
@@ -255,6 +293,9 @@ public class TUIBoardView extends BoardView {
     return -1;
   }
 
+  /**
+   * Print final game ranks.
+   */
   @Override
   public void showFinalRanks() {
     Log.println("Classifica finale\n");

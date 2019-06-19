@@ -65,6 +65,7 @@ public class ExecutableEffect extends GameAction {
                 break;
               case SHOOT_SQUARE:
                 players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
+                players.remove(executableObject.getOwner());
                 for (Player player : players) {
                   getTurnController().addTurnActions(
                       new PowerUpSelection(getTurnController(), getPlayer(),
@@ -105,7 +106,7 @@ public class ExecutableEffect extends GameAction {
         } catch (InvalidSquareException ignored) {
           //
         } catch (NoTargetsExceptionOptional e) {
-          getTurnController().resetUntilPowerup();
+          getTurnController().disableActionsUntilPowerup();
           getTurnController().executeGameActionQueue();
         }
       }

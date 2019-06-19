@@ -14,6 +14,9 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 
+/**
+ * Characters view.
+ */
 public abstract class CharactersView extends Observable implements CharactersViewInterface {
 
   private static final long serialVersionUID = 3820277997554969634L;
@@ -45,6 +48,11 @@ public abstract class CharactersView extends Observable implements CharactersVie
   @Override
   public abstract void showDeath(PlayerColor playerColor);
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerPositionUpdate
+   */
   public void update(PlayerPositionUpdate event) {
     Square newSquare = boardView.getBoard().getSquare(event.getPosX(), event.getPosY());
     try {
@@ -71,6 +79,11 @@ public abstract class CharactersView extends Observable implements CharactersVie
     }
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerDeathUpdate
+   */
   public void update(PlayerDeathUpdate event) {
     try {
       String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
@@ -99,6 +112,10 @@ public abstract class CharactersView extends Observable implements CharactersVie
     showDeath(event.getPlayerColor());
   }
 
+  /**
+   * Generic event handling.
+   * @param event the received event
+   */
   @Override
   public void update(Event event) {
     try {

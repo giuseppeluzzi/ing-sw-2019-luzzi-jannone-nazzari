@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.WeaponReload;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -23,8 +24,7 @@ public class CheckReloadWeapons extends GameAction {
   public void execute(Board board) {
     if (!getReloadableWeapons().isEmpty()) {
       try {
-        getPlayer().getClient().getPlayerDashboardsView()
-            .showReloadWeaponSelection(getReloadableWeapons());
+        getPlayer().getClient().getPlayerDashboardsView().showReloadWeaponSelection(getReloadableWeapons());
       } catch (RemoteException e) {
         Log.exception(e);
       }

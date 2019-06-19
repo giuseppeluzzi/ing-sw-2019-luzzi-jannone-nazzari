@@ -39,6 +39,9 @@ public class TurnController implements Serializable {
     return boardController;
   }
 
+  /**
+   * Prepares the turn controller by setting the current player from the board.
+   */
   public void prepare() {
     Player currentPlayer;
     if (boardController.getBoard().getCurrentPlayer() == null) {
@@ -57,6 +60,10 @@ public class TurnController implements Serializable {
     addGameTurn(currentPlayer);
   }
 
+  /**
+   * Executes the next game action in the game action queue with its own timer and suspends players
+   * who time out for the set amount of times.
+   */
   public void executeGameActionQueue() {
     timer.stop();
     Log.debug("execute! " + turnActionsQueue.size());
@@ -91,6 +98,10 @@ public class TurnController implements Serializable {
     }
   }
 
+  /**
+   * Adds a list of game actions to the actions queue.
+   * @param gameActions the list of game actions
+   */
   public void addTurnActions(List<GameAction> gameActions) {
     List<GameAction> reversedGameActions = new ArrayList<>(gameActions);
     Collections.reverse(reversedGameActions);
@@ -100,14 +111,23 @@ public class TurnController implements Serializable {
     }
   }
 
+  /**
+   * @see #addTurnActions(List)
+   */
   public void addTurnActions(GameAction... gameActions) {
     addTurnActions(Arrays.asList(gameActions));
   }
 
+  /**
+   * Clears the actions queue
+   */
   public void clearActionsQueue() {
     turnActionsQueue.clear();
   }
 
+  /**
+   * Finalizes the current turn and prepares for the next one.
+   */
   public void endTurn() {
     Player currentPlayer;
 
@@ -173,14 +193,23 @@ public class TurnController implements Serializable {
     executeGameActionQueue();
   }
 
+  /**
+   * Adds a first spawn action to the queue.
+   * @param player the playing player
+   */
   private void addFirstSpawn(Player player) {
     player.setStatus(PlayerStatus.PLAYING);
     addTurnActions(new PickPowerUp(player), new PickPowerUp(player),
         new PowerUpSelection(this, player, null, true, false));
   }
 
+  /**
+   * Adds a respawn action to the queue.
+   * @param player the playing player
+   */
   public void addRespawn(Player player) {
     player.setStatus(PlayerStatus.PLAYING);
+    player.assignPoints(); // Assign points and clear his status
     addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, null, true, false));
     if (boardController.getBoard().isDominationBoard()
         && player.getDamages().size() == Constants.OVERKILL_DEATH) {
@@ -195,11 +224,15 @@ public class TurnController implements Serializable {
     }
   }
 
+  /**
+   * Adds a game turn for a player.
+   * @param player the player for which to add a game turn
+   */
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
       if (player.getName().equals("PeppeSocket")) {
         // TODO CHEAT SUITE CANCELLARE
-        addTurnActions(new CheckRespawn(this, player, true));
+        addTurnActions(new CheckRespawn(this, player));
       } else {
         player.addAmmo(AmmoColor.BLUE, 1);
         player.addAmmo(AmmoColor.RED, 1);
@@ -219,7 +252,7 @@ public class TurnController implements Serializable {
               new PowerUpSelection(this, player, null, false, false),
               new ActionSelection(this, player),
               new PowerUpSelection(this, player, null, false, false),
-              new CheckRespawn(this, player, true));
+              new CheckRespawn(this, player));
         } else {
           addBaseGameTurnActions(player);
         }
@@ -229,12 +262,19 @@ public class TurnController implements Serializable {
     }
   }
 
-  public void resetUntilPowerup() {
+  /**
+   * Disables all game actions that can be disabled (ExecutableEffect actions)
+   */
+  public void disableActionsUntilPowerup() {
     for (GameAction action : turnActionsQueue) {
       action.setEnabled(false);
     }
   }
 
+  /**
+   * Adds base game actions common to any turn.
+   * @param player the playing player
+   */
   private void addBaseGameTurnActions(Player player) {
     addTurnActions(
         new PowerUpSelection(this, player, null, false, false),
@@ -243,9 +283,12 @@ public class TurnController implements Serializable {
         new ActionSelection(this, player),
         new PowerUpSelection(this, player, null, false, false),
         new CheckReloadWeapons(this, player),
-        new CheckRespawn(this, player, true));
+        new CheckRespawn(this, player));
   }
 
+  /**
+   * Refills a map with new weapons and powerUps to replace the taken ones.
+   */
   private void refillMap() {
     for (Square square : boardController.getBoard().getSquares()) {
       if (square.isSpawnPoint()) {

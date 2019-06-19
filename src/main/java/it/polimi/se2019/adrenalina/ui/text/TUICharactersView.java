@@ -10,6 +10,9 @@ import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersView;
 import java.rmi.RemoteException;
 
+/**
+ * Text User Interface characters view
+ */
 public class TUICharactersView extends CharactersView {
 
   private static final long serialVersionUID = 6283060302704172669L;
@@ -23,6 +26,10 @@ public class TUICharactersView extends CharactersView {
     this.client = client;
   }
 
+  /**
+   * Show the death of a player.
+   * @param playerColor the dead player color
+   */
   @Override
   public void showDeath(PlayerColor playerColor) {
 

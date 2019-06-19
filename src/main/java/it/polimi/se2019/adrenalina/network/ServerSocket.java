@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Socket version of the server.
+ */
 public class ServerSocket implements Runnable {
 
   private java.net.ServerSocket socket;

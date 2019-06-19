@@ -13,6 +13,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
 
+/**
+ * Main class of the application running as client.
+ */
 public class AppClient {
 
   public AppClient(String... args) {

@@ -74,6 +74,10 @@ public class Effect implements Buyable {
     return name;
   }
 
+  /**
+   * Returns any effect depending on this one.
+   * @return the effect depending on this one if it exists, null otherwise.
+   */
   public Effect getRequiredEffect() {
     return requiredEffect;
   }
@@ -94,6 +98,10 @@ public class Effect implements Buyable {
     return costYellow;
   }
 
+  /**
+   * Specifies whether the effect can be applied any time during the usage of the weapon.
+   * @return true if the effect fan be used any time, false otherwise
+   */
   public boolean isAnyTime() {
     return anyTime;
   }
@@ -147,11 +155,16 @@ public class Effect implements Buyable {
     return costBlue + costRed + costYellow;
   }
 
+  /**
+   * Fix references in deserialized effects when subEffects are present.
+   * @param ofWeapon the weapon having this effect
+   * @param parentEffect the parent effect if this is a subEffect, null otherwise
+   */
   public void reconcileDeserialization(Weapon ofWeapon, Effect parentEffect) {
     weapon = ofWeapon;
     requiredEffect = parentEffect;
-    if (parentEffect != null) {
-      for (Effect effect : parentEffect.subEffects) {
+    if (subEffects != null) {
+      for (Effect effect : subEffects) {
         effect.reconcileDeserialization(ofWeapon, this);
       }
     }
@@ -177,6 +190,12 @@ public class Effect implements Buyable {
     return 0;
   }
 
+  /**
+   * Method called after a payment has been completed.
+   * @param turnController the turnController
+   * @param board the game board
+   * @param player the player
+   */
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
     Weapon localWeapon = board.getWeaponByName(weapon.getName());
@@ -188,5 +207,10 @@ public class Effect implements Buyable {
     turnActions.add(new AfterUsageExecutable(turnController, player, localWeapon));
     turnController.addTurnActions(turnActions);
     turnController.executeGameActionQueue();
+  }
+
+  @Override
+  public String promptMessage() {
+    return name;
   }
 }

@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import it.polimi.se2019.adrenalina.controller.action.game.CheckReloadWeapons;
+import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.controller.action.game.ReloadWeapon;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
@@ -15,6 +17,7 @@ import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.WeaponReload;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.reflect.InvocationTargetException;
@@ -47,7 +50,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player reloads a weapon.
-   * @param event event specifing the weapon reloaded
+   * @param event event specifying the weapon reloaded
    */
   public void update(PlayerReloadEvent event) {
     Player player;
@@ -56,41 +59,31 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     } catch (InvalidPlayerException ignored) {
       return;
     }
-    List<Weapon> weapons = player.getUnloadedWeapons();
 
-    for (Weapon currWeapon : weapons) {
-      if (!player.canReload(currWeapon)) {
-        weapons.remove(currWeapon);
-      }
-    }
+    if (event.getWeaponName() != null) {
+      Weapon realoadingWeapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
+      boardController.getTurnController().addTurnActions(new Payment(boardController.getTurnController(), player,
+          new WeaponReload(realoadingWeapon)));
 
-    if (event.getWeaponName() != null && !weapons.isEmpty()) {
-      Weapon weapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
-
-      if (player.hasWeapon(weapon) && player.canReload(weapon)) {
-        for (AmmoColor color : AmmoColor.getValidColor()) {
-          player.addAmmo(color, -weapon.getCost(color));
+      List<Weapon> weapons = player.getUnloadedWeapons();
+      weapons.remove(realoadingWeapon);
+      for (Weapon currWeapon : weapons) {
+        if (!player.canReload(currWeapon)) {
+          weapons.remove(currWeapon);
         }
-        player.addAmmo(weapon.getBaseCost(), -1);
       }
-      try {
-        weapons.remove(weapon);
 
-        player.getClient().getPlayerDashboardsView().showReloadWeaponSelection(weapons);
-      } catch (RemoteException e) {
-        Log.exception(e);
+      if (! weapons.isEmpty()) {
+        boardController.getTurnController().addTurnActions(new CheckReloadWeapons(boardController.getTurnController(), player));
       }
-      boardController.getTurnController().addTurnActions(new ReloadWeapon(player, weapon));
-    } else {
-
-      boardController.getTurnController().executeGameActionQueue();
     }
 
+    boardController.getTurnController().executeGameActionQueue();
   }
 
   /**
    * Event fired when a player select another player.
-   * @param event event specifing selected target
+   * @param event event specifying selected target
    */
   public void update(SelectPlayerEvent event) {
     Player player;
@@ -107,9 +100,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
   }
 
   /**
-   * Event fired when a player select a square.
-   *
-   * @param event event specifing selected target
+   * Event fired when a player selects a square.
+   * @param event event specifying selected target
    */
   public void update(SelectSquareEvent event) {
     Player player;
@@ -125,6 +117,10 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Event fired when a player selects a direction.
+   * @param event event specifying selected direction
+   */
   public void update(SelectDirectionEvent event) {
     Player player;
     try {
@@ -138,7 +134,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player moves to a different square.
-   * @param event event specifing selected square
+   * @param event event specifying selected square
    */
   public void update(SquareMoveSelectionEvent event) {
     Player player;
@@ -155,7 +151,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
   /**
    * Event fired when a player decides a spawnpoint in domination mode.
-   * @param event event specifing the spawnpoint color
+   * @param event event specifying the spawnpoint color
    */
   public void update(SpawnPointDamageEvent event) {
     if (boardController.getBoard().isDominationBoard()) {
@@ -166,6 +162,10 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     boardController.getTurnController().executeGameActionQueue();
   }
 
+  /**
+   * Generic event
+   * @param event event received
+   */
   @Override
   public void update(Event event) {
     if (registeredEvents.contains(event.getEventType())) {

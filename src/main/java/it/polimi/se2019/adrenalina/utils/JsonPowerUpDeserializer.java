@@ -13,6 +13,9 @@ import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Teleporter;
 import java.lang.reflect.Type;
 
+/**
+ * PowerUp deserialization from a JSON string.
+ */
 public class JsonPowerUpDeserializer implements JsonDeserializer<PowerUp> {
 
   @Override
