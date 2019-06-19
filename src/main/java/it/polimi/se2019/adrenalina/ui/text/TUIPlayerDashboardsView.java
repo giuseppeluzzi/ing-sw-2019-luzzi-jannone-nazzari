@@ -104,7 +104,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     List<PowerUp> answerPowerUp = new ArrayList<>();
     Set<String> answers = null;
 
-    Log.println("Hai a dispozione:");
+    Log.println("Hai a disposizione:");
     for (Spendable match : spendables) {
       Log.println(String
           .format("\t%d) %s%s%s", index, match.getColor().getAnsiColor(), match.getSpendableName(),

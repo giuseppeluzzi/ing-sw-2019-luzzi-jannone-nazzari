@@ -13,7 +13,7 @@
                     "from": 0,
                     "target": 1,
                     "minDistance": 0,
-                    "maxDistance": 0,
+                    "maxDistance": -1,
                     "differentFrom": [],
                     "between": [],
                     "visible": true,
@@ -41,7 +41,7 @@
                             "from": 0,
                             "target": 2,
                             "minDistance": 0,
-                            "maxDistance": 0,
+                            "maxDistance": -1,
                             "differentFrom": [
                                 1
                             ],

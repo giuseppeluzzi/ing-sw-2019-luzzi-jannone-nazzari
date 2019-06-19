@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Action used to ask player to reload weapons he can reload.
  */
-public class CheckReloadWeapons extends GameActionAsync {
+public class CheckReloadWeapons extends GameAction {
 
 
   public CheckReloadWeapons(TurnController turnController, Player player) {
@@ -23,17 +23,11 @@ public class CheckReloadWeapons extends GameActionAsync {
   @Override
   public void execute(Board board) {
     if (!getReloadableWeapons().isEmpty()) {
-      List<GameAction> actions = new ArrayList<>();
-      for (Weapon weapon : getReloadableWeapons()) {
-        actions.add(new Payment(getTurnController(), getPlayer(), new WeaponReload(weapon)));
-      }
-      getTurnController().addTurnActions(actions);
-      /*try {
-        getPlayer().getClient().getPlayerDashboardsView()
-            .showReloadWeaponSelection(getReloadableWeapons());
+      try {
+        getPlayer().getClient().getPlayerDashboardsView().showReloadWeaponSelection(getReloadableWeapons());
       } catch (RemoteException e) {
         Log.exception(e);
-      }*/
+      }
     }
   }
 
@@ -51,5 +45,10 @@ public class CheckReloadWeapons extends GameActionAsync {
       }
     }
     return reloadableWeapons;
+  }
+
+  @Override
+  public boolean isSync() {
+    return !getReloadableWeapons().isEmpty();
   }
 }

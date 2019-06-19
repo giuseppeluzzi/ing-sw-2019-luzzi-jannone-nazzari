@@ -15,7 +15,7 @@ public class WeaponReload implements Buyable {
 
   @Override
   public BuyableType getBuyableType() {
-    return weapon.getBuyableType();
+    return BuyableType.WEAPON_RELOAD;
   }
 
   @Override
