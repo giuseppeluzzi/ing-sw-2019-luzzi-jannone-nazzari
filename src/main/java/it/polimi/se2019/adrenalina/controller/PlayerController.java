@@ -29,6 +29,7 @@ import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.PowerUpUsage;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.WeaponBuy;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import java.lang.reflect.InvocationTargetException;
@@ -136,8 +137,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     boardController.getTurnController().addTurnActions(
         new Payment(boardController.getTurnController(),
-            player,
-            board.getWeaponByName(event.getWeaponName())));
+            player, new WeaponBuy(board.getWeaponByName(event.getWeaponName()))
+            ));
     boardController.getTurnController().executeGameActionQueue();
   }
 

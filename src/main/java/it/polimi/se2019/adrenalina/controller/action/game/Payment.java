@@ -32,7 +32,7 @@ public class Payment extends GameAction {
       getPlayer().setCurrentBuying(item);
       try {
         getPlayer().getClient().getPlayerDashboardsView()
-            .showPaymentOption(item.getBuyableType(), item.getCost(), getPlayer().getPowerUps(),
+            .showPaymentOption(item.getBuyableType(), item.promptMessage(), item.getCost(), getPlayer().getPowerUps(),
                 getPlayer().getAmmos());
       } catch (RemoteException e) {
         Log.exception(e);

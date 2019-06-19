@@ -20,4 +20,8 @@ public interface Buyable extends Serializable {
   int getCost(AmmoColor ammoColor);
 
   void afterPaymentCompleted(TurnController turnController, Board board, Player player);
+
+  default String promptMessage() {
+    return "";
+  }
 }

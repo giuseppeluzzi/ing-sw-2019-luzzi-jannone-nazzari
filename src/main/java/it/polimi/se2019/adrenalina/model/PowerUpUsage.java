@@ -48,4 +48,12 @@ public class PowerUpUsage implements Buyable {
     turnController.addTurnActions(actions);
     turnController.executeGameActionQueue();
   }
+
+  @Override
+  public String promptMessage() {
+    if (powerUp.getType() == PowerUpType.TARGETING_SCOPE) {
+      return "il mirino";
+    }
+    return "";
+  }
 }

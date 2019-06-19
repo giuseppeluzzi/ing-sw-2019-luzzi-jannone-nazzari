@@ -85,7 +85,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
+  public void showPaymentOption(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) {
 
     int answerBlue = 0;
@@ -116,7 +116,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     Log.println(
         String.format(
             "Devi pagare:\t%s%d rosso%s, %s%d blu%s, %s%d giallo%s, %s%d qualsiasi colore%s%n"
-                + "Come preferisci pagare?%n",
+                + "Come preferisci pagare %s?%n",
             AmmoColor.RED.getAnsiColor(),
             buyableCost.get(AmmoColor.RED),
             ANSIColor.RESET,
@@ -128,7 +128,9 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
             ANSIColor.RESET,
             AmmoColor.ANY.getAnsiColor(),
             buyableCost.get(AmmoColor.ANY),
-            ANSIColor.RESET));
+            ANSIColor.RESET,
+            prompt)
+        );
 
     String response;
 

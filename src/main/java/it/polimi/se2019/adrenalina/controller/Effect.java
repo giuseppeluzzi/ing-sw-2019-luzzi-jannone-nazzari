@@ -189,4 +189,9 @@ public class Effect implements Buyable {
     turnController.addTurnActions(turnActions);
     turnController.executeGameActionQueue();
   }
+
+  @Override
+  public String promptMessage() {
+    return name;
+  }
 }

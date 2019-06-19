@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.WeaponReload;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Action used to ask player to reload weapons he can reload.
  */
-public class CheckReloadWeapons extends GameAction {
+public class CheckReloadWeapons extends GameActionAsync {
 
 
   public CheckReloadWeapons(TurnController turnController, Player player) {
@@ -22,12 +23,17 @@ public class CheckReloadWeapons extends GameAction {
   @Override
   public void execute(Board board) {
     if (!getReloadableWeapons().isEmpty()) {
-      try {
+      List<GameAction> actions = new ArrayList<>();
+      for (Weapon weapon : getReloadableWeapons()) {
+        actions.add(new Payment(getTurnController(), getPlayer(), new WeaponReload(weapon)));
+      }
+      getTurnController().addTurnActions(actions);
+      /*try {
         getPlayer().getClient().getPlayerDashboardsView()
             .showReloadWeaponSelection(getReloadableWeapons());
       } catch (RemoteException e) {
         Log.exception(e);
-      }
+      }*/
     }
   }
 
@@ -45,10 +51,5 @@ public class CheckReloadWeapons extends GameAction {
       }
     }
     return reloadableWeapons;
-  }
-
-  @Override
-  public boolean isSync() {
-    return !getReloadableWeapons().isEmpty();
   }
 }
