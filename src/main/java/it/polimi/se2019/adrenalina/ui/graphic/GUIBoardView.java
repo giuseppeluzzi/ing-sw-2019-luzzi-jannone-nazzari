@@ -22,7 +22,6 @@ public class GUIBoardView extends BoardView {
 
   @Override
   public void endLoading(boolean masterPlayer) {
-    Log.debug("AHUASDNASD");
     new Thread(() -> {
       try {
         Thread.sleep(Constants.PING_INTERVAL * 2);

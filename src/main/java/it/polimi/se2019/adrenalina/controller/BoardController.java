@@ -261,6 +261,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         player.addObserver(toPlayer.getClient().getBoardView());
         player.addObserver(toPlayer.getClient().getPlayerDashboardsView());
         player.addObserver(toPlayer.getClient().getCharactersView());
+
+        toPlayer.addObserver(player.getClient().getBoardView());
+        toPlayer.addObserver(player.getClient().getPlayerDashboardsView());
+        toPlayer.addObserver(player.getClient().getCharactersView());
       }
     }
   }

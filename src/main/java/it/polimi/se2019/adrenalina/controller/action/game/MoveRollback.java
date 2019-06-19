@@ -28,6 +28,7 @@ public class MoveRollback extends GameAction {
     for (Map.Entry<Player, Square> entrySet : executableObject.getInitialPlayerPositions().entrySet()) {
       entrySet.getKey().setSquare(entrySet.getValue());
     }
+    getTurnController().resetUntilPowerup();
     getTurnController().addTurnActions(new ActionSelection(getTurnController(), getPlayer()));
   }
 
