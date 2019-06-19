@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.event.modelview;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
@@ -19,13 +18,7 @@ public class OwnWeaponUpdate implements Event {
 
   public OwnWeaponUpdate(PlayerColor playerColor, List<Weapon> weapons) {
     this.playerColor = playerColor;
-    this.weapons = new ArrayList<>();
-    for (Weapon weapon : weapons) {
-      Weapon newWeapon = new Weapon(weapon.getCost(AmmoColor.RED), weapon.getCost(AmmoColor.BLUE),
-          weapon.getCost(AmmoColor.YELLOW), weapon.getBaseCost(), weapon.getName(), weapon.getSymbol());
-      newWeapon.setLoaded(weapon.isLoaded());
-      this.weapons.add(newWeapon);
-    }
+    this.weapons = new ArrayList<>(weapons);
   }
 
   public List<Weapon> getWeapons() {

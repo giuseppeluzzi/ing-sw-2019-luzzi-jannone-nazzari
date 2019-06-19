@@ -473,7 +473,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addWeapon(Weapon weapon) {
     weapons.add(weapon);
-    Collections.shuffle(weapons);
+    //Collections.shuffle(weapons);
   }
 
   /**
@@ -521,7 +521,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addPowerUp(PowerUp powerup) {
     powerUps.add(powerup);
-    Collections.shuffle(powerUps);
+    //Collections.shuffle(powerUps);
   }
 
   /**
@@ -550,7 +550,7 @@ public class Board extends Observable implements Serializable {
     }
     takenPowerUps.remove(powerUp);
     powerUps.add(powerUp);
-    Collections.shuffle(powerUps);
+    //Collections.shuffle(powerUps);
   }
 
 
@@ -609,7 +609,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addAmmoCard(AmmoCard ammoCard) {
     ammoCards.add(ammoCard);
-    Collections.shuffle(ammoCards);
+    //Collections.shuffle(ammoCards);
   }
 
   /**
@@ -644,7 +644,7 @@ public class Board extends Observable implements Serializable {
     }
     takenAmmoCards.remove(ammoCard);
     ammoCards.add(ammoCard);
-    Collections.shuffle(ammoCards);
+    //Collections.shuffle(ammoCards);
   }
 
 

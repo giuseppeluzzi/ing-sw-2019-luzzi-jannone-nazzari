@@ -38,6 +38,7 @@ public class OptionalMoveAction implements WeaponAction {
       try {
         weapon.getTargetHistory(target).getPlayer()
             .setSquare(weapon.getTargetHistory(destination).getSquare());
+        weapon.setGroupMoveUsed(group);
       } catch (InvalidSquareException e) {
         Log.debug("Too many players in selected square");
       }

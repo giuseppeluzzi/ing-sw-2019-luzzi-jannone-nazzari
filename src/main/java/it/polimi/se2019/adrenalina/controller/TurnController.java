@@ -213,20 +213,8 @@ public class TurnController implements Serializable {
           boardController.getBoard().isFinalFrenzyActive()) {
 
         int playerIndex = boardController.getBoard().getPlayers().indexOf(player);
-        int finalFrenzyActivator;
 
-        try {
-          finalFrenzyActivator = boardController.getBoard().getPlayers()
-              .indexOf(
-                  boardController.getBoard().getPlayerByColor(
-                      boardController.getBoard().getFinalFrenzyActivator()));
-        } catch (InvalidPlayerException e) {
-          // Shouldn't happen
-          Log.critical(PLAYER_NOT_EXIST_MSG);
-          return;
-        }
-
-        if (playerIndex > finalFrenzyActivator) {
+        if (playerIndex > 0) {
           addTurnActions(
               new PowerUpSelection(this, player, null, false, false),
               new ActionSelection(this, player),
@@ -241,6 +229,12 @@ public class TurnController implements Serializable {
     }
   }
 
+  public void resetUntilPowerup() {
+    for (GameAction action : turnActionsQueue) {
+      action.setEnabled(false);
+    }
+  }
+
   private void addBaseGameTurnActions(Player player) {
     addTurnActions(
         new PowerUpSelection(this, player, null, false, false),
@@ -248,6 +242,7 @@ public class TurnController implements Serializable {
         new PowerUpSelection(this, player, null, false, false),
         new ActionSelection(this, player),
         new PowerUpSelection(this, player, null, false, false),
+        new CheckReloadWeapons(this, player),
         new CheckRespawn(this, player, true));
   }
 

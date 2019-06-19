@@ -24,7 +24,6 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   private static final long serialVersionUID = -5264181345540286103L;
   private final AmmoColor baseCost;
-  @NotExpose
   private boolean loaded;
   private final String name;
   private final HashMap<AmmoColor, Integer> cost;
@@ -38,6 +37,13 @@ public class Weapon extends ExecutableObject implements Buyable {
 
   private final String symbol;
   // TODO: attribute to count if the optionalmoveaction is used
+
+  public Weapon(int costRed, int costBlue, int costYellow,
+      AmmoColor baseCost, String name, String symbol, boolean loaded) {
+    this(costRed, costBlue, costYellow, baseCost, name, symbol);
+    this.loaded = loaded;
+
+  }
 
   public Weapon(int costRed, int costBlue, int costYellow,
       AmmoColor baseCost, String name, String symbol) {
@@ -166,6 +172,11 @@ public class Weapon extends ExecutableObject implements Buyable {
     for (Effect effect : effects) {
       if (effect.getName().equals(findName)) {
         return effect;
+      } else {
+        Effect subEffect = effect.getSubEffectByName(findName);
+        if (subEffect != null) {
+          return subEffect;
+        }
       }
     }
     return null;

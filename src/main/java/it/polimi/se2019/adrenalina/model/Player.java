@@ -581,10 +581,10 @@ public class Player extends Observable implements Target {
     if (weapons.size() >= 3) {
       throw new IllegalStateException("Player already has 3 weapons");
     }
+    weapon.setTargetHistory(0, this);
     weapon.setLoaded(true);
     weapons.add(weapon);
     weaponCount++;
-    weapon.setTargetHistory(0, this);
     if (board != null) {
       for (Player player : board.getPlayers()) {
         if (player.client != null) {

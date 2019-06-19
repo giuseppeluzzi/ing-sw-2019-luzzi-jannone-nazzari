@@ -31,8 +31,10 @@ public class ShootSquareAction extends ShootAction {
   public void execute(Board board, ExecutableObject object) {
     List<Player> players = getPlayers(board, object);
     for (Player player : players) {
-      player.addDamages(object.getOwner().getColor(), getDamages());
-      player.addTags(object.getOwner().getColor(), getTag());
+      if (! player.getName().equals(object.getOwner().getName())) {
+        player.addDamages(object.getOwner().getColor(), getDamages());
+        player.addTags(object.getOwner().getColor(), getTag());
+      }
     }
     Log.debug("aaa");
   }
