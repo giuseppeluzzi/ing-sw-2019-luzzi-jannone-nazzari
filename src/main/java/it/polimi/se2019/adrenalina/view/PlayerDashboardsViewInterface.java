@@ -38,7 +38,7 @@ public interface PlayerDashboardsViewInterface extends Observer, RemoteObservabl
 
   void switchToFinalFrenzy(PlayerColor playerColor) throws RemoteException;
 
-  void showPaymentOption(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
+  void showPaymentOption(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUp,
       Map<AmmoColor, Integer> budgetAmmo) throws RemoteException;
 

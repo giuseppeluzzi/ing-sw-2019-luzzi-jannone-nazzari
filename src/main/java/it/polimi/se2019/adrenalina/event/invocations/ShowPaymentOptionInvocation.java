@@ -19,13 +19,15 @@ public class ShowPaymentOptionInvocation implements Invocation {
   private final HashMap<AmmoColor, Integer> buyableCost;
   private final List<PowerUp> budgetPowerUps;
   private final HashMap<AmmoColor, Integer> budgetAmmos;
+  private final String prompt;
 
-  public ShowPaymentOptionInvocation(BuyableType buyableType, Map<AmmoColor, Integer> buyableCost,
+  public ShowPaymentOptionInvocation(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUps, Map<AmmoColor, Integer> budgetAmmos) {
     this.buyableType = buyableType;
     this.buyableCost = new HashMap<>(buyableCost);
     this.budgetPowerUps = new ArrayList<>(budgetPowerUps);
     this.budgetAmmos = new HashMap<>(budgetAmmos);
+    this.prompt = prompt;
   }
 
   public BuyableType getBuyableType() {
@@ -42,6 +44,10 @@ public class ShowPaymentOptionInvocation implements Invocation {
 
   public Map<AmmoColor, Integer> getBudgetAmmos() {
     return new HashMap<>(budgetAmmos);
+  }
+
+  public String getPrompt() {
+    return prompt;
   }
 
   @Override

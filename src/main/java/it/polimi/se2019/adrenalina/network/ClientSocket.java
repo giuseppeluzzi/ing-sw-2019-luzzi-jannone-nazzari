@@ -182,6 +182,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
                   ShowPaymentOptionInvocation.class);
               getPlayerDashboardsView().showPaymentOption(
                   showPaymentOptionInvocation.getBuyableType(),
+                  showPaymentOptionInvocation.getPrompt(),
                   showPaymentOptionInvocation.getBuyableCost(),
                   showPaymentOptionInvocation.getBudgetPowerUps(),
                   showPaymentOptionInvocation.getBudgetAmmos());

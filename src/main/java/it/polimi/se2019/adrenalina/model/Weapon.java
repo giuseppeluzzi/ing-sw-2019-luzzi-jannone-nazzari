@@ -245,20 +245,27 @@ public class Weapon extends ExecutableObject implements Buyable {
     return cost.get(color);
   }
 
+  /**
+   * Returns an hashmap where each entry specifies how much of the given color must be paid in order
+   * to reload or buy the weapon.
+   * @param isReload indicates if the cost is for a reloading action or not
+   * @return hashmap of colors and values
+   */
+  public HashMap<AmmoColor, Integer> getCost(boolean isReload) {
+    HashMap<AmmoColor, Integer> cost = new HashMap<>();
+    for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
+      cost.put(ammoColor, getCost(ammoColor));
+    }
+    cost.put(AmmoColor.ANY, 0);
+    if (isReload) {
+        cost.put(baseCost, cost.get(baseCost) + 1);
+    }
+    return cost;
+  }
+
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    if (player.hasWeapon(this)) {
-      setLoaded(true);
-    } else {
-      for (Square square : board.getSquares()) {
-        if (square.getWeapons().contains(this)) {
-          square.removeWeapon(this);
-          break;
-        }
-      }
-      player.addWeapon(this);
-    }
-    turnController.executeGameActionQueue();
+    throw new IllegalStateException("Must use a decorator");
   }
 
   @Override

@@ -65,6 +65,7 @@ public class ExecutableEffect extends GameAction {
                 break;
               case SHOOT_SQUARE:
                 players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
+                players.remove(executableObject.getOwner());
                 for (Player player : players) {
                   getTurnController().addTurnActions(
                       new PowerUpSelection(getTurnController(), getPlayer(),
