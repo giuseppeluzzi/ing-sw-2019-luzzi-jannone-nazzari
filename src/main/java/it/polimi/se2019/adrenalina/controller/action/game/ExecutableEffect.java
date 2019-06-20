@@ -55,37 +55,45 @@ public class ExecutableEffect extends GameAction {
               case SHOOT:
                 Target target = executableObject
                     .getTargetHistory(((ShootAction) weaponAction).getTarget());
-                getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), getPlayer(), target,
-                        false, true));
-                getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), target.getPlayer(),
-                        null, false, false));
+                executableObject.setLastUsageDirection(executableObject
+                    .getOwner().getSquare().getCardinalDirection(target.getSquare()));
+                if (((ShootAction) weaponAction).getDamages() > 0) {
+                  getTurnController().addTurnActions(
+                      new PowerUpSelection(getTurnController(), getPlayer(), target,
+                          false, true));
+                  getTurnController().addTurnActions(
+                      new PowerUpSelection(getTurnController(), target.getPlayer(),
+                          null, false, false));
+                }
                 ((Weapon) executableObject).setLoaded(false);
                 break;
               case SHOOT_SQUARE:
-                players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
-                players.remove(executableObject.getOwner());
-                for (Player player : players) {
-                  getTurnController().addTurnActions(
-                      new PowerUpSelection(getTurnController(), getPlayer(),
-                          player, false, true));
-                  getTurnController().addTurnActions(
-                      new PowerUpSelection(getTurnController(), player,
-                          getPlayer(), false, false));
+                if (((ShootAction) weaponAction).getDamages() > 0) {
+                  players = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
+                  players.remove(executableObject.getOwner());
+                  for (Player player : players) {
+                    getTurnController().addTurnActions(
+                        new PowerUpSelection(getTurnController(), getPlayer(),
+                            player, false, true));
+                    getTurnController().addTurnActions(
+                        new PowerUpSelection(getTurnController(), player,
+                            getPlayer(), false, false));
+                  }
                 }
                 ((Weapon) executableObject).setLoaded(false);
                 break;
               case SHOOT_ROOM:
-                players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
-                players.remove(executableObject.getOwner());
-                for (Player player : players) {
-                  getTurnController().addTurnActions(
-                      new PowerUpSelection(getTurnController(), getPlayer(), player,
-                          false, true));
-                  getTurnController().addTurnActions(
-                      new PowerUpSelection(getTurnController(), player,
-                          getPlayer(), false, false));
+                if (((ShootAction) weaponAction).getDamages() > 0) {
+                  players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
+                  players.remove(executableObject.getOwner());
+                  for (Player player : players) {
+                    getTurnController().addTurnActions(
+                        new PowerUpSelection(getTurnController(), getPlayer(), player,
+                            false, true));
+                    getTurnController().addTurnActions(
+                        new PowerUpSelection(getTurnController(), player,
+                            getPlayer(), false, false));
+                  }
                 }
                 ((Weapon) executableObject).setLoaded(false);
                 break;
@@ -93,7 +101,7 @@ public class ExecutableEffect extends GameAction {
           }
         } catch (NoTargetsException e) {
           if (e.isRollback()) {
-            getTurnController().resetUntilPowerup();
+            getTurnController().disableActionsUntilPowerup();
             try {
               getPlayer().getClient()
                   .showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione.");

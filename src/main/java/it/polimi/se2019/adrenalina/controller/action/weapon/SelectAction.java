@@ -170,7 +170,7 @@ public class SelectAction implements WeaponAction {
 
     // differentRoom
     if (differentRoom) {
-      targetStream = targetStream.filter(x -> fromTarget.getSquare().getColor() == x.getSquare().getColor());
+      targetStream = targetStream.filter(x -> fromTarget.getSquare().getColor() != x.getSquare().getColor());
     }
 
     out = targetStream.collect(Collectors.toList());

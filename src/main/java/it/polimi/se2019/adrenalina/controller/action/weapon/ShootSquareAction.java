@@ -36,7 +36,6 @@ public class ShootSquareAction extends ShootAction {
         player.addTags(object.getOwner().getColor(), getTag());
       }
     }
-    Log.debug("aaa");
   }
 
   public List<Player> getPlayers(Board board, ExecutableObject object) {
@@ -51,6 +50,7 @@ public class ShootSquareAction extends ShootAction {
         }
       }
     }
+
     for (Square square : board.getSquares()) {
       if (object.getTargetHistory(getTarget()).getSquare().getDistance(square) == distance) {
         for (Player player : square.getPlayers()) {
@@ -60,6 +60,7 @@ public class ShootSquareAction extends ShootAction {
         }
       }
     }
+
     return players;
   }
 
