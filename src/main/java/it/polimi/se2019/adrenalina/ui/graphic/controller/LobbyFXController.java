@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -14,14 +15,18 @@ import javafx.collections.ObservableList;
 import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -29,6 +34,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class LobbyFXController {
 
@@ -132,10 +139,22 @@ public class LobbyFXController {
   public void setPlayerMaster(PlayerColor playerColor) {
     for (ListPlayer player : players) {
       if (player.getColor() == playerColor) {
-        Log.debug("set " + player.getName() + " master");
         player.setMaster(true);
       } else {
         player.setMaster(false);
+      }
+    }
+    playerList.refresh();
+  }
+
+  public void setPlayerColor(PlayerColor playerColor, PlayerColor newColor) {
+    if (playerColor != null) {
+      for (ListPlayer player : players) {
+        if (player.getColor() == playerColor) {
+          player.setColor(newColor);
+          playerList.refresh();
+          break;
+        }
       }
     }
   }
@@ -173,6 +192,26 @@ public class LobbyFXController {
 
   public void setSkulls(int skulls) {
     Platform.runLater(() -> skullsText.setText("Teschi: " + skulls));
+  }
+
+  public void showDialogChangePlayerColor() {
+    FXMLLoader loaderDialog = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/DialogChangePlayerColor.fxml"));
+
+    try {
+      Scene scene = new Scene(loaderDialog.load());
+      scene.getStylesheets().add(AppGUI.getCSS());
+
+      Stage stage = new Stage();
+      stage.initModality(Modality.APPLICATION_MODAL);
+      stage.setScene(scene);
+      stage.getIcons().clear();
+      stage.setTitle("Adrenalina");
+      stage.showAndWait();
+    } catch (IOException e) {
+      e.printStackTrace();
+      Log.exception(e);
+    }
   }
 
   private static class ListPlayer {
@@ -232,19 +271,23 @@ public class LobbyFXController {
         hBox.getChildren().add(nameLabel);
 
         try {
-          if (player.color == AppGUI.getClient().getPlayerColor()) {
+          if (player.getName().equals(AppGUI.getClient().getName())) {
             ImageView editIcon = new ImageView("gui/assets/img/edit_icon.png");
             editIcon.setFitWidth(16);
             editIcon.setFitHeight(16);
+            editIcon.setMouseTransparent(false);
+            editIcon.setCursor(Cursor.HAND);
+            editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+              AppGUI.getLobbyFXController().showDialogChangePlayerColor();
+              event.consume();
+            });
             hBox.getChildren().add(editIcon);
           }
         } catch (RemoteException e) {
           Log.exception(e);
         }
 
-        Platform.runLater(() -> {
-          setGraphic(hBox);
-        });
+        Platform.runLater(() -> setGraphic(hBox));
       } else {
         Platform.runLater(() -> {
           HBox hBox = new HBox();

@@ -70,8 +70,18 @@
   -fx-text-fill: #393939;
   -fx-font-size: 18;
 }
+
 .list-view .list-cell:odd {
   -fx-background-color: #ffffff;
   -fx-text-fill: #393939;
   -fx-font-size: 18;
+}
+
+.dialogContainer {
+  -fx-background-color: #ffffff;
+  -fx-padding: 20 100 20 100;
+}
+
+.dialogContent {
+  -fx-padding: 50;
 }

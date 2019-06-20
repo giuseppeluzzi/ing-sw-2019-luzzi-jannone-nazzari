@@ -16,6 +16,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -110,9 +111,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
     player.setMaster(event.isMaster());
 
-    Log.debug("icaoo " + event.getPlayerColor() + " - " + client.getPlayerColor());
     if (event.getPlayerColor() == client.getPlayerColor()) {
-      Log.debug("puppa");
       try {
         endLoading(player.isMaster());
       } catch (RemoteException e) {
@@ -252,6 +251,19 @@ public abstract class BoardView extends Observable implements BoardViewInterface
    */
   public void update(MapSelectionEvent event) {
     board.setMapId(event.getMap());
+  }
+
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerColorSelectionEvent
+   */
+  public void update(PlayerColorSelectionEvent event) {
+    try {
+      board.getPlayerByColor(event.getPlayerColor()).setColor(event.getNewPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      //
+    }
   }
 
   /**

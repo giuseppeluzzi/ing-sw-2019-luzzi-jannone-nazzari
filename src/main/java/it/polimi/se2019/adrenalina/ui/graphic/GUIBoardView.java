@@ -7,6 +7,8 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -90,7 +92,6 @@ public class GUIBoardView extends BoardView {
   @Override
   public void update(PlayerMasterUpdate event) {
     super.update(event);
-    Log.debug("aaa" + event.getPlayerColor() + " - " + event.isMaster());
     if (event.isMaster()) {
       AppGUI.getLobbyFXController().setPlayerMaster(event.getPlayerColor());
     }
@@ -99,8 +100,13 @@ public class GUIBoardView extends BoardView {
   @Override
   public void update(MapSelectionEvent event) {
     super.update(event);
-    Log.debug("ciaooo evento map");
     AppGUI.getLobbyFXController().setMap(event.getMap());
+  }
+
+  @Override
+  public void update(PlayerColorSelectionEvent event) {
+    super.update(event);
+    AppGUI.getLobbyFXController().setPlayerColor(event.getPlayerColor(), event.getNewPlayerColor());
   }
 
   @Override

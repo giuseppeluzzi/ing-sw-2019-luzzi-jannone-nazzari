@@ -30,6 +30,7 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
       registeredEvents.add(EventType.SQUARE_AMMO_CARD_UPDATE);
       registeredEvents.add(EventType.SQUARE_WEAPON_UPDATE);
       registeredEvents.add(EventType.MAP_SELECTION_EVENT);
+      registeredEvents.add(EventType.PLAYER_COLOR_SELECTION_EVENT);
 
       return registeredEvents;
     }

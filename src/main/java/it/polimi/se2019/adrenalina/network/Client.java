@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.network;
 
+import it.polimi.se2019.adrenalina.App;
+import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;

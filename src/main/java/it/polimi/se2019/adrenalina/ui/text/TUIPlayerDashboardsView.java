@@ -303,7 +303,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     timer.stop();
     List<String> chosenEffectsNames = new ArrayList<>();
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
-      Log.debug("aa1 " + chosenEffects.get(chosenEffects.size() - 1));
       timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
               WAIT_TIMEOUT_MSG));
       try {

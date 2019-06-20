@@ -5,6 +5,7 @@ import static java.lang.Thread.sleep;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.event.Event;

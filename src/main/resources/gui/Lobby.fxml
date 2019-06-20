@@ -7,7 +7,6 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -170,7 +169,7 @@
                    <RowConstraints />
                 </rowConstraints>
 
-                <ListView fx:id="playerList" focusTraversable="false" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" styleClass="playersList" GridPane.columnIndex="0" />
+                <ListView fx:id="playerList" focusTraversable="false" mouseTransparent="false" prefHeight="200.0" prefWidth="200.0" styleClass="playersList" GridPane.columnIndex="0" />
                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                   <children>
                     <ImageView fx:id="selectedMapImage" fitHeight="175.0" fitWidth="233.0" pickOnBounds="true" preserveRatio="true" />
