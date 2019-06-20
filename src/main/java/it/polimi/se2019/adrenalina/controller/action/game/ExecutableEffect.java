@@ -93,7 +93,7 @@ public class ExecutableEffect extends GameAction {
           }
         } catch (NoTargetsException e) {
           if (e.isRollback()) {
-            getTurnController().resetUntilPowerup();
+            getTurnController().disableActionsUntilPowerup();
             try {
               getPlayer().getClient()
                   .showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione.");

@@ -111,11 +111,20 @@
                             "type": "SELECT"
                         },
                         {
+                            "target": 4,
+                            "damages": 1,
+                            "tag": 0,
+                            "type": "SHOOT"
+                        },
+                        {
                             "from": 0,
                             "target": 5,
                             "minDistance": 0,
                             "maxDistance": -1,
                             "differentFrom": [
+                                1,
+                                2,
+                                3,
                                 4
                             ],
                             "between": [],
@@ -125,12 +134,6 @@
                             "differentRoom": false,
                             "selectType": "ATTACK_TARGET",
                             "type": "SELECT"
-                        },
-                        {
-                            "target": 4,
-                            "damages": 1,
-                            "tag": 0,
-                            "type": "SHOOT"
                         },
                         {
                             "target": 5,
