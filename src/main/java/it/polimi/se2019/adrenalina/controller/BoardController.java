@@ -16,7 +16,6 @@ import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.TagbackGrenade;
 import it.polimi.se2019.adrenalina.model.TargetingScope;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
@@ -148,6 +147,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Returns a set of valid maps for a given number of players.
+   *
    * @param players number of players
    * @return a set of GameMap
    */
@@ -206,6 +206,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Adds a new player to a board in LOBBY status or a returning player (who had previously
    * disconnected) to a board where a game is in progress.
+   *
    * @param player the player to be added.
    * @throws FullBoardException thrown if the board already has 5 players.
    * @throws PlayingBoardException thrown if the status of the board is not LOBBY (a game is already
@@ -271,6 +272,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Notifies clients when a player joins a game.
+   *
    * @param player the player who just joined the game
    */
   public void notifyPlayerJoin(Player player) {
@@ -303,6 +305,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Notifies clients when a player quits a game.
+   *
    * @param player the player who just quitted the game
    */
   public void notifyPlayerQuit(Player player) {
@@ -325,6 +328,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Handle player disconnection.
+   *
    * @param player the player who just disconnected.
    */
   public void handleDisconnect(PlayerColor player) {
@@ -332,6 +336,22 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       turnController.clearActionsQueue();
       turnController.endTurn();
     }
+  }
+
+  /**
+   * Finds a free PlayerColor for this game board.
+   *
+   * @return a PlayerColor or null
+   */
+  public PlayerColor getFreePlayerColor() {
+    for (PlayerColor color : PlayerColor.values()) {
+      try {
+        board.getPlayerByColor(color);
+      } catch (InvalidPlayerException e) {
+        return color;
+      }
+    }
+    return null;
   }
 
   /**
@@ -374,6 +394,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Create every square for a map from the template in the GameMap.
+   *
    * @param gameMap the map template
    */
   public void createSquares(GameMap gameMap) {
@@ -409,12 +430,16 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
    * the game on that board is already in progress.
+   *
    * @param player the player to be removed
    */
   public void removePlayer(Player player) throws InvalidPlayerException {
     clientsName.remove(player.getClient());
     if (board.getStatus() == BoardStatus.LOBBY) {
       board.removePlayer(player.getColor());
+      if (player.isMaster()) {
+        board.getPlayers().get(0).setMaster(true);
+      }
       if (board.getPlayers().size() >= 2) {
         startJoinTimer();
       } else {
@@ -428,6 +453,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Sets needed views (BoardView, CharactersView and PlayerDashboardsView) on a Player.
+   *
    * @param player a Player
    */
   private void setViews(Player player) {
@@ -510,6 +536,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Handles the toggling of final frenzy.
+   *
    * @param event the received event
    */
   public void update(FinalFrenzyToggleEvent event) {
@@ -518,6 +545,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Handles the selection of the map that will be used.
+   *
    * @param event the received event
    */
   public void update(MapSelectionEvent event) {
@@ -528,6 +556,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Handles the selection of a player's color.
+   *
    * @param event the received event
    */
   public void update(PlayerColorSelectionEvent event) {
@@ -554,6 +583,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Handles generic events.
+   *
    * @param event the received event.
    */
   @Override

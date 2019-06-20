@@ -71,7 +71,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
    * @throws RemoteException in case of network problems
    */
   @Override
-  public void addClient(ClientInterface client) throws RemoteException {
+  public synchronized void addClient(ClientInterface client) throws RemoteException {
     pingAll();
     Log.info("Server",
         "New client connected! (Name: " + client.getName() + " - Domination: " + client
@@ -105,14 +105,19 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     if (game == null) {
       game = getPendingGame(client.isDomination());
 
-      if (game == null) {
+      PlayerColor freeColor = null;
+      if (game != null) {
+        freeColor = game.getFreePlayerColor();
+      }
+
+      if (game == null || freeColor == null) {
         game = new BoardController(client.isDomination());
         Log.info("Created game (domination: " + client.isDomination() + ")");
         games.add(game);
+        freeColor = game.getFreePlayerColor();
       }
 
-      player = game.getPlayerController().createPlayer(client.getName(),
-          PlayerColor.values()[game.getBoard().getPlayers().size()]);
+      player = game.getPlayerController().createPlayer(client.getName(), freeColor);
     }
 
     game.addClient(client);

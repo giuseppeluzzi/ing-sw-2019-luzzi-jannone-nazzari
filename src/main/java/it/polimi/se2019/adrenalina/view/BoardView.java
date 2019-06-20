@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
@@ -132,6 +133,19 @@ public abstract class BoardView extends Observable implements BoardViewInterface
    */
   public void update(BoardAddPlayerUpdate event) {
     board.addPlayer(new Player(event.getPlayerName(), event.getPlayerColor(), board));
+  }
+
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see BoardRemovePlayerUpdate
+   */
+  public void update(BoardRemovePlayerUpdate event) {
+    try {
+      board.removePlayer(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      //
+    }
   }
 
   /**

@@ -1,9 +1,9 @@
 package it.polimi.se2019.adrenalina.ui.graphic;
 
-import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
@@ -77,6 +77,13 @@ public class GUIBoardView extends BoardView {
     AppGUI.getLobbyFXController()
         .addPlayer(new Player(event.getPlayerName(), event.getPlayerColor(), getBoard()));
   }
+
+  @Override
+  public void update(BoardRemovePlayerUpdate event) {
+    super.update(event);
+    AppGUI.getLobbyFXController().removePlayer(event.getPlayerColor());
+  }
+
 
   @Override
   public void update(PlayerMasterUpdate event) {
