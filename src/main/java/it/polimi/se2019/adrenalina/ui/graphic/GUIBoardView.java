@@ -26,7 +26,7 @@ public class GUIBoardView extends BoardView {
   public void endLoading(boolean masterPlayer) {
     new Thread(() -> {
       try {
-        Thread.sleep(Constants.PING_INTERVAL * 2);
+        Thread.sleep((long) Constants.PING_INTERVAL * 2);
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
