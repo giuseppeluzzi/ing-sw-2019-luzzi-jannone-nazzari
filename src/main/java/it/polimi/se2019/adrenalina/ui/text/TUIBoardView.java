@@ -7,12 +7,7 @@ import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Direction;
@@ -67,15 +62,17 @@ public class TUIBoardView extends BoardView {
    * @param targets a list of targets to show
    */
   @Override
-  public void showTargetSelect(TargetType type, List<Target> targets) {
+  public void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) {
     Target chosenTarget;
 
     showBoard();
     try {
       switch (type) {
         case ATTACK_TARGET:
-          chosenTarget = selectAttackTarget(targets);
-          if (chosenTarget.isPlayer()) {
+          chosenTarget = selectAttackTarget(targets, skippable);
+          if (chosenTarget == null) {
+            notifyObservers(new SkipSelectionEvent());
+          } else if (chosenTarget.isPlayer()) {
             notifyObservers(new SelectPlayerEvent(getClient().getPlayerColor(),
                 chosenTarget.getPlayer().getColor()));
           } else {
@@ -179,7 +176,7 @@ public class TUIBoardView extends BoardView {
    * Show target selection prompt to the user for attacking.
    * @param targets a list of targets to show
    */
-  private Target selectAttackTarget(List<Target> targets) throws InputCancelledException {
+  private Target selectAttackTarget(List<Target> targets, boolean skippable) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Target target : targets) {
       try {
@@ -195,6 +192,9 @@ public class TUIBoardView extends BoardView {
                       target.getSquare().getPosY(),
                       ANSIColor.RESET));
         }
+        if (skippable) {
+          choices.add("Salta (non colpire nessuno)");
+        }
       } catch (InvalidSquareException ignored) {
         //
       }
@@ -202,7 +202,11 @@ public class TUIBoardView extends BoardView {
     inputManager.input("Seleziona un bersaglio:", choices);
     timer.start(Configuration.getInstance().getTurnTimeout(),
         () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
-    Target result = targets.get(inputManager.waitForIntResult());
+    int selectionResult = inputManager.waitForIntResult();
+    if (skippable && selectionResult == targets.size()) {
+      return null;
+    }
+    Target result = targets.get(selectionResult);
     timer.stop();
     return result;
   }

@@ -41,6 +41,7 @@ public enum EventType {
   PLAYER_SET_COLOR(PlayerSetColorEvent.class),
   SELECT_DIRECTION_EVENT(SelectDirectionEvent.class),
   SELECT_PLAYER_EVENT(SelectPlayerEvent.class),
+  SKIP_SELECTION_EVENT(SkipSelectionEvent.class),
   SELECT_SQUARE_EVENT(SelectSquareEvent.class),
   SPAWN_POINT_DAMAGE_EVENT(SpawnPointDamageEvent.class),
   SQUARE_MOVE_SELECTION_EVENT(SquareMoveSelectionEvent.class),

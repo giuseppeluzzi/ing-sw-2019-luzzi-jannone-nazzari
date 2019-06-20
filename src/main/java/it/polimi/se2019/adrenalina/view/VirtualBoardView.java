@@ -74,8 +74,8 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
   }
 
   @Override
-  public void showTargetSelect(TargetType type, List<Target> targets) {
-    clientSocket.sendEvent(new ShowTargetSelectInvocation(type, targets));
+  public void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) {
+    clientSocket.sendEvent(new ShowTargetSelectInvocation(type, targets, skippable));
   }
 
   @Override

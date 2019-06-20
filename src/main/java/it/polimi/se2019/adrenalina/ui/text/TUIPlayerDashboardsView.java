@@ -302,24 +302,20 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
     timer.stop();
     List<String> chosenEffectsNames = new ArrayList<>();
-    while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
-      timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
-              WAIT_TIMEOUT_MSG));
-      try {
-        List<Effect> toAdd = TUIUtils
-            .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
-                true);
-        chosenEffects.addAll(toAdd);
-      } catch (InputCancelledException ignored) {
-        // return
-      }
-      timer.stop();
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+            WAIT_TIMEOUT_MSG));
+    try {
+      List<Effect> toAdd = TUIUtils
+          .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
+              true);
+      chosenEffects.addAll(toAdd);
+    } catch (InputCancelledException ignored) {
+      // return
     }
-
+    timer.stop();
     for (Effect effect : chosenEffects) {
       chosenEffectsNames.add(effect.getName());
     }
-
     try {
       notifyObservers(new PlayerSelectWeaponEffectEvent(client.getPlayerColor(), weapon.getName(),
           chosenEffectsNames));

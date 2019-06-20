@@ -31,15 +31,16 @@ public class SelectAction implements WeaponAction {
   private int[] between = {};
   private Boolean visible = null;
   private boolean optional = false;
+  private boolean skippable = false;
   private boolean useLastDirection = false;
   private boolean differentRoom = false;
   private TargetType selectType = TargetType.ATTACK_TARGET;
   private WeaponActionType type = WeaponActionType.SELECT;
 
   public SelectAction(int from, int target, int minDistance,
-      int maxDistance, int[] differentFrom, int[] between,
-      Boolean visible, boolean optional, boolean useLastDirection,
-      boolean differentRoom, TargetType selectType) {
+                      int maxDistance, int[] differentFrom, int[] between,
+                      Boolean visible, boolean optional, boolean useLastDirection,
+                      boolean differentRoom, TargetType selectType, boolean skippable) {
 
     this.from = from;
     this.target = target;
@@ -49,6 +50,7 @@ public class SelectAction implements WeaponAction {
     this.between = between.clone();
     this.visible = visible;
     this.optional = optional;
+    this.skippable = skippable;
     this.useLastDirection = useLastDirection;
     this.differentRoom = differentRoom;
     this.selectType = selectType;
@@ -101,7 +103,7 @@ public class SelectAction implements WeaponAction {
     if (!optional || !targets.isEmpty()) {
       object.setCurrentSelectTargetSlot(target);
       try {
-        object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets);
+        object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets, skippable);
       } catch (RemoteException e) {
         Log.exception(e);
       }
@@ -230,6 +232,10 @@ public class SelectAction implements WeaponAction {
 
   public boolean isOptional() {
     return optional;
+  }
+
+  public boolean isSkippable() {
+    return skippable;
   }
 
   public boolean isUseLastDirection() {

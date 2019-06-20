@@ -47,7 +47,7 @@ public class GUIBoardView extends BoardView {
   }
 
   @Override
-  public void showTargetSelect(TargetType type, List<Target> targets) {
+  public void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) {
     // TODO
   }
 

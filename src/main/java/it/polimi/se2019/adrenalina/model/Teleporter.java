@@ -18,7 +18,7 @@ public class Teleporter extends PowerUp {
     super(color, false, PowerUpType.TELEPORTER);
     addAction(new SelectAction(0,1,0,-1, new int[]{},
         new int[]{}, null, false, false,
-        false, TargetType.MOVE_SQUARE));
+        false, TargetType.MOVE_SQUARE, false));
     addAction(new MoveAction(0, 1));
   }
 

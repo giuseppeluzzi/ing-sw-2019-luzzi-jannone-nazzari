@@ -175,7 +175,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
               ShowTargetSelectInvocation showTargetSelectInvocation = gson.fromJson(message,
                   ShowTargetSelectInvocation.class);
               getBoardView().showTargetSelect(showTargetSelectInvocation.getTargetType(),
-                  showTargetSelectInvocation.getTargets());
+                  showTargetSelectInvocation.getTargets(), showTargetSelectInvocation.isSkippable());
               break;
             case SHOW_PAYMENT_OPTION_INVOCATION:
               ShowPaymentOptionInvocation showPaymentOptionInvocation = gson.fromJson(message,

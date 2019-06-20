@@ -14,11 +14,13 @@ public class ShowTargetSelectInvocation implements Invocation {
   private static final long serialVersionUID = 8037594543903190668L;
   private final TargetType targetType;
   private final List<Target> targets;
+  private final boolean skippable;
 
   public ShowTargetSelectInvocation(
-      TargetType targetType, List<Target> targets) {
+      TargetType targetType, List<Target> targets, boolean skippable) {
     this.targetType = targetType;
     this.targets = new ArrayList<>(targets);
+    this.skippable = skippable;
   }
 
   public TargetType getTargetType() {
@@ -27,6 +29,10 @@ public class ShowTargetSelectInvocation implements Invocation {
 
   public List<Target> getTargets() {
     return new ArrayList<>(targets);
+  }
+
+  public boolean isSkippable() {
+    return skippable;
   }
 
   @Override

@@ -40,6 +40,7 @@
                     "between": [],
                     "visible": true,
                     "optional": true,
+                    "skippable": true,
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",

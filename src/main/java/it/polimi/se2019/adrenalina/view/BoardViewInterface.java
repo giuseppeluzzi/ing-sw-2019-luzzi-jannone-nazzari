@@ -47,7 +47,7 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
 
     void showBoard() throws RemoteException;
 
-    void showTargetSelect(TargetType type, List<Target> targets) throws RemoteException;
+    void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) throws RemoteException;
 
     void showDirectionSelect() throws RemoteException;
 

@@ -5,12 +5,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.controller.action.game.ReloadWeapon;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
@@ -42,6 +37,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
     registeredEvents.add(EventType.PLAYER_RELOAD_EVENT);
     registeredEvents.add(EventType.SELECT_PLAYER_EVENT);
+    registeredEvents.add(EventType.SKIP_SELECTION_EVENT);
     registeredEvents.add(EventType.SELECT_SQUARE_EVENT);
     registeredEvents.add(EventType.SQUARE_MOVE_SELECTION_EVENT);
     registeredEvents.add(EventType.SELECT_DIRECTION_EVENT);
@@ -96,6 +92,15 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     }
     ExecutableObject executableObject = player.getCurrentExecutable();
     executableObject.setTargetHistory(executableObject.getCurrentSelectTargetSlot(), target);
+    boardController.getTurnController().executeGameActionQueue();
+  }
+
+  /**
+   * Event fired when a player skips the selection of a taget
+   * @param event received event
+   */
+  public void update(SkipSelectionEvent event) {
+    boardController.getTurnController().disableActionsUntilPowerup();
     boardController.getTurnController().executeGameActionQueue();
   }
 
