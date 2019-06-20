@@ -4,16 +4,14 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
-import it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController;
-import it.polimi.se2019.adrenalina.ui.graphic.controller.StartFXController;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -22,10 +20,12 @@ import javafx.stage.Stage;
  */
 public class AppGUI extends Application {
 
-  private static Stage stage;
-  private static ClientInterface client;
+  private static Stage stage = null;
+  private static ClientInterface client = null;
 
-  private static StartFXController startFXController = null;
+  private static Scene lobbyScene;
+  private static Scene boardScene;
+
   private static LobbyFXController lobbyFXController = null;
   private static BoardFXController boardFXController = null;
 
@@ -37,6 +37,7 @@ public class AppGUI extends Application {
     new Thread(() -> {
       if (socket) {
         client = new ClientSocket(name, domination, false);
+        ((Runnable) client).run();
       } else {
         ClientRMI clientRMI = new ClientRMI(name, domination, false);
         try {
@@ -63,8 +64,20 @@ public class AppGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     setStage(primaryStage);
 
-    FXMLLoader loaderStart = new FXMLLoader(AppGUI.class.getClassLoader().getResource("gui/Start.fxml"));
-    startFXController = loaderStart.getController();
+    FXMLLoader loaderLobby = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
+    lobbyScene = new Scene(loaderLobby.load());
+    setLobbyFXController(loaderLobby.getController());
+
+    FXMLLoader loaderBoard = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
+    boardScene = new Scene(loaderBoard.load());
+    setBoardFXController(loaderBoard.getController());
+
+
+    FXMLLoader loaderStart = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/Start.fxml"));
+    loaderStart.getController();
 
     Scene startScene = new Scene(loaderStart.load());
     startScene.getStylesheets().addAll(getCSS());
@@ -93,19 +106,11 @@ public class AppGUI extends Application {
   }
 
   public static Scene getLobbyScene() throws IOException {
-    FXMLLoader loaderLobby = new FXMLLoader(
-        AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
-    Scene scene = new Scene(loaderLobby.load());
-    lobbyFXController = loaderLobby.getController();
-    return scene;
+    return lobbyScene;
   }
 
   public static Scene getBoardScene() throws IOException {
-    FXMLLoader loaderBoard = new FXMLLoader(
-        AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
-    Scene scene = new Scene(loaderBoard.load());
-    boardFXController = loaderBoard.getController();
-    return scene;
+    return boardScene;
   }
 
   public static LobbyFXController getLobbyFXController() {

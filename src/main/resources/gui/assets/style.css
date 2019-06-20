@@ -68,8 +68,10 @@
 .list-view .list-cell:even {
   -fx-background-color: #ffffff;
   -fx-text-fill: #393939;
+  -fx-font-size: 18;
 }
 .list-view .list-cell:odd {
   -fx-background-color: #ffffff;
   -fx-text-fill: #393939;
+  -fx-font-size: 18;
 }

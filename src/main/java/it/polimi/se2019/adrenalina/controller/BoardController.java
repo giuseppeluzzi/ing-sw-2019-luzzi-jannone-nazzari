@@ -223,6 +223,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       }
 
       setViews(player);
+      player.setMaster(board.getPlayers().isEmpty());
       board.addPlayer(player);
 
       try {
@@ -236,8 +237,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       }
 
       player.setStatus(PlayerStatus.WAITING);
-      player.setMaster(board.getPlayers().size() == 1);
-
       notifyPlayerJoin(player);
 
       if (board.getPlayers().size() >= Configuration.getInstance().getMinNumPlayers()) {
@@ -437,7 +436,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     clientsName.remove(player.getClient());
     if (board.getStatus() == BoardStatus.LOBBY) {
       board.removePlayer(player.getColor());
-      if (player.isMaster()) {
+      if (! board.getPlayers().isEmpty() && player.isMaster()) {
         board.getPlayers().get(0).setMaster(true);
       }
       if (board.getPlayers().size() >= 2) {
@@ -551,6 +550,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   public void update(MapSelectionEvent event) {
     if (event.getMap() >= 1 && event.getMap() <= 4) {
       selectedMap = event.getMap();
+      board.setMapId(selectedMap);
     }
   }
 
@@ -589,7 +589,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   @Override
   public void update(Event event) {
     if (registeredEvents.contains(event.getEventType())) {
-      Log.debug("BoardController", "Event received: " + event.getEventType());
+      Log.debug("FController", "Event received: " + event.getEventType());
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);

@@ -86,6 +86,7 @@ public class AppClient {
       case 1:
         // Socket
         client = new ClientSocket(name, domination, true);
+        ((Runnable) client).run();
         break;
       default:
         Log.severe("Modalità di connessione non valida. Supportate: (0) RMI; (1) Socket");

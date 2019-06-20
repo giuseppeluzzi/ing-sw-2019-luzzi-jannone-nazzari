@@ -18,6 +18,7 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
+import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -27,7 +28,6 @@ import it.polimi.se2019.adrenalina.utils.Observer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +42,7 @@ public class Board extends Observable implements Serializable {
   private final Square[][] grid;
   private BoardStatus status;
   private long turnStartTime;
+  private int mapId = 1;
   private int turnCounter = 1;
   private int skulls = 8;
 
@@ -179,6 +180,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Given an AmmoColor returns reference to the same colored SpawnPoint, if existing
+   *
    * @param spawnPointColor chosen color
    * @return SpawnPoint of spawnPointColor color, null if it doesn't exist
    */
@@ -338,6 +340,29 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
+   * Returns the id of the selected map.
+   *
+   * @return id of the map
+   */
+  public int getMapId() {
+    return mapId;
+  }
+
+  /**
+   * Sets the id of the current map.
+   *
+   * @param mapId the id of the map
+   */
+  public void setMapId(int mapId) {
+    this.mapId = mapId;
+    try {
+      notifyObservers(new MapSelectionEvent(mapId));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  /**
    * Returns the player who is currently playing its turn.
    *
    * @return the Player currently playing
@@ -418,6 +443,7 @@ public class Board extends Observable implements Serializable {
           observer.update(new PlayerMasterUpdate(player.getColor(), player.isMaster()));
         }
         observer.update(new BoardSkullsUpdate(skulls));
+        observer.update(new MapSelectionEvent(mapId));
       } catch (RemoteException e) {
         Log.exception(e);
       }
@@ -600,6 +626,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Given a SquareColor representing a room returns all the player in the room.
+   *
    * @param roomColor color of the room
    * @return List of Player
    */

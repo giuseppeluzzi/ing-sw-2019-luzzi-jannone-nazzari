@@ -82,6 +82,7 @@ public class StartFXController {
     transOut.play();
 
     transOut.setOnFinished(actionEvent1 -> {
+      AppGUI.startClient(choosenName, choosenDomination, !choosenRMI);
       Scene lobbyScene;
 
       try {
@@ -95,7 +96,6 @@ public class StartFXController {
       lobbyScene.getStylesheets().add(AppGUI.getCSS());
 
       ((Stage) startNameSelector.getScene().getWindow()).setScene(lobbyScene);
-      AppGUI.startClient(choosenName, choosenDomination, !choosenRMI);
     });
 
   }

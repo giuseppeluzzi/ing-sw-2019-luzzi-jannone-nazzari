@@ -83,7 +83,6 @@ public class ClientSocket extends Client implements Runnable, Observer {
     }
 
     sendEvent(new PlayerConnectEvent(name, domination));
-    run();
   }
 
   @Override
