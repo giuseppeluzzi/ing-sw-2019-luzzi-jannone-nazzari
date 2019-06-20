@@ -61,17 +61,20 @@
                     "type": "SHOOT"
                 },
                 {
+                    "type": "SELECT_DIRECTION"
+                },
+                {
                     "from": 0,
                     "target": 2,
                     "minDistance": 0,
                     "maxDistance": 2,
                     "differentFrom": [],
                     "between": [],
-                    "visible": false,
+                    "visible": null,
                     "optional": false,
-                    "useLastDirection": false,
+                    "useLastDirection": true,
                     "differentRoom": false,
-                    "selectType": "ATTACK_TARGET",
+                    "selectType": "MOVE_SQUARE",
                     "type": "SELECT"
                 },
                 {

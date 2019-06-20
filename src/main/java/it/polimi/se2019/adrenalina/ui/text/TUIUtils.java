@@ -5,6 +5,8 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
+import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,34 +77,68 @@ public class TUIUtils {
   }
 
   /**
+   * Verify that the combination of selected effects is valid by checking dependencies.
+   * @param answers the users selections as string numbers
+   * @param choices the list of choices
+   * @param effects the list of effects to choose from
+   * @return true if the combination of selected effects is valid, false otherwise
+   */
+  private static boolean verifyValidEffects(List<String> answers, List<String> choices, List<Effect> effects) {
+    if (answers.contains(Integer.toString(choices.size())) && answers.size() != 1) {
+      Log.println("La combinazione di eventi scelta non è valida");
+      return false;
+    }
+    return true;
+  }
+
+  /**
    * Effect selection prompt
    * @param effects list of effects to choose from
    * @param areSubEffects whether the selection is about a subeffect
    * @return the selected effect
    * @throws InputCancelledException thrown if the user's input is cancelled
    */
-  static Effect showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InputCancelledException {
-    String prompt;
-    int result;
-    if (areSubEffects) {
-      prompt = "Ora scegli quali effetti secondari aggiungere:";
-    } else {
-      prompt = "Scegli quale effetto usare:";
-    }
+  static List<Effect> showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Effect effect : effects) {
       choices.add(effect.getName());
     }
+    List<Effect> output = new ArrayList<>();
     if (areSubEffects) {
       choices.add("Non aggiungere nessun effetto");
-    }
-    inputManager.input(prompt, choices);
-    result = inputManager.waitForIntResult();
-    if (areSubEffects) {
-      if (result >= effects.size()) {
-        return null;
+      int index = 1;
+      for (String choice : choices) {
+        Log.println(String.format("\t%d) %s", index, choice));
+        index++;
       }
+      String response;
+      List<String> answers;
+      String inputValidationRegex = "^(\\d+(,\\d+)*)?$";
+      do {
+        inputManager.input("Inserisci i numeri degli effetti secondari da aggiungere separati da virgola:");
+        try {
+          response = inputManager.waitForStringResult().replace(" ", "");
+        } catch (InputCancelledException e) {
+          return new ArrayList<>();
+        }
+
+        answers = Arrays.asList(response.split(","));
+      } while (!response.matches(inputValidationRegex)
+              || !verifyValidEffects(answers, choices, effects)
+      );
+
+      if (answers.contains(Integer.toString(index - 1))) {
+        return new ArrayList<>();
+      }
+      for (String element : answers) {
+        output.add(effects.get(Integer.parseInt(element) - 1));
+      }
+      return output;
+    } else {
+      inputManager.input("Scegli quale effetto usare:", choices);
+      int result = inputManager.waitForIntResult();
+      output.add(effects.get(result));
+      return output;
     }
-    return effects.get(result);
   }
 }

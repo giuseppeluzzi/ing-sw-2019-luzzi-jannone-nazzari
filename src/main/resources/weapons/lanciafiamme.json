@@ -5,6 +5,9 @@
             "costBlue": 0,
             "costRed": 0,
             "actions": [
+              {
+                "type": "SELECT_DIRECTION"
+              },
                 {
                     "minDistance": 1,
                     "optional": false,
@@ -13,24 +16,8 @@
                     "differentFrom": [],
                     "from": 0,
                     "type": "SELECT",
-                    "useLastDirection": false,
-                    "target": 1,
-                    "visible": null,
-                    "differentRoom": false,
-                    "between": []
-                },
-                {
-                    "minDistance": 1,
-                    "optional": true,
-                    "maxDistance": 1,
-                    "selectType": "ATTACK_TARGET",
-                    "differentFrom": [
-                        0
-                    ],
-                    "from": 1,
-                    "type": "SELECT",
                     "useLastDirection": true,
-                    "target": 2,
+                    "target": 1,
                     "visible": null,
                     "differentRoom": false,
                     "between": []
@@ -40,6 +27,23 @@
                     "type": "SHOOT",
                     "tag": 0,
                     "target": 1
+                },
+                {
+                    "minDistance": 1,
+                    "optional": true,
+                    "maxDistance": 1,
+                    "selectType": "ATTACK_TARGET",
+                    "differentFrom": [
+                        0,
+                        1
+                    ],
+                    "from": 1,
+                    "type": "SELECT",
+                    "useLastDirection": true,
+                    "target": 2,
+                    "visible": null,
+                    "differentRoom": false,
+                    "between": []
                 },
                 {
                     "damages": 1,
@@ -56,47 +60,52 @@
             "subEffects": [],
             "costRed": 0,
             "actions": [
+              {
+                "type": "SELECT_DIRECTION"
+              },
                 {
-                    "minDistance": 1,
-                    "optional": false,
-                    "maxDistance": 1,
-                    "selectType": "ATTACK_TARGET",
-                    "differentFrom": [],
-                    "from": 0,
-                    "type": "SELECT",
-                    "useLastDirection": false,
-                    "target": 1,
-                    "visible": null,
-                    "differentRoom": false,
-                    "between": []
+                  "minDistance": 1,
+                  "optional": false,
+                  "maxDistance": 1,
+                  "selectType": "ATTACK_TARGET",
+                  "differentFrom": [],
+                  "from": 0,
+                  "type": "SELECT",
+                  "useLastDirection": true,
+                  "target": 1,
+                  "visible": null,
+                  "differentRoom": false,
+                  "between": []
                 },
                 {
-                    "minDistance": 1,
-                    "optional": false,
-                    "maxDistance": 1,
-                    "selectType": "ATTACK_TARGET",
-                    "differentFrom": [
-                        0
-                    ],
-                    "from": 1,
-                    "type": "SELECT",
-                    "useLastDirection": true,
-                    "target": 2,
-                    "visible": null,
-                    "differentRoom": false,
-                    "between": []
+                  "tag": 0,
+                  "type": "SHOOT_SQUARE",
+                  "damages": 2,
+                  "target": 1,
+                  "distance": 0
                 },
                 {
-                    "tag": 0,
-                    "type": "SHOOT",
-                    "damages": 2,
-                    "target": 1
+                  "minDistance": 1,
+                  "optional": false,
+                  "maxDistance": 1,
+                  "selectType": "ATTACK_TARGET",
+                  "differentFrom": [
+                      0
+                  ],
+                  "from": 1,
+                  "type": "SELECT",
+                  "useLastDirection": true,
+                  "target": 2,
+                  "visible": null,
+                  "differentRoom": false,
+                  "between": []
                 },
                 {
-                    "tag": 0,
-                    "type": "SHOOT",
-                    "damages": 1,
-                    "target": 2
+                  "tag": 0,
+                  "type": "SHOOT_SQUARE",
+                  "damages": 1,
+                  "target": 2,
+                  "distance": 0
                 }
             ],
             "costBlue": 0,

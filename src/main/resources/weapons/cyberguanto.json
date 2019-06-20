@@ -60,15 +60,15 @@
                     "type": "SELECT"
                 },
                 {
-                    "target": 0,
-                    "destination": 1,
-                    "type": "MOVE"
-                },
-                {
                     "target": 1,
                     "damages": 2,
                     "tag": 0,
                     "type": "SHOOT"
+                },
+                {
+                    "target": 0,
+                    "destination": 1,
+                    "type": "MOVE"
                 },
                 {
                     "from": 0,

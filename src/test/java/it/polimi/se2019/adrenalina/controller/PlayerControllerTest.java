@@ -2,6 +2,9 @@ package it.polimi.se2019.adrenalina.controller;
 
 import static org.junit.Assert.*;
 
+import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
+import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
+import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
 import java.rmi.RemoteException;
 import org.junit.Before;
@@ -39,18 +42,5 @@ public class PlayerControllerTest {
     }
 
     assertEquals("test", playerController.createPlayer("test", PlayerColor.GREY).getName());
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testCreatePlayerException() {
-    PlayerController playerController = null;
-    try {
-      playerController = new PlayerController(boardController);
-    } catch (RemoteException e) {
-      fail("Exception unexpected");
-    }
-    playerController.createPlayer("P1", PlayerColor.GREY);
-    playerController.createPlayer("P1", PlayerColor.GREY);
-
   }
 }

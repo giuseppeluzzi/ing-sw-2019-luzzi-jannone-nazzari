@@ -150,5 +150,6 @@ public abstract class Client implements ClientInterface, Serializable {
     if (!message.isEmpty()) {
       showMessage(MessageSeverity.ERROR, "Disconnessione", message);
     }
+    System.exit(0);
   }
 }

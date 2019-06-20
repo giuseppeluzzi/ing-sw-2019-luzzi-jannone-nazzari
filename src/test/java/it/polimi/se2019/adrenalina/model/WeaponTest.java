@@ -20,7 +20,7 @@ import org.junit.Test;
 public class WeaponTest {
   @Test
   public void testCopyConstructor() {
-    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X", false);
     weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
     weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW, null));
     weapon1.setGroupMoveUsed(5);
@@ -145,12 +145,28 @@ public class WeaponTest {
   @Test
   public void testSetSelectedEffect() {
     Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
-    weapon.addEffect(new Effect("test", weapon, 0, 1, 2, false));
+    Effect effect = new Effect("test", weapon, 0, 1, 2, false);
+    weapon.addEffect(effect);
     try {
       weapon.setSelectedEffect(weapon.getEffects().get(0));
     } catch (IllegalArgumentException e) {
       fail("IllegalArgumentException thrown unnecessarily");
     }
+
+  }
+
+  @Test
+  public void testGetEffectByName() {
+    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
+    Effect effect1 = new Effect("test1", weapon, 0, 1, 2, false);
+    Effect effect2 = new Effect("test2", weapon, 0, 1, 2, false);
+    Effect effect3 = new Effect("test3", weapon, 0, 1, 2, false);
+    effect2.addSubEffect(effect3);
+    weapon.addEffect(effect1);
+    weapon.addEffect(effect2);
+    assertEquals("wrong effect by name", effect1, weapon.getEffectByName(effect1.getName()));
+    assertEquals("wrong effect by name", effect3, weapon.getEffectByName(effect3.getName()));
+    assertNull("wrong effect by name", weapon.getEffectByName("blablabla"));
   }
 
   @Test (expected = IllegalArgumentException.class)
@@ -159,4 +175,44 @@ public class WeaponTest {
     Effect effect = new Effect("test", weapon, 0, 1, 2, false);
     weapon.setSelectedEffect(effect);
   }
+
+  @Test (expected = IllegalStateException.class)
+  public void testGetOwnerException() {
+    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
+    weapon.getOwner();
+  }
+
+  @Test
+  public void testClearSelectedEffects() {
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X", false);
+    weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2, false));
+    weapon1.setSelectedEffect(weapon1.getEffects().get(0));
+    weapon1.clearSelectedEffects();
+    assertEquals("selected effects not cleared", 0, weapon1.getSelectedEffects().size());
+  }
+
+  @Test
+  public void testGetBuyableType() {
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X", false);
+    assertEquals("wrong buyable type", BuyableType.WEAPON, weapon1.getBuyableType());
+  }
+
+  @Test
+  public void testIsWeapon() {
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X", false);
+    assertTrue("wrong is weapon attribute", weapon1.isWeapon());
+  }
+
+  @Test
+  public void testGetCost() {
+    Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.BLUE, "test", "X", false);
+    assertEquals("wrong cost", 0, weapon1.getCost(AmmoColor.ANY));
+    assertEquals("wrong cost", 1, weapon1.getCost(AmmoColor.BLUE));
+    assertEquals("wrong cost", 1, (int) weapon1.getCost(false).get(AmmoColor.BLUE));
+    assertEquals("wrong cost", 0, (int) weapon1.getCost(false).get(AmmoColor.ANY));
+    assertEquals("wrong cost", 2, (int) weapon1.getCost(true).get(AmmoColor.BLUE));
+    assertEquals("wrong cost", 0, (int) weapon1.getCost(true).get(AmmoColor.ANY));
+  }
+
+
 }

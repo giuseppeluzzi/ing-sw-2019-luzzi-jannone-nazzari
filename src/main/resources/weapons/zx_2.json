@@ -55,6 +55,12 @@
                     "type": "SELECT"
                 },
                 {
+                    "target": 1,
+                    "damages": 0,
+                    "tag": 1,
+                    "type": "SHOOT"
+                },
+                {
                     "from": 0,
                     "target": 2,
                     "minDistance": 0,
@@ -69,6 +75,12 @@
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
                     "type": "SELECT"
+                },
+                {
+                    "target": 2,
+                    "damages": 0,
+                    "tag": 1,
+                    "type": "SHOOT"
                 },
                 {
                     "from": 0,
@@ -86,18 +98,6 @@
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
                     "type": "SELECT"
-                },
-                {
-                    "target": 1,
-                    "damages": 0,
-                    "tag": 1,
-                    "type": "SHOOT"
-                },
-                {
-                    "target": 2,
-                    "damages": 0,
-                    "tag": 1,
-                    "type": "SHOOT"
                 },
                 {
                     "target": 3,

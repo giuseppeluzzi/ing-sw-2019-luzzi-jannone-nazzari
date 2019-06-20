@@ -61,6 +61,12 @@
                     "type": "SELECT"
                 },
                 {
+                    "target": 1,
+                    "damages": 2,
+                    "tag": 0,
+                    "type": "SHOOT"
+                },
+                {
                     "from": 0,
                     "target": 2,
                     "minDistance": 0,
@@ -70,17 +76,11 @@
                     ],
                     "between": [],
                     "visible": null,
-                    "optional": false,
+                    "optional": true,
                     "useLastDirection": true,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
                     "type": "SELECT"
-                },
-                {
-                    "target": 1,
-                    "damages": 2,
-                    "tag": 0,
-                    "type": "SHOOT"
                 },
                 {
                     "target": 2,

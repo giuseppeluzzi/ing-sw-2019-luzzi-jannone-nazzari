@@ -16,6 +16,7 @@ import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,13 +74,13 @@ public class SquareTest {
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
         WALL, WALL, WALL, null);
     square.setSpawnPoint(true);
-    if (square.isSpawnPoint()) {
-      Weapon weapon = new Weapon(1, 1, 1, AmmoColor.BLUE, "test", "X");
-      square.addWeapon(weapon);
-    }
+    Weapon weapon = new Weapon(1, 1, 1, AmmoColor.BLUE, "test", "X");
+    square.addWeapon(weapon);
     Square square2 = new Square(square);
     assertEquals("Cloned class attributes not matching with original class attributes",
         square.getColor(), square2.getColor());
+    assertTrue("cloned square is not spawnpoint", square2.isSpawnPoint());
+    square2.removeWeapon(weapon);
   }
 
   @Test (expected = IllegalArgumentException.class)
@@ -221,5 +222,85 @@ public class SquareTest {
       fail("equals not working correctly");
     }
 
+  }
+
+  @Test
+  public void testIsPlayer() {
+    assertFalse("Square is player", base.isPlayer());
+  }
+
+  @Test
+  public void testHasAmmoCard() {
+    base.setAmmoCard(new AmmoCard(1, 1, 1, 0));
+    assertTrue("unexpected response from hasAmmoCard", base.hasAmmoCard());
+    base.setAmmoCard(null);
+    assertFalse("unexpected response from hasAmmoCard", base.hasAmmoCard());
+  }
+
+  @Test
+  public void testSetAmmoCard() {
+    AmmoCard ammoCard = new AmmoCard(1, 1, 1, 0);
+    base.setAmmoCard(ammoCard);
+    assertEquals("unexpected result after hasAmmoCard", ammoCard, base.getAmmoCard());
+  }
+
+  @Test
+  public void testSetWeapons() {
+    List<Weapon> weapons = new ArrayList<>();
+    weapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "testWeapon", "B"));
+    base.setWeapons(weapons);
+    assertEquals("unexpected result after setWeapons", weapons, base.getWeapons());
+  }
+
+  @Test
+  public void testAddDamages() {
+    DominationBoard board = new DominationBoard();
+    Square square1 = new Square(2, 2, SquareColor.RED, WALL, WALL, WALL, WALL, board);
+    Square square2 = new Square(2, 2, SquareColor.YELLOW, WALL, WALL, WALL, WALL, board);
+    Square square3 = new Square(2, 2, SquareColor.BLUE, WALL, WALL, WALL, WALL, board);
+    assertEquals("unexpected result from getSquare", square1, square1.getSquare());
+    assertEquals("unexpected board", board, square1.getBoard());
+    square1.addDamages(PlayerColor.BLUE, 1);
+    square1.addTags(PlayerColor.GREEN, 1);
+    assertEquals("unexpected result from getSquare", square2, square2.getSquare());
+    assertEquals("unexpected board", board, square2.getBoard());
+    square2.addDamages(PlayerColor.BLUE, 1);
+    assertEquals("unexpected result from getSquare", square3, square3.getSquare());
+    assertEquals("unexpected board", board, square3.getBoard());
+    square3.addDamages(PlayerColor.BLUE, 1);
+    assertEquals("unexpected result after addDamages", 1, board.getRedDamages().size());
+    assertEquals("unexpected result after addDamages", PlayerColor.BLUE, board.getRedDamages().get(0));
+  }
+
+  @Test (expected = IllegalStateException.class)
+  public void testAddDamagesException() {
+    DominationBoard board = new DominationBoard();
+    Square square1 = new Square(2, 2, SquareColor.PURPLE, WALL, WALL, WALL, WALL, board);
+    assertEquals("unexpected result from getSquare", square1, square1.getSquare());
+    assertEquals("unexpected board", board, square1.getBoard());
+    square1.addDamages(PlayerColor.BLUE, 1);
+    square1.addTags(PlayerColor.GREEN, 1);
+  }
+
+  @Test
+  public void testGetSquaresInRage() {
+    Board board = new Board();
+    Square root = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, board);
+    Square dist1 = new Square(1, 0, SquareColor.RED, WALL, WALL, WALL, WALL, board);
+    Square dist2 = new Square(0, 1, SquareColor.RED, WALL, WALL, WALL, WALL, board);
+    dist2.setSpawnPoint(true);
+    root.setNeighbour(Direction.EAST, dist1);
+    root.setNeighbour(Direction.SOUTH, dist2);
+    dist1.setNeighbour(Direction.WEST, root);
+    dist2.setNeighbour(Direction.NORTH, root);
+    board.setSquare(root);
+    board.setSquare(dist1);
+    board.setSquare(dist2);
+    List<Square> testRes = root.getSquaresInRange(1, 1, true);
+    assertTrue("missing square", testRes.contains(dist2));
+    assertFalse("wrong square present", testRes.contains(dist1));
+    List<Square> testRes2 = root.getSquaresInRange(1, 1, false);
+    assertTrue("missing square", testRes2.contains(dist2));
+    assertTrue("missing square", testRes2.contains(dist1));
   }
 }

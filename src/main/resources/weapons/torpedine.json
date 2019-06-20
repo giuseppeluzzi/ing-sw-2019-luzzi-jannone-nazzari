@@ -42,7 +42,10 @@
                             "target": 2,
                             "minDistance": 0,
                             "maxDistance": -1,
-                            "differentFrom": [],
+                            "differentFrom": [
+                                0,
+                                1
+                            ],
                             "between": [],
                             "visible": true,
                             "optional": false,
@@ -70,7 +73,11 @@
                                     "target": 3,
                                     "minDistance": 0,
                                     "maxDistance": -1,
-                                    "differentFrom": [],
+                                    "differentFrom": [
+                                        0,
+                                        1,
+                                        2
+                                    ],
                                     "between": [],
                                     "visible": true,
                                     "optional": false,
