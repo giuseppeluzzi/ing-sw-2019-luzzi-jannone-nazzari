@@ -1,5 +1,8 @@
 package it.polimi.se2019.adrenalina.utils;
 
+/**
+ * Internal constants.
+ */
 public class Constants {
   public static final int OVERKILL_DEATH = 12;
   public static final int NORMAL_DEATH = 11;

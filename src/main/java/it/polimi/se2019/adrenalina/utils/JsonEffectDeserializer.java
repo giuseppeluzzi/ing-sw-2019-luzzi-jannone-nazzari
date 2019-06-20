@@ -10,6 +10,9 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import java.lang.reflect.Type;
 
+/**
+ * Effect deserialization from a JSON string.
+ */
 public class JsonEffectDeserializer implements JsonDeserializer<Effect> {
   @Override
   public Effect deserialize(JsonElement jsonElement, Type type,

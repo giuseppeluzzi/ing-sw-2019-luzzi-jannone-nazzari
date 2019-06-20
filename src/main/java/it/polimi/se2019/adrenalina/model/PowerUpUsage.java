@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Decorator for using a powerUp as a buyable.
+ */
 public class PowerUpUsage implements Buyable {
 
   private static final long serialVersionUID = 7357325998283241914L;

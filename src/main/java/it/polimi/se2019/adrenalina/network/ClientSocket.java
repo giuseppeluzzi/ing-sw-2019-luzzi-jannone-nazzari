@@ -46,6 +46,9 @@ import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+/**
+ * Socket version of the client object.
+ */
 public class ClientSocket extends Client implements Runnable, Observer {
 
   private static final long serialVersionUID = 5069992236971339205L;

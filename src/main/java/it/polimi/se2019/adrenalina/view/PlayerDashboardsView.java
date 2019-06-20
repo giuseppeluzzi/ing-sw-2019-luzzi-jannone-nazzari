@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Player dashboards view.
+ */
 public abstract class PlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface {
 
@@ -44,6 +47,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     this.boardView = boardView;
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerDamagesTagsUpdate
+   */
   public void update(PlayerDamagesTagsUpdate event) {
     Player player;
     try {
@@ -114,6 +122,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.updateTags(event.getTags());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerFrenzyUpdate
+   */
   public void update(PlayerFrenzyUpdate event) {
     Player player;
     try {
@@ -125,6 +138,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.setFrenzy(event.isFrenzy());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerScoreUpdate
+   */
   public void update(PlayerScoreUpdate event) {
     Player player;
     try {
@@ -136,6 +154,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.setScore(event.getScore());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerKillScoreUpdate
+   */
   public void update(PlayerKillScoreUpdate event) {
     Player player;
     try {
@@ -147,6 +170,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.setKillScore(event.getKillScore());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerStatusUpdate
+   */
   public void update(PlayerStatusUpdate event) {
     Player player;
     try {
@@ -166,6 +194,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     }
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see PlayerAmmoUpdate
+   */
   public void update(PlayerAmmoUpdate event) {
     Player player;
     try {
@@ -198,6 +231,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.updateAmmo(AmmoColor.YELLOW, event.getYellow());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see OwnWeaponUpdate
+   */
   public void update(OwnWeaponUpdate event) {
     Player player;
     try {
@@ -209,6 +247,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.updateWeapons(event.getWeapons());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see EnemyWeaponUpdate
+   */
   public void update(EnemyWeaponUpdate event) {
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
       // This update is not for me
@@ -227,6 +270,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.setWeaponCount(event.getNumWeapons());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see EnemyPowerUpUpdate
+   */
   public void update(EnemyPowerUpUpdate event) {
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
       // This update is not for me
@@ -244,6 +292,11 @@ public abstract class PlayerDashboardsView extends Observable implements
     player.setPowerUpCount(event.getPowerUpsNum());
   }
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see OwnPowerUpUpdate
+   */
   public void update(OwnPowerUpUpdate event) {
     List<PowerUp> powerUps = new ArrayList<>();
     for (Map.Entry<PowerUpType, Map<AmmoColor, Integer>> entrySet : event.getPowerUps()
@@ -317,6 +370,11 @@ public abstract class PlayerDashboardsView extends Observable implements
   }
 
 
+  /**
+   * Event handing.
+   * @param event the received event
+   * @see CurrentPlayerUpdate
+   */
   public void update(CurrentPlayerUpdate event) {
     try {
       Player previousPlayer = boardView.getBoard()
@@ -348,6 +406,10 @@ public abstract class PlayerDashboardsView extends Observable implements
     boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());
   }
 
+  /**
+   * Generic event handling.
+   * @param event the event received.
+   */
   @Override
   public void update(Event event) {
     try {

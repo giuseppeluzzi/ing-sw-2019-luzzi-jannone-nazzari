@@ -17,6 +17,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Main class of the application running as GUI client.
+ */
 public class AppGUI extends Application {
 
   private static Stage stage;

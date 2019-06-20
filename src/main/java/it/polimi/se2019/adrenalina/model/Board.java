@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
@@ -939,6 +940,11 @@ public class Board extends Observable implements Serializable {
    */
   public void removePlayer(PlayerColor color) throws InvalidPlayerException {
     players.remove(getPlayerByColor(color));
+    try {
+      notifyObservers(new BoardRemovePlayerUpdate(color));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**

@@ -5,6 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+/**
+ * A timer object with an optional callback function.
+ */
 public class Timer implements Serializable {
 
   private static final long serialVersionUID = -1689799953239659194L;

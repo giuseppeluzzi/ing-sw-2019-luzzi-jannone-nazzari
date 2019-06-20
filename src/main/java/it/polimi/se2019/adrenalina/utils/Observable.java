@@ -7,6 +7,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Any object that can be observed.
+ */
 public class Observable implements RemoteObservable {
   @NotExpose
   private List<Observer> observers = new ArrayList<>();

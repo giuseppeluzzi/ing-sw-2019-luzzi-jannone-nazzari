@@ -7,6 +7,9 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Power up object.
+ */
 public abstract class PowerUp extends ExecutableObject implements Spendable, Buyable {
 
   private static final long serialVersionUID = 8948751912601215729L;
@@ -38,6 +41,10 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
 
   public abstract String getName();
 
+  /**
+   * Specifies whether the power up has a cost or not.
+   * @return true if the power up has a cost, false if it's free
+   */
   public boolean doesCost() {
     return doesCost;
   }
@@ -47,6 +54,9 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
     return color;
   }
 
+  /**
+   * @return human readable string with the name and color of this power up (for use as a spendable)
+   */
   @Override
   public String getSpendableName() {
     return getName() + " " + color;

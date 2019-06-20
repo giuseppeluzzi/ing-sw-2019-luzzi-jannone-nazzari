@@ -8,6 +8,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/**
+ * Main class of the application running as server.
+ */
 public class AppServer {
   public AppServer() {
     Log.setName("ServerRMI");

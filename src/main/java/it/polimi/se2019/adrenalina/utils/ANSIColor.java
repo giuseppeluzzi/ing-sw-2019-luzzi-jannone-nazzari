@@ -5,6 +5,9 @@ import static org.fusesource.jansi.Ansi.ansi;
 import org.fusesource.jansi.Ansi.Attribute;
 import org.fusesource.jansi.Ansi.Color;
 
+/**
+ * ANSI Console colors for TUI printing.
+ */
 public enum ANSIColor {
   BLACK(ansi().fgBlack().toString(), ansi().fgBrightBlack().toString()),
   RED(ansi().fgBrightRed().toString(), ansi().fgBrightRed().a(Attribute.INTENSITY_FAINT).toString()),

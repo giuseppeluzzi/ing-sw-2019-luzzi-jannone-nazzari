@@ -90,6 +90,7 @@ public enum EventType {
   PLAYER_DEATH_UPDATE(PlayerDeathUpdate.class),
   BOARD_SET_SQUARE_UPDATE(BoardSetSquareUpdate.class),
   BOARD_ADD_PLAYER_UPDATE(BoardAddPlayerUpdate.class),
+  BOARD_REMOVE_PLAYER_UPDATE(BoardRemovePlayerUpdate.class),
   PING_EVENT(PingEvent.class);
 
   private final Class<? extends Event> eventClass;
