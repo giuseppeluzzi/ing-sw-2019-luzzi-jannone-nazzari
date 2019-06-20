@@ -78,6 +78,7 @@ public class ExecutableEffect extends GameAction {
                 break;
               case SHOOT_ROOM:
                 players = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
+                players.remove(executableObject.getOwner());
                 for (Player player : players) {
                   getTurnController().addTurnActions(
                       new PowerUpSelection(getTurnController(), getPlayer(), player,
@@ -92,6 +93,7 @@ public class ExecutableEffect extends GameAction {
           }
         } catch (NoTargetsException e) {
           if (e.isRollback()) {
+            getTurnController().resetUntilPowerup();
             try {
               getPlayer().getClient()
                   .showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione.");
@@ -102,6 +104,7 @@ public class ExecutableEffect extends GameAction {
                 executableObject));
           }
           executableObject.setCancelled(true);
+          ((Weapon) executableObject).setLoaded(true);
           getTurnController().executeGameActionQueue();
         } catch (InvalidSquareException ignored) {
           //

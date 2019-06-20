@@ -25,11 +25,13 @@ public class AfterUsageExecutable extends GameActionAsync {
   @Override
   public void execute(Board board) {
     try {
-      if (executableObject.isWeapon()) {
-        ((Weapon) executableObject).setLoaded(false);
-      } else {
-        getPlayer().removePowerUp((PowerUp) executableObject);
-        board.undrawPowerUp((PowerUp) executableObject);
+      if (isEnabled()) {
+        if (executableObject.isWeapon() && !executableObject.isCancelled()) {
+          ((Weapon) executableObject).setLoaded(false);
+        } else {
+          getPlayer().removePowerUp((PowerUp) executableObject);
+          board.undrawPowerUp((PowerUp) executableObject);
+        }
       }
     } catch (InvalidPowerUpException ignore) {
       //

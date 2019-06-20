@@ -9,21 +9,33 @@
                     "name": "Buco nero",
                     "actions": [
                         {
+                            "from": 1,
+                            "target": 3,
                             "minDistance": 0,
-                            "optional": false,
                             "maxDistance": 1,
-                            "selectType": "ATTACK_TARGET",
                             "differentFrom": [
                                 0,
+                                1,
                                 2
                             ],
-                            "from": 1,
-                            "type": "SELECT",
+                            "between": [],
                             "useLastDirection": false,
-                            "target": 3,
+                            "optional": false,
                             "visible": null,
                             "differentRoom": false,
-                            "between": []
+                            "selectType": "ATTACK_TARGET",
+                            "type": "SELECT"
+                        },
+                        {
+                            "target": 3,
+                            "destination": 1,
+                            "type": "MOVE"
+                        },
+                        {
+                            "target": 3,
+                            "type": "SHOOT",
+                            "damages": 1,
+                            "tag": 0
                         },
                         {
                             "minDistance": 0,
@@ -32,6 +44,7 @@
                             "selectType": "ATTACK_TARGET",
                             "differentFrom": [
                                 0,
+                                1,
                                 2,
                                 3
                             ],
@@ -44,20 +57,9 @@
                             "between": []
                         },
                         {
-                            "target": 3,
-                            "destination": 1,
-                            "type": "MOVE"
-                        },
-                        {
                             "target": 4,
                             "destination": 1,
                             "type": "MOVE"
-                        },
-                        {
-                            "target": 3,
-                            "type": "SHOOT",
-                            "damages": 1,
-                            "tag": 0
                         },
                         {
                             "target": 4,
@@ -73,34 +75,35 @@
             "name": "Effetto base",
             "actions": [
                 {
-                    "minDistance": 1,
-                    "optional": false,
-                    "maxDistance": -1,
-                    "selectType": "MOVE_SQUARE",
-                    "differentFrom": [],
                     "from": 0,
-                    "type": "SELECT",
-                    "useLastDirection": false,
                     "target": 1,
+                    "minDistance": 1,
+                    "maxDistance": -1,
+                    "differentFrom": [],
+                    "between": [],
+                    "optional": false,
+                    "useLastDirection": false,
                     "visible": true,
                     "differentRoom": false,
-                    "between": []
+                    "selectType": "MOVE_SQUARE",
+                    "type": "SELECT"
                 },
                 {
-                    "minDistance": 0,
-                    "optional": false,
-                    "maxDistance": 1,
-                    "selectType": "ATTACK_TARGET",
-                    "differentFrom": [
-                        0
-                    ],
                     "from": 1,
-                    "type": "SELECT",
-                    "useLastDirection": false,
                     "target": 2,
+                    "minDistance": 0,
+                    "maxDistance": 1,
+                    "optional": false,
+                    "differentFrom": [
+                        0,
+                        1
+                    ],
+                    "between": [],
+                    "useLastDirection": false,
                     "visible": null,
                     "differentRoom": false,
-                    "between": []
+                    "selectType": "ATTACK_TARGET",
+                    "type": "SELECT"
                 },
                 {
                     "target": 2,
