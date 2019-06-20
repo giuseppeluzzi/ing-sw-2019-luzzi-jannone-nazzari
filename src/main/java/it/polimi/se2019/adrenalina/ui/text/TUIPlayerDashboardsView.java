@@ -270,11 +270,14 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   public void showWeaponSelection(List<Weapon> weapons) {
     boardView.showBoard();
     String weapon = null;
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+            WAIT_TIMEOUT_MSG));
     try {
       weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     } catch (InputCancelledException e) {
       return;
     }
+    timer.stop();
     try {
       notifyObservers(new PlayerSelectWeaponEvent(client.getPlayerColor(), weapon));
     } catch (RemoteException e) {
@@ -289,27 +292,29 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
    */
   @Override
   public void showEffectSelection(Weapon weapon, List<Effect> effects) {
-    List<Effect> chosenEffects = new ArrayList<>();
-
+    List<Effect> chosenEffects;
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+            WAIT_TIMEOUT_MSG));
     try {
-      chosenEffects.add(TUIUtils.showEffectSelection(effects, false));
+      chosenEffects = new ArrayList<>(TUIUtils.showEffectSelection(effects, false));
     } catch (InputCancelledException e) {
       return;
     }
+    timer.stop();
     List<String> chosenEffectsNames = new ArrayList<>();
     while (!chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
       Log.debug("aa1 " + chosenEffects.get(chosenEffects.size() - 1));
+      timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+              WAIT_TIMEOUT_MSG));
       try {
-        Effect toAdd = TUIUtils
+        List<Effect> toAdd = TUIUtils
             .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
                 true);
-        if (toAdd == null) {
-          break;
-        }
-        chosenEffects.add(toAdd);
+        chosenEffects.addAll(toAdd);
       } catch (InputCancelledException ignored) {
         // return
       }
+      timer.stop();
     }
 
     for (Effect effect : chosenEffects) {
@@ -334,6 +339,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     boardView.showBoard();
     String ownWeapon;
     String squareWeapon;
+    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+            WAIT_TIMEOUT_MSG));
     try {
       ownWeapon = TUIUtils
           .selectWeapon(ownWeapons, "Quale arma vuoi scambiare?", true);
@@ -342,6 +349,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (InputCancelledException e) {
       return;
     }
+    timer.stop();
     try {
       notifyObservers(new PlayerSwapWeaponEvent(client.getPlayerColor(), ownWeapon, squareWeapon));
     } catch (RemoteException e) {
