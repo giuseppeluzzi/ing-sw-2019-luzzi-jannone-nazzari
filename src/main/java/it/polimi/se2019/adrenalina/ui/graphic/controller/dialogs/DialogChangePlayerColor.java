@@ -1,4 +1,4 @@
-package it.polimi.se2019.adrenalina.ui.graphic.controller;
+package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
@@ -25,12 +25,16 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class DialogChangePlayerColor {
+public class DialogChangePlayerColor extends Dialog {
 
   private ToggleGroup colorToggleGroup;
 
   @FXML
   private HBox charactersHBox;
+
+  public DialogChangePlayerColor() {
+    super("Seleziona un personaggio", true);
+  }
 
   public void initialize() {
     colorToggleGroup = new ToggleGroup();
