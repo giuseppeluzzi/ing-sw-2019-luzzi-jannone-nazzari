@@ -2,7 +2,6 @@ package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.action.game.CheckReloadWeapons;
 import it.polimi.se2019.adrenalina.controller.action.game.Payment;
-import it.polimi.se2019.adrenalina.controller.action.game.ReloadWeapon;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
@@ -33,8 +32,9 @@ public class AttackController extends UnicastRemoteObject implements Observer {
   private final Set<EventType> registeredEvents = new HashSet<>();
 
   public AttackController(BoardController boardController) throws RemoteException {
-    this.boardController = boardController;
+    // N.B. Sonar incorrectly reports the "throws" clause of this method as redoundant, but it's not.
 
+    this.boardController = boardController;
     registeredEvents.add(EventType.PLAYER_RELOAD_EVENT);
     registeredEvents.add(EventType.SELECT_PLAYER_EVENT);
     registeredEvents.add(EventType.SKIP_SELECTION_EVENT);

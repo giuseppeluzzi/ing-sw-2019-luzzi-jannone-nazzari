@@ -114,11 +114,8 @@ public class SelectAction implements WeaponAction {
     }
   }
 
-  public List<Target> getTargets(Board board, ExecutableObject object) {
-    Player owner = object.getOwner();
+  private List<Target> loadInitialTargets(Board board) {
     List<Target> targets = new ArrayList<>();
-    List<Target> out = new ArrayList<>();
-
     switch (selectType) {
       case ATTACK_TARGET:
         targets.addAll(board.getPlayingPlayers());
@@ -136,6 +133,12 @@ public class SelectAction implements WeaponAction {
         targets.addAll(board.getSquares());
         break;
     }
+    return targets;
+  }
+
+  public List<Target> getTargets(Board board, ExecutableObject object) {
+    Player owner = object.getOwner();
+    List<Target> targets = loadInitialTargets(board);
 
     targets.remove(owner);
 
@@ -179,8 +182,7 @@ public class SelectAction implements WeaponAction {
       targetStream = targetStream.filter(x -> fromTarget.getSquare().getColor() != x.getSquare().getColor());
     }
 
-    out = targetStream.collect(Collectors.toList());
-    return out;
+    return targetStream.collect(Collectors.toList());
   }
 
   @Override

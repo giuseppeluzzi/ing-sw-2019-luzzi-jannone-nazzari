@@ -23,38 +23,13 @@ public class AppClient {
 
     String name = "";
     int connectionMode = 0;
-    int gameMode = 0;
     boolean domination = false;
 
     if (args.length < 3) {
       TUIInputManager inputManager = new TUIInputManager();
-
-      String[] connectionModes = {"RMI", "Socket"};
-      inputManager.input("Vuoi giocare tramite RMI o Socket?", Arrays.asList(connectionModes));
-      try {
-        connectionMode = inputManager.waitForIntResult();
-      } catch (InputCancelledException ignored) {
-        inputManager.cancel("");
-      }
-
-      inputManager.input("Come ti chiami? (max. 12 caratteri)", 1, Constants.MAX_NAME_LENGTH);
-      try {
-        name = inputManager.waitForStringResult();
-      } catch (InputCancelledException ignored) {
-        inputManager.cancel("");
-      }
-
-      String[] gameModes = {"Classica", "Dominazione"};
-      inputManager.input("In che modalità vuoi giocare?", Arrays.asList(gameModes));
-      try {
-        gameMode = inputManager.waitForIntResult();
-      } catch (InputCancelledException ignored) {
-        inputManager.cancel("");
-      }
-
-      if (gameMode == 1) {
-        domination = true;
-      }
+      connectionMode = getInteractiveConnectionMode(inputManager);
+      name = getInteractivePlayerName(inputManager);
+      domination = getInteractiveDomination(inputManager);
     } else {
       name = args[0];
       connectionMode = Integer.parseInt(args[1]);
@@ -100,5 +75,36 @@ public class AppClient {
         Log.exception(e);
       }
     }
+  }
+
+  private int getInteractiveConnectionMode(TUIInputManager inputManager) {
+    String[] connectionModes = {"RMI", "Socket"};
+    inputManager.input("Vuoi giocare tramite RMI o Socket?", Arrays.asList(connectionModes));
+    try {
+      return inputManager.waitForIntResult();
+    } catch (InputCancelledException e) {
+      throw new IllegalStateException("Input cancelled during connection mode selection");
+    }
+  }
+
+  private String getInteractivePlayerName(TUIInputManager inputManager) {
+    inputManager.input("Come ti chiami? (max. 12 caratteri)", 1, Constants.MAX_NAME_LENGTH);
+    try {
+      return inputManager.waitForStringResult();
+    } catch (InputCancelledException ignored) {
+      throw new IllegalStateException("Input cancelled during name selection");
+    }
+  }
+
+  private boolean getInteractiveDomination(TUIInputManager inputManager) {
+    String[] gameModes = {"Classica", "Dominazione"};
+    inputManager.input("In che modalità vuoi giocare?", Arrays.asList(gameModes));
+    int gameMode = 0;
+    try {
+      gameMode = inputManager.waitForIntResult();
+    } catch (InputCancelledException ignored) {
+      throw new IllegalStateException("Input cancelled during game mode selection");
+    }
+    return gameMode == 1;
   }
 }

@@ -619,13 +619,13 @@ public class Board extends Observable implements Serializable {
    * @return List of Player
    */
   public List<Player> getPlayerByRoom(SquareColor roomColor) {
-    List<Player> players = new ArrayList<>();
-    for (Player player : players) {
+    List<Player> playerList = new ArrayList<>();
+    for (Player player : playerList) {
       if (player.getSquare().getColor() == roomColor) {
-        players.add(player);
+        playerList.add(player);
       }
     }
-    return players;
+    return playerList;
   }
 
   /**

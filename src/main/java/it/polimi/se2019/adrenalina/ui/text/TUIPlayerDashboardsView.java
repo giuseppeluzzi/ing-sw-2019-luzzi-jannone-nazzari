@@ -36,9 +36,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Color;
-
 /**
  * Text User Interface dashboards view
  */
@@ -236,32 +233,34 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     int anyCost = costs.get(AmmoColor.ANY);
 
     for (String answer : answers) {
-      if (spendables.get(Integer.parseInt(answer) - 1).getColor() == AmmoColor.BLUE) {
-        if (blueCost > 0) {
-          blueCost--;
-        } else if (anyCost > 0) {
-          anyCost--;
-        }
-      } else if (spendables.get(Integer.parseInt(answer) - 1).getColor() == AmmoColor.RED) {
-        if (redCost > 0) {
-          redCost--;
-        } else if (anyCost > 0) {
-          anyCost--;
-        }
-      } else if (spendables.get(Integer.parseInt(answer) - 1).getColor() == AmmoColor.YELLOW) {
-        if (yellowCost > 0) {
-          yellowCost--;
-        } else if (anyCost > 0) {
-          anyCost--;
-        }
+      switch (spendables.get(Integer.parseInt(answer) - 1).getColor()) {
+        case BLUE:
+          if (blueCost > 0) {
+            blueCost--;
+          } else if (anyCost > 0) {
+            anyCost--;
+          }
+          break;
+        case RED:
+          if (redCost > 0) {
+            redCost--;
+          } else if (anyCost > 0) {
+            anyCost--;
+          }
+          break;
+        case YELLOW:
+          if (yellowCost > 0) {
+            yellowCost--;
+          } else if (anyCost > 0) {
+            anyCost--;
+          }
+          break;
+        default:
+          throw new IllegalStateException("Illegal spendable color");
       }
     }
 
-    if (blueCost + redCost + yellowCost + anyCost == 0) {
-      return true;
-    }
-
-    return false;
+    return blueCost + redCost + yellowCost + anyCost == 0;
   }
 
   /**

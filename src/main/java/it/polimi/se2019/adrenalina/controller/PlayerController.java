@@ -52,8 +52,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   private final Set<EventType> registeredEvents = new HashSet<>();
 
   PlayerController(BoardController boardController) throws RemoteException {
-    this.boardController = boardController;
+    // N.B. Sonar incorrectly reports the "throws" clause of this method as redoundant, but it's not.
 
+    this.boardController = boardController;
     registeredEvents.add(EventType.PLAYER_COLLECT_AMMO_EVENT);
     registeredEvents.add(EventType.PLAYER_COLLECT_WEAPON_EVENT);
     registeredEvents.add(EventType.PLAYER_POWERUP_EVENT);
@@ -289,9 +290,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     // CHEAT SUITE
     // TODO CANCELLARE
-    //player.addAmmo(AmmoColor.RED, 3);
-    //player.addAmmo(AmmoColor.BLUE, 3);
-    //player.addAmmo(AmmoColor.YELLOW, 3);
+    player.addAmmo(AmmoColor.RED, 3);
+    player.addAmmo(AmmoColor.BLUE, 3);
+    player.addAmmo(AmmoColor.YELLOW, 3);
     /*Weapon weapon = board.getWeapons().get(0);
     Weapon weapon1 = board.getWeapons().get(1);
     Weapon weapon2 = board.getWeapons().get(2);

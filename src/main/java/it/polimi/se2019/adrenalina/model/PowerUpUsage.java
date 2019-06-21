@@ -8,8 +8,8 @@ import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Decorator for using a powerUp as a buyable.
@@ -29,7 +29,7 @@ public class PowerUpUsage implements Buyable {
   }
 
   @Override
-  public HashMap<AmmoColor, Integer> getCost() {
+  public Map<AmmoColor, Integer> getCost() {
     return powerUp.getCost();
   }
 
@@ -40,14 +40,14 @@ public class PowerUpUsage implements Buyable {
 
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    PowerUp powerUp = player.getPowerUp(this.powerUp.getType(), this.powerUp.getColor());
+    PowerUp playerPowerUp = player.getPowerUp(this.powerUp.getType(), this.powerUp.getColor());
     List<GameAction> actions = new ArrayList<>();
 
-    for (WeaponAction action : powerUp.getActions()) {
-      actions.add(new ExecutableEffect(turnController, player, powerUp, action));
+    for (WeaponAction action : playerPowerUp.getActions()) {
+      actions.add(new ExecutableEffect(turnController, player, playerPowerUp, action));
       Log.println(action.getActionType().toString());
     }
-    actions.add(new AfterUsageExecutable(turnController, player, powerUp));
+    actions.add(new AfterUsageExecutable(turnController, player, playerPowerUp));
     turnController.addTurnActions(actions);
     turnController.executeGameActionQueue();
   }

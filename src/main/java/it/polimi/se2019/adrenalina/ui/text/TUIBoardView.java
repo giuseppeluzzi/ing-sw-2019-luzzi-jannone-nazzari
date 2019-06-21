@@ -21,6 +21,7 @@ import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardView;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void endLoading(boolean masterPlayer) {
-
+    // do nothing
   }
 
   /**
@@ -108,9 +109,7 @@ public class TUIBoardView extends BoardView {
           }
           break;
       }
-    } catch (RemoteException e) {
-      Log.exception(e);
-    } catch (InvalidSquareException | InputCancelledException e) {
+    } catch (InvalidSquareException | InputCancelledException | RemoteException e) {
       //
     }
   }
