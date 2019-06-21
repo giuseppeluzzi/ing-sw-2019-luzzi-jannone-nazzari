@@ -68,7 +68,7 @@
         {
             "posX": 2,
             "posY": 1,
-            "color": "PURPLE",
+            "color": "RED",
             "spawnPoint": false,
             "borders": {
                 "EAST": "DOOR",
