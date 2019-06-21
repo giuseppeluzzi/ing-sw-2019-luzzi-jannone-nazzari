@@ -1,8 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -14,19 +12,22 @@ public class BoardFXController {
   private Pane[][] grid;
 
   public void initialize() {
-    grid = new Pane[4][3];
+    grid = new Pane[12][9];
 
-    for (Node cell: mapGrid.getChildren()) {
-      if (cell instanceof Pane) {
-        int col = GridPane.getColumnIndex(cell);
-        int row = GridPane.getRowIndex(cell);
-        if (col != 0 && col != 5 && row != 0 && row != 4) {
-          grid[col - 1][row - 1] = (Pane) cell;
-          cell.setStyle("-fx-border-color: white; -fx-border-width: 1;");
-        }
+    mapGrid.setVisible(false);
+
+    for (int x = 0; x < 12; x++) {
+      for (int y = 0; y < 9; y++) {
+        grid[x][y] = new Pane();
+        grid[x][y].setStyle("-fx-border-color: white; -fx-border-width: 1;");
+
+        mapGrid.getChildren().add(grid[x][y]);
+        GridPane.setColumnIndex(grid[x][y], x + 1);
+        GridPane.setRowIndex(grid[x][y], y + 1);
       }
     }
-
-    mapGrid.setStyle("-fx-background-image: url('gui/assets/img/map1.png'); -fx-background-size: contain; -fx-background-repeat: no-repeat; -fx-background-posiition: center;");
+    mapGrid.setStyle(
+        "-fx-background-image: url('gui/assets/img/map1.png'); -fx-background-size: contain; -fx-background-repeat: no-repeat; -fx-background-posiition: center;");
+    mapGrid.setVisible(true);
   }
 }
