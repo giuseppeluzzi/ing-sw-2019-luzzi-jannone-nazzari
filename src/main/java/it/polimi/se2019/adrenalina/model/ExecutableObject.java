@@ -18,6 +18,7 @@ public abstract class ExecutableObject extends Observable {
   private HashMap<Integer, Target> targetHistory = new HashMap<>();
   @NotExpose
   private HashMap<Player, Square> initialPlayerPositions = new HashMap<>();
+  private boolean skipUntilSelect;
   private boolean cancelled;
 
   protected ExecutableObject() {
@@ -148,4 +149,12 @@ public abstract class ExecutableObject extends Observable {
   public abstract String getSymbol();
 
   public abstract boolean isWeapon();
+
+  public boolean skipUntilSelect() {
+    return skipUntilSelect;
+  }
+
+  public void setSkipUntilSelect(boolean skipUntilSelect) {
+    this.skipUntilSelect = skipUntilSelect;
+  }
 }

@@ -45,7 +45,6 @@ import java.util.stream.Collectors;
  */
 public class Player extends Observable implements Target {
 
-  // TODO: powerUps and weapon should have a remove*() method (with which parameter?)
   private static final long serialVersionUID = -3827252611045096143L;
 
   private final transient Board board;

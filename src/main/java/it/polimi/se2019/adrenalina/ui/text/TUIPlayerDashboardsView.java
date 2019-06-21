@@ -301,16 +301,18 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       return;
     }
     timer.stop();
-    timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
-    try {
-      List<Effect> toAdd = TUIUtils
-          .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
-              true);
-      chosenEffects.addAll(toAdd);
-    } catch (InputCancelledException ignored) {
-      // return
+    if (! chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
+      timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
+      try {
+        List<Effect> toAdd = TUIUtils
+                .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
+                        true);
+        chosenEffects.addAll(toAdd);
+      } catch (InputCancelledException ignored) {
+        // return
+      }
+      timer.stop();
     }
-    timer.stop();
     List<Effect> chosenEffectsWithAnyTimes;
     try {
       chosenEffectsWithAnyTimes = handleAnyTimeEffects(chosenEffects);

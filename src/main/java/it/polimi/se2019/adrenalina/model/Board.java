@@ -166,18 +166,6 @@ public class Board extends Observable implements Serializable {
     }
   }
 
-  // TODO: documentation
-  public void clearMap() {
-    if (status != BoardStatus.LOBBY) {
-      throw new IllegalStateException("Can't clear the map during a game");
-    }
-    for (int x = 0; x < 4; x++) {
-      for (int y = 0; y < 3; y++) {
-        // TODO
-      }
-    }
-  }
-
   /**
    * Given an AmmoColor returns reference to the same colored SpawnPoint, if existing
    *

@@ -100,7 +100,14 @@ public class AttackController extends UnicastRemoteObject implements Observer {
    * @param event received event
    */
   public void update(SkipSelectionEvent event) {
-    boardController.getTurnController().disableActionsUntilPowerup();
+    Player player;
+    try {
+      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+    ExecutableObject executableObject = player.getCurrentExecutable();
+    executableObject.setSkipUntilSelect(true);
     boardController.getTurnController().executeGameActionQueue();
   }
 

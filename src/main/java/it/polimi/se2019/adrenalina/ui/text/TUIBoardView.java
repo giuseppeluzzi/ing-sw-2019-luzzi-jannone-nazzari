@@ -71,7 +71,7 @@ public class TUIBoardView extends BoardView {
         case ATTACK_TARGET:
           chosenTarget = selectAttackTarget(targets, skippable);
           if (chosenTarget == null) {
-            notifyObservers(new SkipSelectionEvent());
+            notifyObservers(new SkipSelectionEvent(getClient().getPlayerColor()));
           } else if (chosenTarget.isPlayer()) {
             notifyObservers(new SelectPlayerEvent(getClient().getPlayerColor(),
                 chosenTarget.getPlayer().getColor()));
@@ -83,7 +83,7 @@ public class TUIBoardView extends BoardView {
         case MOVE_SQUARE:
           chosenTarget = selectSquare(targets, true, skippable);
           if (chosenTarget == null) {
-            notifyObservers(new SkipSelectionEvent());
+            notifyObservers(new SkipSelectionEvent(getClient().getPlayerColor()));
           } else {
           notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
@@ -92,7 +92,7 @@ public class TUIBoardView extends BoardView {
         case ATTACK_SQUARE:
           chosenTarget = selectSquare(targets, false, skippable);
           if (chosenTarget == null) {
-            notifyObservers(new SkipSelectionEvent());
+            notifyObservers(new SkipSelectionEvent(getClient().getPlayerColor()));
           } else {
             notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
                 chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
@@ -101,7 +101,7 @@ public class TUIBoardView extends BoardView {
         case ATTACK_ROOM:
           chosenTarget = selectRoom(targets, skippable);
           if (chosenTarget == null) {
-            notifyObservers(new SkipSelectionEvent());
+            notifyObservers(new SkipSelectionEvent(getClient().getPlayerColor()));
           } else {
           notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));

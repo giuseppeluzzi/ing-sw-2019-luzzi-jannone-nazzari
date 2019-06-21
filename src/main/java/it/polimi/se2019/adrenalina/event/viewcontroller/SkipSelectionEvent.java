@@ -10,6 +10,15 @@ import it.polimi.se2019.adrenalina.event.EventType;
 public class SkipSelectionEvent implements Event {
 
   private static final long serialVersionUID = -2874939330685152878L;
+  private final PlayerColor playerColor;
+
+  public SkipSelectionEvent(PlayerColor playerColor) {
+    this.playerColor = playerColor;
+  }
+
+  public PlayerColor getPlayerColor() {
+    return playerColor;
+  }
 
   @Override
   public EventType getEventType() {

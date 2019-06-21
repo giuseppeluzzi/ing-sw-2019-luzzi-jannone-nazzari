@@ -1,10 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.TurnController;
-import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
-import it.polimi.se2019.adrenalina.controller.action.weapon.ShootRoomAction;
-import it.polimi.se2019.adrenalina.controller.action.weapon.ShootSquareAction;
-import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
@@ -44,7 +41,10 @@ public class ExecutableEffect extends GameAction {
 
   @Override
   public void execute(Board board) {
-    if (isEnabled()) {
+    if (executableObject.skipUntilSelect() && (weaponAction.getActionType() == WeaponActionType.SELECT || weaponAction.getActionType() == WeaponActionType.SELECT_DIRECTION)) {
+      executableObject.setSkipUntilSelect(false);
+    }
+    if (isEnabled() && ! executableObject.skipUntilSelect()) {
       if (!executableObject.isCancelled()) {
         try {
           Log.debug("WA: " + weaponAction.getActionType());
