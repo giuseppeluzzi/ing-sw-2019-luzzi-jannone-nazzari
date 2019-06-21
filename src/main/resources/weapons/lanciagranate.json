@@ -27,6 +27,7 @@
                 {
                     "minDistance": 1,
                     "optional": true,
+                    "skippable": true,
                     "maxDistance": 1,
                     "selectType": "MOVE_SQUARE",
                     "differentFrom": [],
@@ -39,9 +40,8 @@
                     "between": []
                 },
                 {
-                    "group": 0,
                     "destination": 2,
-                    "type": "OPTIONAL_MOVE",
+                    "type": "MOVE",
                     "target": 1
                 }
             ],
@@ -71,9 +71,23 @@
                             "distance": 0
                         },
                         {
-                            "group": 0,
+                            "minDistance": 1,
+                            "optional": true,
+                            "skippable": true,
+                            "maxDistance": 1,
+                            "selectType": "MOVE_SQUARE",
+                            "differentFrom": [],
+                            "from": 1,
+                            "type": "SELECT",
+                            "useLastDirection": false,
+                            "target": 2,
+                            "visible": null,
+                            "differentRoom": false,
+                            "between": []
+                        },
+                        {
                             "destination": 2,
-                            "type": "OPTIONAL_MOVE",
+                            "type": "MOVE",
                             "target": 1
                         }
                     ],

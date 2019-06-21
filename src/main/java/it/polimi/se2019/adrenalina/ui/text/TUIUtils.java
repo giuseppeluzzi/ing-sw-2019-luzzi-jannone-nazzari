@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Additional utils needed by Text User Interface.
@@ -140,5 +141,29 @@ public class TUIUtils {
       output.add(effects.get(result));
       return output;
     }
+  }
+
+  /**
+   * Asks the user when to use an anyTime effect.
+   * @param anyTimeEffect the anyTime effect
+   * @param chosenEffects the list of confirmed effects
+   * @return the index of when to use the anyTime effect
+   * @throws InputCancelledException if the user input is cancelled
+   */
+  static int askAnyTimeIndex(Effect anyTimeEffect, List<Effect> chosenEffects) throws InputCancelledException {
+    List<String> choices = new ArrayList<>();
+    for (Effect effect : chosenEffects) {
+      choices.add(String.format("Prima di \"%s\"", effect.getName()));
+    }
+    choices.add("Dopo tutti i precedenti");
+    inputManager.input(String.format("Scegli quando vuoi usare l'effetto \"%s\":", anyTimeEffect.getName()), choices);
+    return inputManager.waitForIntResult();
+  }
+
+  /**
+   * Cancel ongoing user input.
+   */
+  static void cancelInput() {
+    inputManager.cancel("Tempo scaduto!");
   }
 }

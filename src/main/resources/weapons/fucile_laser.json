@@ -40,7 +40,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
-            "anyTime": true,
+            "anyTime": false,
             "name": "Modalità perforazione",
             "actions": [
                 {

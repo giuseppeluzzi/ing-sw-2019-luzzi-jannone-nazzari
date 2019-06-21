@@ -90,6 +90,10 @@ public class SelectAction implements WeaponAction {
   public void execute(Board board, ExecutableObject object) throws NoTargetsException, NoTargetsExceptionOptional {
     List<Target> targets = getTargets(board, object);
 
+    if (optional && object.targetHistoryContainsKey(target)) {
+      throw new NoTargetsExceptionOptional("Optional SelectAction already used for this target");
+    }
+
     if ((selectType == TargetType.ATTACK_TARGET
         || selectType == TargetType.ATTACK_ROOM
         || selectType == TargetType.ATTACK_SQUARE) && !optional && targets.isEmpty()) {

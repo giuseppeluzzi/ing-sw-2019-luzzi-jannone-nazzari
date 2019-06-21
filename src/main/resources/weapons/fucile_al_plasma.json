@@ -55,8 +55,7 @@
                         {
                             "target": 0,
                             "destination": 2,
-                            "group": 1,
-                            "type": "OPTIONAL_MOVE"
+                            "type": "MOVE"
                         }
                     ],
                     "subEffects": []

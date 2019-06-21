@@ -6,7 +6,6 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 public enum WeaponActionType {
   SELECT(SelectAction.class),
   SELECT_DIRECTION(SelectDirectionAction.class),
-  OPTIONAL_MOVE(OptionalMoveAction.class),
   MOVE(MoveAction.class),
   SHOOT(ShootAction.class),
   SHOOT_ROOM(ShootRoomAction.class),

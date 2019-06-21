@@ -28,7 +28,6 @@ public class Weapon extends ExecutableObject implements Buyable {
   private final String name;
   private final HashMap<AmmoColor, Integer> cost;
   @NotExpose
-  private HashMap<Integer, Boolean> optMoveGroups = new HashMap<>();
   private List<Effect> effects = new ArrayList<>();
 
   // Usage information
@@ -36,7 +35,6 @@ public class Weapon extends ExecutableObject implements Buyable {
   private final List<Effect> selectedEffects = new ArrayList<>();
 
   private final String symbol;
-  // TODO: attribute to count if the optionalmoveaction is used
 
   public Weapon(int costRed, int costBlue, int costYellow,
       AmmoColor baseCost, String name, String symbol, boolean loaded) {
@@ -70,8 +68,6 @@ public class Weapon extends ExecutableObject implements Buyable {
     loaded = weapon.loaded;
     cost = new HashMap<>();
     symbol = weapon.symbol;
-
-    optMoveGroups.putAll(weapon.optMoveGroups);
 
     for (Effect effect : weapon.effects) {
       effects.add(new Effect(effect));
@@ -131,24 +127,6 @@ public class Weapon extends ExecutableObject implements Buyable {
    */
   public String getName() {
     return name;
-  }
-
-  /**
-   * Returns whether any {@code OptionalMoveAction} from group of index "key" has been executed.
-   * @param key group id
-   * @return true if group id "key" has been previously executed, false otherwise
-   */
-  public Boolean isGroupMoveUsed(Integer key) {
-    return optMoveGroups.get(key);
-  }
-
-  /**
-   * Whenever an optional move weaponaction is executed an entry with values "true, group_id" is
-   * created and no more move actions of that group can be executed.
-   * @param key group id of executed move weaponaction
-   */
-  public void setGroupMoveUsed(Integer key) {
-    optMoveGroups.put(key, true);
   }
 
   /**
@@ -307,13 +285,13 @@ public class Weapon extends ExecutableObject implements Buyable {
     Weapon weapon = gson.fromJson(json, Weapon.class);
 
     weapon.setObservers(new ArrayList<>());
-    weapon.optMoveGroups = new HashMap<>();
     weapon.reset();
 
-    for (Effect effect : weapon.effects) {
-      effect.reconcileDeserialization(weapon, null);
+    if (weapon.effects != null) {
+      for (Effect effect : weapon.effects) {
+        effect.reconcileDeserialization(weapon, null);
+      }
     }
-
     return weapon;
   }
 }

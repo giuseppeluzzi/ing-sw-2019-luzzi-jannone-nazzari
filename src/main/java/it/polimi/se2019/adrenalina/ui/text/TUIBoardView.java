@@ -81,19 +81,31 @@ public class TUIBoardView extends BoardView {
           }
           break;
         case MOVE_SQUARE:
-          chosenTarget = selectSquare(targets, true);
+          chosenTarget = selectSquare(targets, true, skippable);
+          if (chosenTarget == null) {
+            notifyObservers(new SkipSelectionEvent());
+          } else {
           notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
+          }
           break;
         case ATTACK_SQUARE:
-          chosenTarget = selectSquare(targets, false);
-          notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
-              chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
+          chosenTarget = selectSquare(targets, false, skippable);
+          if (chosenTarget == null) {
+            notifyObservers(new SkipSelectionEvent());
+          } else {
+            notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
+                chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
+          }
           break;
         case ATTACK_ROOM:
-          chosenTarget = selectRoom(targets);
+          chosenTarget = selectRoom(targets, skippable);
+          if (chosenTarget == null) {
+            notifyObservers(new SkipSelectionEvent());
+          } else {
           notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
               chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
+          }
           break;
       }
     } catch (RemoteException e) {
@@ -107,7 +119,7 @@ public class TUIBoardView extends BoardView {
    * Show room selection prompt to the user.
    * @param targets a list of targets to show
    */
-  private Target selectRoom(List<Target> targets) throws InputCancelledException {
+  private Target selectRoom(List<Target> targets, boolean skippable) throws InputCancelledException {
     EnumSet<SquareColor> squareColors = EnumSet.noneOf(SquareColor.class);
 
     for (Target target : targets) {
@@ -125,11 +137,17 @@ public class TUIBoardView extends BoardView {
               ANSIColor.RESET)
       );
     }
+    if (skippable) {
+      choices.add("Salta azione");
+    }
     inputManager.input("Seleziona una stanza:", choices);
     timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
         WAIT_TIMEOUT_MSG));
     int inputResult = inputManager.waitForIntResult();
     timer.stop();
+    if (skippable && inputResult == targets.size()) {
+      return null;
+    }
     for (Target target : targets) {
       if (target.getSquare().getColor() == squareColors.toArray()[inputResult]) {
         return target;
@@ -144,7 +162,7 @@ public class TUIBoardView extends BoardView {
    * @param targets a list of targets to show
    * @param fetch true if ammoCards on each square should be shown, false otherwise
    */
-  private Target selectSquare(List<Target> targets, boolean fetch) throws InputCancelledException {
+  private Target selectSquare(List<Target> targets, boolean fetch, boolean skippable) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Target target : targets) {
       String fetchHelper = "";
@@ -164,10 +182,17 @@ public class TUIBoardView extends BoardView {
               fetchHelper,
               ANSIColor.RESET));
     }
+    if (skippable) {
+      choices.add("Salta azione");
+    }
     inputManager.input("Seleziona un quadrato:", choices);
     timer.start(Configuration.getInstance().getTurnTimeout(),
         () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
-    Target result = targets.get(inputManager.waitForIntResult());
+    int selectionResult = inputManager.waitForIntResult();
+    if (skippable && selectionResult == targets.size()) {
+      return null;
+    }
+    Target result = targets.get(selectionResult);
     timer.stop();
     return result;
   }
@@ -185,19 +210,19 @@ public class TUIBoardView extends BoardView {
               target.getPlayer().getName(), ANSIColor.RESET));
         } else {
           choices.add(
-              String
-                  .format("%sx: %d y:%d (Spawnpoint)%s",
-                      target.getSquare().getColor().getAnsiColor(),
-                      target.getSquare().getPosX(),
-                      target.getSquare().getPosY(),
-                      ANSIColor.RESET));
-        }
-        if (skippable) {
-          choices.add("Salta (non colpire nessuno)");
+                  String
+                          .format("%sx: %d y:%d (Spawnpoint)%s",
+                                  target.getSquare().getColor().getAnsiColor(),
+                                  target.getSquare().getPosX(),
+                                  target.getSquare().getPosY(),
+                                  ANSIColor.RESET));
         }
       } catch (InvalidSquareException ignored) {
         //
       }
+    }
+    if (skippable) {
+      choices.add("Salta (non colpire nessuno)");
     }
     inputManager.input("Seleziona un bersaglio:", choices);
     timer.start(Configuration.getInstance().getTurnTimeout(),
@@ -242,7 +267,7 @@ public class TUIBoardView extends BoardView {
   public void showSquareSelect(List<Target> targets) {
     Square square = null;
     try {
-      square = (Square) selectSquare(targets, true);
+      square = (Square) selectSquare(targets, true, false);
     } catch (InputCancelledException e) {
       return;
     }

@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 
@@ -270,8 +272,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   public void showWeaponSelection(List<Weapon> weapons) {
     boardView.showBoard();
     String weapon = null;
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
-            WAIT_TIMEOUT_MSG));
+    timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
     try {
       weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     } catch (InputCancelledException e) {
@@ -293,17 +294,14 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   @Override
   public void showEffectSelection(Weapon weapon, List<Effect> effects) {
     List<Effect> chosenEffects;
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
-            WAIT_TIMEOUT_MSG));
+    timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
     try {
       chosenEffects = new ArrayList<>(TUIUtils.showEffectSelection(effects, false));
     } catch (InputCancelledException e) {
       return;
     }
     timer.stop();
-    List<String> chosenEffectsNames = new ArrayList<>();
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
-            WAIT_TIMEOUT_MSG));
+    timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
     try {
       List<Effect> toAdd = TUIUtils
           .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
@@ -313,7 +311,14 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       // return
     }
     timer.stop();
-    for (Effect effect : chosenEffects) {
+    List<Effect> chosenEffectsWithAnyTimes;
+    try {
+      chosenEffectsWithAnyTimes = handleAnyTimeEffects(chosenEffects);
+    } catch (InputCancelledException e) {
+      return;
+    }
+    List<String> chosenEffectsNames = new ArrayList<>();
+    for (Effect effect : chosenEffectsWithAnyTimes) {
       chosenEffectsNames.add(effect.getName());
     }
     try {
@@ -322,6 +327,36 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+  }
+
+  /**
+   * Handle anyTime effects by asking the user when to use them.
+   * @param chosenEffects the list of chosen effects
+   * @return a list of chosen effects with anyTime effects in the right position
+   * @throws InputCancelledException if the user input is cancelled
+   */
+  private List<Effect> handleAnyTimeEffects(List<Effect> chosenEffects) throws InputCancelledException {
+    List<Effect> chosenEffectsWithAnyTimes = chosenEffects.stream().filter(x -> ! x.isAnyTime() || x.isIndexConfirmed()).collect(Collectors.toList());
+    for (Effect effect : chosenEffects) {
+      if (effect.isAnyTime()) {
+        timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
+        int effectIndex = TUIUtils.askAnyTimeIndex(effect, chosenEffectsWithAnyTimes);
+        timer.stop();
+        List<Effect> temp = new ArrayList<>(chosenEffectsWithAnyTimes);
+        chosenEffectsWithAnyTimes.clear();
+        effect.setIndexConfirmed(true);
+        for (int i = 0; i < temp.size(); i++) {
+          if (i == effectIndex) {
+            chosenEffectsWithAnyTimes.add(effect);
+          }
+          chosenEffectsWithAnyTimes.add(temp.get(i));
+        }
+        if (effectIndex == temp.size()) {
+          chosenEffectsWithAnyTimes.add(effect);
+        }
+      }
+    }
+    return chosenEffectsWithAnyTimes;
   }
 
   /**

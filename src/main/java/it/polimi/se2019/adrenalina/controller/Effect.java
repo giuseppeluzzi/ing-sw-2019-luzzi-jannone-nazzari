@@ -23,6 +23,7 @@ public class Effect implements Buyable {
   private final int costBlue;
   private final int costYellow;
   private final boolean anyTime;
+  private boolean indexConfirmed;
   private final String name;
   private final List<WeaponAction> actions;
   private final List<Effect> subEffects;
@@ -141,6 +142,18 @@ public class Effect implements Buyable {
 
   public void addAction(WeaponAction action) {
     actions.add(action);
+  }
+
+  public boolean isIndexConfirmed() {
+    return indexConfirmed;
+  }
+
+  /**
+   * Determines whether the user has chosen when to apply an anyTimeEffect.
+   * @param indexConfirmed true if user has chosen when to apply the anyTimeEffect, false otherwise
+   */
+  public void setIndexConfirmed(boolean indexConfirmed) {
+    this.indexConfirmed = indexConfirmed;
   }
 
   @Override
