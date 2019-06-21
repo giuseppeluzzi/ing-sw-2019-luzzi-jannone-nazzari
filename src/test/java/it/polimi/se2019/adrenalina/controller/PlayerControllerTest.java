@@ -2,9 +2,6 @@ package it.polimi.se2019.adrenalina.controller;
 
 import static org.junit.Assert.*;
 
-import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
-import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
-import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.Player;
 import java.rmi.RemoteException;
 import org.junit.Before;

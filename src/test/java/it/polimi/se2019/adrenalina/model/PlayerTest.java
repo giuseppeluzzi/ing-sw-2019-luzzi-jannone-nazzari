@@ -16,12 +16,32 @@ import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Before;
 import org.junit.Test;
 
 public class PlayerTest {
+  private Player player;
+  private Player player2;
+  private Player player3;
+  private Player player4;
+  private Board board;
+
+  @Before
+  public void setPlayer() {
+    board = new Board();
+    board.setSkulls(5);
+    player = new Player("test", PlayerColor.GREEN, board);
+    player2 = new Player("blue", PlayerColor.BLUE, board);
+    player3 = new Player("grey", PlayerColor.GREY, board);
+    player4 = new Player("yellow", PlayerColor.YELLOW, board);
+    board.addPlayer(player);
+    board.addPlayer(player2);
+    board.addPlayer(player3);
+    board.addPlayer(player4);
+  }
+
   @Test
   public void testAddDamage() {
-    Player player = new Player("test", PlayerColor.YELLOW, null);
     player.addDamages(PlayerColor.BLUE, 2);
     player.addDamages(PlayerColor.YELLOW, 1);
     List<PlayerColor> damages = new ArrayList<>();
@@ -35,7 +55,6 @@ public class PlayerTest {
 
   @Test
   public void testAddTag() {
-    Player player = new Player("test", PlayerColor.YELLOW, null);
     player.addTags(PlayerColor.BLUE, 2);
     player.addTags(PlayerColor.YELLOW, 1);
     List<PlayerColor> tags = new ArrayList<>();
@@ -49,7 +68,6 @@ public class PlayerTest {
 
   @Test
   public void testAddPowerUp() {
-    Player player = new Player("test", PlayerColor.YELLOW, null);
     try {
       for (int i = 0; i < 3; i++) {
         player.addPowerUp(new Newton(AmmoColor.YELLOW));
@@ -61,7 +79,6 @@ public class PlayerTest {
 
   @Test
   public void testAddPowerUpException() {
-    Player player = new Player("test", PlayerColor.YELLOW, null);
 
     for (int i = 0; i < 3; i++) {
       try {
@@ -80,7 +97,6 @@ public class PlayerTest {
 
   @Test
   public void testAddWeapon() {
-    Player player = new Player("test", PlayerColor.YELLOW, null);
     try {
       for (int i = 0; i < 3; i++) {
         player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon", "X"));
@@ -92,7 +108,6 @@ public class PlayerTest {
 
   @Test(expected = IllegalStateException.class)
   public void testWeaponException() {
-    Player player = new Player("test", PlayerColor.YELLOW, null);
 
     for (int i = 0; i < 4; i++) {
       player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon", "X"));
@@ -101,8 +116,7 @@ public class PlayerTest {
 
   @Test
   public void testSerialization() {
-    Player player = new Player("test", PlayerColor.YELLOW, null);
-    Player player2;
+    Player player5;
     Weapon weapon = new Weapon(1,2,3,AmmoColor.BLUE, "testWeapon", "X");
     String json;
 
@@ -144,8 +158,7 @@ public class PlayerTest {
 
   @Test
   public void testCopyConstructor() {
-    Player player = new Player("test", PlayerColor.GREEN, null);
-    player.setSquare(new Square(1, 2, SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
+    player.setSquare(new Square(1, 2, SquareColor.GREEN, WALL, WALL, WALL, WALL, null));
     try {
       player.addPowerUp(new Newton(AmmoColor.YELLOW));
     } catch (InvalidPowerUpException e) {
@@ -155,29 +168,28 @@ public class PlayerTest {
     weapon1.setLoaded(false);
     player.addWeapon(weapon1);
     player.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2", "X"));
-    Player player2 = new Player(player, false);
-    Player player3 = new Player(player, true);
+    Player player5 = new Player(player, false);
+    Player player6 = new Player(player, true);
 
     assertEquals(
         "Cloned class attributes not matching with original class attributes",
         player.getName(),
-        player2.getName());
+        player5.getName());
 
     assertTrue(
         "Non-public copy of Player contains private attributes",
-        player3.getPowerUps().isEmpty()
+        player6.getPowerUps().isEmpty()
     );
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testCopyConstructorException() {
     Player player = null;
-    Player player2 = new Player(player, true);
+    Player player5 = new Player(player, true);
   }
 
   @Test
   public void testReload() {
-    Player player = new Player("test", PlayerColor.GREEN, null);
     Weapon weapon = new Weapon(0,0,1,AmmoColor.BLUE, "test", "X");
     player.addAmmo(AmmoColor.BLUE, 1);
     player.addAmmo(AmmoColor.YELLOW, 1);
@@ -186,7 +198,6 @@ public class PlayerTest {
 
   @Test
   public void testReloadPowerUp() {
-    Player player = new Player("test", PlayerColor.GREEN, null);
     Weapon weapon = new Weapon(1,0,1,AmmoColor.BLUE, "test", "X");
     PowerUp powerUp = new Newton(AmmoColor.RED);
     player.addAmmo(AmmoColor.BLUE, 1);
@@ -202,11 +213,13 @@ public class PlayerTest {
 
   @Test
   public void testSetSquare() {
-    Player player = new Player("test", PlayerColor.GREEN, null);
     Square square = new Square(2,1, SquareColor.GREEN, WALL,
         WALL, WALL, WALL, null);
     Square square2 = new Square(0,1, SquareColor.GREEN, WALL,
         WALL, WALL, WALL, null);
+    player.resetTimeoutCount();
+    player.incrementTimeoutCount();
+    assertEquals(1, player.getTimeoutCount());
     player.getPlayer().setSquare(square);
     player.getPlayer().setSquare(square2);
     assertEquals(square2, player.getSquare());
@@ -214,23 +227,70 @@ public class PlayerTest {
 
   @Test
   public void testAddDamages() {
-    Player player = new Player("test", PlayerColor.GREEN, null);
     player.addTags(PlayerColor.GREY, 5);
     player.addDamages(PlayerColor.GREY, 1);
+    player.isDead();
     assertEquals(4, player.getDamages().size());
   }
 
   @Test
   public void testHasWeaponReload() {
-    Player player = new Player("test", PlayerColor.GREEN, null);
     Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test", "X");
     Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test", "X");
     player.addWeapon(weapon);
     player.addAmmo(AmmoColor.BLUE, 1);
     player.addAmmo(AmmoColor.YELLOW, 1);
+    player.setDeaths(2);
+    player.getDeaths();
+    player.getStatus();
+    player.getDamages();
+    player.setScore(2);
+    player.getScore();
+    player.getKillScore();
+    player.setMaster(true);
     assertTrue(player.hasWeapon(weapon));
     assertTrue(player.canReload(weapon));
     assertFalse(player.hasWeapon(weapon2));
     assertFalse(player.canReload(weapon2));
   }
+
+  @Test
+  public void testGet() {
+    Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test", "X");
+    Weapon weapon2 = new Weapon(0,1,0, AmmoColor.YELLOW, "test2", "X");
+    player.addWeapon(weapon2);
+    player.addWeapon(weapon);
+    player.setColor(PlayerColor.GREY);
+    assertEquals(weapon, player.getWeaponByName("test"));
+    assertNull(player.getWeaponByName("prova"));
+  }
+
+  @Test
+  public void testAssignPoint() {
+    player2 = new Player("blue", PlayerColor.BLUE, board);
+    player3 = new Player("grey", PlayerColor.GREY, board);
+    player4 = new Player("yellow", PlayerColor.YELLOW, board);
+    player.setMaster(true);
+    board.setDoubleKill(player2);
+    player.addDamages(PlayerColor.BLUE, 12);
+    board.setSkulls(1);
+    player.addDamages(PlayerColor.GREY, 1);
+    board.setFinalFrenzySelected(true);
+    player.addDamages(PlayerColor.YELLOW, 1);
+    assertTrue(player.isDead());
+    player2.updateDamages(player.getDamages());
+    player.assignPoints();
+    player2.assignPoints();
+  }
+
+  @Test
+  public void testGetPlayers() {
+    assertEquals(4, player2.getBoard().getPlayers().size());
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testAssignPointException() {
+    player.assignPoints();
+  }
+
 }
