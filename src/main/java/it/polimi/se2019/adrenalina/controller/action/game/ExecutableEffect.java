@@ -41,7 +41,9 @@ public class ExecutableEffect extends GameAction {
 
   @Override
   public void execute(Board board) {
-    if (executableObject.skipUntilSelect() && (weaponAction.getActionType() == WeaponActionType.SELECT || weaponAction.getActionType() == WeaponActionType.SELECT_DIRECTION)) {
+    if (executableObject.skipUntilSelect() &&
+        (weaponAction.getActionType() == WeaponActionType.SELECT
+            || weaponAction.getActionType() == WeaponActionType.SELECT_DIRECTION)) {
       executableObject.setSkipUntilSelect(false);
     }
     if (isEnabled() && ! executableObject.skipUntilSelect()) {
@@ -55,8 +57,12 @@ public class ExecutableEffect extends GameAction {
               case SHOOT:
                 Target target = executableObject
                     .getTargetHistory(((ShootAction) weaponAction).getTarget());
-                executableObject.setLastUsageDirection(executableObject
-                    .getOwner().getSquare().getCardinalDirection(target.getSquare()));
+                try {
+                  executableObject.setLastUsageDirection(executableObject
+                      .getOwner().getSquare().getCardinalDirection(target.getSquare()));
+                } catch (InvalidSquareException e) {
+                  executableObject.setLastUsageDirection(null);
+                }
                 if (((ShootAction) weaponAction).getDamages() > 0) {
                   getTurnController().addTurnActions(
                       new PowerUpSelection(getTurnController(), getPlayer(), target,

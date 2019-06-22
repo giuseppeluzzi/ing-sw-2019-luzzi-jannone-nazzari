@@ -48,7 +48,7 @@
                             "between": [],
                             "visible": true,
                             "optional": false,
-                            "useLastDirection": true,
+                            "useLastDirection": false,
                             "differentRoom": false,
                             "selectType": "MOVE_SQUARE",
                             "type": "SELECT"

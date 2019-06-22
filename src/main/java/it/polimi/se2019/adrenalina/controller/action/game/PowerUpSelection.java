@@ -80,7 +80,7 @@ public class PowerUpSelection extends GameAction {
     return result;
   }
 
-  private List<PowerUp> getGranades(Board board) {
+  private List<PowerUp> getGranades() {
     List<PowerUp> powerUpList = new ArrayList<>();
     for (PowerUp powerUp : getPlayer().getPowerUps()) {
       if (powerUp.getType() == PowerUpType.TAGBACK_GRANADE) {
@@ -100,7 +100,7 @@ public class PowerUpSelection extends GameAction {
         powerUps.addAll(getNotAttackPowerUps(board));
       }
     } else {
-      powerUps.addAll(getGranades(board));
+      powerUps.addAll(getGranades());
     }
 
     return powerUps;

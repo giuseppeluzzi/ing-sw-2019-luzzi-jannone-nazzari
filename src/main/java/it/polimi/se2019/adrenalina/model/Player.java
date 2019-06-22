@@ -319,13 +319,15 @@ public class Player extends Observable implements Target {
     for (int i = 0; i < Math.min(num, maxDamages); i++) {
       damages.add(killerColor);
     }
-    for (PlayerColor tag : new ArrayList<>(tags)) {
-      if (tag == killerColor) {
+    if (num > 0) {
+      for (PlayerColor tag : new ArrayList<>(tags)) {
+        if (tag == killerColor) {
 
-        if (damages.size() < Constants.OVERKILL_DEATH) {
-          damages.add(killerColor);
+          if (damages.size() < Constants.OVERKILL_DEATH) {
+            damages.add(killerColor);
+          }
+          tags.remove(tag);
         }
-        tags.remove(tag);
       }
     }
     if (damages.size() == Constants.OVERKILL_DEATH) {
