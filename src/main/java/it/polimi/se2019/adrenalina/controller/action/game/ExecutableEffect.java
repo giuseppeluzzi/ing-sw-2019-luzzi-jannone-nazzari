@@ -120,7 +120,6 @@ public class ExecutableEffect extends GameAction {
         ((Weapon) executableObject).setLoaded(false);
         break;
       default:
-        throw new IllegalStateException("Illegal weapon action type");
     }
   }
 

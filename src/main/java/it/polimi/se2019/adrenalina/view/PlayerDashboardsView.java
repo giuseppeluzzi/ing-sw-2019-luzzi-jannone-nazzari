@@ -108,7 +108,7 @@ public abstract class PlayerDashboardsView extends Observable implements
                   event.getPlayerColor().getAnsiColor(),
                   playerName,
                   ANSIColor.RESET,
-                  newDamages.size(),
+                  newTags.size(),
                   event.getKillerColor().getAnsiColor(),
                   killerName,
                   ANSIColor.RESET));
