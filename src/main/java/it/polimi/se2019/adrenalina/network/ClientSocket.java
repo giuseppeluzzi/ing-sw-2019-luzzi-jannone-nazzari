@@ -5,7 +5,6 @@ import static java.lang.Thread.sleep;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.event.Event;
@@ -122,143 +121,147 @@ public class ClientSocket extends Client implements Runnable, Observer {
           }
         }
       }).start();
-      try {
-        while (socket.isConnected() && running) {
-          String message = bufferedReader.readLine();
+      mainLoop();
+    }
+  }
 
-          GsonBuilder gsonBuilder = new GsonBuilder();
-          gsonBuilder.registerTypeAdapter(Effect.class, new JsonEffectDeserializer());
-          gsonBuilder.registerTypeAdapter(PowerUp.class, new JsonPowerUpDeserializer());
-          gsonBuilder.registerTypeAdapter(Target.class, new JsonTargetDeserializer());
-          gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
-          Gson gson = gsonBuilder.create();
-          JsonObject json = gson.fromJson(message, JsonObject.class);
-          Log.debug(message);
-          EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
-          Log.debug("Received: " + eventType);
-          Event event = gson.fromJson(message, eventType.getEventClass());
+  private void mainLoop() {
+    try {
+      while (socket.isConnected() && running) {
+        String message = bufferedReader.readLine();
 
-          switch (eventType) {
-            case PLAYER_DISCONNECT_EVENT:
-              PlayerDisconnectEvent disconnectEvent = gson
-                  .fromJson(message, PlayerDisconnectEvent.class);
-              disconnect(disconnectEvent.getMessage());
-              break;
-            case TIMER_SET_EVENT:
-              TimerSetEvent timerSetEvent = gson.fromJson(message, TimerSetEvent.class);
-              if (timerSetEvent.getTimer() == 0) {
-                getBoardView().hideTimer();
-              } else {
-                getBoardView().startTimer(timerSetEvent.getTimer());
-              }
-              break;
-            case PLAYER_SET_COLOR:
-              PlayerSetColorEvent playerSetColorEvent = gson.fromJson(message,
-                  PlayerSetColorEvent.class);
-              setPlayerColor(playerSetColorEvent.getPlayerColor());
-              break;
-            case SHOW_BOARD_INVOCATION:
-              getBoardView().showBoard();
-              break;
-            case SHOW_DEATH_INVOCATION:
-              ShowDeathInvocation showDeathInvocation = gson.fromJson(message,
-                  ShowDeathInvocation.class);
-              getCharactersView().showDeath(showDeathInvocation.getPlayerColor());
-              break;
-            case SHOW_SQUARE_SELECT_INVOCATION:
-              ShowSquareSelectInvocation showSquareSelectInvocation = gson.fromJson(message,
-                  ShowSquareSelectInvocation.class);
-              getBoardView()
-                  .showSquareSelect(new ArrayList<>(showSquareSelectInvocation.getTargets()));
-              break;
-            case SHOW_TARGET_SELECT_INVOCATION:
-              ShowTargetSelectInvocation showTargetSelectInvocation = gson.fromJson(message,
-                  ShowTargetSelectInvocation.class);
-              getBoardView().showTargetSelect(showTargetSelectInvocation.getTargetType(),
-                  showTargetSelectInvocation.getTargets(), showTargetSelectInvocation.isSkippable());
-              break;
-            case SHOW_PAYMENT_OPTION_INVOCATION:
-              ShowPaymentOptionInvocation showPaymentOptionInvocation = gson.fromJson(message,
-                  ShowPaymentOptionInvocation.class);
-              getPlayerDashboardsView().showPaymentOption(
-                  showPaymentOptionInvocation.getBuyableType(),
-                  showPaymentOptionInvocation.getPrompt(),
-                  showPaymentOptionInvocation.getBuyableCost(),
-                  showPaymentOptionInvocation.getBudgetPowerUps(),
-                  showPaymentOptionInvocation.getBudgetAmmos());
-              break;
-            case SHOW_BUYABLE_WEAPONS_INVOCATION:
-              ShowBuyableWeaponsInvocation showBuyableWeaponsInvocation = gson.fromJson(message,
-                  ShowBuyableWeaponsInvocation.class);
-              getBoardView().showBuyableWeapons(showBuyableWeaponsInvocation.getWeaponList());
-              break;
-            case SHOW_DIRECTION_SELECT_INVOCATION:
-              getBoardView().showDirectionSelect();
-              break;
-            case SHOW_EFFECT_SELECTION_INVOCATION:
-              ShowEffectSelectionInvocation showEffectSelectionInvocation = gson.fromJson(message,
-                  ShowEffectSelectionInvocation.class);
-              getPlayerDashboardsView()
-                  .showEffectSelection(showEffectSelectionInvocation.getWeapon(),
-                      showEffectSelectionInvocation.getEffects());
-              break;
-            case SHOW_WEAPON_SELECTION_INVOCATION:
-              ShowWeaponSelectionInvocation showWeaponSelectionInvocation = gson.fromJson(message,
-                  ShowWeaponSelectionInvocation.class);
-              getPlayerDashboardsView()
-                  .showWeaponSelection(showWeaponSelectionInvocation.getWeapons());
-              break;
-            case SWITCH_TO_FINAL_FRENZY_INVOCATION:
-              SwitchToFinalFrenzyInvocation switchToFinalFrenzyInvocation = gson.fromJson(message,
-                  SwitchToFinalFrenzyInvocation.class);
-              getPlayerDashboardsView().switchToFinalFrenzy(switchToFinalFrenzyInvocation
-                  .getPlayerColor());
-              break;
-            case SHOW_POWER_UP_SELECTION_INVOCATION:
-              ShowPowerUpSelectionInvocation showPowerUpSelectionInvocation = gson.fromJson(message,
-                  ShowPowerUpSelectionInvocation.class);
-              getPlayerDashboardsView().showPowerUpSelection(showPowerUpSelectionInvocation
-                  .getPowerUps(), showPowerUpSelectionInvocation.isDiscard());
-              break;
-            case SHOW_TURN_ACTION_SELECTION_INVOCATION:
-              ShowTurnActionSelectionInvocation showTurnActionSelectionInvocation = gson
-                  .fromJson(message, ShowTurnActionSelectionInvocation.class);
-              getPlayerDashboardsView().showTurnActionSelection(showTurnActionSelectionInvocation
-                  .getActions());
-              break;
-            case SHOW_SPAWN_POINT_TRACK_SELECTION_INVOCATION:
-              getBoardView().showSpawnPointTrackSelection();
-              break;
-            case SHOW_SWAP_WEAPON_SELECTION_INVOCATION:
-              ShowSwapWeaponSelectionInvocation showSwapWeaponSelectionInvocation = gson
-                  .fromJson(message, ShowSwapWeaponSelectionInvocation.class);
-              getPlayerDashboardsView().showSwapWeaponSelection(showSwapWeaponSelectionInvocation
-                  .getOwnWeapons(), showSwapWeaponSelectionInvocation.getSquareWeapons());
-              break;
-            case SHOW_MESSAGE_INVOCATION:
-              ShowMessageInvocation showMessageInvocation = gson
-                  .fromJson(message, ShowMessageInvocation.class);
-              showMessage(showMessageInvocation.getSeverity(),
-                  showMessageInvocation.getTitle(), showMessageInvocation.getMessage());
-              break;
-            case SHOW_FINAL_RANKS_INVOCATION:
-              getBoardView().showFinalRanks();
-              break;
-            case SHOW_RELOAD_WEAPON_SELECTION_INVOCATION:
-              ShowReloadWeaponSelectionInvocation showReloadWeaponSelectionInvocation = gson
-                  .fromJson(message, ShowReloadWeaponSelectionInvocation.class);
-              getPlayerDashboardsView().showReloadWeaponSelection(
-                  showReloadWeaponSelectionInvocation.getUnloadedWeapons());
-              break;
-            default:
-              getBoardView().update(event);
-              getCharactersView().update(event);
-              getPlayerDashboardsView().update(event);
-          }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Effect.class, new JsonEffectDeserializer());
+        gsonBuilder.registerTypeAdapter(PowerUp.class, new JsonPowerUpDeserializer());
+        gsonBuilder.registerTypeAdapter(Target.class, new JsonTargetDeserializer());
+        gsonBuilder.addDeserializationExclusionStrategy(new NotExposeExclusionStrategy());
+        Gson gson = gsonBuilder.create();
+        JsonObject json = gson.fromJson(message, JsonObject.class);
+        Log.debug(message);
+        EventType eventType = EventType.valueOf(json.get("eventType").getAsString());
+        Log.debug("Received: " + eventType);
+        Event event = gson.fromJson(message, eventType.getEventClass());
+
+        switch (eventType) {
+          case PLAYER_DISCONNECT_EVENT:
+            PlayerDisconnectEvent disconnectEvent = gson
+                    .fromJson(message, PlayerDisconnectEvent.class);
+            disconnect(disconnectEvent.getMessage());
+            break;
+          case TIMER_SET_EVENT:
+            TimerSetEvent timerSetEvent = gson.fromJson(message, TimerSetEvent.class);
+            if (timerSetEvent.getTimer() == 0) {
+              getBoardView().hideTimer();
+            } else {
+              getBoardView().startTimer(timerSetEvent.getTimer());
+            }
+            break;
+          case PLAYER_SET_COLOR:
+            PlayerSetColorEvent playerSetColorEvent = gson.fromJson(message,
+                    PlayerSetColorEvent.class);
+            setPlayerColor(playerSetColorEvent.getPlayerColor());
+            break;
+          case SHOW_BOARD_INVOCATION:
+            getBoardView().showBoard();
+            break;
+          case SHOW_DEATH_INVOCATION:
+            ShowDeathInvocation showDeathInvocation = gson.fromJson(message,
+                    ShowDeathInvocation.class);
+            getCharactersView().showDeath(showDeathInvocation.getPlayerColor());
+            break;
+          case SHOW_SQUARE_SELECT_INVOCATION:
+            ShowSquareSelectInvocation showSquareSelectInvocation = gson.fromJson(message,
+                    ShowSquareSelectInvocation.class);
+            getBoardView()
+                    .showSquareSelect(new ArrayList<>(showSquareSelectInvocation.getTargets()));
+            break;
+          case SHOW_TARGET_SELECT_INVOCATION:
+            ShowTargetSelectInvocation showTargetSelectInvocation = gson.fromJson(message,
+                    ShowTargetSelectInvocation.class);
+            getBoardView().showTargetSelect(showTargetSelectInvocation.getTargetType(),
+                    showTargetSelectInvocation.getTargets(), showTargetSelectInvocation.isSkippable());
+            break;
+          case SHOW_PAYMENT_OPTION_INVOCATION:
+            ShowPaymentOptionInvocation showPaymentOptionInvocation = gson.fromJson(message,
+                    ShowPaymentOptionInvocation.class);
+            getPlayerDashboardsView().showPaymentOption(
+                    showPaymentOptionInvocation.getBuyableType(),
+                    showPaymentOptionInvocation.getPrompt(),
+                    showPaymentOptionInvocation.getBuyableCost(),
+                    showPaymentOptionInvocation.getBudgetPowerUps(),
+                    showPaymentOptionInvocation.getBudgetAmmos());
+            break;
+          case SHOW_BUYABLE_WEAPONS_INVOCATION:
+            ShowBuyableWeaponsInvocation showBuyableWeaponsInvocation = gson.fromJson(message,
+                    ShowBuyableWeaponsInvocation.class);
+            getBoardView().showBuyableWeapons(showBuyableWeaponsInvocation.getWeaponList());
+            break;
+          case SHOW_DIRECTION_SELECT_INVOCATION:
+            getBoardView().showDirectionSelect();
+            break;
+          case SHOW_EFFECT_SELECTION_INVOCATION:
+            ShowEffectSelectionInvocation showEffectSelectionInvocation = gson.fromJson(message,
+                    ShowEffectSelectionInvocation.class);
+            getPlayerDashboardsView()
+                    .showEffectSelection(showEffectSelectionInvocation.getWeapon(),
+                            showEffectSelectionInvocation.getEffects());
+            break;
+          case SHOW_WEAPON_SELECTION_INVOCATION:
+            ShowWeaponSelectionInvocation showWeaponSelectionInvocation = gson.fromJson(message,
+                    ShowWeaponSelectionInvocation.class);
+            getPlayerDashboardsView()
+                    .showWeaponSelection(showWeaponSelectionInvocation.getWeapons());
+            break;
+          case SWITCH_TO_FINAL_FRENZY_INVOCATION:
+            SwitchToFinalFrenzyInvocation switchToFinalFrenzyInvocation = gson.fromJson(message,
+                    SwitchToFinalFrenzyInvocation.class);
+            getPlayerDashboardsView().switchToFinalFrenzy(switchToFinalFrenzyInvocation
+                    .getPlayerColor());
+            break;
+          case SHOW_POWER_UP_SELECTION_INVOCATION:
+            ShowPowerUpSelectionInvocation showPowerUpSelectionInvocation = gson.fromJson(message,
+                    ShowPowerUpSelectionInvocation.class);
+            getPlayerDashboardsView().showPowerUpSelection(showPowerUpSelectionInvocation
+                    .getPowerUps(), showPowerUpSelectionInvocation.isDiscard());
+            break;
+          case SHOW_TURN_ACTION_SELECTION_INVOCATION:
+            ShowTurnActionSelectionInvocation showTurnActionSelectionInvocation = gson
+                    .fromJson(message, ShowTurnActionSelectionInvocation.class);
+            getPlayerDashboardsView().showTurnActionSelection(showTurnActionSelectionInvocation
+                    .getActions());
+            break;
+          case SHOW_SPAWN_POINT_TRACK_SELECTION_INVOCATION:
+            getBoardView().showSpawnPointTrackSelection();
+            break;
+          case SHOW_SWAP_WEAPON_SELECTION_INVOCATION:
+            ShowSwapWeaponSelectionInvocation showSwapWeaponSelectionInvocation = gson
+                    .fromJson(message, ShowSwapWeaponSelectionInvocation.class);
+            getPlayerDashboardsView().showSwapWeaponSelection(showSwapWeaponSelectionInvocation
+                    .getOwnWeapons(), showSwapWeaponSelectionInvocation.getSquareWeapons());
+            break;
+          case SHOW_MESSAGE_INVOCATION:
+            ShowMessageInvocation showMessageInvocation = gson
+                    .fromJson(message, ShowMessageInvocation.class);
+            showMessage(showMessageInvocation.getSeverity(),
+                    showMessageInvocation.getTitle(), showMessageInvocation.getMessage());
+            break;
+          case SHOW_FINAL_RANKS_INVOCATION:
+            getBoardView().showFinalRanks();
+            break;
+          case SHOW_RELOAD_WEAPON_SELECTION_INVOCATION:
+            ShowReloadWeaponSelectionInvocation showReloadWeaponSelectionInvocation = gson
+                    .fromJson(message, ShowReloadWeaponSelectionInvocation.class);
+            getPlayerDashboardsView().showReloadWeaponSelection(
+                    showReloadWeaponSelectionInvocation.getUnloadedWeapons());
+            break;
+          default:
+            getBoardView().update(event);
+            getCharactersView().update(event);
+            getPlayerDashboardsView().update(event);
         }
-      } catch (IOException e) {
-        disconnect("La connessione con il server è stata persa!");
       }
+    } catch (IOException e) {
+      disconnect("La connessione con il server è stata persa!");
     }
   }
 }

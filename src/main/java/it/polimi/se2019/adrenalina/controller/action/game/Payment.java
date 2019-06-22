@@ -27,6 +27,9 @@ public class Payment extends GameAction {
 
   @Override
   public void execute(Board board) {
+    if (! isEnabled()) {
+      getTurnController().executeGameActionQueue();
+    }
     if (isFree()) {
       item.afterPaymentCompleted(getTurnController(), board, getPlayer());
     } else {

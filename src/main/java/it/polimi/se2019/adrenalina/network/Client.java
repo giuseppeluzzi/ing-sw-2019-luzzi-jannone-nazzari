@@ -1,10 +1,8 @@
 package it.polimi.se2019.adrenalina.network;
 
-import it.polimi.se2019.adrenalina.App;
-import it.polimi.se2019.adrenalina.AppGUI;
+
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
 import it.polimi.se2019.adrenalina.ui.graphic.GUICharactersView;
 import it.polimi.se2019.adrenalina.ui.graphic.GUIPlayerDashboardsView;
@@ -13,12 +11,10 @@ import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
 import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 /**
  * The client object, one for each player.
@@ -102,16 +98,13 @@ public abstract class Client implements ClientInterface, Serializable {
    */
   @Override
   public void showMessage(MessageSeverity severity, String title, String message) {
-    switch (severity) {
-      case GAME:
-        Log.println(message);
-        break;
-      default:
-        if (!"".equalsIgnoreCase(title)) {
-          Log.println(String.format("%s: %s", severity, title));
-        }
-        Log.println(String.format("%s: %s", severity, message));
-        break;
+    if (severity == MessageSeverity.GAME) {
+      Log.println(message);
+    } else {
+      if (!"".equalsIgnoreCase(title)) {
+        Log.println(String.format("%s: %s", severity, title));
+      }
+      Log.println(String.format("%s: %s", severity, message));
     }
   }
 

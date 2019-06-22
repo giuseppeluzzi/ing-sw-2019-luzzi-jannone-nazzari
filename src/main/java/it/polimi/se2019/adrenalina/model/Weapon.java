@@ -16,6 +16,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class defining a weapon.
@@ -100,16 +101,24 @@ public class Weapon extends ExecutableObject implements Buyable {
     try {
       Player owner = getOwner();
       if (owner.getClient() != null) {
-        try {
-          notifyObservers(new OwnWeaponUpdate(owner.getColor(), owner.getWeapons()));
-          notifyObservers(new EnemyWeaponUpdate(owner.getColor(),
-              owner.getWeaponCount(), owner.getUnloadedWeapons()));
-        } catch (RemoteException e) {
-          Log.exception(e);
-        }
+        notifyLoaded(owner);
       }
     } catch (IllegalStateException ignore) {
       //
+    }
+  }
+
+  /**
+   * Notifies observers about the loaded status of a weapon.
+   * @param owner the player who owns the weapon
+   */
+  private void notifyLoaded(Player owner) {
+    try {
+      notifyObservers(new OwnWeaponUpdate(owner.getColor(), owner.getWeapons()));
+      notifyObservers(new EnemyWeaponUpdate(owner.getColor(),
+              owner.getWeaponCount(), owner.getUnloadedWeapons()));
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 
@@ -229,16 +238,16 @@ public class Weapon extends ExecutableObject implements Buyable {
    * @param isReload indicates if the cost is for a reloading action or not
    * @return hashmap of colors and values
    */
-  public HashMap<AmmoColor, Integer> getCost(boolean isReload) {
-    HashMap<AmmoColor, Integer> cost = new HashMap<>();
+  public Map<AmmoColor, Integer> getCost(boolean isReload) {
+    HashMap<AmmoColor, Integer> weaponCost = new HashMap<>();
     for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
-      cost.put(ammoColor, getCost(ammoColor));
+      weaponCost.put(ammoColor, getCost(ammoColor));
     }
-    cost.put(AmmoColor.ANY, 0);
+    weaponCost.put(AmmoColor.ANY, 0);
     if (isReload) {
-        cost.put(baseCost, cost.get(baseCost) + 1);
+        weaponCost.put(baseCost, weaponCost.get(baseCost) + 1);
     }
-    return cost;
+    return weaponCost;
   }
 
   @Override

@@ -38,9 +38,8 @@ public class ShootSquareAction extends ShootAction {
     }
   }
 
-  public List<Player> getPlayers(Board board, ExecutableObject object) {
+  private List<Player> getPlayersToExclude(ExecutableObject object) {
     List<Player> playersToExclude = new ArrayList<>();
-    List<Player> players = new ArrayList<>();
     if (exclude != null) {
       for (int player : exclude) {
         try {
@@ -50,6 +49,12 @@ public class ShootSquareAction extends ShootAction {
         }
       }
     }
+    return playersToExclude;
+  }
+
+  public List<Player> getPlayers(Board board, ExecutableObject object) {
+    List<Player> playersToExclude = getPlayersToExclude(object);
+    List<Player> players = new ArrayList<>();
 
     for (Square square : board.getSquares()) {
       if (object.getTargetHistory(getTarget()).getSquare().getDistance(square) == distance) {

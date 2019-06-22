@@ -319,17 +319,7 @@ public class Player extends Observable implements Target {
     for (int i = 0; i < Math.min(num, maxDamages); i++) {
       damages.add(killerColor);
     }
-    if (num > 0) {
-      for (PlayerColor tag : new ArrayList<>(tags)) {
-        if (tag == killerColor) {
-
-          if (damages.size() < Constants.OVERKILL_DEATH) {
-            damages.add(killerColor);
-          }
-          tags.remove(tag);
-        }
-      }
-    }
+    addDamagesFromTags(killerColor);
     if (damages.size() == Constants.OVERKILL_DEATH) {
       try {
         board.getPlayerByColor(damages.get(Constants.NORMAL_DEATH)).addTags(color, 1);
@@ -347,19 +337,7 @@ public class Player extends Observable implements Target {
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
       } else if (board.getSkulls() == 1) {
-        board.setSkulls(0);
-        if (board.isFinalFrenzySelected()) {
-          // Attivazione frenesia finale
-          if (!board.isFinalFrenzyActive()) {
-            board.setStatus(BoardStatus.FINAL_FRENZY);
-            board.setFinalFrenzyActivator(color);
-          }
-          if (!frenzy) {
-            setFrenzy(true);
-          }
-        } else {
-          // Fine partita
-        }
+        handleLastSkull();
       }
 
       try {
@@ -367,6 +345,41 @@ public class Player extends Observable implements Target {
       } catch (RemoteException e) {
         Log.exception(e);
       }
+    }
+  }
+
+  /**
+   * Converts any existing tags of a killer into damages
+   * @param killerColor the color of the player who scored the damages
+   */
+  private void addDamagesFromTags(PlayerColor killerColor) {
+    for (PlayerColor tag : new ArrayList<>(tags)) {
+      if (tag == killerColor) {
+
+        if (damages.size() < Constants.OVERKILL_DEATH) {
+          damages.add(killerColor);
+        }
+        tags.remove(tag);
+      }
+    }
+  }
+
+  /**
+   * Handles the case when the last skull is taken.
+   */
+  private void handleLastSkull() {
+    board.setSkulls(0);
+    if (board.isFinalFrenzySelected()) {
+      // Attivazione frenesia finale
+      if (!board.isFinalFrenzyActive()) {
+        board.setStatus(BoardStatus.FINAL_FRENZY);
+        board.setFinalFrenzyActivator(color);
+      }
+      if (!frenzy) {
+        setFrenzy(true);
+      }
+    } else {
+      // TODO Fine partita
     }
   }
 
@@ -445,9 +458,7 @@ public class Player extends Observable implements Target {
       board.addKillShot(
           new Kill(damages.get(10), damages.get(Constants.NORMAL_DEATH) == damages.get(10)));
     }
-    if (killScore > 1) {
-      killScore -= 2;
-    }
+    decrementKillScore();
     damages.clear();
     try {
       notifyObservers(new PlayerKillScoreUpdate(color, killScore));
@@ -826,6 +837,12 @@ public class Player extends Observable implements Target {
 
   public void setKillScore(int score) {
     killScore = score;
+  }
+
+  private void decrementKillScore() {
+    if (killScore > 1) {
+      killScore -= 2;
+    }
   }
 
   public Buyable getCurrentBuying() {

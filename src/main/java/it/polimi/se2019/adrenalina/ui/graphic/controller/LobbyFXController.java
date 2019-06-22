@@ -5,9 +5,9 @@ import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogChangePlayerColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
-import java.io.IOException;
 import java.rmi.RemoteException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -15,11 +15,9 @@ import javafx.collections.ObservableList;
 import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -34,8 +32,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 public class LobbyFXController {
 
@@ -194,26 +190,6 @@ public class LobbyFXController {
     Platform.runLater(() -> skullsText.setText("Teschi: " + skulls));
   }
 
-  public void showDialogChangePlayerColor() {
-    FXMLLoader loaderDialog = new FXMLLoader(
-        AppGUI.class.getClassLoader().getResource("gui/DialogChangePlayerColor.fxml"));
-
-    try {
-      Scene scene = new Scene(loaderDialog.load());
-      scene.getStylesheets().add(AppGUI.getCSS());
-
-      Stage stage = new Stage();
-      stage.initModality(Modality.APPLICATION_MODAL);
-      stage.setScene(scene);
-      stage.getIcons().clear();
-      stage.setTitle("Adrenalina");
-      stage.showAndWait();
-    } catch (IOException e) {
-      e.printStackTrace();
-      Log.exception(e);
-    }
-  }
-
   private static class ListPlayer {
 
     private final String name;
@@ -278,7 +254,7 @@ public class LobbyFXController {
             editIcon.setMouseTransparent(false);
             editIcon.setCursor(Cursor.HAND);
             editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-              AppGUI.getLobbyFXController().showDialogChangePlayerColor();
+              new DialogChangePlayerColor().show();
               event.consume();
             });
             hBox.getChildren().add(editIcon);

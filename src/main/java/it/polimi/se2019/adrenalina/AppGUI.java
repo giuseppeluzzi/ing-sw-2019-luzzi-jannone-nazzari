@@ -4,8 +4,8 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
-import it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -79,12 +79,13 @@ public class AppGUI extends Application {
         AppGUI.class.getClassLoader().getResource("gui/Start.fxml"));
     loaderStart.getController();
 
-    Scene startScene = new Scene(loaderStart.load());
-    startScene.getStylesheets().addAll(getCSS());
+    /*Scene startScene = new Scene(loaderStart.load());
+    startScene.getStylesheets().addAll(getCSS());*/
+    boardScene.getStylesheets().addAll(getCSS());
 
     primaryStage.setResizable(false);
     primaryStage.setTitle("Adrenalina");
-    primaryStage.setScene(startScene);
+    primaryStage.setScene(boardScene);
     primaryStage.show();
   }
 
