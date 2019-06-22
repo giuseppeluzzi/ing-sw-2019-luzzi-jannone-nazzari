@@ -27,13 +27,7 @@ import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -286,31 +280,38 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   /**
-   * Show effect selection prompt to the user.
+   * Show effect selection prompt to the user, including any nested subeffects.
    * @param weapon the effects' parent weapon
    * @param effects the list of effects to show
    */
   @Override
   public void showEffectSelection(Weapon weapon, List<Effect> effects) {
+    List<Effect> buffer;
     List<Effect> chosenEffects;
+    Queue<Effect> effectQueue;
     timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
     try {
-      chosenEffects = new ArrayList<>(TUIUtils.showEffectSelection(effects, false));
+      buffer = new ArrayList<>(TUIUtils.showEffectSelection(effects, false));
+      chosenEffects = new ArrayList<>(buffer);
+      effectQueue = new LinkedList<>(buffer);
     } catch (InputCancelledException e) {
       return;
     }
     timer.stop();
-    if (! chosenEffects.get(chosenEffects.size() - 1).getSubEffects().isEmpty()) {
-      timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
-      try {
-        List<Effect> toAdd = TUIUtils
-                .showEffectSelection(chosenEffects.get(chosenEffects.size() - 1).getSubEffects(),
-                        true);
-        chosenEffects.addAll(toAdd);
-      } catch (InputCancelledException ignored) {
-        // return
+    Effect currentEffect;
+    while (! effectQueue.isEmpty()) {
+      currentEffect = effectQueue.remove();
+      if (! currentEffect.getSubEffects().isEmpty()) {
+        timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
+        try {
+          buffer = new ArrayList<>(TUIUtils.showEffectSelection(currentEffect.getSubEffects(), true));
+          chosenEffects.addAll(buffer);
+          effectQueue.addAll(buffer);
+        } catch (InputCancelledException e) {
+          return;
+        }
+        timer.stop();
       }
-      timer.stop();
     }
     List<Effect> chosenEffectsWithAnyTimes;
     try {
