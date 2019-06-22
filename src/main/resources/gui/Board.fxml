@@ -5,6 +5,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.layout.HBox?>
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController">
   <children>
     <GridPane AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
@@ -54,6 +58,48 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" percentHeight="11.5" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
+      </GridPane>
+
+      <!-- player dashboard -->
+      <GridPane fx:id="playerDashboard" GridPane.columnIndex="0" GridPane.rowIndex="1" gridLinesVisible="true">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
+          <ColumnConstraints hgrow="SOMETIMES"/>
+          <ColumnConstraints hgrow="SOMETIMES" percentWidth="24" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" percentHeight="18" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" percentHeight="7" />
+          <RowConstraints vgrow="SOMETIMES"/>
+          <RowConstraints vgrow="SOMETIMES" percentHeight="40" />
+        </rowConstraints>
+
+        <HBox fx:id="playerTagsContainer" GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="11" alignment="CENTER_RIGHT">
+          <Circle radius="16" fill="YELLOW"/>
+          <Circle radius="16" fill="YELLOW" />
+          <Circle radius="16" fill="YELLOW" />
+          <Circle radius="16" fill="YELLOW" />
+          <Circle radius="16" fill="YELLOW" />
+          <Circle radius="16" fill="YELLOW" />
+          <Circle radius="16" fill="YELLOW" />
+          <Circle radius="16" fill="YELLOW" />
+        </HBox>
+
+        <HBox fx:id="playerDamagesContainer" GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="11" alignment="CENTER_LEFT">
+          <Circle radius="16" fill="RED"/>
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+          <Circle radius="16" fill="RED" />
+        </HBox>
       </GridPane>
     </GridPane>
   </children>

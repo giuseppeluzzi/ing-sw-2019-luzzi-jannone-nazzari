@@ -85,3 +85,11 @@
 .dialogContent {
   -fx-padding: 50;
 }
+
+#playerDamagesContainer {
+  -fx-padding: 0 0 0 7;
+}
+
+#playerTagsContainer {
+  -fx-padding: 0 7 0 0;
+}
