@@ -302,7 +302,27 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     player.addWeapon(weapon1);
     board.takeWeapon(weapon2);
     player.addWeapon(weapon2);*/
-    if ("nazza".equals(player.getName())) {
+    if ("PeppeSocket".equals(player.getName())) {
+      player.addAmmo(AmmoColor.RED, 3);
+      player.addAmmo(AmmoColor.BLUE, 3);
+      player.addAmmo(AmmoColor.YELLOW, 3);
+    }
+    if ("socket2".equals(player.getName())) {
+      player.addAmmo(AmmoColor.RED, 3);
+      player.addAmmo(AmmoColor.BLUE, 3);
+      player.addAmmo(AmmoColor.YELLOW, 3);
+    }
+    if ("socket3".equals(player.getName())) {
+      player.addAmmo(AmmoColor.RED, 3);
+      player.addAmmo(AmmoColor.BLUE, 3);
+      player.addAmmo(AmmoColor.YELLOW, 3);
+    }
+    if ("socket4".equals(player.getName())) {
+      player.addAmmo(AmmoColor.RED, 3);
+      player.addAmmo(AmmoColor.BLUE, 3);
+      player.addAmmo(AmmoColor.YELLOW, 3);
+    }
+    if ("socket5".equals(player.getName())) {
       player.addAmmo(AmmoColor.RED, 3);
       player.addAmmo(AmmoColor.BLUE, 3);
       player.addAmmo(AmmoColor.YELLOW, 3);

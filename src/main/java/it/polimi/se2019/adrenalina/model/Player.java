@@ -319,7 +319,9 @@ public class Player extends Observable implements Target {
     for (int i = 0; i < Math.min(num, maxDamages); i++) {
       damages.add(killerColor);
     }
-    addDamagesFromTags(killerColor);
+    if (num > 0) {
+      addDamagesFromTags(killerColor);
+    }
     if (damages.size() == Constants.OVERKILL_DEATH) {
       try {
         board.getPlayerByColor(damages.get(Constants.NORMAL_DEATH)).addTags(color, 1);
