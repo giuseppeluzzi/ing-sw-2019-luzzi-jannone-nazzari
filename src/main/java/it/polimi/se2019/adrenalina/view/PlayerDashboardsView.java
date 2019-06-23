@@ -210,18 +210,15 @@ public abstract class PlayerDashboardsView extends Observable implements
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
       boardView.getClient().showGameMessage(
           String.format(
-              "Munizioni attuali: %s%d (%d) rosse%s, %s%d (%d) blu%s, %s%d (%d) gialle%s",
+              "Munizioni attuali: %s%d rosse%s, %s%d blu%s, %s%d gialle%s",
               ANSIColor.RED,
               event.getRed(),
-              (player.getAmmo(AmmoColor.RED) + event.getRed()) % 3,
               ANSIColor.RESET,
               ANSIColor.BLUE,
               event.getBlue(),
-              (player.getAmmo(AmmoColor.BLUE) + event.getBlue()) % 3,
               ANSIColor.RESET,
               ANSIColor.YELLOW,
               event.getYellow(),
-              (player.getAmmo(AmmoColor.YELLOW) + event.getYellow()) % 3,
               ANSIColor.RESET
           ));
     }

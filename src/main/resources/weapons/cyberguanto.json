@@ -82,7 +82,8 @@
                     "useLastDirection": true,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
-                    "type": "SELECT"
+                    "type": "SELECT",
+                    "skippable" : true
                 },
                 {
                     "target": 0,

@@ -77,8 +77,13 @@ public class ExecutableEffect extends GameAction {
       case SHOOT:
         Target target = executableObject
                 .getTargetHistory(((ShootAction) weaponAction).getTarget());
-        executableObject.setLastUsageDirection(executableObject
-                .getOwner().getSquare().getCardinalDirection(target.getSquare()));
+        try {
+          executableObject.setLastUsageDirection(executableObject
+              .getOwner().getSquare().getCardinalDirection(target.getSquare()));
+        } catch (InvalidSquareException e) {
+          executableObject.setLastUsageDirection(null);
+        }
+
         if (((ShootAction) weaponAction).getDamages() > 0) {
           getTurnController().addTurnActions(
                   new PowerUpSelection(getTurnController(), getPlayer(), target,
