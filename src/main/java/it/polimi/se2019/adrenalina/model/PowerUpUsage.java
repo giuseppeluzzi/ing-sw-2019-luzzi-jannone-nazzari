@@ -40,7 +40,7 @@ public class PowerUpUsage implements Buyable {
 
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    PowerUp playerPowerUp = player.getPowerUp(this.powerUp.getType(), this.powerUp.getColor());
+    PowerUp playerPowerUp = player.getPowerUp(powerUp.getType(), powerUp.getColor());
     List<GameAction> actions = new ArrayList<>();
 
     for (WeaponAction action : playerPowerUp.getActions()) {
@@ -58,5 +58,10 @@ public class PowerUpUsage implements Buyable {
       return "il mirino";
     }
     return "";
+  }
+
+  @Override
+  public Buyable getBaseBuyable() {
+    return powerUp;
   }
 }

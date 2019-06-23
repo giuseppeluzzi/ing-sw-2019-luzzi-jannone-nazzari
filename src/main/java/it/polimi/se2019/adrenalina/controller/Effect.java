@@ -203,6 +203,11 @@ public class Effect implements Buyable {
     return 0;
   }
 
+  @Override
+  public Buyable getBaseBuyable() {
+    return this;
+  }
+
   /**
    * Method called after a payment has been completed.
    * @param turnController the turnController

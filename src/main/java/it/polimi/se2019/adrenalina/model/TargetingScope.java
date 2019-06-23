@@ -35,6 +35,11 @@ public class TargetingScope extends PowerUp {
   }
 
   @Override
+  public Buyable getBaseBuyable() {
+    return null;
+  }
+
+  @Override
   public TargetingScope copy() {
     return new TargetingScope(getColor());
   }

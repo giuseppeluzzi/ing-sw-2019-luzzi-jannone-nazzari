@@ -57,4 +57,9 @@ public class Newton extends PowerUp {
     Gson gson = new Gson();
     return gson.fromJson(json, Newton.class);
   }
+
+  @Override
+  public Buyable getBaseBuyable() {
+    return null;
+  }
 }

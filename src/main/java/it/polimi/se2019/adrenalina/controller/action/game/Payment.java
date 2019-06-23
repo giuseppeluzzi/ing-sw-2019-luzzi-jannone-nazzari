@@ -6,8 +6,10 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Buyable;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * Action used to pay for a buyable object.
@@ -35,8 +37,10 @@ public class Payment extends GameAction {
     } else {
       getPlayer().setCurrentBuying(item);
       try {
+        List<PowerUp> spendablePowerUps =  getPlayer().getPowerUps();
+        spendablePowerUps.remove(item.getBaseBuyable());
         getPlayer().getClient().getPlayerDashboardsView()
-            .showPaymentOption(item.getBuyableType(), item.promptMessage(), item.getCost(), getPlayer().getPowerUps(),
+            .showPaymentOption(item.getBuyableType(), item.promptMessage(), item.getCost(), spendablePowerUps,
                 getPlayer().getAmmos());
       } catch (RemoteException e) {
         Log.exception(e);

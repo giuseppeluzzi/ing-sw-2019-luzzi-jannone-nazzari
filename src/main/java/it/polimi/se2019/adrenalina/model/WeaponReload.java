@@ -24,6 +24,11 @@ public class WeaponReload implements Buyable {
   }
 
   @Override
+  public Buyable getBaseBuyable() {
+    return weapon;
+  }
+
+  @Override
   public Map<AmmoColor, Integer> getCost() {
     return weapon.getCost(true);
   }
