@@ -63,50 +63,50 @@
               {
                 "type": "SELECT_DIRECTION"
               },
-                {
-                  "minDistance": 1,
-                  "optional": false,
-                  "maxDistance": 1,
-                  "selectType": "ATTACK_TARGET",
-                  "differentFrom": [],
-                  "from": 0,
-                  "type": "SELECT",
-                  "useLastDirection": true,
-                  "target": 1,
-                  "visible": null,
-                  "differentRoom": false,
-                  "between": []
-                },
-                {
-                  "tag": 0,
-                  "type": "SHOOT_SQUARE",
-                  "damages": 2,
-                  "target": 1,
-                  "distance": 0
-                },
-                {
-                  "minDistance": 1,
-                  "optional": false,
-                  "maxDistance": 1,
-                  "selectType": "ATTACK_TARGET",
-                  "differentFrom": [
-                      0
-                  ],
-                  "from": 1,
-                  "type": "SELECT",
-                  "useLastDirection": true,
-                  "target": 2,
-                  "visible": null,
-                  "differentRoom": false,
-                  "between": []
-                },
-                {
-                  "tag": 0,
-                  "type": "SHOOT_SQUARE",
-                  "damages": 1,
-                  "target": 2,
-                  "distance": 0
-                }
+              {
+                "minDistance": 1,
+                "optional": false,
+                "maxDistance": 1,
+                "selectType": "ATTACK_TARGET",
+                "differentFrom": [],
+                "from": 0,
+                "type": "SELECT",
+                "useLastDirection": true,
+                "target": 1,
+                "visible": null,
+                "differentRoom": false,
+                "between": []
+              },
+              {
+                "tag": 0,
+                "type": "SHOOT_SQUARE",
+                "damages": 2,
+                "target": 1,
+                "distance": 0
+              },
+              {
+                "minDistance": 1,
+                "optional": true,
+                "maxDistance": 1,
+                "selectType": "ATTACK_TARGET",
+                "differentFrom": [
+                    0
+                ],
+                "from": 1,
+                "type": "SELECT",
+                "useLastDirection": true,
+                "target": 2,
+                "visible": null,
+                "differentRoom": false,
+                "between": []
+              },
+              {
+                "tag": 0,
+                "type": "SHOOT_SQUARE",
+                "damages": 1,
+                "target": 2,
+                "distance": 0
+              }
             ],
             "costBlue": 0,
             "name": "Modalità barbecue"
