@@ -78,7 +78,7 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
 
   @Override
   public Buyable getBaseBuyable() {
-    return null;
+    return this;
   }
 
   @Override

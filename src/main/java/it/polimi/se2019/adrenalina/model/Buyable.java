@@ -23,6 +23,11 @@ public interface Buyable extends Serializable {
 
   int getCost(AmmoColor ammoColor);
 
+  /**
+   * If used in decorator returns the corresponding object, otherwise it returns the object itself.
+   *
+   * @return a Buyable not decorated
+   */
   Buyable getBaseBuyable();
 
   void afterPaymentCompleted(TurnController turnController, Board board, Player player);

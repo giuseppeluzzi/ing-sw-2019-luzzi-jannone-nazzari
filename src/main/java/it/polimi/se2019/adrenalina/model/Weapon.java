@@ -232,6 +232,11 @@ public class Weapon extends ExecutableObject implements Buyable {
     return cost.get(color);
   }
 
+  @Override
+  public Buyable getBaseBuyable() {
+    return this;
+  }
+
   /**
    * Returns an hashmap where each entry specifies how much of the given color must be paid in order
    * to reload or buy the weapon.

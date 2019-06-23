@@ -49,9 +49,4 @@ public class Teleporter extends PowerUp {
     Gson gson = new Gson();
     return gson.fromJson(json, Teleporter.class);
   }
-
-  @Override
-  public Buyable getBaseBuyable() {
-    return this;
-  }
 }

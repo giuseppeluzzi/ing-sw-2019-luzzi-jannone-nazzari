@@ -44,9 +44,4 @@ public class TagbackGrenade extends PowerUp {
     Gson gson = new Gson();
     return gson.fromJson(json, TagbackGrenade.class);
   }
-
-  @Override
-  public Buyable getBaseBuyable() {
-    return this;
-  }
 }
