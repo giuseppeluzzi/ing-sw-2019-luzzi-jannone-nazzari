@@ -20,6 +20,7 @@
     "tuiTagIcon": "✦",
     "tuiDamageIcon": "✚",
     "weaponFiles": [
+        "fucile_al_plasma.json",
         "cannone_vortex.json",
         "cyberguanto.json",
         "distruttore.json",

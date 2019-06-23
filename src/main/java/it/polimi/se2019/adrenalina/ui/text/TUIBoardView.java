@@ -1,7 +1,5 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
-import static org.fusesource.jansi.Ansi.ansi;
-
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
@@ -10,12 +8,7 @@ import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
-import it.polimi.se2019.adrenalina.model.Direction;
-import it.polimi.se2019.adrenalina.model.Kill;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.Target;
-import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -27,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 /**
  * Text User Interface board view

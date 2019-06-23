@@ -5,12 +5,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.model.Newton;
-import it.polimi.se2019.adrenalina.model.PowerUp;
-import it.polimi.se2019.adrenalina.model.PowerUpType;
-import it.polimi.se2019.adrenalina.model.TagbackGrenade;
-import it.polimi.se2019.adrenalina.model.TargetingScope;
-import it.polimi.se2019.adrenalina.model.Teleporter;
+import it.polimi.se2019.adrenalina.model.*;
+
 import java.lang.reflect.Type;
 
 /**

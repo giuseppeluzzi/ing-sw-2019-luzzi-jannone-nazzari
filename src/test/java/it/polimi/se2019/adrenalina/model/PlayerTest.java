@@ -1,23 +1,17 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
-import static org.junit.Assert.*;
-
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.exceptions.InvalidAmmoException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
-import it.polimi.se2019.adrenalina.network.ClientSocket;
-import it.polimi.se2019.adrenalina.ui.text.TUIBoardView;
-import it.polimi.se2019.adrenalina.ui.text.TUICharactersView;
-import it.polimi.se2019.adrenalina.ui.text.TUIPlayerDashboardsView;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
+import static org.junit.Assert.*;
 
 public class PlayerTest {
   private Player player;

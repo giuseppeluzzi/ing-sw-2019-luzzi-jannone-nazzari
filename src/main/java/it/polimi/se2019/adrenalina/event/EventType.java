@@ -1,24 +1,6 @@
 package it.polimi.se2019.adrenalina.event;
 
-import it.polimi.se2019.adrenalina.event.invocations.ShowBoardInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowDirectionSelectInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowFinalRanksInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowReloadWeaponSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowUnsuspendPromptInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
-import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
+import it.polimi.se2019.adrenalina.event.invocations.*;
 import it.polimi.se2019.adrenalina.event.modelview.*;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 

@@ -1,12 +1,13 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static org.junit.Assert.*;
-
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class PowerUpUsageTest {
   private PowerUp powerUp;

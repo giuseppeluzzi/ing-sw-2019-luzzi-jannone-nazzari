@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.ui.text;
 
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.util.List;
 
 /**

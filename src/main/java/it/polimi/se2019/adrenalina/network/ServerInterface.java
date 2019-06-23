@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.network;
 import it.polimi.se2019.adrenalina.controller.BoardController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;

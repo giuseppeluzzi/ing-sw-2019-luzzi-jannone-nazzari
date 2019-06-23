@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.network;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.io.IOException;
 import java.net.Socket;
 

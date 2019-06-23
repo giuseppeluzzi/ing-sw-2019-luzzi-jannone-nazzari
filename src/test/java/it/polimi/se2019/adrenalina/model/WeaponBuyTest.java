@@ -1,13 +1,13 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
-import static org.junit.Assert.*;
-
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import org.junit.Before;
 import org.junit.Test;
+
+import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
+import static org.junit.Assert.assertEquals;
 
 public class WeaponBuyTest {
   private Weapon weapon;

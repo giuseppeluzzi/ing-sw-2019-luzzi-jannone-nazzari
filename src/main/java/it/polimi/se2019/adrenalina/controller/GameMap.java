@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.model.Square;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

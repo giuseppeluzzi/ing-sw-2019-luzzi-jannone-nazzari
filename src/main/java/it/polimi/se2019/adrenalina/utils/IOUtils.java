@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.utils;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -1,14 +1,12 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.utils.Log;
-import java.rmi.RemoteException;
-import java.util.List;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class BoardControllerTest {
 

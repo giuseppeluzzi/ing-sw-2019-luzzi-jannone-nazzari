@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
+
 import java.lang.reflect.Type;
 
 /**

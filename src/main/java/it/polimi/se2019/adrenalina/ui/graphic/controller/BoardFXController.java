@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;

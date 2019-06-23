@@ -1,9 +1,9 @@
 package it.polimi.se2019.adrenalina.utils;
 
-import static org.fusesource.jansi.Ansi.ansi;
-
 import org.fusesource.jansi.Ansi.Attribute;
 import org.fusesource.jansi.Ansi.Color;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 /**
  * ANSI Console colors for TUI printing.
