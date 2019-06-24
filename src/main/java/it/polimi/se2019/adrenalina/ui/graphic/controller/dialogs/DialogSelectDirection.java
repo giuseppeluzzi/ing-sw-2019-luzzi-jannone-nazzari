@@ -54,4 +54,9 @@ public class DialogSelectDirection extends Dialog {
 
     close();
   }
+
+  @Override
+  public void build() {
+
+  }
 }

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.utils.Log;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -11,7 +12,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-public class Dialog {
+public abstract class Dialog {
 
   private final boolean closeable;
   private final String title;
@@ -44,10 +45,11 @@ public class Dialog {
           new Alert(Alert.AlertType.ERROR, "Devi prima fare una selezione").showAndWait();
         });
       }
-
+      Platform.runLater(this::build);
       stage.showAndWait();
     } catch (IOException e) {
       Log.exception(e);
+      e.printStackTrace();
     }
   }
 
@@ -57,4 +59,5 @@ public class Dialog {
     }
   }
 
+  public abstract void build();
 }

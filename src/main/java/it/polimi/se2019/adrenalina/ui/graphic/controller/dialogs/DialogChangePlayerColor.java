@@ -86,4 +86,9 @@ public class DialogChangePlayerColor extends Dialog {
 
     close();
   }
+
+  @Override
+  public void build() {
+
+  }
 }
