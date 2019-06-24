@@ -821,8 +821,12 @@ public class Player extends Observable implements Target {
   }
 
   private void decrementKillScore() {
-    if (killScore > 1) {
+    if (killScore == 2) {
+      killScore = 1;
+    } else if (killScore > 1) {
       killScore -= 2;
+    } else {
+      killScore = 0;
     }
   }
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" gridLinesVisible="true" fx:id="playerDashboard" id="playerDashboard">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
+    <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
+    <ColumnConstraints hgrow="SOMETIMES" />
+    <ColumnConstraints hgrow="SOMETIMES" percentWidth="24" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints percentHeight="24" vgrow="SOMETIMES" />
+    <RowConstraints vgrow="SOMETIMES" />
+    <RowConstraints percentHeight="13" vgrow="SOMETIMES" />
+    <RowConstraints vgrow="SOMETIMES" />
+    <RowConstraints percentHeight="10" vgrow="SOMETIMES" />
+    <RowConstraints vgrow="SOMETIMES" />
+    <RowConstraints percentHeight="25" vgrow="SOMETIMES" />
+  </rowConstraints>
+
+  <HBox alignment="CENTER_RIGHT" spacing="11" fx:id="playerTagsContainer" id="playerTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+
+  <HBox alignment="CENTER_LEFT" spacing="11" fx:id="playerDamagesContainer" id="playerDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
+  <HBox spacing="8" fx:id="playerSkulls" id="playerSkulls" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+
+  <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
+    <FlowPane fx:id="playerAmmos" id="playerAmmos" alignment="CENTER" hgap="5" maxWidth="82" vgap="5" />
+  </HBox>
+</GridPane>

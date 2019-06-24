@@ -86,30 +86,28 @@
   -fx-padding: 50;
 }
 
-.playerDashboard {
+#mapGrid {
+  -fx-background-size: contain;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+}
+
+#playerDashboard {
   -fx-background-image: url("img/dashboard_BLUE.png");
   -fx-background-size: contain;
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
 }
 
-.playerSkulls {
+#playerSkulls {
   -fx-spacing: 8;
 }
 
-.playerDamagesContainer {
+#playerDamagesContainer {
   -fx-padding: 0 0 0 7;
 }
 
-.playerTagsContainer {
-  -fx-padding: 0 7 0 0;
-}
-
-.playerDamagesContainer {
-  -fx-padding: 0 0 0 7;
-}
-
-.playerTagsContainer {
+#playerTagsContainer {
   -fx-padding: 0 7 0 0;
 }
 
@@ -137,15 +135,19 @@
 }
 
 .enemySkulls {
-  -fx-spacing: 9;
+  -fx-spacing: 12.5;
   -fx-padding: 0 0 0 1;
 }
 
 .enemyDamagesContainer {
-  -fx-spacing: 12.45;
+  -fx-spacing: 12.4;
   -fx-padding: 0 0 0 6;
 }
 
 .enemyTagsContainer {
   -fx-spacing: 3;
+}
+
+.enemyWeapon {
+  -fx-image: url("img/weapon/rotated/weapon_distruttore.png");
 }

@@ -1,21 +1,23 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
+import it.polimi.se2019.adrenalina.AppGUI;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class BoardFXController {
 
   @FXML
   private GridPane mapGrid;
   @FXML
-  private Pane playerDashboard;
+  private Pane playerDashboardContainer;
+  @FXML
+  private VBox enemyDashboards;
 
   @FXML
-  private ImageView weapon;
+  private Pane weapon;
 
   private Pane[][] grid;
 
@@ -23,6 +25,8 @@ public class BoardFXController {
     grid = new Pane[12][9];
 
     mapGrid.setVisible(false);
+    mapGrid.setStyle("-fx-background-image: url('gui/assets/img/map1.png');");
+
     for (int x = 0; x < 12; x++) {
       for (int y = 0; y < 9; y++) {
         grid[x][y] = new Pane();
@@ -33,16 +37,7 @@ public class BoardFXController {
         GridPane.setRowIndex(grid[x][y], y + 1);
       }
     }
-    mapGrid.setStyle(
-        "-fx-background-image: url('gui/assets/img/map1.png'); -fx-background-size: contain; -fx-background-repeat: no-repeat; -fx-background-position: center;");
-    mapGrid.setVisible(true);
 
-    Rectangle2D viewPortWeaponEDashboard = new Rectangle2D(0, 8, 350, 30);
-    /*
-    weapon.setViewport(viewPortWeaponEDashboard);
-    weapon.setRotate(270);
-    weapon.setImage(new Image("gui/assets/img/weapon/weapon_distruttore.png"));
-    weapon.setPreserveRatio(true);
-    */
+    mapGrid.setVisible(true);
   }
 }
