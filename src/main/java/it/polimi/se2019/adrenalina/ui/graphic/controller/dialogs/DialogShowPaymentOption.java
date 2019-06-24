@@ -163,17 +163,16 @@ public class DialogShowPaymentOption extends Dialog {
     return blueCost + redCost + yellowCost + anyCost == 0;
   }
 
-  public void setData(Map<AmmoColor, Integer> buyableCost,
-      List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) {
-    this.buyableCost = new EnumMap<>(buyableCost);
-    this.budgetPowerUp = new ArrayList<>(budgetPowerUp);
+  public void setBudgetAmmo(Map<AmmoColor, Integer> budgetAmmo) {
     this.budgetAmmo = new EnumMap<>(budgetAmmo);
-    spendables = new ArrayList<>();
-    for (AmmoColor ammoColor : AmmoColor.getValidColor()) {
-      for (int i = 0; i < budgetAmmo.get(ammoColor); i++) {
+  }
 
-      }
-    }
+  public void setBudgetPowerUp(List<PowerUp> budgetPowerUp) {
+    this.budgetPowerUp = new ArrayList<>(budgetPowerUp);
+  }
+
+  public void setBuyableCost(Map<AmmoColor, Integer> buyableCost) {
+    this.buyableCost = new EnumMap<>(buyableCost);
   }
 
   @Override

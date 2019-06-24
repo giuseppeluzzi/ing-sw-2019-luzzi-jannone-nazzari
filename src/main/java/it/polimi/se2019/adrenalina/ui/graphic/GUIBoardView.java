@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSelectDirection;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import javafx.application.Platform;
@@ -52,7 +53,8 @@ public class GUIBoardView extends BoardView {
 
   @Override
   public void showDirectionSelect() {
-    // TODO
+    DialogSelectDirection dialogSelectDirection = new DialogSelectDirection();
+    dialogSelectDirection.show();
   }
 
   @Override
