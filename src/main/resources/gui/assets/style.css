@@ -86,10 +86,66 @@
   -fx-padding: 50;
 }
 
-#playerDamagesContainer {
+.playerDashboard {
+  -fx-background-image: url("img/dashboard_BLUE.png");
+  -fx-background-size: contain;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+}
+
+.playerSkulls {
+  -fx-spacing: 8;
+}
+
+.playerDamagesContainer {
   -fx-padding: 0 0 0 7;
 }
 
-#playerTagsContainer {
+.playerTagsContainer {
   -fx-padding: 0 7 0 0;
+}
+
+.playerDamagesContainer {
+  -fx-padding: 0 0 0 7;
+}
+
+.playerTagsContainer {
+  -fx-padding: 0 7 0 0;
+}
+
+.enemyDashboard {
+  -fx-background-image: url("img/dashboard_GREEN.png");
+  -fx-background-size: contain;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+}
+
+.enemyDamage {
+  -fx-background-color: red;
+  -fx-min-width: 19;
+  -fx-min-height: 24;
+  -fx-max-width: 19;
+  -fx-max-height: 24;
+}
+
+.enemySkull {
+  -fx-background-color: red;
+  -fx-min-width: 18;
+  -fx-min-height: 18;
+  -fx-max-width: 18;
+  -fx-max-height: 18;
+}
+
+.enemySkulls {
+  -fx-spacing: 9;
+  -fx-padding: 0 0 0 1;
+}
+
+.enemyDamagesContainer {
+  -fx-spacing: 12.45;
+  -fx-padding: 0 0 0 6;
+}
+
+.enemyTagsContainer {
+  -fx-spacing: 3;
 }

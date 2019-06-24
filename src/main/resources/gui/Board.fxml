@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController">
   <children>
-    <GridPane AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+    <GridPane AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" gridLinesVisible="true">
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="48.5" prefWidth="100.0" />
-        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+        <ColumnConstraints hgrow="NEVER" minWidth="10.0" percentWidth="48.5"/>
         <ColumnConstraints hgrow="SOMETIMES"/>
       </columnConstraints>
       <rowConstraints>
@@ -23,7 +25,7 @@
       </rowConstraints>
 
       <!-- map grid -->
-      <GridPane fx:id="mapGrid" GridPane.columnIndex="0" GridPane.rowIndex="0" gridLinesVisible="true">
+      <GridPane fx:id="mapGrid" gridLinesVisible="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="16" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,46 +63,154 @@
       </GridPane>
 
       <!-- player dashboard -->
-      <GridPane fx:id="playerDashboard" GridPane.columnIndex="0" GridPane.rowIndex="1" gridLinesVisible="true">
+      <GridPane gridLinesVisible="true" styleClass="playerDashboard" GridPane.columnIndex="0" GridPane.rowIndex="1">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
-          <ColumnConstraints hgrow="SOMETIMES"/>
+          <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
+          <ColumnConstraints hgrow="SOMETIMES" />
           <ColumnConstraints hgrow="SOMETIMES" percentWidth="24" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints vgrow="SOMETIMES" percentHeight="18" />
+          <RowConstraints percentHeight="24" vgrow="SOMETIMES" />
           <RowConstraints vgrow="SOMETIMES" />
-          <RowConstraints vgrow="SOMETIMES" percentHeight="7" />
-          <RowConstraints vgrow="SOMETIMES"/>
-          <RowConstraints vgrow="SOMETIMES" percentHeight="40" />
+          <RowConstraints percentHeight="13" vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints percentHeight="10" vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints percentHeight="25" vgrow="SOMETIMES" />
         </rowConstraints>
 
-        <HBox fx:id="playerTagsContainer" GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="11" alignment="CENTER_RIGHT">
-          <Circle radius="16" fill="YELLOW"/>
-          <Circle radius="16" fill="YELLOW" />
-          <Circle radius="16" fill="YELLOW" />
-          <Circle radius="16" fill="YELLOW" />
-          <Circle radius="16" fill="YELLOW" />
-          <Circle radius="16" fill="YELLOW" />
-          <Circle radius="16" fill="YELLOW" />
-          <Circle radius="16" fill="YELLOW" />
+        <HBox alignment="CENTER_RIGHT" spacing="11" styleClass="playerTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+          <Circle fill="YELLOW" radius="16" />
+          <Circle fill="YELLOW" radius="16" />
+          <Circle fill="YELLOW" radius="16" />
+          <Circle fill="YELLOW" radius="16" />
+          <Circle fill="YELLOW" radius="16" />
+          <Circle fill="YELLOW" radius="16" />
+          <Circle fill="YELLOW" radius="16" />
+          <Circle fill="YELLOW" radius="16" />
         </HBox>
 
-        <HBox fx:id="playerDamagesContainer" GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="11" alignment="CENTER_LEFT">
-          <Circle radius="16" fill="RED"/>
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
-          <Circle radius="16" fill="RED" />
+        <HBox alignment="CENTER_LEFT" spacing="11" styleClass="playerDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+          <Circle fill="RED" radius="16" />
+        </HBox>
+
+        <HBox styleClass="playerSkulls" spacing="8" GridPane.columnIndex="2" GridPane.rowIndex="5">
+          <Circle fill="GREEN" radius="16" />
+          <Circle fill="GREEN" radius="16" />
+          <Circle fill="GREEN" radius="16" />
+          <Circle fill="GREEN" radius="16" />
+          <Circle fill="GREEN" radius="16" />
+        </HBox>
+
+        <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
+          <FlowPane alignment="CENTER" hgap="5" maxWidth="82" vgap="5">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
+          </FlowPane>
         </HBox>
       </GridPane>
+
+      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
+        <VBox spacing="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" alignment="TOP_RIGHT">
+          <!--<GridPane>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" percentWidth="1" />
+              <ColumnConstraints hgrow="SOMETIMES" percentWidth="90" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints vgrow="SOMETIMES"/>
+            </rowConstraints>-->
+          <HBox alignment="CENTER_RIGHT">
+            <ImageView fx:id="weapo2n" />
+            <GridPane gridLinesVisible="true" styleClass="enemyDashboard">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="300" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="25" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints percentHeight="3" vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="21" vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="17" vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="12" vgrow="SOMETIMES" />
+              </rowConstraints>
+
+              <HBox alignment="CENTER_RIGHT" styleClass="enemyTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+              </HBox>
+
+              <HBox alignment="CENTER_LEFT" styleClass="enemyDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+                <Pane styleClass="enemyDamage" />
+              </HBox>
+
+              <HBox styleClass="enemySkulls" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                <Pane styleClass="enemySkull" />
+                <Pane styleClass="enemySkull" />
+                <Pane styleClass="enemySkull" />
+                <Pane styleClass="enemySkull" />
+                <Pane styleClass="enemySkull" />
+              </HBox>
+
+              <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
+                <FlowPane alignment="CENTER" hgap="5" maxWidth="82" vgap="5">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
+                </FlowPane>
+              </HBox>
+            </GridPane>
+          </HBox>
+          <!--</GridPane>-->
+        </VBox>
+      </AnchorPane>
     </GridPane>
   </children>
 </AnchorPane>

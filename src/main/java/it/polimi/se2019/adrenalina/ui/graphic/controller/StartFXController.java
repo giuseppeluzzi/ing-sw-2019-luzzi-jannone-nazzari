@@ -46,6 +46,7 @@ public class StartFXController {
     startGameModeSelector.setVisible(true);
     startNameSelector.setVisible(false);
 
+
     buttonNext1.requestFocus();
   }
 
