@@ -4,13 +4,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import java.lang.String?>
-<AnchorPane prefHeight="200.0" prefWidth="750.0"
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.RadioButton?>
+<AnchorPane prefHeight="200.0" prefWidth="400.0"
             xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             styleClass="dialogContainer">
   <children>
     <BorderPane styleClass="dialogContent" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seleziona un'azione">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seleziona un tracciato">
           <styleClass>
             <String fx:value="text" />
             <String fx:value="title" />
@@ -19,8 +21,14 @@
       </top>
       <center>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER" styleClass="dialogContent">
-          <VBox fx:id="optionsVBox" alignment="BASELINE_LEFT" prefHeight="100.0" prefWidth="200.0"
+          <fx:define>
+            <ToggleGroup fx:id="trackGroup" />
+          </fx:define>
+          <VBox alignment="BASELINE_LEFT" prefHeight="100.0" prefWidth="200.0"
             spacing="30.0">
+            <RadioButton fx:id="BLUE" mnemonicParsing="false" text="Blu" toggleGroup="$trackGroup" textFill="blue" selected="true" />
+            <RadioButton fx:id="RED" mnemonicParsing="false" text="Rosso" toggleGroup="$trackGroup" textFill="red" />
+            <RadioButton fx:id="YELLOW" mnemonicParsing="false" text="Giallo" toggleGroup="$trackGroup" textFill="orange" />
           </VBox>
         </VBox>
       </center>

@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogShowPaymentOption;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogTurnActionSelection;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
@@ -41,7 +42,9 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
-
+    DialogTurnActionSelection dialog = new DialogTurnActionSelection();
+    dialog.setActions(actions);
+    dialog.show();
   }
 
   @Override

@@ -283,6 +283,15 @@ public class Weapon extends ExecutableObject implements Buyable {
   }
 
   /**
+   * Returns a weapon's "slug", that is a normalized version of its name
+   * with only lowecase characters and underscores.
+   * @return the weapon's slug
+   */
+  public String getSlug() {
+    return name.toLowerCase().replace(" ", "_").replace("'", "");
+  }
+
+  /**
    * Create Weapon object from json formatted String
    * @param json json input String
    * @return Weapon

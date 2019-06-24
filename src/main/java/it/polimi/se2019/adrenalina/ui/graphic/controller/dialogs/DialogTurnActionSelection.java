@@ -9,10 +9,12 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEven
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import javafx.application.Platform;
 import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -33,17 +35,20 @@ public class DialogTurnActionSelection extends Dialog {
   private List<TurnAction> actions;
 
   @FXML
-  private HBox optionsHBox;
+  private VBox optionsVBox;
+  @FXML
+  private Button buttonNext;
 
-  public DialogTurnActionSelection(List<TurnAction> actions) {
-    super("Seleziona un'azione", true);
-    this.actions = new ArrayList<>(actions);
-    actions.add(TurnAction.RUN);
-    actions.add(TurnAction.WALK_FETCH);
-    actions.add(TurnAction.SHOOT);
+  public DialogTurnActionSelection() {
+    super("Seleziona un'azione", false);
   }
 
-  public void initialize() {
+  public void setActions(List<TurnAction> actions) {
+    this.actions = new ArrayList<>(actions);
+  }
+
+  @Override
+  public void build() {
     actionSelectionGroup = new ToggleGroup();
     int index = 0;
     for (TurnAction action : actions) {
@@ -53,19 +58,20 @@ public class DialogTurnActionSelection extends Dialog {
       if (index == 0) {
         button.setSelected(true);
       }
-      optionsHBox.getChildren().add(button);
+      optionsVBox.getChildren().add(button);
       index++;
     }
+
+    buttonNext.setOnAction(event -> {
+      TurnAction chosenAction = actions.get(Integer.parseInt(((Styleable) actionSelectionGroup.getSelectedToggle()).getId()));
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+                new PlayerActionSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenAction));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+      close();
+    });
+   }
   }
 
-  public void next(ActionEvent actionEvent) {
-    TurnAction chosenAction = actions.get(Integer.parseInt(((Styleable) actionSelectionGroup.getSelectedToggle()).getId()));
-    try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-              new PlayerActionSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenAction));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
-    close();
-  }
-}
