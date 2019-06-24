@@ -79,7 +79,7 @@ public class LobbyFXController {
     lobbyConnecting.setVisible(true);
     lobbyConfigurationMap.setVisible(false);
     lobbyConfigurationSkulls.setVisible(false);
-    lobbyPlayers.setVisible(true);
+    lobbyPlayers.setVisible(false);
 
     map1Image.setFill(
         new ImagePattern(new Image("gui/assets/img/map1.png"), -110, -100, 233, 175, false));

@@ -65,23 +65,25 @@ public class AppGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     setStage(primaryStage);
 
-    FXMLLoader loaderLobby = new FXMLLoader(
-        AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
-    lobbyScene = new Scene(loaderLobby.load());
-    setLobbyFXController(loaderLobby.getController());
-
     FXMLLoader loaderBoard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
     boardScene = new Scene(loaderBoard.load());
     setBoardFXController(loaderBoard.getController());
 
+    /*
+    FXMLLoader loaderLobby = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
+    lobbyScene = new Scene(loaderLobby.load());
+    setLobbyFXController(loaderLobby.getController());
 
     FXMLLoader loaderStart = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Start.fxml"));
     loaderStart.getController();
 
-    /*Scene startScene = new Scene(loaderStart.load());
-    startScene.getStylesheets().addAll(getCSS());*/
+
+    Scene startScene = new Scene(loaderStart.load());
+    startScene.getStylesheets().addAll(getCSS());
+    */
     boardScene.getStylesheets().addAll(getCSS());
 
     primaryStage.setResizable(false);

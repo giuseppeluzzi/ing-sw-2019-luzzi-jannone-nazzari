@@ -1,6 +1,9 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -10,6 +13,9 @@ public class BoardFXController {
   private GridPane mapGrid;
   @FXML
   private Pane playerDashboard;
+
+  @FXML
+  private ImageView weapon;
 
   private Pane[][] grid;
 
@@ -31,7 +37,12 @@ public class BoardFXController {
         "-fx-background-image: url('gui/assets/img/map1.png'); -fx-background-size: contain; -fx-background-repeat: no-repeat; -fx-background-position: center;");
     mapGrid.setVisible(true);
 
-    playerDashboard.setStyle(
-        "-fx-background-image: url('gui/assets/img/dashboard_BLUE.png'); -fx-background-size: contain; -fx-background-repeat: no-repeat; -fx-background-position: center;");
+    Rectangle2D viewPortWeaponEDashboard = new Rectangle2D(0, 8, 350, 30);
+    /*
+    weapon.setViewport(viewPortWeaponEDashboard);
+    weapon.setRotate(270);
+    weapon.setImage(new Image("gui/assets/img/weapon/weapon_distruttore.png"));
+    weapon.setPreserveRatio(true);
+    */
   }
 }
