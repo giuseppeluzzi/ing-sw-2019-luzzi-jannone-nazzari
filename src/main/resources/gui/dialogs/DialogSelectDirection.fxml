@@ -9,8 +9,7 @@
 <?import javafx.scene.text.Text?>
 <?import java.lang.String?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="dialogContainer"
-  xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSelectDirection">
+  xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
      <BorderPane styleClass="dialogContent" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
        <top>
@@ -26,21 +25,21 @@
              <ToggleGroup fx:id="directionGroup" />
            </fx:define>
            <top>
-             <RadioButton fx:id="north" mnemonicParsing="false" text="North" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
+             <RadioButton fx:id="north" mnemonicParsing="false" text="Nord" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
            </top>
            <left>
-             <RadioButton fx:id="west" mnemonicParsing="false" text="West" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
+             <RadioButton fx:id="west" mnemonicParsing="false" text="Ovest" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
            </left>
            <right>
-             <RadioButton fx:id="east" mnemonicParsing="false" text="East" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
+             <RadioButton fx:id="east" mnemonicParsing="false" text="Est" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
            </right>
            <bottom>
-             <RadioButton fx:id="south" mnemonicParsing="false" text="South" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
+             <RadioButton fx:id="south" mnemonicParsing="false" text="Sud" toggleGroup="$directionGroup" BorderPane.alignment="CENTER" />
            </bottom>
          </BorderPane>
        </center>
        <bottom>
-         <Button layoutX="264.0" layoutY="371.0" mnemonicParsing="false" onAction="#next" text="Continua" BorderPane.alignment="CENTER" />
+         <Button fx:id="buttonContinue" layoutX="264.0" layoutY="371.0" mnemonicParsing="false" text="Continua" BorderPane.alignment="CENTER" />
        </bottom>
      </BorderPane>
    </children>

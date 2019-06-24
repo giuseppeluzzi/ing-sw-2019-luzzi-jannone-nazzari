@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.TextFlow?>
+
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="300.0" prefWidth="600.0" styleClass="dialogContainer" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+     <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <top>
+         <Text fx:id="title" styleClass="title" text="Devi pagare"/>
+       </top>
+       <center>
+        <BorderPane fx:id="borderPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <top>
+             <TextFlow fx:id="subtitleTop" prefHeight="50.0" styleClass="subtitle" BorderPane.alignment="CENTER" />
+           </top>
+          <bottom>
+            <Button fx:id="buttonContinue" defaultButton="true" mnemonicParsing="false" text="Continua" BorderPane.alignment="CENTER" />
+          </bottom>
+        </BorderPane>
+       </center>
+     </BorderPane>
+   </children>
+</AnchorPane>

@@ -10,6 +10,7 @@ import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -30,12 +31,43 @@ public class DialogChangePlayerColor extends Dialog {
 
   @FXML
   private HBox charactersHBox;
+  @FXML
+  private Button buttonContinue;
 
   public DialogChangePlayerColor() {
     super("Seleziona un personaggio", true);
   }
 
   public void initialize() {
+    buttonContinue.setOnAction(event -> {
+      PlayerColor chosenColor = PlayerColor
+          .valueOf(((Styleable) colorToggleGroup.getSelectedToggle()).getId().replace("ch_", ""));
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerColorSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenColor));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+
+      close();
+    });
+  }
+
+  /*public void next(ActionEvent actionEvent) {
+    PlayerColor chosenColor = PlayerColor
+        .valueOf(((Styleable) colorToggleGroup.getSelectedToggle()).getId().replace("ch_", ""));
+    try {
+      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          new PlayerColorSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenColor));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+
+    close();
+  }*/
+
+  @Override
+  public void build() {
     colorToggleGroup = new ToggleGroup();
     List<PlayerColor> colors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
 
@@ -72,23 +104,5 @@ public class DialogChangePlayerColor extends Dialog {
       vBox.getChildren().add(radioButton);
       charactersHBox.getChildren().add(vBox);
     }
-  }
-
-  public void next(ActionEvent actionEvent) {
-    PlayerColor chosenColor = PlayerColor
-        .valueOf(((Styleable) colorToggleGroup.getSelectedToggle()).getId().replace("ch_", ""));
-    try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-          new PlayerColorSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenColor));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
-
-    close();
-  }
-
-  @Override
-  public void build() {
-
   }
 }
