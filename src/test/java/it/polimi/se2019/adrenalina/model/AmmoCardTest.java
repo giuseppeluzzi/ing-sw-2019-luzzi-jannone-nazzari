@@ -1,10 +1,12 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static org.junit.Assert.*;
-
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import java.security.InvalidParameterException;
 import org.junit.Test;
+
+import java.security.InvalidParameterException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class AmmoCardTest {
 

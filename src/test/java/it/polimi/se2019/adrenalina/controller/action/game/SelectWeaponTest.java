@@ -1,12 +1,12 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
-import static org.junit.Assert.*;
-
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class SelectWeaponTest {
   @Test

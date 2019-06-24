@@ -2,7 +2,6 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.utils.Log;
-import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -10,10 +9,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
+
 public class Dialog {
 
   private final boolean closeable;
   private final String title;
+  private Stage stage;
 
   protected Dialog(String title, boolean closeable) {
     this.title = title;
@@ -28,7 +30,7 @@ public class Dialog {
       Scene scene = new Scene(loaderDialog.load());
       scene.getStylesheets().add(AppGUI.getCSS());
 
-      Stage stage = new Stage();
+      stage = new Stage();
       stage.initStyle(StageStyle.UTILITY);
       stage.setResizable(false);
       stage.initModality(Modality.APPLICATION_MODAL);
@@ -46,6 +48,12 @@ public class Dialog {
       stage.showAndWait();
     } catch (IOException e) {
       Log.exception(e);
+    }
+  }
+
+  public void close() {
+    if (stage != null) {
+      stage.close();
     }
   }
 

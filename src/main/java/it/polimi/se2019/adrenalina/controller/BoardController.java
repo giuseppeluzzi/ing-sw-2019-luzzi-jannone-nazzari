@@ -10,36 +10,20 @@ import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
-import it.polimi.se2019.adrenalina.model.AmmoCard;
-import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.Direction;
-import it.polimi.se2019.adrenalina.model.DominationBoard;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.TargetingScope;
-import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
-import it.polimi.se2019.adrenalina.utils.ANSIColor;
-import it.polimi.se2019.adrenalina.utils.IOUtils;
-import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
+import it.polimi.se2019.adrenalina.utils.*;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Controller in charge of handling the game board.

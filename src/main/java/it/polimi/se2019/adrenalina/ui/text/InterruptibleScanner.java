@@ -1,12 +1,13 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.Callable;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class implements a Scanner that can be interrupted. If that happens, an

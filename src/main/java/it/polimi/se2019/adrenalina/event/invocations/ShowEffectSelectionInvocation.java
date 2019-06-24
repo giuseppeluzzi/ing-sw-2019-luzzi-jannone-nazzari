@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.Weapon;
+
 import java.util.ArrayList;
 import java.util.List;
 

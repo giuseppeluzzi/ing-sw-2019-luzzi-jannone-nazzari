@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.EventType;
+
 import java.util.ArrayList;
 import java.util.List;
 

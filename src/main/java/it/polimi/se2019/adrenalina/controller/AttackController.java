@@ -6,14 +6,10 @@ import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.model.DominationBoard;
-import it.polimi.se2019.adrenalina.model.ExecutableObject;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.Weapon;
-import it.polimi.se2019.adrenalina.model.WeaponReload;
+import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
+
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

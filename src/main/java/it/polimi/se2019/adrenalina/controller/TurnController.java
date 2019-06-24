@@ -2,21 +2,13 @@ package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.action.game.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.model.AmmoCard;
-import it.polimi.se2019.adrenalina.model.DominationBoard;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
+
 import java.io.Serializable;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 /**
  * Controller in charge of handling a player's turn.

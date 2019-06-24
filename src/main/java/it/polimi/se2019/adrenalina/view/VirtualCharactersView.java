@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
+
 import java.rmi.RemoteException;
 
 /**

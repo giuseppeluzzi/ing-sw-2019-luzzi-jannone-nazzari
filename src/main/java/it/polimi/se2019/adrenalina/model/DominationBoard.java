@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;

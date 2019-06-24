@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
+
 import java.io.Serializable;
 
 /**

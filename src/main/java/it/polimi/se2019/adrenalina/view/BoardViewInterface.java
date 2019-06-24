@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
+
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
