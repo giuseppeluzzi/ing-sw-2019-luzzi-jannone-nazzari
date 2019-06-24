@@ -14,6 +14,7 @@ public class Dialog {
 
   private final boolean closeable;
   private final String title;
+  private Stage stage;
 
   protected Dialog(String title, boolean closeable) {
     this.title = title;
@@ -28,7 +29,7 @@ public class Dialog {
       Scene scene = new Scene(loaderDialog.load());
       scene.getStylesheets().add(AppGUI.getCSS());
 
-      Stage stage = new Stage();
+      stage = new Stage();
       stage.initStyle(StageStyle.UTILITY);
       stage.setResizable(false);
       stage.initModality(Modality.APPLICATION_MODAL);
@@ -46,6 +47,12 @@ public class Dialog {
       stage.showAndWait();
     } catch (IOException e) {
       Log.exception(e);
+    }
+  }
+
+  public void close() {
+    if (stage != null) {
+      stage.close();
     }
   }
 

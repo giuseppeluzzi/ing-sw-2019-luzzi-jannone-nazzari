@@ -14,7 +14,6 @@ import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -23,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 
 public class DialogChangePlayerColor extends Dialog {
 
@@ -85,8 +83,6 @@ public class DialogChangePlayerColor extends Dialog {
       Log.exception(e);
     }
 
-    Node source = (Node) actionEvent.getSource();
-    Stage stage = (Stage) source.getScene().getWindow();
-    stage.close();
+    close();
   }
 }
