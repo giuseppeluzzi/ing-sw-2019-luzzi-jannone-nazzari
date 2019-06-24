@@ -1,11 +1,12 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static org.junit.Assert.*;
-
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class DominationBoardTest {
   @Test

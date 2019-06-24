@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -230,6 +231,11 @@ public class Weapon extends ExecutableObject implements Buyable {
       return 0;
     }
     return cost.get(color);
+  }
+
+  @Override
+  public Buyable getBaseBuyable() {
+    return this;
   }
 
   /**

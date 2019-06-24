@@ -1,20 +1,11 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static org.junit.Assert.*;
-
-import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
-import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BorderType;
-import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.action.weapon.MoveAction;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
-import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.utils.Log;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class WeaponTest {
   @Test

@@ -1,14 +1,15 @@
 package it.polimi.se2019.adrenalina.network;
 
-import static java.lang.Thread.sleep;
-
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+
+import static java.lang.Thread.sleep;
 
 /**
  * RMI version of the client object.

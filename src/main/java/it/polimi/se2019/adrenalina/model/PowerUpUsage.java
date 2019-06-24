@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.ExecutableEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class PowerUpUsage implements Buyable {
 
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    PowerUp playerPowerUp = player.getPowerUp(this.powerUp.getType(), this.powerUp.getColor());
+    PowerUp playerPowerUp = player.getPowerUp(powerUp.getType(), powerUp.getColor());
     List<GameAction> actions = new ArrayList<>();
 
     for (WeaponAction action : playerPowerUp.getActions()) {
@@ -58,5 +59,10 @@ public class PowerUpUsage implements Buyable {
       return "il mirino";
     }
     return "";
+  }
+
+  @Override
+  public Buyable getBaseBuyable() {
+    return powerUp;
   }
 }

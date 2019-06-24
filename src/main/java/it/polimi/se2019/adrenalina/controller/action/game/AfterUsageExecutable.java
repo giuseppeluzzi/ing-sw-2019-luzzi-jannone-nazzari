@@ -2,11 +2,7 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
-import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.ExecutableObject;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.PowerUp;
-import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.*;
 
 /**
  * Action used after the usage of an ExecutableObject for unloading weapons and

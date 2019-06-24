@@ -6,10 +6,6 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEven
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DialogChangePlayerColor extends Dialog {
 

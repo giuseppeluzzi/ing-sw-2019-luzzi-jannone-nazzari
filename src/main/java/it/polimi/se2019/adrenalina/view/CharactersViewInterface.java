@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
+
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

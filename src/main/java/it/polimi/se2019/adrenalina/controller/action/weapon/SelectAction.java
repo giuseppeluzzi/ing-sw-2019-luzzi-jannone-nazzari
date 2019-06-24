@@ -4,12 +4,9 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
-import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.ExecutableObject;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;

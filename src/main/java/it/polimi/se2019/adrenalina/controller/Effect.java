@@ -1,15 +1,12 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.action.game.AfterUsageExecutable;
-import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.game.ExecutableEffect;
+import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
-import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.Buyable;
-import it.polimi.se2019.adrenalina.model.BuyableType;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,6 +198,11 @@ public class Effect implements Buyable {
         return 0;
     }
     return 0;
+  }
+
+  @Override
+  public Buyable getBaseBuyable() {
+    return this;
   }
 
   /**

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
+
 import java.util.Map;
 
 public class WeaponReload implements Buyable {
@@ -21,6 +22,11 @@ public class WeaponReload implements Buyable {
   @Override
   public int getCost(AmmoColor ammoColor) {
     return weapon.getCost(ammoColor);
+  }
+
+  @Override
+  public Buyable getBaseBuyable() {
+    return weapon;
   }
 
   @Override

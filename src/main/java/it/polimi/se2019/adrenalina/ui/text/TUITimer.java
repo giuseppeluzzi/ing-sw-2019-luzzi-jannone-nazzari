@@ -1,11 +1,12 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
-import static org.fusesource.jansi.Ansi.ansi;
-
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
+
 import java.rmi.RemoteException;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 /**
  * Text User Interface timer with a message printed each second.

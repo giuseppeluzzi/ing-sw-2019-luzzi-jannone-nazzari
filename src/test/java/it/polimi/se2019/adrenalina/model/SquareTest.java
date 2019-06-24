@@ -1,25 +1,16 @@
 package it.polimi.se2019.adrenalina.model;
 
-import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BoardController;
-import it.polimi.se2019.adrenalina.controller.GameMap;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
-import it.polimi.se2019.adrenalina.exceptions.InvalidWeaponException;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+
+import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
+import static org.junit.Assert.*;
 
 public class SquareTest {
 

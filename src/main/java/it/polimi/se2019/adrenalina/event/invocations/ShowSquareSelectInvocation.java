@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.event.invocations;
 
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.Square;
+
 import java.util.ArrayList;
 import java.util.List;
 

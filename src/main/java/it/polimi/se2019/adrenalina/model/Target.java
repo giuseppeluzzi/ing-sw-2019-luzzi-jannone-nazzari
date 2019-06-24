@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+
 import java.io.Serializable;
 
 /**

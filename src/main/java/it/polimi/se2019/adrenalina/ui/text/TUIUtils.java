@@ -10,7 +10,6 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Additional utils needed by Text User Interface.
