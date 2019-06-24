@@ -26,6 +26,7 @@ public abstract class Dialog {
   public void show() {
     FXMLLoader loaderDialog = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/dialogs/" + getClass().getSimpleName() + ".fxml"));
+    loaderDialog.setController(this);
 
     try {
       Scene scene = new Scene(loaderDialog.load());
@@ -45,7 +46,8 @@ public abstract class Dialog {
           new Alert(Alert.AlertType.ERROR, "Devi prima fare una selezione").showAndWait();
         });
       }
-      Platform.runLater(this::build);
+
+      build();
       stage.showAndWait();
     } catch (IOException e) {
       Log.exception(e);
