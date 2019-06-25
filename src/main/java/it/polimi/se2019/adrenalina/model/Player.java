@@ -420,6 +420,11 @@ public class Player extends Observable implements Target {
       }
     }
     int awardedScore = killScore;
+
+    if (awardedScore == 0) {
+      awardedScore = 1;
+    }
+
     for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
       if (playerColor != color) {
         try {
@@ -625,16 +630,18 @@ public class Player extends Observable implements Target {
     }
     weapons.remove(weapon);
     weaponCount--;
-    try {
-      notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
-      notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
-      weapon.removeObserver(client.getBoardView());
-      weapon.removeObserver(client.getPlayerDashboardsView());
-      weapon.removeObserver(client.getCharactersView());
-      weapon.reset();
-      weapon.setLoaded(true);
-    } catch (RemoteException e) {
-      Log.exception(e);
+    if (client != null) {
+      try {
+        notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+        notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
+        weapon.removeObserver(client.getBoardView());
+        weapon.removeObserver(client.getPlayerDashboardsView());
+        weapon.removeObserver(client.getCharactersView());
+        weapon.reset();
+        weapon.setLoaded(true);
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
   }
 

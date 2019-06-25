@@ -99,7 +99,7 @@ public class DominationBoard extends Board {
   }
 
   /**
-   * Adds a damage to a speicfied spawnpoint color
+   * Adds damages to the spawnPoint whose color matches the given one
    * @param color AmmoColor for the spawnpoint
    * @param playerColor the color of the player who scored the damage
    */

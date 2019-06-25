@@ -53,19 +53,6 @@ public class DialogChangePlayerColor extends Dialog {
     });
   }
 
-  /*public void next(ActionEvent actionEvent) {
-    PlayerColor chosenColor = PlayerColor
-        .valueOf(((Styleable) colorToggleGroup.getSelectedToggle()).getId().replace("ch_", ""));
-    try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-          new PlayerColorSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenColor));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
-
-    close();
-  }*/
-
   @Override
   public void build() {
     colorToggleGroup = new ToggleGroup();

@@ -2,8 +2,22 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.se2019.adrenalina.controller.*;
-import it.polimi.se2019.adrenalina.event.modelview.*;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
+import it.polimi.se2019.adrenalina.controller.BorderType;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.PlayerStatus;
+import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
@@ -852,12 +866,8 @@ public class Board extends Observable implements Serializable {
    * the board.
    *
    * @param status true if the board has any weapons left in the stack, false otherwise
-   * @throws IllegalStateException thrown if the board is not a public copy
    */
   public void setPublicCopyHasWeapons(boolean status) {
-    if (!publicCopy) {
-      throw new IllegalStateException("Cannot set this attribute on a non-public board");
-    }
     publicCopyHasWeapons = status;
   }
 
@@ -880,12 +890,8 @@ public class Board extends Observable implements Serializable {
    * the board.
    *
    * @param status true if the board has any ammoCards left in the stack, false otherwise
-   * @throws IllegalStateException thrown if the board is not a public copy
    */
   public void setPublicCopyHasAmmoCards(boolean status) {
-    if (!publicCopy) {
-      throw new IllegalStateException("Cannot set this attribute on a non-public board");
-    }
     publicCopyHasAmmoCards = status;
   }
 
