@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" styleClass="startBody" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+  <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <top>
+      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="startLogo" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+      <BorderPane cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" BorderPane.alignment="CENTER">
+        <top>
+          <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Classifica finale">
+                <styleClass>
+                  <String fx:value="text" />
+                  <String fx:value="title" />
+                </styleClass>
+              </Text>
+            </children>
+          </VBox>
+        </top>
+        <center>
+          <GridPane fx:id="ranksTable">
+            <columnConstraints>
+              <ColumnConstraints percentWidth="11" fillWidth="true" />
+              <ColumnConstraints percentWidth="44" fillWidth="true" />
+              <ColumnConstraints percentWidth="15" fillWidth="true" />
+              <ColumnConstraints percentWidth="15" fillWidth="true" />
+              <ColumnConstraints percentWidth="15" fillWidth="true" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints prefHeight="60" fillHeight="true" />
+              <RowConstraints prefHeight="40" fillHeight="true" />
+              <RowConstraints prefHeight="40" fillHeight="true" />
+              <RowConstraints prefHeight="40" fillHeight="true" />
+              <RowConstraints prefHeight="40" fillHeight="true" />
+              <RowConstraints prefHeight="40" fillHeight="true" />
+            </rowConstraints>
+          </GridPane>
+        </center>
+      </BorderPane>
+    </center>
+  </BorderPane>
+</AnchorPane>

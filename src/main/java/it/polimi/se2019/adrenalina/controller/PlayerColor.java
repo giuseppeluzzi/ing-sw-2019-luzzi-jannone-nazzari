@@ -9,7 +9,7 @@ public enum PlayerColor {
   GREEN(ANSIColor.GREEN, "SPROG", "#4CAF50"),
   BLUE(ANSIColor.BLUE, "BANSHEE", "#3F51B5"),
   PURPLE(ANSIColor.MAGENTA, "VIOLETTA", "#9C27B0"),
-  GREY(ANSIColor.WHITE, "DOZER", "#212121"),
+  GREY(ANSIColor.WHITE, "DOZER", "#606060"),
   YELLOW(ANSIColor.YELLOW, ":D-STRUTT-0R3", "#FF9800");
 
   private final ANSIColor ansiColor;

@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+import static it.polimi.se2019.adrenalina.ui.UIUtils.getFirstKillshotIndex;
 import static org.fusesource.jansi.Ansi.ansi;
 
 /**
@@ -305,15 +306,6 @@ public class TUIBoardView extends BoardView {
     } catch (RemoteException e) {
       Log.exception(e);
     }
-  }
-
-  private int getFirstKillshotIndex(List<Kill> kills, PlayerColor playerColor) {
-    for (int i = 0; i < kills.size(); i++) {
-      if (kills.get(i).getPlayerColor() == playerColor) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   /**
