@@ -44,17 +44,4 @@ public class Newton extends PowerUp {
   public String getSymbol() {
     return "W";
   }
-
-  /**
-   * Creates Newton object from a JSON serialized object.
-   * @param json JSON input String
-   * @return Netwon object
-   */
-  public static Newton deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, Newton.class);
-  }
 }

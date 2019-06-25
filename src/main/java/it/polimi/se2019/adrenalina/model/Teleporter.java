@@ -36,17 +36,4 @@ public class Teleporter extends PowerUp {
   public String getSymbol() {
     return "H";
   }
-
-  /**
-   * Create Teleporter object from json formatted String
-   * @param json json input String
-   * @return Teleporter
-   */
-  public static Teleporter deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, Teleporter.class);
-  }
 }

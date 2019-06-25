@@ -3,6 +3,8 @@ package it.polimi.se2019.adrenalina.model;
 import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.controller.action.weapon.SelectAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
+import java.util.Optional;
+import javafx.application.Platform;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -119,5 +121,47 @@ public class WeaponTest {
     assertEquals("wrong cost", 0, (int) weapon1.getCost(true).get(AmmoColor.ANY));
   }
 
+  @Test
+  public void testReset() {
+    Weapon weapon = new Weapon(1,0,0,AmmoColor.BLUE,"test","f");
+    Player player = new Player("testPlayer", PlayerColor.GREY, null);
+    weapon.setTargetHistory(0, player);
+    if (weapon.targetHistoryContainsKey(0) && weapon.targetHistoryContainsValue(player)) {
+      weapon.reset();
+    }
+  }
 
+  @Test
+  public void testGetOwner() {
+    Weapon weapon = new Weapon(1,0,0,AmmoColor.BLUE,"test","f");
+    weapon.setDidShoot();
+    Player player = new Player("testPlayer", PlayerColor.GREY, null);
+    if (! weapon.didShoot()) {
+      weapon.setInitialPlayerPosition(player, new Square(0,0,SquareColor.GREY,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL,null));
+      if (weapon.isInitialPositionSet(player)) {
+        weapon.getInitialPlayerPositions();
+      }
+    }
+    weapon.setTargetHistory(0, player);
+    assertEquals(player, weapon.getOwner());
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void getOwnerException() {
+    Weapon weapon = new Weapon(1,0,0,AmmoColor.BLUE,"test","f");
+    weapon.getOwner();
+  }
+
+  @Test
+  public void setTest() {
+    Weapon weapon = new Weapon(0,0,0,AmmoColor.YELLOW, "test", "e");
+    weapon.setCurrentSelectTargetSlot(0);
+    weapon.setLastUsageDirection(Direction.NORTH);
+    weapon.setCancelled(false);
+    weapon.setSkipUntilSelect(true);
+    assertEquals( 1, weapon.getCurrentSelectTargetSlot() + 1);
+    assertEquals(Direction.NORTH, weapon.getLastUsageDirection());
+    assertFalse(weapon.isCancelled());
+    assertTrue(weapon.skipUntilSelect());
+  }
 }

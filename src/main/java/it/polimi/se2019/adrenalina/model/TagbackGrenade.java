@@ -30,18 +30,4 @@ public class TagbackGrenade extends PowerUp {
   public String getSymbol() {
     return "J";
   }
-
-  /**
-   * Create TagbackGreande object from json formatted String
-   * @param json json input String
-   * @return TagbackGrenade
-   * @exception IllegalArgumentException thrown if argument json is null
-   */
-  public static TagbackGrenade deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, TagbackGrenade.class);
-  }
 }

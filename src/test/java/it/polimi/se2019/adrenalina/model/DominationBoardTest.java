@@ -1,17 +1,26 @@
 package it.polimi.se2019.adrenalina.model;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class DominationBoardTest {
+  private DominationBoard dominationBoard;
+
+  @Before
+  public void setDominationBoard() {
+    dominationBoard = new DominationBoard();
+  }
   @Test
   public void testSerialization(){
-    DominationBoard dominationBoard = new DominationBoard();
     DominationBoard dominationBoard2;
     String json;
 
@@ -38,7 +47,6 @@ public class DominationBoardTest {
 
   @Test
   public void testCopyConstructor() {
-    DominationBoard dominationBoard = new DominationBoard();
     DominationBoard dominationBoard2;
 
     dominationBoard.addBlueDamage(PlayerColor.PURPLE);
@@ -59,5 +67,27 @@ public class DominationBoardTest {
         "Cloned class attributes not matching with original class attributes",
         PlayerColor.GREY.toString(),
         dominationBoard2.getRedDamages().get(0).toString());
+  }
+
+  @Test
+  public void testAddDamages() {
+    if (dominationBoard.isDominationBoard()) {
+      dominationBoard.addDamage(AmmoColor.RED, PlayerColor.GREY);
+      dominationBoard.addDamage(AmmoColor.BLUE, PlayerColor.GREY);
+      dominationBoard.addDamage(AmmoColor.YELLOW, PlayerColor.GREY);
+      dominationBoard.addDamage(AmmoColor.ANY, PlayerColor.GREY);
+      assertEquals(1, dominationBoard.getRedDamages().size());
+      assertEquals(1, dominationBoard.getBlueDamages().size());
+      assertEquals(1, dominationBoard.getYellowDamages().size());
+      List<PlayerColor> damagesUpdated = new ArrayList<>();
+      damagesUpdated.add(PlayerColor.GREEN);
+      damagesUpdated.add(PlayerColor.GREY);
+      dominationBoard.updateDamages(AmmoColor.RED, damagesUpdated);
+      dominationBoard.updateDamages(AmmoColor.BLUE, damagesUpdated);
+      dominationBoard.updateDamages(AmmoColor.YELLOW, damagesUpdated);
+      assertEquals(2, dominationBoard.getRedDamages().size());
+      assertEquals(2, dominationBoard.getBlueDamages().size());
+      assertEquals(2, dominationBoard.getYellowDamages().size());
+    }
   }
 }

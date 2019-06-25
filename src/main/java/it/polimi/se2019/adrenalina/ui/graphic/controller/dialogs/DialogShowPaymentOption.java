@@ -1,8 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 
-import com.sun.org.apache.regexp.internal.RE;
-import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
@@ -14,14 +12,11 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -53,6 +48,10 @@ public class DialogShowPaymentOption extends Dialog {
     super("Scegli come pagare", false);
   }
 
+  /**
+   * Initilize method, sets the onAction event that is executed
+   * when buttonContinue is pressed.
+   */
   public void initialize() {
     buttonContinue.setOnAction(event -> {
       int answerRed = 0;
@@ -175,6 +174,10 @@ public class DialogShowPaymentOption extends Dialog {
     this.buyableCost = new EnumMap<>(buyableCost);
   }
 
+  /**
+   * Build method that creates a checkbox for every ammo and powerup
+   * possesed by the user
+   */
   @Override
   public void build() {
     flowPane = new FlowPane();
