@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.lang.String?>
+<AnchorPane prefHeight="200.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            styleClass="dialogContainer">
+  <children>
+    <BorderPane styleClass="dialogContent" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <top>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli l'arma da ricaricare">
+          <styleClass>
+            <String fx:value="text" />
+            <String fx:value="subtitle" />
+          </styleClass>
+        </Text>
+      </top>
+      <center>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER" styleClass="dialogContent">
+          <HBox fx:id="weaponsHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
+                spacing="30.0">
+          </HBox>
+        </VBox>
+      </center>
+      <bottom>
+        <Button fx:id="buttonNext" alignment="CENTER" defaultButton="true"
+          mnemonicParsing="false" text="Continua"
+          BorderPane.alignment="BOTTOM_CENTER"/>
+      </bottom>
+    </BorderPane>
+  </children>
+
+</AnchorPane>
