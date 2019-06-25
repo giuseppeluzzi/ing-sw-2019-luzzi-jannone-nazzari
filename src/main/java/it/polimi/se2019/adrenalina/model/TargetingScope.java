@@ -43,17 +43,4 @@ public class TargetingScope extends PowerUp {
   public String getSymbol() {
     return "Q";
   }
-
-  /**
-   * Create TargetingScope object from json formatted String.
-   * @param json json input String
-   * @return TargetingScope
-   */
-  public static TargetingScope deserialize(String json) {
-    if (json == null) {
-      throw new IllegalArgumentException("Argument json can't be null");
-    }
-    Gson gson = new Gson();
-    return gson.fromJson(json, TargetingScope.class);
-  }
 }

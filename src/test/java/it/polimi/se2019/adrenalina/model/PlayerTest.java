@@ -287,4 +287,76 @@ public class PlayerTest {
     player.assignPoints();
   }
 
+  @Test
+  public void testHandleLastSkull() {
+    board.setFinalFrenzySelected(true);
+    board.setSkulls(1);
+    player.addDamages(PlayerColor.GREY, 13);
+  }
+
+  @Test
+  public void testSet() {
+    List<PlayerColor> tags = new ArrayList<>();
+    Weapon weapon1 = new Weapon(0,0,0,AmmoColor.BLUE,"test", "r");
+    Weapon weapon2 = new Weapon(0,0,0,AmmoColor.BLUE,"test2", "w");
+    Weapon weapon3 = new Weapon(0,0,0,AmmoColor.BLUE,"test3", "q");
+
+    List<Weapon> weapons = new ArrayList<>();
+    weapons.add(weapon3);
+    assertFalse(player.hasLoadedWeapons());
+    player.addWeapon(weapon1);
+    player.addWeapon(weapon2);
+    weapon1.setLoaded(true);
+    weapon2.setLoaded(false);
+
+    assertEquals(1, player.getUnloadedWeapons().size());
+    tags.add(PlayerColor.GREY);
+    tags.add(PlayerColor.GREY);
+    player.updateTags(tags);
+    player.removeWeapon(weapon1);
+    player.updateWeapons(weapons);
+    assertNull(player.getPowerUp(PowerUpType.TARGETING_SCOPE, AmmoColor.RED));
+    assertEquals(2, player.getTags().size());
+    weapon3.setLoaded(true);
+    assertTrue(player.hasLoadedWeapons());
+    List<PowerUp> powerUps = new ArrayList<>();
+    powerUps.add(new Teleporter(AmmoColor.BLUE));
+    player.updatePowerUps(powerUps);
+    assertEquals(1, player.getPowerUpCount());
+    player.updateAmmo(AmmoColor.BLUE, 2);
+    assertEquals(2, player.getAmmo(AmmoColor.BLUE));
+  }
+
+  @Test
+  public void testRemovePowerUp() throws InvalidPowerUpException {
+    Teleporter teleporter = new Teleporter(AmmoColor.RED);
+    player.addPowerUp(teleporter);
+    player.removePowerUp(teleporter);
+    assertEquals(0, player.getPowerUpCount());
+  }
+
+  @Test(expected = InvalidPowerUpException.class)
+  public void testRemovePowerUpException() throws InvalidPowerUpException {
+    player.removePowerUp(new Teleporter(AmmoColor.RED));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testRemoveWeaponException() {
+    player.removeWeapon(new Weapon(0,0,0,AmmoColor.BLUE, "test", "q"));
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testUpdateAmmoException() {
+    player.updateAmmo(AmmoColor.RED, 4);
+  }
+
+  @Test
+  public void testCollect() {
+    Weapon weapon = new Weapon(0,0,0,AmmoColor.BLUE,"test","t");
+    Weapon weapon2 = new Weapon(3,0,0,AmmoColor.BLUE,"test2","p");
+    player.addAmmo(AmmoColor.BLUE, 1);
+    assertTrue(player.canCollectWeapon(weapon));
+    assertFalse(player.canCollectWeapon(weapon2));
+    
+  }
 }

@@ -4,13 +4,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import java.lang.String?>
-<AnchorPane prefHeight="200.0" prefWidth="750.0"
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.RadioButton?>
+<AnchorPane prefHeight="200.0" prefWidth="400.0"
             xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             styleClass="dialogContainer">
   <children>
     <BorderPane styleClass="dialogContent" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seleziona un'azione">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sei stato sospeso per inattività">
           <styleClass>
             <String fx:value="text" />
             <String fx:value="title" />
@@ -18,18 +20,13 @@
         </Text>
       </top>
       <center>
-        <VBox alignment="CENTER" BorderPane.alignment="CENTER" styleClass="dialogContent">
-          <VBox fx:id="optionsVBox" alignment="BASELINE_LEFT" prefHeight="100.0" prefWidth="200.0"
-            spacing="30.0">
-          </VBox>
-        </VBox>
+        <Region minHeight="40" />
       </center>
       <bottom>
         <Button fx:id="buttonNext" alignment="CENTER" defaultButton="true"
-          mnemonicParsing="false" text="Seleziona"
+          mnemonicParsing="false" text="Riprendi a giocare"
           BorderPane.alignment="BOTTOM_CENTER"/>
       </bottom>
     </BorderPane>
   </children>
-
 </AnchorPane>
