@@ -420,6 +420,11 @@ public class Player extends Observable implements Target {
       }
     }
     int awardedScore = killScore;
+
+    if (awardedScore == 0) {
+      awardedScore = 1;
+    }
+
     for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
       if (playerColor != color) {
         try {
