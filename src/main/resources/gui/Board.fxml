@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@assets/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController">
   <children>
-    <GridPane gridLinesVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+    <GridPane fx:id="boardGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
       <columnConstraints>
         <ColumnConstraints hgrow="NEVER" minWidth="10.0" percentWidth="48.5" />
         <ColumnConstraints hgrow="SOMETIMES" />
@@ -62,8 +62,11 @@
         </rowConstraints>
       </GridPane>
 
-      <!-- player dashboard -->
-      <Pane fx:id="playerDashboardContainer" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+      <!-- powerup and weapons -->
+      <GridPane fx:id="wpGrid" id="wpGrid" gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <columnConstraints>
+        </columnConstraints>
+      </GridPane>
 
       <!-- enemy dashboards -->
       <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">

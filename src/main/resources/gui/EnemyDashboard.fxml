@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Rectangle?>
 
-<GridPane xmlns="http://javafx.com/javafx" alignment="CENTER" gridLinesVisible="true" maxWidth="20">
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" gridLinesVisible="true" maxWidth="20" fx:id="enemyDashboard">
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" />
     <ColumnConstraints hgrow="NEVER" />
@@ -17,10 +17,11 @@
   <rowConstraints>
     <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
-  <HBox alignment="CENTER_LEFT" maxWidth="90" minWidth="90" prefWidth="90" spacing="-209" GridPane.columnIndex="0" GridPane.rowIndex="0">
-    <ImageView fitHeight="141" preserveRatio="true" styleClass="enemyWeapon" />
-    <ImageView fitHeight="141" preserveRatio="true" styleClass="enemyWeapon" />
-    <ImageView fitHeight="141" preserveRatio="true" styleClass="enemyWeapon" />
+
+  <HBox fx:id="enemyWeapons" alignment="CENTER_LEFT" maxWidth="90" minWidth="90" prefWidth="90" spacing="-209" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <ImageView fitHeight="141" fx:id="enemyWeapon3" preserveRatio="true" styleClass="enemyWeapon" />
+    <ImageView fitHeight="141" fx:id="enemyWeapon2" preserveRatio="true" styleClass="enemyWeapon" />
+    <ImageView fitHeight="141" fx:id="enemyWeapon1" preserveRatio="true" styleClass="enemyWeapon" />
   </HBox>
 
   <GridPane gridLinesVisible="true" minWidth="576.0" styleClass="enemyDashboard" GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -40,53 +41,14 @@
       <RowConstraints percentHeight="10" vgrow="SOMETIMES" />
     </rowConstraints>
 
-    <HBox alignment="CENTER_RIGHT" styleClass="enemyTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-    </HBox>
+    <HBox alignment="CENTER_RIGHT" styleClass="enemyTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" minHeight="24" />
 
-    <HBox alignment="CENTER_LEFT" styleClass="enemyDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-      <Pane styleClass="enemyDamage" />
-    </HBox>
+    <HBox alignment="CENTER_LEFT" styleClass="enemyDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" minHeight="24" />
 
-    <HBox styleClass="enemySkulls" GridPane.columnIndex="2" GridPane.rowIndex="5">
-      <Pane styleClass="enemySkull" />
-      <Pane styleClass="enemySkull" />
-      <Pane styleClass="enemySkull" />
-      <Pane styleClass="enemySkull" />
-      <Pane styleClass="enemySkull" />
-    </HBox>
+    <HBox styleClass="enemySkulls" GridPane.columnIndex="2" GridPane.rowIndex="5" minHeight="18" />
 
     <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
-      <FlowPane alignment="CENTER" hgap="5" maxWidth="82" vgap="5">
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="RED" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="24" width="24" />
-      </FlowPane>
+      <FlowPane fx:id="enemyAmmos" id="enemyAmmos" alignment="CENTER" hgap="5" maxWidth="82" vgap="5" />
     </HBox>
   </GridPane>
 </GridPane>

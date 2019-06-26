@@ -18,6 +18,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.TagbackGrenade;
 import it.polimi.se2019.adrenalina.model.TargetingScope;

@@ -5,15 +5,30 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.DashboardFXController;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.PlayerDashboardFXController;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogEffectSelection;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogReloadWeaponSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogShowPaymentOption;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSwapWeaponSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogTurnActionSelection;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogUnsuspend;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
-
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +41,109 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
+  public void update(PlayerDamagesTagsUpdate event) {
+    super.update(event);
+    try {
+      AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor())
+          .updateDamages(event.getDamages());
+      AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor())
+          .updateTags(event.getTags());
+    } catch (InvalidPlayerException ignored) {
+      //
+    }
+  }
+
+  @Override
+  public void update(PlayerFrenzyUpdate event) {
+    super.update(event);
+    // TODO ?
+  }
+
+  @Override
+  public void update(PlayerScoreUpdate event) {
+    super.update(event);
+    // TODO ?
+  }
+
+  @Override
+  public void update(PlayerKillScoreUpdate event) {
+    super.update(event);
+    try {
+      AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor())
+          .updateSkulls(event.getKillScore());
+    } catch (InvalidPlayerException ignored) {
+      //
+    }
+  }
+
+  @Override
+  public void update(PlayerStatusUpdate event) {
+    super.update(event);
+    // TODO ?
+  }
+
+  @Override
+  public void update(PlayerAmmoUpdate event) {
+    super.update(event);
+    try {
+      AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor())
+          .updateAmmos(event.getRed(), event.getBlue(), event.getYellow());
+    } catch (InvalidPlayerException ignored) {
+      //
+    }
+  }
+
+  @Override
+  public void update(OwnWeaponUpdate event) {
+    super.update(event);
+    DashboardFXController dashboard = null;
+
+    try {
+      dashboard = AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+
+    dashboard.updateWeapons(event.getWeapons(), event.getWeapons().size());
+  }
+
+  @Override
+  public void update(EnemyWeaponUpdate event) {
+    super.update(event);
+    DashboardFXController dashboard = null;
+
+    try {
+      dashboard = AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+
+    dashboard.updateWeapons(event.getUnloadedWeapons(), event.getNumWeapons());
+  }
+
+  @Override
+  public void update(OwnPowerUpUpdate event) {
+    super.update(event);
+    PlayerDashboardFXController dashboard = null;
+
+    try {
+      dashboard = (PlayerDashboardFXController) AppGUI.getBoardFXController()
+          .getDashboardController(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+
+    dashboard.updatePowerUps(event.getPowerUps());
+  }
+
+  @Override
   public void switchToFinalFrenzy(PlayerColor playerColor) {
 
   }
 
   @Override
-  public void showPaymentOption(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
+  public void showPaymentOption(BuyableType buyableType, String prompt,
+      Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUp, Map<AmmoColor, Integer> budgetAmmo) {
     DialogShowPaymentOption dialog = new DialogShowPaymentOption();
     dialog.setBuyableCost(buyableCost);
@@ -49,31 +161,38 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
-
+    // TODO in board
   }
 
   @Override
   public void showEffectSelection(Weapon weapon, List<Effect> effects) {
-
+    final DialogEffectSelection dialogEffectSelection = new DialogEffectSelection();
+    dialogEffectSelection.setWeapon(weapon);
+    dialogEffectSelection.setEffects(effects);
+    dialogEffectSelection.show();
   }
 
   @Override
   public void showUnsuspendPrompt() {
-
+    new DialogUnsuspend().show();
   }
 
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
-
+    // TODO in board
   }
 
   @Override
   public void showSwapWeaponSelection(List<Weapon> ownWeapons, List<Weapon> squareWeapons) {
-
+    final DialogSwapWeaponSelection dialogSwapWeaponSelection = new DialogSwapWeaponSelection();
+    dialogSwapWeaponSelection.setSwappableWeapons(ownWeapons);
+    dialogSwapWeaponSelection.setPickableWeapons(squareWeapons);
   }
 
   @Override
   public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
-
+    final DialogReloadWeaponSelection dialogReloadWeaponSelection = new DialogReloadWeaponSelection();
+    dialogReloadWeaponSelection.setWeapons(unloadedWeapons);
+    dialogReloadWeaponSelection.show();
   }
 }
