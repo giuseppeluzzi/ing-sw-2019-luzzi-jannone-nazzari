@@ -11,6 +11,7 @@ import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -508,13 +509,16 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     inputManager.cancel(WAIT_TIMEOUT_MSG);
     new Thread(() -> {
       TUIInputManager suspInputManager = new TUIInputManager();
-      suspInputManager.input("** Sei stato sospeso dalla partita\n** Premi invio in qualsiasi momento per ricominciare a giocare", 0, Integer.MAX_VALUE);
+      ((Client) client).suspendOutput(true);
+      suspInputManager.input("Sei stato sospeso dalla partita. Premi invio per ricominciare a giocare...", 0, Integer.MAX_VALUE);
       try {
         suspInputManager.waitForStringResult();
       } catch (InputCancelledException e) {
+        ((Client) client).suspendOutput(false);
         return;
       }
-      Log.println("** Sei tornato in partita");
+      ((Client) client).suspendOutput(false);
+      Log.println("Bentornato!");
       try {
         notifyObservers(new PlayerUnsuspendEvent(client.getPlayerColor()));
       } catch (RemoteException e) {

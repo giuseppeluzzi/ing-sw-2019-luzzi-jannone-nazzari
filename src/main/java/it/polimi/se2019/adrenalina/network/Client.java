@@ -27,6 +27,7 @@ public abstract class Client implements ClientInterface, Serializable {
   private PlayerColor playerColor = null;
   private boolean domination;
   private Long lastPing;
+  private boolean outputSuspended;
 
   private final BoardViewInterface boardView;
   private final CharactersViewInterface charactersView;
@@ -99,13 +100,15 @@ public abstract class Client implements ClientInterface, Serializable {
    */
   @Override
   public void showMessage(MessageSeverity severity, String title, String message) {
-    if (severity == MessageSeverity.GAME) {
-      Log.println(message);
-    } else {
-      if (!"".equalsIgnoreCase(title)) {
-        Log.println(String.format("%s: %s", severity, title));
+    if (! outputSuspended) {
+      if (severity == MessageSeverity.GAME) {
+        Log.println(message);
+      } else {
+        if (!"".equalsIgnoreCase(title)) {
+          Log.println(String.format("%s: %s", severity, title));
+        }
+        Log.println(String.format("%s: %s", severity, message));
       }
-      Log.println(String.format("%s: %s", severity, message));
     }
   }
 
@@ -139,6 +142,19 @@ public abstract class Client implements ClientInterface, Serializable {
   @Override
   public final PlayerDashboardsViewInterface getPlayerDashboardsView() {
     return playerDashboardsView;
+  }
+
+  /**
+   * If set to true, prevents the client from printing messages to the player.
+   * Useful when the client is waiting for a non-blocking input.
+   * @param set the output suspension status
+   */
+  public void suspendOutput(boolean set) {
+    outputSuspended = set;
+  }
+
+  public boolean isOutputSuspended() {
+    return outputSuspended;
   }
 
   @Override

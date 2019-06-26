@@ -63,6 +63,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
   }
 
   @Override
+  public void cancelInput() {
+    // do nothing
+  }
+
+  @Override
   public void showBoard() {
     clientSocket.sendEvent(new ShowBoardInvocation());
   }

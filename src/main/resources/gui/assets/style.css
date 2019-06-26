@@ -93,7 +93,6 @@
 }
 
 #playerDashboard {
-  -fx-background-image: url("img/dashboard_BLUE.png");
   -fx-background-size: contain;
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
@@ -150,4 +149,27 @@
 
 .enemyWeapon {
   -fx-image: url("img/weapon/rotated/weapon_distruttore.png");
+  
+}
+
+.ammo {
+  -fx-min-height: 24;
+  -fx-min-width: 24;
+  -fx-max-height: 24;
+  -fx-max-width: 24;
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: contain;
+  -fx-background-position: center center;
+}
+
+.ammo-red {
+  -fx-background-image: url("img/ammo-red.png");
+}
+
+.ammo-blue {
+  -fx-background-image: url("img/ammo-blue.png");
+}
+
+.ammo-yellow {
+  -fx-background-image: url("img/ammo-yellow.png");
 }

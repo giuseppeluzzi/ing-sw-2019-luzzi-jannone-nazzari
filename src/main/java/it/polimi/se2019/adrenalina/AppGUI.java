@@ -1,20 +1,20 @@
 package it.polimi.se2019.adrenalina;
 
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController;
 import it.polimi.se2019.adrenalina.utils.Log;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Main class of the application running as GUI client.
@@ -50,14 +50,6 @@ public class AppGUI extends Application {
           //
         }
       }
-
-      if (client != null) {
-        try {
-          client.ping();
-        } catch (IOException e) {
-          Log.exception(e);
-        }
-      }
     }).start();
   }
 
@@ -65,12 +57,6 @@ public class AppGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     setStage(primaryStage);
 
-    FXMLLoader loaderBoard = new FXMLLoader(
-        AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
-    boardScene = new Scene(loaderBoard.load());
-    setBoardFXController(loaderBoard.getController());
-
-    /*
     FXMLLoader loaderLobby = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
     lobbyScene = new Scene(loaderLobby.load());
@@ -83,12 +69,11 @@ public class AppGUI extends Application {
 
     Scene startScene = new Scene(loaderStart.load());
     startScene.getStylesheets().addAll(getCSS());
-    */
-    boardScene.getStylesheets().addAll(getCSS());
+    lobbyScene.getStylesheets().addAll(getCSS());
 
     primaryStage.setResizable(false);
     primaryStage.setTitle("Adrenalina");
-    primaryStage.setScene(boardScene);
+    primaryStage.setScene(startScene);
     primaryStage.show();
   }
 
@@ -114,6 +99,13 @@ public class AppGUI extends Application {
   }
 
   public static Scene getBoardScene() throws IOException {
+    FXMLLoader loaderBoard = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
+    boardScene = new Scene(loaderBoard.load());
+
+    boardScene.getStylesheets().addAll(getCSS());
+    setBoardFXController(loaderBoard.getController());
+
     return boardScene;
   }
 

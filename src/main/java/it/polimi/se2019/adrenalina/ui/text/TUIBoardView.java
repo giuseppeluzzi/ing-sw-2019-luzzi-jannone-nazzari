@@ -16,10 +16,7 @@ import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardView;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 import static it.polimi.se2019.adrenalina.ui.UIUtils.getFirstKillshotIndex;
 import static org.fusesource.jansi.Ansi.ansi;
@@ -33,6 +30,7 @@ public class TUIBoardView extends BoardView {
   private static final String WAIT_TIMEOUT_MSG = "Tempo di attesa scaduto! Salti il turno!";
 
   private final transient TUIInputManager inputManager = new TUIInputManager();
+  private final transient TUIInputManager preGameInputManager = new TUIInputManager();
   private final Timer timer = new Timer();
 
   public TUIBoardView(Client client) {
@@ -41,7 +39,12 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void endLoading(boolean masterPlayer) {
-    // do nothing
+    new Thread(this::showChangePlayerColor).start();
+  }
+
+  @Override
+  public void cancelInput() {
+    preGameInputManager.cancel("");
   }
 
   /**
@@ -305,6 +308,45 @@ public class TUIBoardView extends BoardView {
       notifyObservers(new SpawnPointDamageEvent(getClient().getPlayerColor(), chosen));
     } catch (RemoteException e) {
       Log.exception(e);
+    }
+  }
+
+  /**
+   * Asks user if they whish to change their player color once connected.
+   */
+  private void showChangePlayerColor() {
+    try {
+      while (true) {
+        List<PlayerColor> availableColors = new ArrayList<>(getBoard().getFreePlayerColors());
+        if (! availableColors.isEmpty()) {
+          List<String> choices = new ArrayList<>();
+          for (PlayerColor color : availableColors) {
+            choices.add(color.getAnsiColor() + color.getCharacterName() + ANSIColor.RESET);
+          }
+          choices.add(String.format("Mantieni il personaggio attuale (%s%s%s)",
+                  getClient().getPlayerColor().getAnsiColor(),
+                  getClient().getPlayerColor().getCharacterName(),
+                  ANSIColor.RESET));
+          getClient().suspendOutput(true);
+          preGameInputManager.input("Se vuoi cambiare personaggio, sceglilo ora:", choices);
+          int result = preGameInputManager.waitForIntResult();
+          getClient().suspendOutput(false);
+          if (result == availableColors.size()) {
+            return;
+          }
+          if (getBoard().getFreePlayerColors().contains(availableColors.get(result))) {
+            Log.println("Il tuo personaggio è ora " + availableColors.get(result).getAnsiColor() + availableColors.get(result).getCharacterName() + ANSIColor.RESET);
+            sendEvent(new PlayerColorSelectionEvent(getClient().getPlayerColor(), availableColors.get(result)));
+            return;
+          } else {
+            Log.println("Troppo tardi, quel personaggio è già stato preso da un altro giocatore!");
+          }
+        }
+      }
+    } catch (RemoteException | InputCancelledException e) {
+      // ignore
+    } finally {
+      getClient().suspendOutput(false);
     }
   }
 
