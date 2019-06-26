@@ -21,19 +21,20 @@ public class ActionSelection extends GameAction {
     super(turnController, player);
   }
 
-  @Override
-  public void execute(Board board) {
-    getPlayer().setCurrentExecutable(null);
-    getPlayer().setCurrentBuying(null);
-    List<TurnAction> turnActions = null;
-
-    for (Weapon weapon : getPlayer().getWeapons()) {
+  public static void resetWeapons(Player player) {
+    for (Weapon weapon : player.getWeapons()) {
       weapon.reset();
     }
+  }
 
-    for (PowerUp powerUp : getPlayer().getPowerUps()) {
+  public static void resetPowerUps(Player player) {
+    for (PowerUp powerUp : player.getPowerUps()) {
       powerUp.reset();
     }
+  }
+
+  public List<TurnAction> setTurnActions(Board board) {
+    List<TurnAction> turnActions = null;
 
     if (board.isFinalFrenzyActive()) {
       int playerIndex = board.getPlayers().indexOf(getPlayer());
@@ -45,7 +46,7 @@ public class ActionSelection extends GameAction {
       } catch (InvalidPlayerException e) {
         // Shouldn't happen
         Log.critical("Player doesn't exists anymore!");
-        return;
+        return null;
       }
 
       turnActions = finalFrenzyTurnActions(playerIndex, getPlayer().hasLoadedWeapons(),
@@ -54,6 +55,20 @@ public class ActionSelection extends GameAction {
       turnActions = standardTurnActions(getPlayer().hasLoadedWeapons(),
           getPlayer().getDamages().size());
     }
+    return turnActions;
+  }
+
+  @Override
+  public void execute(Board board) {
+    Player player = getPlayer();
+    player.setCurrentExecutable(null);
+    player.setCurrentBuying(null);
+    List<TurnAction> turnActions;
+
+    resetWeapons(player);
+    resetPowerUps(player);
+    turnActions = setTurnActions(board);
+
 
     try {
       getPlayer().getClient().getPlayerDashboardsView().showTurnActionSelection(turnActions);

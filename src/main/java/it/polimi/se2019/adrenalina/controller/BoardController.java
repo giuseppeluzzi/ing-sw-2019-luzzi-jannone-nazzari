@@ -131,7 +131,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Returns a set of valid maps for a given number of players.
-   *
    * @param players number of players
    * @return a set of GameMap
    */
@@ -212,10 +211,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
       try {
         addPlayerObservers(player);
-
-        board.addObserver(player.getClient().getBoardView(), true);
-        board.addObserver(player.getClient().getPlayerDashboardsView());
-        board.addObserver(player.getClient().getCharactersView());
+        if (player.getClient() != null) {
+          board.addObserver(player.getClient().getBoardView(), true);
+          board.addObserver(player.getClient().getPlayerDashboardsView());
+          board.addObserver(player.getClient().getCharactersView());
+        }
       } catch (RemoteException e) {
         Log.exception(e);
       }
@@ -236,26 +236,27 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   private void addPlayerObservers(Player player) throws RemoteException {
-    player.addObserver(player.getClient().getBoardView());
-    player.addObserver(player.getClient().getPlayerDashboardsView());
-    player.addObserver(player.getClient().getCharactersView());
+    if (player.getClient() != null) {
+      player.addObserver(player.getClient().getBoardView());
+      player.addObserver(player.getClient().getPlayerDashboardsView());
+      player.addObserver(player.getClient().getCharactersView());
 
-    for (Player toPlayer : board.getPlayers()) {
-      if (toPlayer.getColor() != player.getColor() && toPlayer.getClient() != null) {
-        player.addObserver(toPlayer.getClient().getBoardView());
-        player.addObserver(toPlayer.getClient().getPlayerDashboardsView());
-        player.addObserver(toPlayer.getClient().getCharactersView());
+      for (Player toPlayer : board.getPlayers()) {
+        if (toPlayer.getColor() != player.getColor() && toPlayer.getClient() != null) {
+          player.addObserver(toPlayer.getClient().getBoardView());
+          player.addObserver(toPlayer.getClient().getPlayerDashboardsView());
+          player.addObserver(toPlayer.getClient().getCharactersView());
 
-        toPlayer.addObserver(player.getClient().getBoardView());
-        toPlayer.addObserver(player.getClient().getPlayerDashboardsView());
-        toPlayer.addObserver(player.getClient().getCharactersView());
+          toPlayer.addObserver(player.getClient().getBoardView());
+          toPlayer.addObserver(player.getClient().getPlayerDashboardsView());
+          toPlayer.addObserver(player.getClient().getCharactersView());
+        }
       }
     }
   }
 
   /**
    * Notifies clients when a player joins a game.
-   *
    * @param player the player who just joined the game
    */
   public void notifyPlayerJoin(Player player) {
@@ -323,7 +324,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Finds a free PlayerColor for this game board.
-   *
    * @return a PlayerColor or null
    */
   public PlayerColor getFreePlayerColor() {
@@ -353,7 +353,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Verifies is a map is selected otherwise one is selected taking into account the number of
+   * Verifies if a map is selected otherwise one is chosen depending on the number of
    * players.
    */
   private void chooseMap() {
@@ -377,7 +377,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Create every square for a map from the template in the GameMap.
-   *
    * @param gameMap the map template
    */
   public void createSquares(GameMap gameMap) {
@@ -413,7 +412,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
    * the game on that board is already in progress.
-   *
    * @param player the player to be removed
    */
   public void removePlayer(Player player) throws InvalidPlayerException {
@@ -442,25 +440,27 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void setViews(Player player) {
     try {
       ClientInterface client = player.getClient();
-      BoardViewInterface boardView = client.getBoardView();
-      CharactersViewInterface charactersView = client.getCharactersView();
-      PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
+      if (client != null) {
+        BoardViewInterface boardView = client.getBoardView();
+        CharactersViewInterface charactersView = client.getCharactersView();
+        PlayerDashboardsViewInterface playerDashboardsView = client.getPlayerDashboardsView();
 
-      boardViews.put(client, boardView);
-      charactersViews.put(client, charactersView);
-      playerDashboardViews.put(client, playerDashboardsView);
+        boardViews.put(client, boardView);
+        charactersViews.put(client, charactersView);
+        playerDashboardViews.put(client, playerDashboardsView);
 
-      boardView.addObserver(this);
-      boardView.addObserver(playerController);
-      boardView.addObserver(attackController);
+        boardView.addObserver(this);
+        boardView.addObserver(playerController);
+        boardView.addObserver(attackController);
 
-      charactersView.addObserver(this);
-      charactersView.addObserver(playerController);
-      charactersView.addObserver(attackController);
+        charactersView.addObserver(this);
+        charactersView.addObserver(playerController);
+        charactersView.addObserver(attackController);
 
-      playerDashboardsView.addObserver(this);
-      playerDashboardsView.addObserver(playerController);
-      playerDashboardsView.addObserver(attackController);
+        playerDashboardsView.addObserver(this);
+        playerDashboardsView.addObserver(playerController);
+        playerDashboardsView.addObserver(attackController);
+      }
     } catch (RemoteException e) {
       Log.exception(e);
     }
