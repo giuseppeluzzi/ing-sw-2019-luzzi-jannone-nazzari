@@ -4,9 +4,24 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.modelview.*;
+import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.Newton;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUpType;
+import it.polimi.se2019.adrenalina.model.TagbackGrenade;
+import it.polimi.se2019.adrenalina.model.TargetingScope;
+import it.polimi.se2019.adrenalina.model.Teleporter;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -279,20 +294,6 @@ public abstract class PlayerDashboardsView extends Observable implements
    * @see OwnPowerUpUpdate
    */
   public void update(OwnPowerUpUpdate event) {
-    List<PowerUp> powerUps = new ArrayList<>();
-    for (Map.Entry<PowerUpType, Map<AmmoColor, Integer>> entrySet : event.getPowerUps()
-        .entrySet()) {
-      if (entrySet.getKey() == PowerUpType.NEWTON) {
-        powerUps.addAll(addNewtons(entrySet.getValue()));
-      } else if (entrySet.getKey() == PowerUpType.TELEPORTER) {
-        powerUps.addAll(addTeleporters(entrySet.getValue()));
-      } else if (entrySet.getKey() == PowerUpType.TAGBACK_GRANADE) {
-        powerUps.addAll(addTagbackGranades(entrySet.getValue()));
-      } else if (entrySet.getKey() == PowerUpType.TARGETING_SCOPE) {
-        powerUps.addAll(addTargetingScopes(entrySet.getValue()));
-      }
-    }
-
     Player player;
     try {
       player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
@@ -300,10 +301,10 @@ public abstract class PlayerDashboardsView extends Observable implements
       return;
     }
 
-    player.updatePowerUps(powerUps);
+    player.updatePowerUps(event.getPowerUps());
 
     if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
-      String powerUpDesc = powerUps.stream()
+      String powerUpDesc = event.getPowerUps().stream()
           .map(x -> x.getColor().getAnsiColor() + x.getName() + ANSIColor.RESET).collect(
               Collectors.joining(", "));
       boardView.getClient().showGameMessage("PowerUp attuali: " + powerUpDesc);
@@ -357,34 +358,38 @@ public abstract class PlayerDashboardsView extends Observable implements
    * @see CurrentPlayerUpdate
    */
   public void update(CurrentPlayerUpdate event) {
-    try {
-      Player previousPlayer = boardView.getBoard()
-          .getPlayerByColor(boardView.getBoard().getCurrentPlayer());
-      Player newPlayer = boardView.getBoard()
-          .getPlayerByColor(event.getCurrentPlayerColor());
+    if (event.getCurrentPlayerColor() != null) {
+      if (boardView.getBoard().getCurrentPlayer() != null) {
+        try {
+          Player previousPlayer = boardView.getBoard()
+              .getPlayerByColor(boardView.getBoard().getCurrentPlayer());
+          Player newPlayer = boardView.getBoard()
+              .getPlayerByColor(event.getCurrentPlayerColor());
 
-      if (boardView.getBoard().getCurrentPlayer() == boardView.getClient().getPlayerColor()) {
-        boardView.getClient().showGameMessage(
-            String.format(
-                "Hai terminato il turno e ora è il turno di %s%s%s!",
-                event.getCurrentPlayerColor().getAnsiColor(),
-                newPlayer.getName(),
-                ANSIColor.RESET));
-      } else {
-        boardView.getClient().showGameMessage(
-            String.format(
-                "%s%s%s ha terminato il turno e ora è il turno di %s%s%s!",
-                previousPlayer.getColor().getAnsiColor(),
-                previousPlayer.getName(),
-                ANSIColor.RESET,
-                event.getCurrentPlayerColor().getAnsiColor(),
-                newPlayer.getName(),
-                ANSIColor.RESET));
+          if (boardView.getBoard().getCurrentPlayer() == boardView.getClient().getPlayerColor()) {
+            boardView.getClient().showGameMessage(
+                String.format(
+                    "Hai terminato il turno e ora è il turno di %s%s%s!",
+                    event.getCurrentPlayerColor().getAnsiColor(),
+                    newPlayer.getName(),
+                    ANSIColor.RESET));
+          } else {
+            boardView.getClient().showGameMessage(
+                String.format(
+                    "%s%s%s ha terminato il turno e ora è il turno di %s%s%s!",
+                    previousPlayer.getColor().getAnsiColor(),
+                    previousPlayer.getName(),
+                    ANSIColor.RESET,
+                    event.getCurrentPlayerColor().getAnsiColor(),
+                    newPlayer.getName(),
+                    ANSIColor.RESET));
+          }
+        } catch (InvalidPlayerException ignored) {
+          //
+        }
       }
-    } catch (InvalidPlayerException ignored) {
-      //
+      boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());
     }
-    boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());
   }
 
   /**
