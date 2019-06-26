@@ -6,8 +6,11 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEven
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javafx.css.Styleable;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,11 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class DialogChangePlayerColor extends Dialog {
 
@@ -43,18 +41,28 @@ public class DialogChangePlayerColor extends Dialog {
       PlayerColor chosenColor = PlayerColor
           .valueOf(((Styleable) colorToggleGroup.getSelectedToggle()).getId().replace("ch_", ""));
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-            new PlayerColorSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenColor));
+        if (AppGUI.getClient().getBoardView().getBoard().getFreePlayerColors()
+            .contains(chosenColor)) {
+          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+              new PlayerColorSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenColor));
+
+          close();
+        } else {
+          build();
+        }
       } catch (RemoteException e) {
         Log.exception(e);
       }
-
-      close();
     });
   }
 
   @Override
   public void build() {
+
+    if (charactersHBox != null) {
+      charactersHBox.getChildren().clear();
+    }
+
     colorToggleGroup = new ToggleGroup();
     List<PlayerColor> colors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
 
@@ -89,7 +97,9 @@ public class DialogChangePlayerColor extends Dialog {
       }
       vBox.getChildren().add(circle);
       vBox.getChildren().add(radioButton);
-      charactersHBox.getChildren().add(vBox);
+      if (charactersHBox != null) {
+        charactersHBox.getChildren().add(vBox);
+      }
     }
   }
 }

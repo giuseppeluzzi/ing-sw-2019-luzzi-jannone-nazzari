@@ -1,10 +1,12 @@
 package it.polimi.se2019.adrenalina.ui.graphic;
 
 import it.polimi.se2019.adrenalina.AppGUI;
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
@@ -13,8 +15,11 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSelectDirection;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSpawnPointTrackSelection;
 import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.io.IOException;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -53,33 +58,48 @@ public class GUIBoardView extends BoardView {
 
   @Override
   public void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) {
-    // TODO
+    // TODO in board
   }
 
   @Override
   public void showDirectionSelect() {
-    DialogSelectDirection dialogSelectDirection = new DialogSelectDirection();
+    final DialogSelectDirection dialogSelectDirection = new DialogSelectDirection();
     dialogSelectDirection.show();
   }
 
   @Override
   public void showSquareSelect(List<Target> targets) {
-    // TODO
+    // TODO in board
   }
 
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
-    // TODO
+    // TODO in board
   }
 
   @Override
   public void showSpawnPointTrackSelection() {
-    // TODO
+    new DialogSpawnPointTrackSelection().show();
   }
 
   @Override
   public void showFinalRanks() {
     // TODO
+  }
+
+  @Override
+  public void update(BoardStatusUpdate event) {
+    super.update(event);
+    if (event.getStatus() == BoardStatus.MATCH) {
+      Platform.runLater(() -> {
+        try {
+          AppGUI.getStage().setScene(AppGUI.getBoardScene());
+        } catch (IOException e) {
+          Log.exception(e);
+          e.printStackTrace();
+        }
+      });
+    }
   }
 
   @Override
@@ -106,7 +126,7 @@ public class GUIBoardView extends BoardView {
   @Override
   public void update(MapSelectionEvent event) {
     super.update(event);
-    AppGUI.getLobbyFXController().setMap(event.getMap());
+    AppGUI.getLobbyFXController().setMapId(event.getMap());
   }
 
   @Override

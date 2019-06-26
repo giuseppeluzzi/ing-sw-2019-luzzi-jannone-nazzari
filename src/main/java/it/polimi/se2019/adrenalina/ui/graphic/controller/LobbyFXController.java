@@ -73,6 +73,8 @@ public class LobbyFXController {
   @FXML
   private Text characterText;
 
+  private int mapId;
+
   private final ObservableList<ListPlayer> players = FXCollections.observableArrayList();
 
   public void initialize() {
@@ -180,11 +182,16 @@ public class LobbyFXController {
     }
   }
 
-  public void setMap(int map) {
+  public void setMapId(int map) {
+    mapId = map;
     Platform.runLater(() -> {
       selectedMapImage.setImage(new Image("gui/assets/img/map" + map + ".png"));
       selectedMapText.setText("Mappa " + map);
     });
+  }
+
+  public int getMapId() {
+    return mapId;
   }
 
   public void setSkulls(int skulls) {

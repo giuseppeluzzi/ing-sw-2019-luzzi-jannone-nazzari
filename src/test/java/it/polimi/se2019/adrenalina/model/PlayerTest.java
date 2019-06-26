@@ -357,6 +357,6 @@ public class PlayerTest {
     player.addAmmo(AmmoColor.BLUE, 1);
     assertTrue(player.canCollectWeapon(weapon));
     assertFalse(player.canCollectWeapon(weapon2));
-    
+
   }
 }

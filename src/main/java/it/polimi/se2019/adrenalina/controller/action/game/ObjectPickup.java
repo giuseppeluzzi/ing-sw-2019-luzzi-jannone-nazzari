@@ -2,7 +2,11 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
@@ -65,7 +69,7 @@ public class ObjectPickup extends GameAction {
     getPlayer().getSquare().setAmmoCard(null);
   }
 
-  private List<Weapon> getBuyableWeapons() {
+  public List<Weapon> getBuyableWeapons() {
     List<Weapon> buyableWeapons = new ArrayList<>();
     for (Weapon weapon : getPlayer().getSquare().getWeapons()) {
       if (getPlayer().canCollectWeapon(weapon)) {

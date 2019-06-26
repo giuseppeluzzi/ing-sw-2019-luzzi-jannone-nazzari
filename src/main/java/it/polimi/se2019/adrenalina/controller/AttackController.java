@@ -4,15 +4,27 @@ import it.polimi.se2019.adrenalina.controller.action.game.CheckReloadWeapons;
 import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.viewcontroller.*;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SkipSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.WeaponReload;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,13 +69,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       boardController.getTurnController().addTurnActions(new Payment(boardController.getTurnController(), player,
           new WeaponReload(realoadingWeapon)));
 
-      List<Weapon> weapons = player.getUnloadedWeapons();
-      weapons.remove(realoadingWeapon);
-      for (Weapon currWeapon : weapons) {
-        if (!player.canReload(currWeapon)) {
-          weapons.remove(currWeapon);
-        }
-      }
+      List<Weapon> weapons = getReloadableWeapons(player, realoadingWeapon);
 
       if (! weapons.isEmpty()) {
         boardController.getTurnController().addTurnActions(new CheckReloadWeapons(boardController.getTurnController(), player));
@@ -71,6 +77,17 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     }
 
     boardController.getTurnController().executeGameActionQueue();
+  }
+
+  public List<Weapon> getReloadableWeapons(Player player, Weapon realoadingWeapon) {
+    List<Weapon> weapons = player.getUnloadedWeapons();
+    weapons.remove(realoadingWeapon);
+    for (Weapon currWeapon : new ArrayList<>(weapons)) {
+      if (!player.canReload(currWeapon)) {
+        weapons.remove(currWeapon);
+      }
+    }
+    return weapons;
   }
 
   /**

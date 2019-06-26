@@ -5,33 +5,48 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Rectangle?>
-
-<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" gridLinesVisible="true" fx:id="playerDashboard" id="playerDashboard">
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
-    <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
+    <ColumnConstraints hgrow="NEVER" percentWidth="48.5" />
     <ColumnConstraints hgrow="SOMETIMES" />
-    <ColumnConstraints hgrow="SOMETIMES" percentWidth="24" />
+    <ColumnConstraints hgrow="SOMETIMES" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints percentHeight="24" vgrow="SOMETIMES" />
     <RowConstraints vgrow="SOMETIMES" />
-    <RowConstraints percentHeight="13" vgrow="SOMETIMES" />
-    <RowConstraints vgrow="SOMETIMES" />
-    <RowConstraints percentHeight="10" vgrow="SOMETIMES" />
-    <RowConstraints vgrow="SOMETIMES" />
-    <RowConstraints percentHeight="25" vgrow="SOMETIMES" />
   </rowConstraints>
 
-  <HBox alignment="CENTER_RIGHT" spacing="11" fx:id="playerTagsContainer" id="playerTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+  <GridPane GridPane.rowIndex="0" GridPane.columnIndex="0" gridLinesVisible="true" fx:id="playerDashboard" id="playerDashboard">
+    <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="9"/>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5"/>
+      <ColumnConstraints hgrow="SOMETIMES"/>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="24"/>
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints percentHeight="24" vgrow="SOMETIMES"/>
+      <RowConstraints vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="13" vgrow="SOMETIMES"/>
+      <RowConstraints vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="10" vgrow="SOMETIMES"/>
+      <RowConstraints vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="25" vgrow="SOMETIMES"/>
+    </rowConstraints>
 
-  <HBox alignment="CENTER_LEFT" spacing="11" fx:id="playerDamagesContainer" id="playerDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+    <HBox alignment="CENTER_RIGHT" spacing="11" fx:id="playerTagsContainer" id="playerTagsContainer"
+      GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" minHeight="32"/>
 
-  <HBox spacing="8" fx:id="playerSkulls" id="playerSkulls" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+    <HBox alignment="CENTER_LEFT" spacing="11" fx:id="playerDamagesContainer"
+      id="playerDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2"
+      GridPane.rowIndex="3" minHeight="32"/>
 
-  <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
-    <FlowPane fx:id="playerAmmos" id="playerAmmos" alignment="CENTER" hgap="5" maxWidth="82" vgap="5" />
-  </HBox>
+    <HBox spacing="8" fx:id="playerSkulls" id="playerSkulls" GridPane.columnIndex="2"
+      GridPane.rowIndex="5" minHeight="32"/>
+
+    <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
+      <FlowPane fx:id="playerAmmos" id="playerAmmos" alignment="CENTER" hgap="5" maxWidth="82"
+        vgap="5"/>
+    </HBox>
+  </GridPane>
+  <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="playerWeapons" />
+  <HBox GridPane.rowIndex="0" GridPane.columnIndex="2" fx:id="playerPowerUps" />
 </GridPane>
