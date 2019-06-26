@@ -1,10 +1,8 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
@@ -31,6 +29,7 @@ public class TUIBoardView extends BoardView {
 
   private final transient TUIInputManager inputManager = new TUIInputManager();
   private final transient TUIInputManager preGameInputManager = new TUIInputManager();
+  private transient Thread endLoadingThread;
   private final Timer timer = new Timer();
 
   public TUIBoardView(Client client) {
@@ -39,12 +38,22 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void endLoading(boolean masterPlayer) {
-    new Thread(this::showChangePlayerColor).start();
+    endLoadingThread = new Thread(() -> {
+      showChangePlayerColor();
+
+      if (masterPlayer) {
+        showGameMapSelection();
+        showSkullsSelection();
+        showFinalFrenzySelection();
+      }
+    });
+    endLoadingThread.start();
   }
 
   @Override
   public void cancelInput() {
-    preGameInputManager.cancel("");
+    preGameInputManager.cancel("La partita è incominciata!");
+    endLoadingThread.interrupt();
   }
 
   /**
@@ -347,6 +356,80 @@ public class TUIBoardView extends BoardView {
       // ignore
     } finally {
       getClient().suspendOutput(false);
+    }
+  }
+
+  /**
+   * Asks master player to choose a game map.
+   */
+  private void showGameMapSelection() {
+    List<String> mapNames = new ArrayList<>(Arrays.asList("Mappa 1", "Mappa 2", "Mappa 3", "Mappa 4"));
+    preGameInputManager.input("Scegli la mappa da usare in questa partita", mapNames);
+    try {
+      getClient().suspendOutput(true);
+      int mapId = preGameInputManager.waitForIntResult() + 1;
+      getClient().suspendOutput(false);
+      sendEvent(new MapSelectionEvent(mapId));
+    } catch (InputCancelledException | RemoteException e) {
+      getClient().suspendOutput(false);
+    }
+  }
+
+  /**
+   * Asks master player to choose the number of skulls to play with.
+   */
+  private void showSkullsSelection() {
+    getClient().suspendOutput(true);
+    while (true) {
+      preGameInputManager.input("Scegli il numero di teschi da usare (1-8):");
+      String input;
+      try {
+        input = preGameInputManager.waitForStringResult().trim();
+      } catch (InputCancelledException e) {
+        getClient().suspendOutput(false);
+        return;
+      }
+      if (input.matches("^[1-8]$")) {
+        try {
+          sendEvent(new BoardSkullsUpdate(Integer.parseInt(input)));
+          getClient().suspendOutput(false);
+          return;
+        } catch (RemoteException e) {
+          Log.exception(e);
+          getClient().suspendOutput(false);
+          return;
+        }
+      }
+      Log.println("Selezione non valida!");
+    }
+  }
+
+  /**
+   * Asks master player to choose whether to use Final Frenzy at the end of the game.
+   */
+  private void showFinalFrenzySelection() {
+    getClient().suspendOutput(true);
+    while (true) {
+      preGameInputManager.input("Vuoi attivare la frenesia finale al termine della partita? [s/n]");
+      String input;
+      try {
+        input = preGameInputManager.waitForStringResult().trim().toLowerCase();
+      } catch (InputCancelledException e) {
+        getClient().suspendOutput(false);
+        return;
+      }
+      if (input.matches("^[sn]$")) {
+        try {
+          sendEvent(new FinalFrenzyToggleEvent("s".equals(input)));
+          getClient().suspendOutput(false);
+          return;
+        } catch (RemoteException e) {
+          Log.exception(e);
+          getClient().suspendOutput(false);
+          return;
+        }
+      }
+      Log.println("Selezione non valida!");
     }
   }
 
