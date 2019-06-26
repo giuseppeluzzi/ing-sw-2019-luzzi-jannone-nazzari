@@ -47,6 +47,11 @@ public class GUIBoardView extends BoardView {
   }
 
   @Override
+  public void cancelInput() {
+    // do nothing in GUI
+  }
+
+  @Override
   public void showBoard() {
     // TODO
   }

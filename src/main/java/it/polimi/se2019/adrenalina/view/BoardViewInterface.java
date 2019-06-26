@@ -32,6 +32,7 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
       registeredEvents.add(EventType.SQUARE_WEAPON_UPDATE);
       registeredEvents.add(EventType.MAP_SELECTION_EVENT);
       registeredEvents.add(EventType.PLAYER_COLOR_SELECTION_EVENT);
+      registeredEvents.add(EventType.PLAYER_MASTER_UPDATE);
 
       return registeredEvents;
     }
@@ -59,4 +60,6 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
     void showSpawnPointTrackSelection() throws RemoteException;
 
     void showFinalRanks() throws RemoteException;
+
+    void cancelInput() throws RemoteException;
 }
