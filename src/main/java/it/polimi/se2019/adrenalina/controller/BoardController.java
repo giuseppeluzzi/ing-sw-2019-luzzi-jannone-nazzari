@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.controller;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
@@ -71,6 +72,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     registeredEvents.add(EventType.FINAL_FRENZY_TOGGLE_EVENT);
     registeredEvents.add(EventType.MAP_SELECTION_EVENT);
     registeredEvents.add(EventType.PLAYER_COLOR_SELECTION_EVENT);
+    registeredEvents.add(EventType.BOARD_SKULLS_UPDATE);
 
     turnController = new TurnController(this);
     attackController = new AttackController(this);
@@ -523,7 +525,18 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param event the received event
    */
   public void update(FinalFrenzyToggleEvent event) {
+    startJoinTimer();
     board.setFinalFrenzySelected(event.isEnabled());
+  }
+
+  /**
+   * Handles the selection of the number of skulls to play with.
+   *
+   * @param event the received event
+   */
+  public void update(BoardSkullsUpdate event) {
+    startJoinTimer();
+    board.setSkulls(event.getSkulls());
   }
 
   /**
@@ -532,6 +545,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param event the received event
    */
   public void update(MapSelectionEvent event) {
+    startJoinTimer();
     if (event.getMap() >= 1 && event.getMap() <= 4) {
       selectedMap = event.getMap();
       board.setMapId(selectedMap);
@@ -544,6 +558,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param event the received event
    */
   public void update(PlayerColorSelectionEvent event) {
+    startJoinTimer();
     if (!board.getFreePlayerColors().contains(event.getNewPlayerColor())) {
       return;
     }

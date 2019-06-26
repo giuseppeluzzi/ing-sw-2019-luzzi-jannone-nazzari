@@ -17,10 +17,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -72,6 +69,8 @@ public class LobbyFXController {
   private Text skullsText;
   @FXML
   private Text characterText;
+  @FXML
+  private Button buttonNextSkulls;
 
   private int mapId;
 
@@ -118,6 +117,7 @@ public class LobbyFXController {
 
   public void nextMap(ActionEvent actionEvent) {
     FXUtils.transition(lobbyConfigurationMap, lobbyConfigurationSkulls);
+    buttonNextSkulls.requestFocus();
     int mapId = Integer.valueOf(((Styleable) map.getSelectedToggle()).getId().replace("map", ""));
     try {
       ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new MapSelectionEvent(mapId));

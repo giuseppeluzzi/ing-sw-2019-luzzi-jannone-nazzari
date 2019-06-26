@@ -116,8 +116,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     board.setStatus(event.getStatus());
     if (board.getStatus() == BoardStatus.MATCH) {
       cancelInput();
-    }
-    if (board.getStatus() == BoardStatus.FINAL_FRENZY) {
+    } else if (board.getStatus() == BoardStatus.FINAL_FRENZY) {
       client.showGameMessage("È iniziata la frenesia finale!");
     }
   }
