@@ -14,6 +14,7 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Timer;
 
 import java.lang.reflect.InvocationTargetException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
@@ -112,6 +113,9 @@ public abstract class BoardView extends Observable implements BoardViewInterface
    * @see BoardStatusUpdate
    */
   public void update(BoardStatusUpdate event) {
+    if (board.getStatus() == BoardStatus.MATCH) {
+      cancelInput();
+    }
     board.setStatus(event.getStatus());
     if (board.getStatus() == BoardStatus.FINAL_FRENZY) {
       client.showGameMessage("È iniziata la frenesia finale!");
@@ -262,7 +266,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
       if (getHandledEvents().contains(event.getEventType())) {
         Log.debug("BoardView", "Event received: " + event.getEventType());
         getClass().getMethod("update", event.getEventType().getEventClass())
-            .invoke(this, event);
+                .invoke(this, event);
       }
     } catch (RemoteException
         | NoSuchMethodException
@@ -271,4 +275,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
       //
     }
   }
+
+  @Override
+  public abstract void cancelInput();
 }
