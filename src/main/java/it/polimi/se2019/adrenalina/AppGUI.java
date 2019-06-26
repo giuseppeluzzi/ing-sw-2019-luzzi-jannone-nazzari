@@ -101,10 +101,12 @@ public class AppGUI extends Application {
   public static Scene getBoardScene() throws IOException {
     FXMLLoader loaderBoard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
+    BoardFXController boardFXController = new BoardFXController();
+    loaderBoard.setController(boardFXController);
+    setBoardFXController(boardFXController);
     boardScene = new Scene(loaderBoard.load());
 
     boardScene.getStylesheets().addAll(getCSS());
-    setBoardFXController(loaderBoard.getController());
 
     return boardScene;
   }

@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -92,32 +93,38 @@ public class PlayerDashboardFXController extends DashboardFXController {
 
   @Override
   public void updateWeapons(List<Weapon> weapons, int weaponsNum) {
-    for (Weapon weapon : weapons) {
-      ImageView imageView = new ImageView(
-          "gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
-      imageView.setFitHeight(141);
-      imageView.setPreserveRatio(true);
-      playerWeapons.getChildren().add(0, imageView);
-    }
+    Platform.runLater(() -> {
+      playerWeapons.getChildren().clear();
+      for (Weapon weapon : weapons) {
+        ImageView imageView = new ImageView(
+            "gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
+        imageView.setFitHeight(141);
+        imageView.setPreserveRatio(true);
+        playerWeapons.getChildren().add(0, imageView);
+      }
+    });
   }
 
   public void updatePowerUps(List<PowerUp> powerUps) {
-    for (PowerUp powerUp : powerUps) {
-      ImageView imageView = new ImageView(
-          "gui/assets/img/powerups/" + powerUp.getType() + "_" + powerUp.getColor() + ".png");
-      imageView.setFitHeight(141);
-      imageView.setPreserveRatio(true);
-      imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-        // TODO
-        try {
-          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-              new PlayerDiscardPowerUpEvent(AppGUI.getClient().getPlayerColor(), powerUp.getType(),
-                  powerUp.getColor()));
-        } catch (RemoteException e) {
-          Log.exception(e);
-        }
-      });
-      playerPowerUps.getChildren().add(0, imageView);
-    }
+    Platform.runLater(() -> {
+      playerPowerUps.getChildren().clear();
+      for (PowerUp powerUp : powerUps) {
+        ImageView imageView = new ImageView(
+            "gui/assets/img/powerups/" + powerUp.getType() + "_" + powerUp.getColor() + ".png");
+        imageView.setFitHeight(141);
+        imageView.setPreserveRatio(true);
+        imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+          // TODO
+          try {
+            ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+                new PlayerDiscardPowerUpEvent(AppGUI.getClient().getPlayerColor(), powerUp.getType(),
+                    powerUp.getColor()));
+          } catch (RemoteException e) {
+            Log.exception(e);
+          }
+        });
+        playerPowerUps.getChildren().add(0, imageView);
+      }
+    });
   }
 }

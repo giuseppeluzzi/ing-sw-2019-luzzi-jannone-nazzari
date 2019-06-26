@@ -32,23 +32,26 @@ public abstract class Dialog {
       Scene scene = new Scene(loaderDialog.load());
       scene.getStylesheets().add(AppGUI.getCSS());
 
-      stage = new Stage();
-      stage.initStyle(StageStyle.UTILITY);
-      stage.setResizable(false);
-      stage.initModality(Modality.APPLICATION_MODAL);
-      stage.setScene(scene);
-      stage.getIcons().clear();
-      stage.setTitle(title);
 
-      if (!closeable) {
-        stage.setOnCloseRequest(event -> {
-          event.consume();
-          new Alert(Alert.AlertType.ERROR, "Devi prima fare una selezione").showAndWait();
-        });
-      }
+      Platform.runLater(() -> {
+        stage = new Stage();
+        stage.initStyle(StageStyle.UTILITY);
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.getIcons().clear();
+        stage.setTitle(title);
 
-      build();
-      stage.showAndWait();
+        if (!closeable) {
+          stage.setOnCloseRequest(event -> {
+            event.consume();
+            new Alert(Alert.AlertType.ERROR, "Devi prima fare una selezione").showAndWait();
+          });
+        }
+
+        build();
+        stage.showAndWait();
+      });
     } catch (IOException e) {
       Log.exception(e);
       e.printStackTrace();

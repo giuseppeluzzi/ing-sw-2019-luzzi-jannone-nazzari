@@ -505,7 +505,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    */
   @Override
   public void run() {
-    board.setStatus(BoardStatus.MATCH);
     board.setCurrentPlayer(null);
 
     Deque<PlayerColor> freeColors = new ArrayDeque<>(board.getFreePlayerColors());
@@ -516,6 +515,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
 
     turnController.prepare();
+    board.setStatus(BoardStatus.MATCH);
     turnController.executeGameActionQueue();
   }
 

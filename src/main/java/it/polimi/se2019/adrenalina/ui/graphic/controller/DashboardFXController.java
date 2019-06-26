@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.List;
 import java.util.Locale;
+import javafx.application.Platform;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -38,65 +39,73 @@ public abstract class DashboardFXController {
   }
 
   public void updateDamages(List<PlayerColor> damages) {
-    getDamagesContainer().getChildren().clear();
-    for (PlayerColor damage : damages) {
-      getDamagesContainer().getChildren().add(generateTag(damage));
-    }
+    Platform.runLater(() -> {
+      getDamagesContainer().getChildren().clear();
+      for (PlayerColor damage : damages) {
+        getDamagesContainer().getChildren().add(generateTag(damage));
+      }
+    });
   }
 
   public void updateTags(List<PlayerColor> tags) {
-    getTagsContainer().getChildren().clear();
-    for (PlayerColor tag : tags) {
-      getTagsContainer().getChildren().add(generateTag(tag));
-    }
+    Platform.runLater(() -> {
+      getTagsContainer().getChildren().clear();
+      for (PlayerColor tag : tags) {
+        getTagsContainer().getChildren().add(generateTag(tag));
+      }
+    });
   }
 
   public void updateSkulls(int killScore) {
-    getSkullsContainer().getChildren().clear();
-    switch (killScore) {
-      case 0:
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        break;
-      case 1:
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        break;
-      case 2:
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        break;
-      case 4:
-        getSkullsContainer().getChildren().add(generateSkull());
-        getSkullsContainer().getChildren().add(generateSkull());
-        break;
-      case 6:
-        getSkullsContainer().getChildren().add(generateSkull());
-        break;
-      default:
-        break;
-    }
+    Platform.runLater(() -> {
+      getSkullsContainer().getChildren().clear();
+      switch (killScore) {
+        case 0:
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          break;
+        case 1:
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          break;
+        case 2:
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          break;
+        case 4:
+          getSkullsContainer().getChildren().add(generateSkull());
+          getSkullsContainer().getChildren().add(generateSkull());
+          break;
+        case 6:
+          getSkullsContainer().getChildren().add(generateSkull());
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   public void updateAmmos(int red, int blue, int yellow) {
-    getAmmosContainer().getChildren().clear();
-    for (int i = 0; i < red; i++) {
-      getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.RED));
-    }
+    Platform.runLater(() -> {
+      getAmmosContainer().getChildren().clear();
+      for (int i = 0; i < red; i++) {
+        getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.RED));
+      }
 
-    for (int i = 0; i < red; i++) {
-      getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.BLUE));
-    }
+      for (int i = 0; i < red; i++) {
+        getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.BLUE));
+      }
 
-    for (int i = 0; i < red; i++) {
-      getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.YELLOW));
-    }
+      for (int i = 0; i < red; i++) {
+        getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.YELLOW));
+      }
+    });
   }
 
   public abstract void updateWeapons(List<Weapon> weapons, int weaponsNum);

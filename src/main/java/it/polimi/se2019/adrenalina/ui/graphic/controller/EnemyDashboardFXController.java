@@ -2,7 +2,9 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,7 +31,6 @@ public class EnemyDashboardFXController extends DashboardFXController {
   public EnemyDashboardFXController(PlayerColor playerColor) {
     super(playerColor);
   }
-
 
   public void initialize() {
     enemyDashboard.setStyle(
@@ -77,18 +78,42 @@ public class EnemyDashboardFXController extends DashboardFXController {
 
   @Override
   public void updateWeapons(List<Weapon> weapons, int weaponsNum) {
-    for (Weapon weapon : weapons) {
-      ImageView imageView = new ImageView("gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
-      imageView.setFitHeight(141);
-      imageView.setPreserveRatio(true);
-      enemyWeapons.getChildren().add(0, imageView);
-    }
+    Platform.runLater(() -> {
+      enemyWeapons.getChildren().clear();
 
-    for (int i = 0; i < 3 - weaponsNum; i++) {
-      ImageView imageView = new ImageView("gui/assets/img/weapon/weapon_back.png");
-      imageView.setFitHeight(141);
-      imageView.setPreserveRatio(true);
-      enemyWeapons.getChildren().add(0, imageView);
-    }
+      for (int i = 0; i < 3 - weapons.size() - weaponsNum; i++) {
+        ImageView placeHolder = new ImageView("gui/assets/img/weapon/rotated/weapon_back.png");
+        placeHolder.setFitHeight(141);
+        placeHolder.setPreserveRatio(true);
+        placeHolder.setOpacity(0);
+        enemyWeapons.getChildren().add(placeHolder);
+      }
+
+      for (int i = 0; i < weaponsNum - weapons.size(); i++) {
+        ImageView imageView = new ImageView("gui/assets/img/weapon/rotated/weapon_back.png");
+        imageView.setFitHeight(141);
+        imageView.setPreserveRatio(true);
+        enemyWeapons.getChildren().add(imageView);
+      }
+
+      for (Weapon weapon : weapons) {
+        ImageView imageView = new ImageView("gui/assets/img/weapon/rotated/weapon_" + weapon.getSlug() + ".png");
+        imageView.setFitHeight(141);
+        imageView.setPreserveRatio(true);
+        enemyWeapons.getChildren().add(imageView);
+      }
+
+      /*for (int i = 0; i < 3 - weapons.size() - weaponsNum; i++) {
+        Pane placeHolder = new Pane();
+        placeHolder.setMinHeight(141);
+        placeHolder.setMaxHeight(141);
+        placeHolder.setPrefHeight(141);
+        placeHolder.setMinWidth(30);
+        placeHolder.setMaxWidth(30);
+        placeHolder.setPrefWidth(30);
+        enemyWeapons.getChildren().add(0, placeHolder);
+      }*/
+
+    });
   }
 }

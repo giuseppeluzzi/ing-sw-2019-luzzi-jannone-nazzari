@@ -1,14 +1,17 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,6 +26,7 @@ import javafx.scene.layout.VBox;
 public class BoardFXController {
 
   private PlayerColor playerColor;
+  private Board board;
 
   @FXML
   private GridPane boardGrid;
@@ -67,10 +71,12 @@ public class BoardFXController {
 
     try {
       playerColor = AppGUI.getClient().getPlayerColor();
+      board = AppGUI.getClient().getBoardView().getBoard();
     } catch (RemoteException e) {
       Log.exception(e);
       return;
     }
+
 
     FXMLLoader loaderPlayerDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));
@@ -101,12 +107,17 @@ public class BoardFXController {
           enemyDashboards.getChildren().add(loaderEnemyDashboard.load());
         }
       }
+
+      for (Player player : AppGUI.getClient().getBoardView().getBoard().getPlayers()) {
+        dashboardControllers.get(player.getColor()).updateAmmos(player.getAmmo(AmmoColor.RED), player.getAmmo(AmmoColor.BLUE), player.getAmmo(AmmoColor.YELLOW));
+      }
     } catch (RemoteException e) {
       Log.exception(e);
     } catch (IOException e) {
       Log.exception(e);
       e.printStackTrace();
     }
+
   }
 
   public DashboardFXController getDashboardController(PlayerColor color)

@@ -31,9 +31,13 @@ public class SquareSelection extends GameAction {
     return fetch;
   }
 
+  public List<Target> getTargets() {
+    return new ArrayList<>(getPlayer().getSquare().getSquaresInRange(0, maxDistance, fetch));
+  }
+
   @Override
   public void execute(Board board) {
-    List<Target> targets = new ArrayList<>(getPlayer().getSquare().getSquaresInRange(0, maxDistance, fetch));
+    List<Target> targets = getTargets();
     try {
       getPlayer().getClient().getBoardView().showSquareSelect(targets);
     } catch (RemoteException e) {
