@@ -90,12 +90,7 @@ public class GUIBoardView extends BoardView {
     super.update(event);
     if (event.getStatus() == BoardStatus.MATCH) {
       Platform.runLater(() -> {
-        try {
-          AppGUI.getStage().setScene(AppGUI.getBoardScene());
-        } catch (IOException e) {
-          Log.exception(e);
-          e.printStackTrace();
-        }
+        AppGUI.getStage().setScene(AppGUI.getBoardScene());
       });
     }
   }
@@ -164,11 +159,11 @@ public class GUIBoardView extends BoardView {
   public void update(SquareAmmoCardUpdate event) {
     super.update(event);
     String ammoCardStr;
-    if (!(event.getBlue() == 0 && event.getRed() == 0 && event.getYellow() == 0 && event.getPowerUps() == 0)) {
+    if (event.getBlue() == 0 && event.getRed() == 0 && event.getYellow() == 0 && event.getPowerUps() == 0) {
+      ammoCardStr = null;
+    } else {
       AmmoCard ammoCard = new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps());
       ammoCardStr = ammoCard.toString();
-    } else {
-      ammoCardStr = null;
     }
     Platform.runLater(() -> AppGUI.getBoardFXController().setAmmoCard(event.getPosX(), event.getPosY(), ammoCardStr));
   }

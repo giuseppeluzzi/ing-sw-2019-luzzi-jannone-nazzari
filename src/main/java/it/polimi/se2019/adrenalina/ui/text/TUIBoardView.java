@@ -38,7 +38,7 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void endLoading(boolean masterPlayer) {
-    endLoadingThread = new Thread(() -> {
+    /*endLoadingThread = new Thread(() -> {
       showChangePlayerColor();
 
       if (masterPlayer) {
@@ -47,7 +47,7 @@ public class TUIBoardView extends BoardView {
         showFinalFrenzySelection();
       }
     });
-    endLoadingThread.start();
+    endLoadingThread.start();*/
   }
 
   @Override

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -20,10 +21,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class BoardFXController {
 
-  private PlayerColor playerColor;
   private Board board;
 
   @FXML
@@ -53,6 +54,9 @@ public class BoardFXController {
       for (int y = 0; y < 3; y++) {
         grid[x][y] = new TilePane();
         grid[x][y].setStyle("-fx-border-color: white; -fx-border-width: 1;");
+        grid[x][y].setAlignment(Pos.CENTER);
+        grid[x][y].setHgap(10);
+        grid[x][y].setVgap(10);
 
         mapGrid.getChildren().add(grid[x][y]);
         GridPane.setColumnIndex(grid[x][y], x + 1);
@@ -126,14 +130,14 @@ public class BoardFXController {
     FXMLLoader loaderPlayerDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));
     DashboardFXController playerDashboardFXController = new PlayerDashboardFXController(
-        playerColor);
-    dashboardControllers.put(playerColor, playerDashboardFXController);
+        color);
+    dashboardControllers.put(color, playerDashboardFXController);
     loaderPlayerDashboard.setController(playerDashboardFXController);
 
     Platform.runLater(() -> {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
-        playerDashboard.setId("dashboard-" + playerColor);
+        playerDashboard.setId("dashboard-" + color);
         GridPane.setRowIndex(playerDashboard, 1);
         GridPane.setColumnIndex(playerDashboard, 0);
         boardGrid.getChildren().add(playerDashboard);
@@ -202,6 +206,8 @@ public class BoardFXController {
     } else {
       ImageView imageView = new ImageView(String.format("gui/assets/img/ammo/ammo_%s.png", ammoCardStr));
       imageView.getStyleClass().add("ammoCard");
+      imageView.setPreserveRatio(true);
+      imageView.setFitWidth(35);
       grid[posX][posY].getChildren().add(imageView);
     }
   }

@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -86,18 +87,21 @@ public class EnemyDashboardFXController extends DashboardFXController {
     Platform.runLater(() -> {
       enemyWeapons.getChildren().clear();
 
-      for (int i = 0; i < 3 - weapons.size() - weaponsNum; i++) {
+      for (int i = 0; i < 3 - weaponsNum; i++) {
         ImageView placeHolder = new ImageView("gui/assets/img/weapon/rotated/weapon_back.png");
         placeHolder.setFitHeight(141);
         placeHolder.setPreserveRatio(true);
         placeHolder.setOpacity(0);
+        placeHolder.setVisible(true);
         enemyWeapons.getChildren().add(placeHolder);
       }
 
       for (int i = 0; i < weaponsNum - weapons.size(); i++) {
         ImageView imageView = new ImageView("gui/assets/img/weapon/rotated/weapon_back.png");
         imageView.setFitHeight(141);
+        imageView.setOpacity(1);
         imageView.setPreserveRatio(true);
+        imageView.setVisible(true);
         enemyWeapons.getChildren().add(imageView);
       }
 
@@ -105,9 +109,13 @@ public class EnemyDashboardFXController extends DashboardFXController {
         ImageView imageView = new ImageView(
             "gui/assets/img/weapon/rotated/weapon_" + weapon.getSlug() + ".png");
         imageView.setFitHeight(141);
+        imageView.setOpacity(1);
         imageView.setPreserveRatio(true);
+        imageView.setVisible(true);
         enemyWeapons.getChildren().add(imageView);
       }
+      enemyWeapons.setVisible(true);
+      Log.debug(">>>>>>>>>>>>>>> e uw");
 
     });
   }
@@ -119,11 +127,15 @@ public class EnemyDashboardFXController extends DashboardFXController {
       for (int i = enemyPowerUps.getChildren().size() - 1; i >= 0; i--) {
         if (remaining > 0) {
           enemyPowerUps.getChildren().get(i).setOpacity(1);
+          enemyPowerUps.getChildren().get(i).setVisible(true);
           remaining--;
         } else {
           enemyPowerUps.getChildren().get(i).setOpacity(0);
+          enemyPowerUps.getChildren().get(i).setVisible(true);
         }
       }
+      enemyPowerUps.setVisible(true);
+      Log.debug(">>>>>>>>>>>>>>> e up");
     });
   }
 
