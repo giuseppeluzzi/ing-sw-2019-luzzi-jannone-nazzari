@@ -1,17 +1,15 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.Map.Entry;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -51,11 +49,6 @@ public class BoardFXController {
   public void initialize() {
     grid = new TilePane[4][3];
 
-    mapGrid.setVisible(false);
-    mapGrid.setStyle(
-        "-fx-background-image: url(\"gui/assets/img/map" + AppGUI.getLobbyFXController().getMapId()
-            + ".png\");");
-
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         grid[x][y] = new TilePane();
@@ -67,7 +60,7 @@ public class BoardFXController {
       }
     }
 
-    mapGrid.setVisible(true);
+    /*mapGrid.setVisible(true);
 
     try {
       playerColor = AppGUI.getClient().getPlayerColor();
@@ -76,7 +69,6 @@ public class BoardFXController {
       Log.exception(e);
       return;
     }
-
 
     FXMLLoader loaderPlayerDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));
@@ -95,16 +87,10 @@ public class BoardFXController {
       Log.exception(e);
     }
 
-    FXMLLoader loaderEnemyDashboard = new FXMLLoader(
-        AppGUI.class.getClassLoader().getResource("gui/EnemyDashboard.fxml"));
     try {
       for (Player enemy : AppGUI.getClient().getBoardView().getBoard().getPlayers()) {
         if (enemy.getColor() != playerColor) {
-          DashboardFXController enemyDashboardFXController = new EnemyDashboardFXController(
-              enemy.getColor());
-          loaderEnemyDashboard.setController(enemyDashboardFXController);
-          dashboardControllers.put(enemy.getColor(), enemyDashboardFXController);
-          enemyDashboards.getChildren().add(loaderEnemyDashboard.load());
+          loadEnemyDashboard(enemy.getColor());
         }
       }
 
@@ -113,19 +99,92 @@ public class BoardFXController {
       }
     } catch (RemoteException e) {
       Log.exception(e);
-    } catch (IOException e) {
-      Log.exception(e);
-      e.printStackTrace();
-    }
+    }*/
 
+  }
+
+  public void setMapId(int mapId) {
+    Platform.runLater(() -> {
+      mapGrid.setStyle(
+          "-fx-background-image: url(\"gui/assets/img/map" + mapId + ".png\");");
+    });
+  }
+
+  public boolean isDashboardCreated(PlayerColor color) {
+    return dashboardControllers.containsKey(color);
   }
 
   public DashboardFXController getDashboardController(PlayerColor color)
       throws InvalidPlayerException {
-    if (! dashboardControllers.containsKey(color)) {
+    if (!dashboardControllers.containsKey(color)) {
       throw new InvalidPlayerException();
     }
     return dashboardControllers.get(color);
+  }
+
+  public void loadPlayerDashboard(PlayerColor color) {
+    FXMLLoader loaderPlayerDashboard = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));
+    DashboardFXController playerDashboardFXController = new PlayerDashboardFXController(
+        playerColor);
+    dashboardControllers.put(playerColor, playerDashboardFXController);
+    loaderPlayerDashboard.setController(playerDashboardFXController);
+
+    Platform.runLater(() -> {
+      try {
+        Parent playerDashboard = loaderPlayerDashboard.load();
+        playerDashboard.setId("dashboard-" + playerColor);
+        GridPane.setRowIndex(playerDashboard, 1);
+        GridPane.setColumnIndex(playerDashboard, 0);
+        boardGrid.getChildren().add(playerDashboard);
+      } catch (IOException e) {
+        Log.exception(e);
+      }
+    });
+  }
+
+  public void loadEnemyDashboard(PlayerColor color) {
+    FXMLLoader loaderEnemyDashboard = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/EnemyDashboard.fxml"));
+
+    DashboardFXController enemyDashboardFXController = new EnemyDashboardFXController(color);
+    loaderEnemyDashboard.setController(enemyDashboardFXController);
+    dashboardControllers.put(color, enemyDashboardFXController);
+
+    Platform.runLater(() -> {
+      try {
+        Parent dashboard = loaderEnemyDashboard.load();
+        dashboard.setId("dashboard-" + color);
+        enemyDashboards.getChildren().add(dashboard);
+      } catch (IOException e) {
+        Log.exception(e);
+        e.printStackTrace();
+      }
+    });
+
+  }
+
+  public void changeDashboardColor(PlayerColor from, PlayerColor to) {
+    if (dashboardControllers.containsKey(from)) {
+      DashboardFXController dashboardFXController = dashboardControllers.get(from);
+      dashboardControllers.remove(from);
+      dashboardControllers.put(to, dashboardFXController);
+      dashboardFXController.setPlayerColor(to);
+    }
+  }
+
+  public void unloadEnemyDashboard(PlayerColor color) {
+    if (dashboardControllers.containsKey(color)) {
+      dashboardControllers.remove(color);
+      Platform.runLater(() -> {
+        for (Node child : enemyDashboards.getChildren()) {
+          if (child.getId().equals("dashboard-" + color)) {
+            enemyDashboards.getChildren().remove(child);
+            break;
+          }
+        }
+      });
+    }
   }
 
   public void setAmmoCard(int posX, int posY, String ammoCardStr) {

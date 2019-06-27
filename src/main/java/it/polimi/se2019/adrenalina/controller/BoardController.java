@@ -525,7 +525,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param event the received event
    */
   public void update(FinalFrenzyToggleEvent event) {
-    startJoinTimer();
+    if (timer.getRemainingSeconds() > 0) {
+      startJoinTimer();
+    }
     board.setFinalFrenzySelected(event.isEnabled());
   }
 
@@ -535,7 +537,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param event the received event
    */
   public void update(BoardSkullsUpdate event) {
-    startJoinTimer();
+    if (timer.getRemainingSeconds() > 0) {
+      startJoinTimer();
+    }
     board.setSkulls(event.getSkulls());
   }
 
@@ -545,7 +549,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param event the received event
    */
   public void update(MapSelectionEvent event) {
-    startJoinTimer();
+    if (timer.getRemainingSeconds() > 0) {
+      startJoinTimer();
+    }
     if (event.getMap() >= 1 && event.getMap() <= 4) {
       selectedMap = event.getMap();
       board.setMapId(selectedMap);
@@ -558,7 +564,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * @param event the received event
    */
   public void update(PlayerColorSelectionEvent event) {
-    startJoinTimer();
+    if (timer.getRemainingSeconds() > 0) {
+      startJoinTimer();
+    }
+
     if (!board.getFreePlayerColors().contains(event.getNewPlayerColor())) {
       return;
     }

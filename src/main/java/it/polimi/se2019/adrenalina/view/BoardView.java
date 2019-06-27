@@ -3,18 +3,31 @@ package it.polimi.se2019.adrenalina.view;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
-import it.polimi.se2019.adrenalina.event.modelview.*;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Timer;
-
 import java.lang.reflect.InvocationTargetException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
@@ -72,6 +85,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see TimerSetEvent
    */
@@ -85,6 +99,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see PlayerMasterUpdate
    */
@@ -109,6 +124,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardStatusUpdate
    */
@@ -123,6 +139,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardAddPlayerUpdate
    */
@@ -132,6 +149,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardRemovePlayerUpdate
    */
@@ -145,6 +163,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardSetSquareUpdate
    */
@@ -166,6 +185,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardHasWeaponsUpdate
    */
@@ -175,6 +195,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardHasAmmoCardsUpdate
    */
@@ -184,6 +205,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardKillShotsUpdate
    */
@@ -193,6 +215,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see BoardSkullsUpdate
    */
@@ -202,6 +225,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see DominationBoardDamagesUpdate
    */
@@ -211,6 +235,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see SquareAmmoCardUpdate
    */
@@ -226,6 +251,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see SquareWeaponUpdate
    */
@@ -235,6 +261,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see MapSelectionEvent
    */
@@ -244,6 +271,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see PlayerColorSelectionEvent
    */
@@ -257,6 +285,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Generic weapon handling.
+   *
    * @param event the received event.
    */
   @Override
@@ -265,7 +294,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
       if (getHandledEvents().contains(event.getEventType())) {
         Log.debug("BoardView", "Event received: " + event.getEventType());
         getClass().getMethod("update", event.getEventType().getEventClass())
-                .invoke(this, event);
+            .invoke(this, event);
       }
     } catch (RemoteException
         | NoSuchMethodException

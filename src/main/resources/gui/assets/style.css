@@ -110,6 +110,10 @@
   -fx-padding: 0 7 0 0;
 }
 
+#playerPowerUps {
+  -fx-padding: 0 60 0 0;
+}
+
 .enemyDashboard {
   -fx-background-image: url("img/dashboard_GREEN.png");
   -fx-background-size: contain;
@@ -138,6 +142,10 @@
   -fx-padding: 0 0 0 1;
 }
 
+.enemyPowerUps {
+  -fx-padding: 0 60 0 0;
+}
+
 .enemyDamagesContainer {
   -fx-spacing: 12.4;
   -fx-padding: 0 0 0 6;
@@ -149,8 +157,11 @@
 
 .enemyWeapon {
   -fx-image: url("img/weapon/rotated/weapon_distruttore.png");
-  
 }
+
+#playerDashboard {
+  -fx-background-image: url("img/dashboard_BLUE.png");
+ }
 
 .ammo {
   -fx-min-height: 24;
