@@ -40,8 +40,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void initialize() {
-    playerDashboard.setStyle(
-        "-fx-background-image: url(\"gui/assets/img/dashboard_" + getPlayerColor() + ".png\");");
+    setDashboardColor(getPlayerColor());
   }
 
   @Override
@@ -69,6 +68,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     return playerWeapons;
   }
 
+  @Override
   HBox getPowerUpsContainer() {
     return playerPowerUps;
   }
@@ -95,23 +95,42 @@ public class PlayerDashboardFXController extends DashboardFXController {
   public void updateWeapons(List<Weapon> weapons, int weaponsNum) {
     Platform.runLater(() -> {
       playerWeapons.getChildren().clear();
+      for (int i = 0; i < 3 - weapons.size(); i++) {
+        ImageView imageView = new ImageView(
+            "gui/assets/img/weapon/rotated/weapon_back.png");
+        imageView.setFitHeight(182);
+        imageView.setOpacity(0);
+        imageView.setPreserveRatio(true);
+        playerWeapons.getChildren().add(imageView);
+      }
+
       for (Weapon weapon : weapons) {
         ImageView imageView = new ImageView(
             "gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
         imageView.setFitHeight(141);
         imageView.setPreserveRatio(true);
-        playerWeapons.getChildren().add(0, imageView);
+        playerWeapons.getChildren().add(imageView);
       }
     });
   }
 
+  @Override
   public void updatePowerUps(List<PowerUp> powerUps) {
     Platform.runLater(() -> {
       playerPowerUps.getChildren().clear();
+      for (int i = 0; i < 3 - powerUps.size(); i++) {
+        ImageView imageView = new ImageView(
+            "gui/assets/img/powerups/rotated/powerup_back.png");
+        imageView.setFitHeight(182);
+        imageView.setPreserveRatio(true);
+        imageView.setOpacity(0);
+        playerPowerUps.getChildren().add(0, imageView);
+      }
+
       for (PowerUp powerUp : powerUps) {
         ImageView imageView = new ImageView(
-            "gui/assets/img/powerups/" + powerUp.getType() + "_" + powerUp.getColor() + ".png");
-        imageView.setFitHeight(141);
+            "gui/assets/img/powerups/rotated/" + powerUp.getType() + "_" + powerUp.getColor() + ".png");
+        imageView.setFitHeight(182);
         imageView.setPreserveRatio(true);
         imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
           // TODO
@@ -123,8 +142,20 @@ public class PlayerDashboardFXController extends DashboardFXController {
             Log.exception(e);
           }
         });
-        playerPowerUps.getChildren().add(0, imageView);
+        playerPowerUps.getChildren().add(imageView);
       }
     });
+  }
+
+  @Override
+  public void updateDashboard(PlayerColor color) {
+    Platform.runLater(() -> {
+     setDashboardColor(color);
+    });
+  }
+
+  private void setDashboardColor(PlayerColor color) {
+    playerDashboard.setStyle(
+        "-fx-background-image: url(\"gui/assets/img/dashboard_" + color + ".png\");");
   }
 }

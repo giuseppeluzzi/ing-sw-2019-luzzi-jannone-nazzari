@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
@@ -16,10 +17,10 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
+import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.DashboardFXController;
-import it.polimi.se2019.adrenalina.ui.graphic.controller.PlayerDashboardFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogEffectSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogReloadWeaponSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogShowPaymentOption;
@@ -29,6 +30,7 @@ import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogUnsuspend
 import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -124,16 +126,35 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   @Override
   public void update(OwnPowerUpUpdate event) {
     super.update(event);
-    PlayerDashboardFXController dashboard = null;
+    DashboardFXController dashboard = null;
 
     try {
-      dashboard = (PlayerDashboardFXController) AppGUI.getBoardFXController()
+      dashboard = AppGUI.getBoardFXController()
           .getDashboardController(event.getPlayerColor());
     } catch (InvalidPlayerException ignored) {
       return;
     }
 
     dashboard.updatePowerUps(event.getPowerUps());
+  }
+
+  @Override
+  public void update(EnemyPowerUpUpdate event) {
+    super.update(event);
+    DashboardFXController dashboard = null;
+
+    try {
+      dashboard = AppGUI.getBoardFXController()
+          .getDashboardController(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+
+    List<PowerUp> fakePowerUps = new ArrayList<>();
+    for (int i = 0; i < event.getPowerUpsNum(); i++) {
+      fakePowerUps.add(new Newton(AmmoColor.RED));
+    }
+    dashboard.updatePowerUps(fakePowerUps);
   }
 
   @Override

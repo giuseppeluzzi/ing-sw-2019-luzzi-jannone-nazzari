@@ -20,6 +20,7 @@ import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -107,12 +108,30 @@ public class GUIBoardView extends BoardView {
     super.update(event);
     AppGUI.getLobbyFXController()
         .addPlayer(new Player(event.getPlayerName(), event.getPlayerColor(), getBoard()));
+
+    try {
+      if (event.getPlayerColor() == AppGUI.getClient().getPlayerColor()) {
+        AppGUI.getBoardFXController().loadPlayerDashboard(AppGUI.getClient().getPlayerColor());
+      } else {
+        AppGUI.getBoardFXController().loadEnemyDashboard(event.getPlayerColor());
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   @Override
   public void update(BoardRemovePlayerUpdate event) {
     super.update(event);
     AppGUI.getLobbyFXController().removePlayer(event.getPlayerColor());
+
+    try {
+      if (event.getPlayerColor() != AppGUI.getClient().getPlayerColor()) {
+        AppGUI.getBoardFXController().unloadEnemyDashboard(event.getPlayerColor());
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   @Override
@@ -127,12 +146,15 @@ public class GUIBoardView extends BoardView {
   public void update(MapSelectionEvent event) {
     super.update(event);
     AppGUI.getLobbyFXController().setMapId(event.getMap());
+    AppGUI.getBoardFXController().setMapId(event.getMap());
   }
 
   @Override
   public void update(PlayerColorSelectionEvent event) {
     super.update(event);
     AppGUI.getLobbyFXController().setPlayerColor(event.getPlayerColor(), event.getNewPlayerColor());
+    AppGUI.getBoardFXController().changeDashboardColor(event.getPlayerColor(), event.getNewPlayerColor());
+
   }
 
   @Override

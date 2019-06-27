@@ -64,8 +64,15 @@ public class AppGUI extends Application {
 
     FXMLLoader loaderStart = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Start.fxml"));
-    loaderStart.getController();
 
+    FXMLLoader loaderBoard = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
+    BoardFXController boardFXController = new BoardFXController();
+    loaderBoard.setController(boardFXController);
+    setBoardFXController(boardFXController);
+    boardScene = new Scene(loaderBoard.load());
+
+    boardScene.getStylesheets().addAll(getCSS());
 
     Scene startScene = new Scene(loaderStart.load());
     startScene.getStylesheets().addAll(getCSS());
@@ -99,15 +106,6 @@ public class AppGUI extends Application {
   }
 
   public static Scene getBoardScene() throws IOException {
-    FXMLLoader loaderBoard = new FXMLLoader(
-        AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
-    BoardFXController boardFXController = new BoardFXController();
-    loaderBoard.setController(boardFXController);
-    setBoardFXController(boardFXController);
-    boardScene = new Scene(loaderBoard.load());
-
-    boardScene.getStylesheets().addAll(getCSS());
-
     return boardScene;
   }
 

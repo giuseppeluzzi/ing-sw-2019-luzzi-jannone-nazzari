@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.List;
 import java.util.Locale;
@@ -23,9 +24,15 @@ public abstract class DashboardFXController {
   abstract HBox getSkullsContainer();
   abstract FlowPane getAmmosContainer();
   abstract HBox getWeaponContainer();
+  abstract HBox getPowerUpsContainer();
 
   abstract Pane generateTag(PlayerColor damage);
   abstract Pane generateSkull();
+
+  public void setPlayerColor(PlayerColor color) {
+    playerColor = color;
+    updateDashboard(color);
+  }
 
   public PlayerColor getPlayerColor() {
     return playerColor;
@@ -109,4 +116,7 @@ public abstract class DashboardFXController {
   }
 
   public abstract void updateWeapons(List<Weapon> weapons, int weaponsNum);
+  public abstract void updatePowerUps(List<PowerUp> powerUps);
+  public abstract void updateDashboard(PlayerColor color);
+
 }
