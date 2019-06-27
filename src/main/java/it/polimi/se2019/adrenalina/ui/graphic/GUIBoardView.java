@@ -90,12 +90,7 @@ public class GUIBoardView extends BoardView {
     super.update(event);
     if (event.getStatus() == BoardStatus.MATCH) {
       Platform.runLater(() -> {
-        try {
-          AppGUI.getStage().setScene(AppGUI.getBoardScene());
-        } catch (IOException e) {
-          Log.exception(e);
-          e.printStackTrace();
-        }
+        AppGUI.getStage().setScene(AppGUI.getBoardScene());
       });
     }
   }

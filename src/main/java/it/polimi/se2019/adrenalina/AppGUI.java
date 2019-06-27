@@ -1,14 +1,13 @@
 package it.polimi.se2019.adrenalina;
 
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.PlayerDashboardFXController;
 import it.polimi.se2019.adrenalina.utils.Log;
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import javafx.application.Application;
@@ -60,7 +59,7 @@ public class AppGUI extends Application {
 
     FXMLLoader loaderLobby = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
-    lobbyScene = new Scene(loaderLobby.load());
+    setLobbyScene(new Scene(loaderLobby.load()));
     setLobbyFXController(loaderLobby.getController());
 
     FXMLLoader loaderStart = new FXMLLoader(
@@ -68,12 +67,11 @@ public class AppGUI extends Application {
 
     FXMLLoader loaderBoard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Board.fxml"));
-    BoardFXController boardFXController = new BoardFXController();
-    loaderBoard.setController(boardFXController);
-    setBoardFXController(boardFXController);
-    boardScene = new Scene(loaderBoard.load());
+    setBoardFXController(new BoardFXController());
+    loaderBoard.setController(getBoardFXController());
 
-    boardScene.getStylesheets().addAll(getCSS());
+    setBoardScene(new Scene(loaderBoard.load()));
+    getBoardScene().getStylesheets().addAll(getCSS());
 
     Scene startScene = new Scene(loaderStart.load());
     startScene.getStylesheets().addAll(getCSS());
@@ -102,11 +100,19 @@ public class AppGUI extends Application {
         .getClassLoader().getResource("gui/assets/style.css").toExternalForm();
   }
 
-  public static Scene getLobbyScene() throws IOException {
+  private static void setLobbyScene(Scene scene) {
+    lobbyScene = scene;
+  }
+
+  public static Scene getLobbyScene() {
     return lobbyScene;
   }
 
-  public static Scene getBoardScene() throws IOException {
+  private static void setBoardScene(Scene scene) {
+    boardScene = scene;
+  }
+
+  public static Scene getBoardScene() {
     return boardScene;
   }
 
@@ -116,6 +122,19 @@ public class AppGUI extends Application {
 
   public static BoardFXController getBoardFXController() {
     return boardFXController;
+  }
+
+  public static PlayerDashboardFXController getPlayerDashboardFXController() {
+    try {
+      return (PlayerDashboardFXController) boardFXController
+          .getDashboardController(client.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      //
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+
+    return null;
   }
 
   public static void setLobbyFXController(

@@ -21,6 +21,7 @@ import it.polimi.se2019.adrenalina.model.Newton;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.DashboardFXController;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.PlayerDashboardFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogEffectSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogReloadWeaponSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogShowPaymentOption;
@@ -35,6 +36,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javafx.application.Platform;
 
 public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
@@ -210,7 +212,10 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
-    // TODO in board
+    final PlayerDashboardFXController playerDashboardFXController = AppGUI
+        .getPlayerDashboardFXController();
+
+    Platform.runLater(() -> playerDashboardFXController.usingPowerUp(discard));
   }
 
   @Override

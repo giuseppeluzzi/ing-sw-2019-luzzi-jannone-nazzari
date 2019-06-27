@@ -87,13 +87,7 @@ public class StartFXController {
       AppGUI.startClient(choosenName, choosenDomination, !choosenRMI);
       Scene lobbyScene;
 
-      try {
-        lobbyScene = AppGUI.getLobbyScene();
-      } catch (IOException e) {
-        e.printStackTrace();
-        Log.critical("Lobby scene not found");
-        return;
-      }
+      lobbyScene = AppGUI.getLobbyScene();
 
       lobbyScene.getStylesheets().add(AppGUI.getCSS());
 
