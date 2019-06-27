@@ -437,8 +437,10 @@ public class Player extends Observable implements Target {
         awardedScore -= 2;
       }
     }
-    if (board.getDoubleKill().color == color) {
-      score += 1;
+    if (board.getDoubleKill() != null) {
+      if (board.getDoubleKill().color == color) {
+        score += 1;
+      }
     }
     if (!board.isDominationBoard()) {
       board.addKillShot(

@@ -1,11 +1,19 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.TurnController;
-import it.polimi.se2019.adrenalina.controller.action.weapon.*;
+import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.ShootRoomAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.ShootSquareAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponActionType;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
@@ -52,7 +60,7 @@ public class ExecutableEffect extends GameAction {
     }
   }
 
-  private void runAction(Board board) {
+  void runAction(Board board) {
     try {
       Log.debug("WA: " + weaponAction.getActionType());
       weaponAction.execute(board, executableObject);
@@ -69,7 +77,7 @@ public class ExecutableEffect extends GameAction {
     }
   }
 
-  private void executeWeapon(Board board) throws InvalidSquareException {
+  void executeWeapon(Board board) throws InvalidSquareException {
     switch (weaponAction.getActionType()) {
       case SHOOT:
         Target target = executableObject

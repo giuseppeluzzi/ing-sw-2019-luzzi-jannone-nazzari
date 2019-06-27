@@ -75,22 +75,6 @@ public class PlayerControllerTest {
 
 
   @Test
-  public void testCollectWeapon() {
-    PlayerController playerController = null;
-    try {
-      playerController = new PlayerController(boardController);
-    } catch (RemoteException e) {
-      fail("Exception unexpected");
-    }
-    PlayerCollectWeaponEvent event = new PlayerCollectWeaponEvent(PlayerColor.GREEN, "Fucile al plasma");
-    try {
-      playerController.update(event);
-    } catch (NullPointerException ignore) {
-      //
-    }
-  }
-
-  @Test
   public void testPayment() {
     PlayerController playerController = null;
     try {

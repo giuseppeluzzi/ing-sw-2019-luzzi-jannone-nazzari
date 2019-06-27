@@ -49,7 +49,7 @@ public class ObjectPickup extends GameAction {
     }
   }
 
-  public void fetchAmmoCard(Board board) {
+  void fetchAmmoCard(Board board) {
     AmmoCard ammoCard = getPlayer().getSquare().getAmmoCard();
 
     getPlayer().addAmmo(AmmoColor.RED, ammoCard.getAmmo(AmmoColor.RED));
@@ -69,7 +69,7 @@ public class ObjectPickup extends GameAction {
     getPlayer().getSquare().setAmmoCard(null);
   }
 
-  public List<Weapon> getBuyableWeapons() {
+  List<Weapon> getBuyableWeapons() {
     List<Weapon> buyableWeapons = new ArrayList<>();
     for (Weapon weapon : getPlayer().getSquare().getWeapons()) {
       if (getPlayer().canCollectWeapon(weapon)) {
