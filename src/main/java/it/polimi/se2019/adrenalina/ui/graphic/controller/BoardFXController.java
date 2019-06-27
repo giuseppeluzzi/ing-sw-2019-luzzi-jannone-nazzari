@@ -29,7 +29,6 @@ import javafx.scene.text.Text;
 
 public class BoardFXController {
 
-  private PlayerColor playerColor;
   private Board board;
 
   @FXML
@@ -135,14 +134,14 @@ public class BoardFXController {
     FXMLLoader loaderPlayerDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));
     DashboardFXController playerDashboardFXController = new PlayerDashboardFXController(
-        playerColor);
-    dashboardControllers.put(playerColor, playerDashboardFXController);
+        color);
+    dashboardControllers.put(color, playerDashboardFXController);
     loaderPlayerDashboard.setController(playerDashboardFXController);
 
     Platform.runLater(() -> {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
-        playerDashboard.setId("dashboard-" + playerColor);
+        playerDashboard.setId("dashboard-" + color);
         GridPane.setRowIndex(playerDashboard, 1);
         GridPane.setColumnIndex(playerDashboard, 0);
         boardGrid.getChildren().add(playerDashboard);

@@ -41,4 +41,12 @@ public class TargetingScopeTest {
   public void testGetOwnerException() {
     targetingScope.getOwner();
   }
+
+  @Test(expected = IllegalStateException.class)
+  public void testAfterPaymentException() {
+    TargetingScope targetingScope = new TargetingScope(AmmoColor.RED);
+    if (targetingScope.isPowerUp() && targetingScope.doesCost() && !targetingScope.isWeapon()) {
+      targetingScope.afterPaymentCompleted(null, null, null);
+    }
+  }
 }

@@ -7,6 +7,8 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.List;
 import java.util.Locale;
 import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,6 +25,7 @@ public abstract class DashboardFXController {
   abstract HBox getTagsContainer();
   abstract HBox getSkullsContainer();
   abstract FlowPane getAmmosContainer();
+
   abstract HBox getWeaponContainer();
   abstract HBox getPowerUpsContainer();
 
@@ -118,5 +121,4 @@ public abstract class DashboardFXController {
   public abstract void updateWeapons(List<Weapon> weapons, int weaponsNum);
   public abstract void updatePowerUps(List<PowerUp> powerUps);
   public abstract void updateDashboard(PlayerColor color);
-
 }
