@@ -243,10 +243,10 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     if (event.getBlue() == 0 && event.getRed() == 0 &&
         event.getYellow() == 0 && event.getPowerUps() == 0) {
       board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(null);
+    } else {
+      board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(
+              new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
     }
-
-    board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(
-        new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
   }
 
   /**

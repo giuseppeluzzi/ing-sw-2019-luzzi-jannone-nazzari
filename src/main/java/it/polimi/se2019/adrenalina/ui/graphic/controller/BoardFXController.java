@@ -22,6 +22,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
 public class BoardFXController {
@@ -198,6 +202,7 @@ public class BoardFXController {
   }
 
   public void setAmmoCard(int posX, int posY, String ammoCardStr) {
+    Log.println(posX + " " + posY + " " + ammoCardStr);
     if (ammoCardStr == null) {
       Node toRemove = null;
       for (Node node : grid[posX][posY].getChildren()) {
@@ -216,5 +221,34 @@ public class BoardFXController {
       imageView.setFitWidth(35);
       grid[posX][posY].getChildren().add(imageView);
     }
+  }
+
+  public void setPlayerPosition(int posX, int posY, PlayerColor playerColor) {
+    int removeX = -1;
+    int removeY = -1;
+    Node toRemove = null;
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
+        for (Node node : grid[x][y].getChildren()) {
+          if (node.getStyleClass().contains("player_" + playerColor.name()))  {
+            removeX = x;
+            removeY = y;
+            toRemove = node;
+            break;
+          }
+        }
+        if (toRemove != null) { break; }
+      }
+      if (toRemove != null) { break; }
+    }
+    if (toRemove != null) {
+      grid[removeX][removeY].getChildren().remove(toRemove);
+    }
+    Circle playerIcon = new Circle(13, Color.web(playerColor.getHexColor()));
+    playerIcon.getStyleClass().add("player");
+    playerIcon.getStyleClass().add("player_" + playerColor.name());
+    playerIcon.setStroke(Color.WHITE);
+    playerIcon.setStrokeWidth(1);
+    grid[posX][posY].getChildren().add(playerIcon);
   }
 }

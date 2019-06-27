@@ -6,6 +6,9 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.layout.BorderPane;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,46 +22,6 @@ public class BoardTest {
   @Before
   public void setBoard() {
     board = new Board();
-  }
-
-  @Test
-  public void testCopyConstructor() throws InvalidPlayerException {
-    Board board2;
-    Board board3;
-    Player player = new Player("test", PlayerColor.GREEN, board);
-
-    for (int x = 0; x < 4; x++) {
-      for (int y = 0; y < 3; y++) {
-        board.setSquare(new Square(x, y,
-            SquareColor.GREEN, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-            board));
-      }
-    }
-    board.addPlayer(player);
-    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test1", "X"));
-    board.addWeapon(new Weapon(0, 1, 2, AmmoColor.YELLOW, "test2", "X"));
-    board.addPowerUp(new Newton(AmmoColor.YELLOW));
-    board.addPowerUp(new Newton(AmmoColor.BLUE));
-
-    board.takeWeapon(board.getWeapons().get(0));
-
-    board.drawPowerUp(board.getPowerUps().get(0));
-    board.addKillShot(new Kill(PlayerColor.YELLOW, true));
-    board.setDoubleKill(player);
-    board2 = new Board(board, false);
-    board3 = new Board(board, true);
-
-    assertEquals(
-        "Cloned class attributes not matching with original class attributes",
-        "test",
-        board2.getPlayerByColor(PlayerColor.GREEN).getName());
-
-    assertTrue("Public copy has private attributes", board3.getWeapons().isEmpty());
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testCopyConstructorException() {
-    Board board2 = new Board(board, false);
   }
 
   @Test
@@ -273,5 +236,89 @@ public class BoardTest {
   @Test(expected = IllegalArgumentException.class)
   public void testTakeWeaponsException() {
     board.takeWeapon(new Weapon(0,0,0,AmmoColor.BLUE,"test","p"));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testUndrawPowerUpException() {
+    board.undrawPowerUp(new Newton(AmmoColor.BLUE));
+  }
+
+  @Test
+  public void testUndrawPowerUp() {
+    Newton newton = new Newton(AmmoColor.YELLOW);
+    board.addPowerUp(newton);
+    board.drawPowerUp(newton);
+    assertEquals(1, board.getTakenPowerUps().size());
+    board.undrawPowerUp(newton);
+    assertEquals(1, board.getPowerUps().size());
+  }
+
+  @Test(expected = InvalidPlayerException.class)
+  public void testGetPlayerByNameException() throws InvalidPlayerException {
+    board.getPlayerByName("fakename");
+  }
+
+  @Test
+  public void testGetPlayerByName() throws InvalidPlayerException {
+    Player player = new Player("test", PlayerColor.GREEN, board);
+    board.addPlayer(player);
+    assertEquals(player, board.getPlayerByName("test"));
+  }
+
+  @Test
+  public void testRemovePlayer() throws InvalidPlayerException {
+    Player player = new Player("test", PlayerColor.GREEN, board);
+    board.addPlayer(player);
+    board.removePlayer(PlayerColor.GREEN);
+    assertEquals(0, board.getPlayers().size());
+  }
+
+  @Test
+  public void testTakeWeapon() {
+    Weapon weapon = new Weapon(0,0,0,AmmoColor.RED,"test","a");
+    board.addWeapon(weapon);
+    if (board.hasWeapons()) {
+      assertTrue(board.getTakenWeapons().isEmpty());
+    }
+    board.takeWeapon(weapon);
+    assertFalse(board.getTakenWeapons().isEmpty());
+  }
+
+  @Test
+  public void testTakePowerUpNameColor() {
+    Newton newton = new Newton(AmmoColor.BLUE);
+    Newton newton2 = new Newton(AmmoColor.YELLOW);
+    TargetingScope targetingScope = new TargetingScope(AmmoColor.BLUE);
+    TargetingScope targetingScope2 = new TargetingScope(AmmoColor.YELLOW);
+    board.addPowerUp(newton2);
+    board.setPublicCopyHasWeapons(true);
+    board.addPowerUp(targetingScope);
+    board.addPowerUp(targetingScope2);
+    board.addPowerUp(newton);
+    if (!board.hasAmmoCards()) {
+      assertEquals(newton, board.getPowerUpByNameAndColor(PowerUpType.NEWTON, AmmoColor.BLUE));
+    }
+  }
+
+  @Test
+  public void testGetFreePlayerColor() {
+    Player player = new Player("test", PlayerColor.GREEN, board);
+    board.addPlayer(player);
+    board.setPublicCopyHasAmmoCards(true);
+    assertEquals(4, board.getFreePlayerColors().size());
+  }
+
+  @Test
+  public void testUpdateKillshot() {
+    List<Kill> kills = new ArrayList<>();
+    kills.add(new Kill(PlayerColor.GREEN, true));
+    kills.add(new Kill(PlayerColor.GREY, false));
+    board.updateKillShots(kills);
+    assertEquals(2, board.getKillShots().size());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetDoubleKillException() {
+    board.setDoubleKill(null);
   }
 }

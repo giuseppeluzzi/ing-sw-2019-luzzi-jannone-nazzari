@@ -92,82 +92,6 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Copy constructor, creates an exact copy of a Board.
-   *
-   * @param board the Board to be cloned, has to be not null
-   * @param publicCopy if true, a public copy of the Board will be created instead of a clone. The
-   * public copy will not contain players' private information
-   */
-  public Board(Board board, boolean publicCopy) {
-    // TODO: copy observers
-    if (board == null) {
-      throw new IllegalArgumentException("Argument board cannot be null");
-    }
-    this.publicCopy = publicCopy;
-    publicCopyHasWeapons = board.hasWeapons();
-    publicCopyHasAmmoCards = board.hasAmmoCards();
-
-    grid = new Square[4][3];
-    for (int x = 0; x < 4; x++) {
-      for (int y = 0; y < 3; y++) {
-        grid[x][y] = new Square(board.grid[x][y]);
-      }
-    }
-
-    players = new ArrayList<>();
-    for (Player player : board.players) {
-      players.add(new Player(player, publicCopy));
-    }
-
-    weapons = new ArrayList<>();
-    takenWeapons = new ArrayList<>();
-    powerUps = new ArrayList<>();
-    takenPowerUps = new ArrayList<>();
-    ammoCards = new ArrayList<>();
-    takenAmmoCards = new ArrayList<>();
-
-    setObservers(board.getObservers());
-
-    if (!publicCopy) {
-      copyPrivateAttributes(board);
-    }
-
-    if (board.doubleKill != null) {
-      doubleKill = new Player(board.doubleKill, publicCopy);
-    }
-
-    killShots = new ArrayList<>();
-    for (Kill kill : board.killShots) {
-      killShots.add(new Kill(kill));
-    }
-
-    status = board.status;
-    finalFrenzySelected = board.finalFrenzySelected;
-    turnStartTime = board.turnStartTime;
-    currentPlayer = board.currentPlayer;
-  }
-
-  /**
-   * Copies private attributes as required by the copy constructor.
-   *
-   * @param board the Board to be cloned.
-   */
-  private void copyPrivateAttributes(Board board) {
-    for (Weapon weapon : board.weapons) {
-      weapons.add(new Weapon(weapon));
-    }
-    for (Weapon weapon : board.takenWeapons) {
-      takenWeapons.add(new Weapon(weapon));
-    }
-    for (PowerUp powerUp : board.powerUps) {
-      powerUps.add(powerUp.copy());
-    }
-    for (PowerUp powerUp : board.takenPowerUps) {
-      takenPowerUps.add(powerUp.copy());
-    }
-  }
-
-  /**
    * Given an AmmoColor returns reference to the same colored SpawnPoint, if existing
    *
    * @param spawnPointColor chosen color
@@ -586,7 +510,6 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Returns a List of drawn powerUps in the Board.
-   *
    * @return a List of drawn powerUps in the Board
    */
   public List<PowerUp> getTakenPowerUps() {
@@ -595,7 +518,6 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Returns a PowerUp whose name and color is the same as the specified one.
-   *
    * @param powerUpType type of the requested powerup
    * @param powerUpColor color of the requested powerup
    * @return PowerUp with name equals to "name" and powerUpColor equals "powerUpColor", null if
@@ -611,22 +533,6 @@ public class Board extends Observable implements Serializable {
       }
     }
     return null;
-  }
-
-  /**
-   * Given a SquareColor representing a room returns all the player in the room.
-   *
-   * @param roomColor color of the room
-   * @return List of Player
-   */
-  public List<Player> getPlayerByRoom(SquareColor roomColor) {
-    List<Player> playerList = new ArrayList<>();
-    for (Player player : playerList) {
-      if (player.getSquare().getColor() == roomColor) {
-        playerList.add(player);
-      }
-    }
-    return playerList;
   }
 
   /**
