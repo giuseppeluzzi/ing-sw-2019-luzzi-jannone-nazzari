@@ -184,6 +184,9 @@ public class BoardFXController {
           }
         }
       });
+    }
+  }
+
   public void setAmmoCard(int posX, int posY, String ammoCardStr) {
     if (ammoCardStr == null) {
       Node toRemove = null;
