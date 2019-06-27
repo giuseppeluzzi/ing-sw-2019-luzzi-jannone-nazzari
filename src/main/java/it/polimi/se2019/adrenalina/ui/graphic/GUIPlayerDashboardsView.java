@@ -27,9 +27,11 @@ import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogShowPayme
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSwapWeaponSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogTurnActionSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogUnsuspend;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -142,6 +144,14 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   public void update(EnemyPowerUpUpdate event) {
     super.update(event);
     DashboardFXController dashboard = null;
+
+    try {
+      if (event.getPlayerColor() == AppGUI.getClient().getPlayerColor()) {
+        return;
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
 
     try {
       dashboard = AppGUI.getBoardFXController()

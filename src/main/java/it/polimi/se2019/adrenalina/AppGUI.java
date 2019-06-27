@@ -31,6 +31,7 @@ public class AppGUI extends Application {
   private static BoardFXController boardFXController = null;
 
   public static void main(String... args) {
+    Log.setName("ClientGUI");
     launch(args);
   }
 

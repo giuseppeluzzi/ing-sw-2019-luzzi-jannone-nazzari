@@ -95,12 +95,13 @@ public class PlayerDashboardFXController extends DashboardFXController {
   public void updateWeapons(List<Weapon> weapons, int weaponsNum) {
     Platform.runLater(() -> {
       playerWeapons.getChildren().clear();
-      for (int i = 0; i < 3 - weapons.size(); i++) {
+      for (int i = 0; i < 3 - weaponsNum; i++) {
         ImageView imageView = new ImageView(
             "gui/assets/img/weapon/rotated/weapon_back.png");
         imageView.setFitHeight(182);
         imageView.setOpacity(0);
         imageView.setPreserveRatio(true);
+        imageView.setVisible(true);
         playerWeapons.getChildren().add(imageView);
       }
 
@@ -109,8 +110,12 @@ public class PlayerDashboardFXController extends DashboardFXController {
             "gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
         imageView.setFitHeight(141);
         imageView.setPreserveRatio(true);
+        imageView.setVisible(true);
+        imageView.setOpacity(1);
         playerWeapons.getChildren().add(imageView);
       }
+      playerWeapons.setVisible(true);
+      Log.debug(">>>>>>>>>>>>>>> p uw");
     });
   }
 
@@ -124,6 +129,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
         imageView.setFitHeight(182);
         imageView.setPreserveRatio(true);
         imageView.setOpacity(0);
+        imageView.setVisible(true);
         playerPowerUps.getChildren().add(0, imageView);
       }
 
@@ -132,6 +138,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
             "gui/assets/img/powerups/rotated/" + powerUp.getType() + "_" + powerUp.getColor() + ".png");
         imageView.setFitHeight(182);
         imageView.setPreserveRatio(true);
+        imageView.setVisible(true);
+        imageView.setOpacity(1);
         imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
           // TODO
           try {
@@ -143,7 +151,9 @@ public class PlayerDashboardFXController extends DashboardFXController {
           }
         });
         playerPowerUps.getChildren().add(imageView);
+        playerPowerUps.setVisible(true);
       }
+      Log.debug(">>>>>>>>>>>>>>> p up");
     });
   }
 
