@@ -28,22 +28,6 @@ public class DominationBoard extends Board {
   }
 
   /**
-   * Copy constructor, creates an exact copy of a DominationBoard.
-   * @param dominationBoard the DominationBoard to be cloned, has to be not
-   * null
-   * @param publicCopy if true, a public copy of the DominationBoard will be
-   * created instead of a clone. The public copy will not contain players'
-   * private information
-   */
-  public DominationBoard(DominationBoard dominationBoard, boolean publicCopy) {
-    // TODO: try/catch with specific exception message
-    super(dominationBoard, publicCopy);
-    blueDamages = dominationBoard.getBlueDamages();
-    redDamages = dominationBoard.getRedDamages();
-    yellowDamages = dominationBoard.getYellowDamages();
-  }
-
-  /**
    * Adds a blue damage to the Board.
    * @param color the color of the Player who scored the damage
    */
