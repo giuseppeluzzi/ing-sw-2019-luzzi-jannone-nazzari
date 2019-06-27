@@ -3,13 +3,10 @@ package it.polimi.se2019.adrenalina.ui.graphic;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.*;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -161,5 +158,18 @@ public class GUIBoardView extends BoardView {
   public void update(BoardSkullsUpdate event) {
     super.update(event);
     AppGUI.getLobbyFXController().setSkulls(event.getSkulls());
+  }
+
+  @Override
+  public void update(SquareAmmoCardUpdate event) {
+    super.update(event);
+    String ammoCardStr;
+    if (!(event.getBlue() == 0 && event.getRed() == 0 && event.getYellow() == 0 && event.getPowerUps() == 0)) {
+      AmmoCard ammoCard = new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps());
+      ammoCardStr = ammoCard.toString();
+    } else {
+      ammoCardStr = null;
+    }
+    Platform.runLater(() -> AppGUI.getBoardFXController().setAmmoCard(event.getPosX(), event.getPosY(), ammoCardStr));
   }
 }

@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.utils.Log;
+
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -13,8 +14,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 public class BoardFXController {
@@ -35,7 +39,7 @@ public class BoardFXController {
   @FXML
   private Pane weapon;
 
-  private Pane[][] grid;
+  private TilePane[][] grid;
   private final HashMap<PlayerColor, DashboardFXController> dashboardControllers;
 
   public BoardFXController() {
@@ -43,8 +47,22 @@ public class BoardFXController {
   }
 
   public void initialize() {
-    grid = new Pane[12][9];
-    /*try {
+    grid = new TilePane[4][3];
+
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
+        grid[x][y] = new TilePane();
+        grid[x][y].setStyle("-fx-border-color: white; -fx-border-width: 1;");
+
+        mapGrid.getChildren().add(grid[x][y]);
+        GridPane.setColumnIndex(grid[x][y], x + 1);
+        GridPane.setRowIndex(grid[x][y], y + 1);
+      }
+    }
+
+    /*mapGrid.setVisible(true);
+
+    try {
       playerColor = AppGUI.getClient().getPlayerColor();
       board = AppGUI.getClient().getBoardView().getBoard();
     } catch (RemoteException e) {
@@ -166,6 +184,22 @@ public class BoardFXController {
           }
         }
       });
+  public void setAmmoCard(int posX, int posY, String ammoCardStr) {
+    if (ammoCardStr == null) {
+      Node toRemove = null;
+      for (Node node : grid[posX][posY].getChildren()) {
+        if (node.getStyleClass().contains("ammoCard")) {
+          toRemove = node;
+          break;
+        }
+      }
+      if (toRemove != null) {
+        grid[posX][posY].getChildren().remove(toRemove);
+      }
+    } else {
+      ImageView imageView = new ImageView(String.format("gui/assets/img/ammo/ammo_%s.png", ammoCardStr));
+      imageView.getStyleClass().add("ammoCard");
+      grid[posX][posY].getChildren().add(imageView);
     }
   }
 }
