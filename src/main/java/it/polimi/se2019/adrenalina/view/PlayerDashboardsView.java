@@ -100,11 +100,11 @@ public abstract class PlayerDashboardsView extends Observable implements
               String.format(
                   "%s%s%s ha inflitto %d marchi a %s%s%s!",
                   event.getPlayerColor().getAnsiColor(),
-                  playerName,
+                  killerName,
                   ANSIColor.RESET,
                   newTags.size(),
                   event.getKillerColor().getAnsiColor(),
-                  killerName,
+                  playerName,
                   ANSIColor.RESET));
         }
       }
