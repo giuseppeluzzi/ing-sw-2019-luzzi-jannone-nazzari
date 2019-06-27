@@ -31,7 +31,7 @@ public class SquareSelection extends GameAction {
     return fetch;
   }
 
-  public List<Target> getTargets() {
+  List<Target> getTargets() {
     return new ArrayList<>(getPlayer().getSquare().getSquaresInRange(0, maxDistance, fetch));
   }
 

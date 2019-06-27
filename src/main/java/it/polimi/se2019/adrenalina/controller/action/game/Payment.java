@@ -2,7 +2,11 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Buyable;
+import it.polimi.se2019.adrenalina.model.BuyableType;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
@@ -36,16 +40,19 @@ public class Payment extends GameAction {
       try {
         List<PowerUp> spendablePowerUps =  getPlayer().getPowerUps();
         spendablePowerUps.remove(item.getBaseBuyable());
-        getPlayer().getClient().getPlayerDashboardsView()
-            .showPaymentOption(item.getBuyableType(), item.promptMessage(), item.getCost(), spendablePowerUps,
-                getPlayer().getAmmos());
+        if (getPlayer().getClient() != null) {
+          getPlayer().getClient().getPlayerDashboardsView()
+              .showPaymentOption(item.getBuyableType(), item.promptMessage(), item.getCost(),
+                  spendablePowerUps,
+                  getPlayer().getAmmos());
+        }
       } catch (RemoteException e) {
         Log.exception(e);
       }
     }
   }
 
-  private boolean isFree() {
+  boolean isFree() {
     return item.getBuyableType() != BuyableType.WEAPON_RELOAD
         && item.getCost(AmmoColor.RED) == 0
         && item.getCost(AmmoColor.BLUE) == 0

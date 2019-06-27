@@ -2,7 +2,11 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.PowerUpType;
+import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
@@ -42,7 +46,7 @@ public class PowerUpSelection extends GameAction {
     return attack;
   }
 
-  private List<PowerUp> getTargetingScopes() {
+  List<PowerUp> getTargetingScopes() {
     List<PowerUp> powerUpList = new ArrayList<>();
     for (PowerUp powerUp : getPlayer().getPowerUps()) {
       if (powerUp.getType() == PowerUpType.TARGETING_SCOPE) {
@@ -53,7 +57,7 @@ public class PowerUpSelection extends GameAction {
     return powerUpList;
   }
 
-  private List<PowerUp> getNotAttackPowerUps(Board board) {
+  List<PowerUp> getNotAttackPowerUps(Board board) {
     List<PowerUp> powerUpList = new ArrayList<>();
     for (PowerUp powerUp : getPlayer().getPowerUps()) {
       if (powerUp.getType() != PowerUpType.TAGBACK_GRANADE
@@ -67,7 +71,7 @@ public class PowerUpSelection extends GameAction {
     return powerUpList;
   }
 
-  private int getPlayingPlayers(List<Player> players) {
+  int getPlayingPlayers(List<Player> players) {
     int result = 0;
     for (Player player : players) {
       if (player.getStatus() == PlayerStatus.PLAYING) {
@@ -77,7 +81,7 @@ public class PowerUpSelection extends GameAction {
     return result;
   }
 
-  private List<PowerUp> getGranades() {
+  List<PowerUp> getGranades() {
     List<PowerUp> powerUpList = new ArrayList<>();
     for (PowerUp powerUp : getPlayer().getPowerUps()) {
       if (powerUp.getType() == PowerUpType.TAGBACK_GRANADE) {
@@ -88,7 +92,7 @@ public class PowerUpSelection extends GameAction {
     return powerUpList;
   }
 
-  private List<PowerUp> getValidPowerUps(Board board, boolean attacking) {
+  List<PowerUp> getValidPowerUps(Board board, boolean attacking) {
     List<PowerUp> powerUps = new ArrayList<>();
     if (board.getCurrentPlayer() == getPlayer().getColor()) {
       if (attacking) {

@@ -81,7 +81,7 @@
             "posX": 3,
             "posY": 1,
             "color": "YELLOW",
-            "spawnPoint": true,
+            "spawnPoint": false,
             "borders": {
                 "EAST": "WALL",
                 "SOUTH": "AIR",
@@ -117,7 +117,7 @@
             "posX": 3,
             "posY": 2,
             "color": "YELLOW",
-            "spawnPoint": false,
+            "spawnPoint": true,
             "borders": {
                 "EAST": "WALL",
                 "SOUTH": "WALL",

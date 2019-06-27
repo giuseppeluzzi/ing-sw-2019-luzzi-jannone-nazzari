@@ -33,7 +33,7 @@ public class ActionSelection extends GameAction {
     }
   }
 
-  public List<TurnAction> setTurnActions(Board board) {
+  List<TurnAction> setTurnActions(Board board) {
     List<TurnAction> turnActions = null;
 
     if (board.isFinalFrenzyActive()) {

@@ -32,7 +32,7 @@ public class CheckReloadWeapons extends GameAction {
   }
 
 
-  public List<Weapon> getReloadableWeapons() {
+  List<Weapon> getReloadableWeapons() {
     List<Weapon> reloadableWeapons = new ArrayList<>();
     if (getPlayer().getUnloadedWeapons().isEmpty()) {
       return reloadableWeapons;
