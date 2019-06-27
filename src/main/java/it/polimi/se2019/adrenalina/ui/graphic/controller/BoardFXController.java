@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -41,6 +42,7 @@ public class BoardFXController {
   private Pane weapon;
 
   private TilePane[][] grid;
+  private Pane[][] gridHover;
   private final HashMap<PlayerColor, DashboardFXController> dashboardControllers;
 
   public BoardFXController() {
@@ -58,7 +60,11 @@ public class BoardFXController {
         grid[x][y].setHgap(10);
         grid[x][y].setVgap(10);
 
-        mapGrid.getChildren().add(grid[x][y]);
+        gridHover[x][y] = new Pane();
+        gridHover[x][y].getStyleClass().add("disabledSquare");
+        gridHover[x][y].setVisible(false);
+
+        mapGrid.getChildren().add(new StackPane(grid[x][y], gridHover[x][y]));
         GridPane.setColumnIndex(grid[x][y], x + 1);
         GridPane.setRowIndex(grid[x][y], y + 1);
       }

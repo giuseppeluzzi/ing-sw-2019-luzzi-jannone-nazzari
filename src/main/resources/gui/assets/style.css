@@ -92,6 +92,11 @@
   -fx-background-position: center;
 }
 
+.disabledSquare {
+  -fx-background-color: #000000;
+  -fx-opacity: 0.6;
+}
+
 #playerDashboard {
   -fx-background-size: contain;
   -fx-background-repeat: no-repeat;
