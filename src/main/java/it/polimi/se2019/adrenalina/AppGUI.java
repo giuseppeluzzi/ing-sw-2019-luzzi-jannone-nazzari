@@ -34,13 +34,13 @@ public class AppGUI extends Application {
     launch(args);
   }
 
-  public static void startClient(String name, boolean domination, boolean socket) {
+  public static void startClient(String ipAddress, int port, String name, boolean domination, boolean socket) {
     new Thread(() -> {
       if (socket) {
-        client = new ClientSocket(name, domination, false);
+        client = new ClientSocket(ipAddress, port, name, domination, false);
         ((Runnable) client).run();
       } else {
-        ClientRMI clientRMI = new ClientRMI(name, domination, false);
+        ClientRMI clientRMI = new ClientRMI(ipAddress, port, name, domination, false);
         try {
           client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
           clientRMI.getServer().addClient(client);

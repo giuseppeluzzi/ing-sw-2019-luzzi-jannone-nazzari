@@ -22,12 +22,13 @@ public class ClientRMI extends Client {
   private transient ServerInterface server;
   private transient Thread pooler;
 
-  public ClientRMI(String name, boolean domination, boolean tui) {
+  public ClientRMI(String ipAddress, Integer port, String name, boolean domination, boolean tui) {
     super(name, domination, tui);
 
     try {
-      Registry registry = LocateRegistry.getRegistry(Configuration.getInstance().getServerIP(),
-          Configuration.getInstance().getRmiPort());
+      Registry registry = LocateRegistry.getRegistry(
+              ipAddress == null ? Configuration.getInstance().getServerIP() : ipAddress,
+              port == null ? Configuration.getInstance().getRmiPort() : port);
       server = (ServerInterface) registry.lookup("MyServer");
 
       UnicastRemoteObject.exportObject(getBoardView(), 0);

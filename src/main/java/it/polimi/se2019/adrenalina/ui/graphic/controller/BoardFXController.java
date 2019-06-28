@@ -55,6 +55,7 @@ public class BoardFXController {
 
   public void initialize() {
     grid = new TilePane[4][3];
+    gridHover = new Pane[4][3];
 
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {

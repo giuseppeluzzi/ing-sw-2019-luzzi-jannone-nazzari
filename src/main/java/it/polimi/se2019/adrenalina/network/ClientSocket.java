@@ -31,7 +31,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
   private transient PrintWriter printWriter;
   private transient BufferedReader bufferedReader;
 
-  public ClientSocket(String name, boolean domination, boolean tui) {
+  public ClientSocket(String ipAddress, Integer port, String name, boolean domination, boolean tui) {
     super(name, domination, tui);
 
     running = true;
@@ -45,8 +45,9 @@ public class ClientSocket extends Client implements Runnable, Observer {
     }
 
     try {
-      socket = new Socket(Configuration.getInstance().getServerIP(),
-          Configuration.getInstance().getSocketPort());
+      socket = new Socket(
+              ipAddress == null ? Configuration.getInstance().getServerIP() : ipAddress,
+              port == null ? Configuration.getInstance().getSocketPort() : port);
       OutputStream outputStream = socket.getOutputStream();
       printWriter = new PrintWriter(outputStream, true);
       bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),

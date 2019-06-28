@@ -14,6 +14,50 @@
       <center>
         <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
           <children>
+            <BorderPane fx:id="startServerSelection" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="true">
+              <center>
+                <HBox alignment="CENTER" prefWidth="200.0" spacing="30.0">
+                  <VBox alignment="CENTER" prefWidth="500.0" spacing="25.0" BorderPane.alignment="CENTER">
+                    <children>
+                      <GridPane alignment="CENTER">
+                        <columnConstraints>
+                          <ColumnConstraints percentWidth="40" />
+                          <ColumnConstraints percentWidth="50" />
+                        </columnConstraints>
+                        <rowConstraints>
+                          <RowConstraints percentHeight="20"/>
+                          <RowConstraints percentHeight="20" valignment="TOP"/>
+                        </rowConstraints>
+
+                        <Text fx:id="ipAddressLabel" text="Indirizzo IP server" styleClass="text" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="textFieldIpAddress" alignment="CENTER" promptText="Indirizzo IP server"  GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="30">
+                          <Text fx:id="portLabel" text="Porta" styleClass="text"/>
+                          <CheckBox fx:id="checkBoxRMI" mnemonicParsing="false" prefWidth="200.0" text="Usa RMI" />
+                        </VBox>
+                        <TextField fx:id="textFieldPort" alignment="CENTER" promptText="Porta" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                      </GridPane>
+                    </children>
+                  </VBox>
+                </HBox>
+              </center>
+              <top>
+                <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                  <children>
+                    <Text fx:id="serverConfigTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Impostazioni di connessione">
+                      <styleClass>
+                        <String fx:value="text" />
+                        <String fx:value="title" />
+                      </styleClass>
+                    </Text>
+                  </children>
+                </VBox>
+              </top>
+              <bottom>
+                <Button fx:id="buttonNext0" alignment="BOTTOM_RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#next0" text="Continua" BorderPane.alignment="BOTTOM_RIGHT" />
+              </bottom>
+            </BorderPane>
             <BorderPane fx:id="startGameModeSelector" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="200.0" styleClass="startContainer" visible="false" BorderPane.alignment="CENTER">
               <center>
                 <VBox alignment="CENTER" BorderPane.alignment="CENTER">
@@ -70,7 +114,6 @@
                     <children>
                       <Circle fill="#80130f" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
                       <TextField fx:id="textFieldName" alignment="CENTER" promptText="Nome" />
-                      <CheckBox fx:id="checkBoxRMI" mnemonicParsing="false" prefWidth="200.0" text="Usa RMI" />
                     </children>
                   </VBox>
                 </HBox>
