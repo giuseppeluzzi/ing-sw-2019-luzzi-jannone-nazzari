@@ -63,7 +63,8 @@ public class TUIUtils {
    * @return the chosen ammoColor
    * @throws InputCancelledException thrown if the user's input is cancelled
    */
-  static AmmoColor showAmmoColorSelection(boolean anyAllowed, Map<AmmoColor, Integer> damages) throws InputCancelledException {
+  static AmmoColor showAmmoColorSelection(boolean anyAllowed, Map<AmmoColor, Integer> damages)
+      throws InputCancelledException {
 
     List<AmmoColor> colors;
     if (anyAllowed) {
@@ -75,7 +76,7 @@ public class TUIUtils {
     List<String> choices = new ArrayList<>();
 
     for (AmmoColor color : colors) {
-      choices.add(color + ", danni ricevuti: " + damages.get(color));
+      choices.add(color.getAnsiColor() + color.toString() + ANSIColor.RESET + " (danni ricevuti: " + damages.get(color) + ")");
     }
 
     inputManager.input("Scegli un colore:", choices);

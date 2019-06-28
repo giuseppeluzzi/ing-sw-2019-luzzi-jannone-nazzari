@@ -55,6 +55,7 @@ public class Player extends Observable implements Target {
 
   @NotExpose
   private ExecutableObject currentExecutable;
+  @NotExpose
   private ExecutableObject oldExecutable;
   @NotExpose
   private Buyable currentBuying;
@@ -428,7 +429,7 @@ public class Player extends Observable implements Target {
     for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
       if (playerColor != color) {
         try {
-          board.getPlayerByColor(playerColor).setScore(score + awardedScore);
+          board.getPlayerByColor(playerColor).setScore(board.getPlayerByColor(playerColor).score + awardedScore);
         } catch (InvalidPlayerException ignored) {
           //
         }

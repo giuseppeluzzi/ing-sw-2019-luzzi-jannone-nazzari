@@ -186,6 +186,7 @@ public abstract class PlayerDashboardsView extends Observable implements
    * @see PlayerKillScoreUpdate
    */
   public void update(PlayerKillScoreUpdate event) {
+    Log.debug("entrato nell'evento, killscore:" + event.getKillScore());
     Player player;
     try {
       player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());

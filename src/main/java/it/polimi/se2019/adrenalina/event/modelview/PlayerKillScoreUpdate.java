@@ -28,6 +28,6 @@ public class PlayerKillScoreUpdate implements Event {
 
   @Override
   public EventType getEventType() {
-    return null;
+    return EventType.PLAYER_KILL_SCORE_UPDATE;
   }
 }
