@@ -340,22 +340,27 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     }
   }
 
+  /**
+   * Confirms that a player has enough buyables to pay for all of the chosen effects.
+   * @param chosenEffects the list of chosen effects
+   * @return true if the player can pay for the chosen effects, false otherwise
+   * @throws InvalidPlayerException if the selected player is invalid
+   * @throws RemoteException if a remote exception occurs
+   */
   private boolean confirmAvailableFunds(List<Effect> chosenEffects) throws InvalidPlayerException, RemoteException {
     Map<AmmoColor, Integer> availableFunds = new EnumMap<>(AmmoColor.class);
     availableFunds.putAll(client.getBoardView().getBoard().getPlayerByColor(client.getPlayerColor()).getAmmos());
     for (PowerUp powerUp : client.getBoardView().getBoard().getPlayerByColor(client.getPlayerColor()).getPowerUps()) {
-      availableFunds.put(powerUp.getColor(), 1);
-    }
-    Map<AmmoColor, Integer> paymentDue = new EnumMap<>(AmmoColor.class);
-    for (Effect effect : chosenEffects) {
-      paymentDue.putAll(effect.getCost());
+      availableFunds.put(powerUp.getColor(), availableFunds.get(powerUp.getColor()) + 1);
     }
     int anyColorDue = 0;
-    for (Map.Entry<AmmoColor, Integer> entry : paymentDue.entrySet()) {
-      if (entry.getKey() == AmmoColor.ANY) {
-        anyColorDue++;
-      } else {
-        availableFunds.put(entry.getKey(), availableFunds.get(entry.getKey()) - entry.getValue());
+    for (Effect effect : chosenEffects) {
+      for (Map.Entry<AmmoColor, Integer> entry : effect.getCost().entrySet()) {
+        if (entry.getKey() == AmmoColor.ANY) {
+          anyColorDue += entry.getValue();
+        } else {
+          availableFunds.put(entry.getKey(), availableFunds.get(entry.getKey()) - entry.getValue());
+        }
       }
     }
     int totalRemainingFunds = 0;
@@ -365,7 +370,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       }
       totalRemainingFunds += entry.getValue();
     }
-    return totalRemainingFunds > anyColorDue;
+    return totalRemainingFunds >= anyColorDue;
   }
 
   /**

@@ -94,7 +94,7 @@
 
 .disabledSquare {
   -fx-background-color: #000000;
-  -fx-opacity: 0.6;
+  -fx-opacity: 0.7;
 }
 
 #playerDashboard {
