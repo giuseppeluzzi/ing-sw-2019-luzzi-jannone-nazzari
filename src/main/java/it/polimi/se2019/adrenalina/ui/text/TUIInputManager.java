@@ -89,7 +89,6 @@ public class TUIInputManager {
       Log.println(String.format("    [%2d] %s", i+1, choices.get(i)));
     }
     while (true) {
-      Log.print("> ");
       String intInput;
       try {
         intInput = scanner.call().trim();
@@ -132,7 +131,6 @@ public class TUIInputManager {
     thread = new Thread(() -> {
       Log.println(prompt);
       while (true) {
-        Log.print("> ");
         String input;
         try {
           input = scanner.call().trim();
@@ -168,10 +166,11 @@ public class TUIInputManager {
   }
 
   /**
-   * Interrupts the user prompt.
+   * Interrputs user input.
+   * @param message the message to show upon cancellation
    */
   public void cancel(String message) {
-    if (message != null) {
+    if (message != null && ! message.isEmpty() && thread != null) {
       Log.println(message);
     }
     if (thread != null) {

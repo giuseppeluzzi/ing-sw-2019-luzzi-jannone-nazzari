@@ -47,7 +47,7 @@
                             ],
                             "between": [],
                             "visible": true,
-                            "optional": false,
+                            "optional": true,
                             "useLastDirection": false,
                             "differentRoom": false,
                             "selectType": "ATTACK_TARGET",

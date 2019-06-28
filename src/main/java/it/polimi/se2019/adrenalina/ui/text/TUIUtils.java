@@ -36,7 +36,7 @@ public class TUIUtils {
     for (Weapon weapon : weapons) {
       if (showCost) {
         choices.add(
-            String.format("%s%n\t   Costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
+            String.format("%s, costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
                 weapon.getName(),
                 AmmoColor.RED.getAnsiColor(),
                 weapon.getCost(AmmoColor.RED),

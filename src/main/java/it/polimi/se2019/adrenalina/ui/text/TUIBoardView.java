@@ -38,22 +38,25 @@ public class TUIBoardView extends BoardView {
 
   @Override
   public void endLoading(boolean masterPlayer) {
-    /*endLoadingThread = new Thread(() -> {
+    endLoadingThread = new Thread(() -> {
       showChangePlayerColor();
-
       if (masterPlayer) {
         showGameMapSelection();
         showSkullsSelection();
         showFinalFrenzySelection();
       }
+      Log.println("È tutto pronto! La partita inizierà a breve.");
     });
-    endLoadingThread.start();*/
+    endLoadingThread.start();
   }
 
   @Override
   public void cancelInput() {
-    preGameInputManager.cancel("La partita è incominciata!");
+    if (endLoadingThread.isAlive()) {
+      Log.println("Tempo scaduto! È ora di iniziare la partita.");
+    }
     endLoadingThread.interrupt();
+    preGameInputManager.cancel(null);
   }
 
   /**
@@ -355,8 +358,6 @@ public class TUIBoardView extends BoardView {
         }
       }
     } catch (RemoteException | InputCancelledException e) {
-      // ignore
-    } finally {
       getClient().suspendOutput(false);
     }
   }
@@ -392,6 +393,7 @@ public class TUIBoardView extends BoardView {
       String input;
       try {
         input = preGameInputManager.waitForStringResult().trim();
+        getClient().suspendOutput(false);
       } catch (InputCancelledException e) {
         getClient().suspendOutput(false);
         return;
@@ -421,6 +423,7 @@ public class TUIBoardView extends BoardView {
       String input;
       try {
         input = preGameInputManager.waitForStringResult().trim().toLowerCase();
+        getClient().suspendOutput(false);
       } catch (InputCancelledException e) {
         getClient().suspendOutput(false);
         return;

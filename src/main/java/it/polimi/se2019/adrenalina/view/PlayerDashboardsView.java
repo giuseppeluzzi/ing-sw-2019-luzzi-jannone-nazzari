@@ -60,10 +60,9 @@ public abstract class PlayerDashboardsView extends Observable implements
     newTags.removeAll(player.getTags());
 
     try {
+      if (!newDamages.isEmpty()) {
       String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
       String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
-
-      if (!newDamages.isEmpty()) {
         if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
           boardView.getClient().showGameMessage(
               String.format(
@@ -77,7 +76,7 @@ public abstract class PlayerDashboardsView extends Observable implements
           if (newDamages.size() == 1) {
             boardView.getClient().showGameMessage(
                 String.format(
-                    "%s%s%s ha inflitto %d dann0 a %s%s%s!",
+                    "%s%s%s ha inflitto %d danno a %s%s%s!",
                     event.getKillerColor().getAnsiColor(),
                     killerName,
                     ANSIColor.RESET,
@@ -101,6 +100,8 @@ public abstract class PlayerDashboardsView extends Observable implements
       }
 
       if (!newTags.isEmpty()) {
+        String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
+        String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
         Log.debug("Numero di marchi: " + newTags.size());
         if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
           boardView.getClient().showGameMessage(
@@ -231,23 +232,6 @@ public abstract class PlayerDashboardsView extends Observable implements
     } catch (InvalidPlayerException e) {
       return;
     }
-
-    if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
-      boardView.getClient().showGameMessage(
-          String.format(
-              "Munizioni attuali: %s%d rosse%s, %s%d blu%s, %s%d gialle%s",
-              ANSIColor.RED,
-              event.getRed(),
-              ANSIColor.RESET,
-              ANSIColor.BLUE,
-              event.getBlue(),
-              ANSIColor.RESET,
-              ANSIColor.YELLOW,
-              event.getYellow(),
-              ANSIColor.RESET
-          ));
-    }
-
     player.updateAmmo(AmmoColor.BLUE, event.getBlue());
     player.updateAmmo(AmmoColor.RED, event.getRed());
     player.updateAmmo(AmmoColor.YELLOW, event.getYellow());

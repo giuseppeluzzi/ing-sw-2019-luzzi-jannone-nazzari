@@ -45,7 +45,7 @@
               <top>
                 <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                   <children>
-                    <Text fx:id="serverConfigTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Impostazioni di connessione">
+                    <Text fx:id="serverConfigTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Connessione">
                       <styleClass>
                         <String fx:value="text" />
                         <String fx:value="title" />

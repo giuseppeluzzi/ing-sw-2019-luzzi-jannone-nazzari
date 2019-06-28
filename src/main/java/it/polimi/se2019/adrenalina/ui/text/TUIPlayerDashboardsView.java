@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
+import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
@@ -129,16 +130,15 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
             prompt)
         );
 
-    String response;
 
     timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
         WAIT_TIMEOUT_MSG));
 
+    String response;
     do {
       inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
       try {
         response = inputManager.waitForStringResult().replace(" ", "");
-        timer.stop();
       } catch (InputCancelledException e) {
         return;
       }
@@ -148,6 +148,8 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
         || !verifyPaymentAnswers(answers, spendables)
         || !verifyPaymentFullfilled(answers, spendables, costs)
     );
+
+    timer.stop();
 
     for (String element : answers) {
       if (spendables.get(Integer.parseInt(element) - 1).isPowerUp()) {
@@ -313,6 +315,19 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (InputCancelledException e) {
       return;
     }
+    try {
+      if (! confirmAvailableFunds(chosenEffectsWithAnyTimes)) {
+        Log.println("Non puoi permetterti di pagare tutti gli effetti scelti!");
+        showEffectSelection(weapon, effects);
+        return;
+      }
+    } catch (InvalidPlayerException e) {
+      Log.warn(e.toString());
+      return;
+    } catch (RemoteException e) {
+      Log.exception(e);
+      return;
+    }
     List<String> chosenEffectsNames = new ArrayList<>();
     for (Effect effect : chosenEffectsWithAnyTimes) {
       chosenEffectsNames.add(effect.getName());
@@ -323,6 +338,34 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+  }
+
+  private boolean confirmAvailableFunds(List<Effect> chosenEffects) throws InvalidPlayerException, RemoteException {
+    Map<AmmoColor, Integer> availableFunds = new EnumMap<>(AmmoColor.class);
+    availableFunds.putAll(client.getBoardView().getBoard().getPlayerByColor(client.getPlayerColor()).getAmmos());
+    for (PowerUp powerUp : client.getBoardView().getBoard().getPlayerByColor(client.getPlayerColor()).getPowerUps()) {
+      availableFunds.put(powerUp.getColor(), 1);
+    }
+    Map<AmmoColor, Integer> paymentDue = new EnumMap<>(AmmoColor.class);
+    for (Effect effect : chosenEffects) {
+      paymentDue.putAll(effect.getCost());
+    }
+    int anyColorDue = 0;
+    for (Map.Entry<AmmoColor, Integer> entry : paymentDue.entrySet()) {
+      if (entry.getKey() == AmmoColor.ANY) {
+        anyColorDue++;
+      } else {
+        availableFunds.put(entry.getKey(), availableFunds.get(entry.getKey()) - entry.getValue());
+      }
+    }
+    int totalRemainingFunds = 0;
+    for (Map.Entry<AmmoColor, Integer> entry : availableFunds.entrySet()) {
+      if (entry.getValue() < 0) {
+        return false;
+      }
+      totalRemainingFunds += entry.getValue();
+    }
+    return totalRemainingFunds > anyColorDue;
   }
 
   /**
@@ -413,7 +456,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       }
 
       String current = String.format(weapon.getName() +
-              ", Costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
+              ", costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
           AmmoColor.RED.getAnsiColor(),
           costRed,
           ANSIColor.RESET,
@@ -513,11 +556,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       suspInputManager.input("Sei stato sospeso dalla partita. Premi invio per ricominciare a giocare...", 0, Integer.MAX_VALUE);
       try {
         suspInputManager.waitForStringResult();
+        ((Client) client).suspendOutput(false);
       } catch (InputCancelledException e) {
         ((Client) client).suspendOutput(false);
         return;
       }
-      ((Client) client).suspendOutput(false);
       Log.println("Bentornato!");
       try {
         notifyObservers(new PlayerUnsuspendEvent(client.getPlayerColor()));
