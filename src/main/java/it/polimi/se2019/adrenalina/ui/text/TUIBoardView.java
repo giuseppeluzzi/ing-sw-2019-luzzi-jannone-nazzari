@@ -311,10 +311,10 @@ public class TUIBoardView extends BoardView {
    * Show spawn point track selection prompt to the user.
    */
   @Override
-  public void showSpawnPointTrackSelection() {
+  public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
     AmmoColor chosen = null;
     try {
-      chosen = TUIUtils.showAmmoColorSelection(false);
+      chosen = TUIUtils.showAmmoColorSelection(false, damages);
     } catch (InputCancelledException e) {
       return;
     }

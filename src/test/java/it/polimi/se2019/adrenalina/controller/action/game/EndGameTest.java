@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.utils.Constants;
 import org.junit.Test;
 
 public class EndGameTest {
@@ -16,7 +17,7 @@ public class EndGameTest {
     Player player2 = new Player("blue", PlayerColor.BLUE, board);
     board.addPlayer(player);
     board.addPlayer(player2);
-    player2.addDamages(PlayerColor.PURPLE, 12);
+    player2.addDamages(PlayerColor.PURPLE, Constants.NORMAL_DEATH);
     EndGame endGame = new EndGame();
     endGame.execute(board);
     assertEquals(0, player2.getDamages().size());

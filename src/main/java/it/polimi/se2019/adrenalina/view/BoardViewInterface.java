@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -11,7 +12,9 @@ import it.polimi.se2019.adrenalina.utils.RemoteObservable;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface BoardViewInterface extends Observer, RemoteObservable, Serializable {
 
@@ -57,7 +60,7 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
 
     void showBuyableWeapons(List<Weapon> weapons) throws RemoteException;
 
-    void showSpawnPointTrackSelection() throws RemoteException;
+    void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) throws RemoteException;
 
     void showFinalRanks() throws RemoteException;
 

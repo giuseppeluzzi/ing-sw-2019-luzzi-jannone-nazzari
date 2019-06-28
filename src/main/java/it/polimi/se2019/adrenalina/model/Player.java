@@ -315,7 +315,6 @@ public class Player extends Observable implements Target {
       Log.exception(e);
     }
     if (damages.size() >= Constants.NORMAL_DEATH) {
-      setStatus(PlayerStatus.WAITING);
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
       } else if (board.getSkulls() == 1) {
@@ -444,8 +443,14 @@ public class Player extends Observable implements Target {
       }
     }
     if (!board.isDominationBoard()) {
-      board.addKillShot(
-          new Kill(damages.get(10), damages.get(Constants.NORMAL_DEATH) == damages.get(10)));
+      if (damages.size() <= Constants.OVERKILL_DEATH-1) {
+        board.addKillShot(
+            new Kill(damages.get(Constants.NORMAL_DEATH-1), false));
+      } else {
+        board.addKillShot(
+            new Kill(damages.get(Constants.NORMAL_DEATH-1),
+                damages.get(Constants.OVERKILL_DEATH-1) == damages.get(Constants.NORMAL_DEATH-1)));
+      }
     }
     decrementKillScore();
     damages.clear();

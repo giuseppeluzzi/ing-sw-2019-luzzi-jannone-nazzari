@@ -17,6 +17,7 @@ import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowReloadWeaponSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowSpawnPointTrackSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
@@ -236,7 +237,9 @@ public class ClientSocket extends Client implements Runnable, Observer {
                     .getActions());
             break;
           case SHOW_SPAWN_POINT_TRACK_SELECTION_INVOCATION:
-            getBoardView().showSpawnPointTrackSelection();
+            ShowSpawnPointTrackSelectionInvocation showSpawnPointTrackSelectionInvocation = gson
+                .fromJson(message, ShowSpawnPointTrackSelectionInvocation.class);
+            getBoardView().showSpawnPointTrackSelection(showSpawnPointTrackSelectionInvocation.getDamages());
             break;
           case SHOW_SWAP_WEAPON_SELECTION_INVOCATION:
             ShowSwapWeaponSelectionInvocation showSwapWeaponSelectionInvocation = gson

@@ -140,12 +140,11 @@ public class TurnController implements Serializable {
       if (currentPlayer.getSquare().getPlayers().size() == 1
           && currentPlayer.getSquare().isSpawnPoint()
           && currentPlayer.getSquare().getColor().getEquivalentAmmoColor() != null) {
+
         ((DominationBoard) boardController.getBoard())
             .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
                 currentPlayer.getColor());
       }
-
-      currentPlayer.addDamages(currentPlayer.getColor(), 1);
     }
 
     for (Weapon weapon : currentPlayer.getWeapons()) {
