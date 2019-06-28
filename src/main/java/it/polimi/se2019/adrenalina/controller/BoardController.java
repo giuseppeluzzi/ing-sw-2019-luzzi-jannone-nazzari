@@ -87,10 +87,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void loadPowerUps() {
     for (AmmoColor color : AmmoColor.getValidColor()) {
       for (int i = 0; i < 4; i++) {
-        board.addPowerUp(new Teleporter(color));
+        //board.addPowerUp(new Teleporter(color));
         //board.addPowerUp(new TagbackGrenade(color));
         //board.addPowerUp(new Newton(color));
-        //board.addPowerUp(new TargetingScope(color));
+        board.addPowerUp(new TargetingScope(color));
       }
     }
   }
@@ -373,6 +373,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
     maps.clear();
     Log.info("Selected map #" + selectedMap);
+    board.setMapId(selectedMap);
 
     run();
   }

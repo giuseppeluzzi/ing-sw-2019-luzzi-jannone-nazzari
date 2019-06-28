@@ -7,7 +7,6 @@ import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
@@ -25,7 +24,6 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
-
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -510,6 +508,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Returns a List of drawn powerUps in the Board.
+   *
    * @return a List of drawn powerUps in the Board
    */
   public List<PowerUp> getTakenPowerUps() {
@@ -518,6 +517,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Returns a PowerUp whose name and color is the same as the specified one.
+   *
    * @param powerUpType type of the requested powerup
    * @param powerUpColor color of the requested powerup
    * @return PowerUp with name equals to "name" and powerUpColor equals "powerUpColor", null if
