@@ -195,6 +195,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
     Buyable buyable = new PowerUpUsage(powerUp);
     player.setCurrentBuying(buyable);
+    player.setOldExecutable(player.getCurrentExecutable());
     player.setCurrentExecutable(powerUp);
     boardController.getTurnController()
         .addTurnActions(new Payment(boardController.getTurnController(), player, buyable));

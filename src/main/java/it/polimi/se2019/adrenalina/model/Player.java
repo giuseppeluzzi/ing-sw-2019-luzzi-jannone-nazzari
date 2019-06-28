@@ -55,6 +55,7 @@ public class Player extends Observable implements Target {
 
   @NotExpose
   private ExecutableObject currentExecutable;
+  private ExecutableObject oldExecutable;
   @NotExpose
   private Buyable currentBuying;
 
@@ -845,6 +846,15 @@ public class Player extends Observable implements Target {
 
   public void setCurrentBuying(Buyable currentBuying) {
     this.currentBuying = currentBuying;
+  }
+
+
+  public ExecutableObject getOldExecutable() {
+    return oldExecutable;
+  }
+
+  public void setOldExecutable(ExecutableObject oldExecutable) {
+    this.oldExecutable = oldExecutable;
   }
 
   /**

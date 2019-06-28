@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
+import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.Weapon;
 
 /**
@@ -31,6 +32,9 @@ public class AfterUsageExecutable extends GameActionAsync {
         } else {
           getPlayer().removePowerUp((PowerUp) executableObject);
           board.undrawPowerUp((PowerUp) executableObject);
+          if (((PowerUp) executableObject).getType() == PowerUpType.TARGETING_SCOPE) {
+            getPlayer().setCurrentExecutable(getPlayer().getOldExecutable());
+          }
         }
       }
     } catch (InvalidPowerUpException ignore) {
