@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -96,5 +97,9 @@ public class Log {
 
   public static void exception(IOException exception) {
     severe("IO", exception.getMessage());
+  }
+
+  public static void exception(InvocationTargetException exception) {
+    exception.getCause().printStackTrace();
   }
 }

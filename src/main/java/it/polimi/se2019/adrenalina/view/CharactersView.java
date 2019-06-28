@@ -129,9 +129,10 @@ public abstract class CharactersView extends Observable implements CharactersVie
       }
     } catch (RemoteException
         | NoSuchMethodException
-        | InvocationTargetException
         | IllegalAccessException ignored) {
       //
+    } catch (InvocationTargetException e) {
+      Log.exception(e);
     }
   }
 }

@@ -601,8 +601,10 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);
-      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+      } catch (NoSuchMethodException | IllegalAccessException ignored) {
         //
+      } catch (InvocationTargetException e) {
+        Log.exception(e);
       }
     }
   }

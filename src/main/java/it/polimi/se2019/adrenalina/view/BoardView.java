@@ -298,9 +298,10 @@ public abstract class BoardView extends Observable implements BoardViewInterface
       }
     } catch (RemoteException
         | NoSuchMethodException
-        | InvocationTargetException
         | IllegalAccessException ignored) {
       //
+    } catch (InvocationTargetException e) {
+      Log.exception(e);
     }
   }
 

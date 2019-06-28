@@ -490,8 +490,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);
-      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+      } catch (NoSuchMethodException | IllegalAccessException ignored) {
         //
+      } catch (InvocationTargetException e) {
+        Log.exception(e);
       }
     }
   }
