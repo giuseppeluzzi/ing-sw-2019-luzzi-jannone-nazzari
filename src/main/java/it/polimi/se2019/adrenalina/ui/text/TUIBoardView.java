@@ -47,7 +47,7 @@ public class TUIBoardView extends BoardView {
       }
       Log.println("È tutto pronto! La partita inizierà a breve.");
     });
-    endLoadingThread.start();
+    //endLoadingThread.start();
   }
 
   @Override
@@ -88,7 +88,8 @@ public class TUIBoardView extends BoardView {
             notifyObservers(new SelectPlayerEvent(getClient().getPlayerColor(),
                 chosenTarget.getPlayer().getColor()));
           } else {
-            notifyObservers(new SelectSquareEvent(getClient().getPlayerColor(),
+            notifyObservers(
+                new SelectSquareEvent(getClient().getPlayerColor(),
                 chosenTarget.getSquare().getPosX(), chosenTarget.getSquare().getPosY()));
           }
           break;
@@ -368,10 +369,10 @@ public class TUIBoardView extends BoardView {
   private void showGameMapSelection() {
     List<String> mapNames = new ArrayList<>(
         Arrays.asList(
-            "Mappa 1" + ", consigliata per 3/4 giocatori",
-            "Mappa 2" + ", consigliata per un numero qualsiasi di giocatori",
-            "Mappa 3" + ", consigliata per 4/5 giocatori",
-            "Mappa 4" + ", consigliata per per un numero qualsiasi di giocatori"));
+            "Mappa 1 (3 - 4 giocatori)",
+            "Mappa 2",
+            "Mappa 3 (4 - 5 giocatori)",
+            "Mappa 4"));
     preGameInputManager.input("Scegli la mappa da usare in questa partita", mapNames);
     try {
       getClient().suspendOutput(true);
