@@ -48,10 +48,13 @@ public class ClientRMI extends Client {
       while (running) {
         try {
           sleep(1000);
+          server.ping(this);
         } catch (InterruptedException e) {
           Log.severe("ClientRMI", "Pooling interrupted! Thread stopped.");
           Thread.currentThread().interrupt();
           break;
+        } catch (RemoteException e) {
+          disconnect("La connessione con il server è stata persa!");
         }
       }
     });

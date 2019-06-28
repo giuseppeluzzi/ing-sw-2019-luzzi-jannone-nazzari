@@ -12,4 +12,6 @@ public interface ServerInterface extends Remote {
       throws RemoteException, InvalidPlayerException;
   BoardController getGameByClient(ClientInterface client) throws RemoteException, InvalidPlayerException;
   BoardController getGameByPlayer(Player player) throws RemoteException, InvalidPlayerException;
+
+  void ping(ClientInterface client) throws RemoteException;
 }

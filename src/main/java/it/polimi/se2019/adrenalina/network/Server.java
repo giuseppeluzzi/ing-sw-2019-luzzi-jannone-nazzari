@@ -216,6 +216,16 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     return null;
   }
 
+  @Override
+  public void ping(ClientInterface client) {
+    try {
+      client.ping();
+    } catch (IOException e) {
+      Log.exception(e);
+    }
+
+  }
+
   /**
    * Stops the server pinging.
    */
