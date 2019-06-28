@@ -22,21 +22,27 @@ public class AppClient {
   public AppClient(String... args) {
     Log.setName("ClientRMI");
 
+    String ipAddress;
+    Integer port = null;
     String name = "";
     int connectionMode = 0;
     boolean domination = false;
 
-    if (args.length < 3) {
+    if (args.length < 5) {
       TUIInputManager inputManager = new TUIInputManager();
+      ipAddress = getInteractiveIpAddress(inputManager);
+      port = getInteractivePort(inputManager);
       connectionMode = getInteractiveConnectionMode(inputManager);
       name = getInteractivePlayerName(inputManager);
       domination = getInteractiveDomination(inputManager);
     } else {
-      name = args[0];
-      connectionMode = Integer.parseInt(args[1]);
-      if (args[2].charAt(0) == '0') {
+      ipAddress = args[0];
+      port = Integer.parseInt(args[1]);
+      name = args[2];
+      connectionMode = Integer.parseInt(args[3]);
+      if (args[4].charAt(0) == '0') {
         domination = false;
-      } else if (args[2].charAt(0) == '1') {
+      } else if (args[4].charAt(0) == '1') {
         domination = true;
       } else {
         Log.severe("Modalità di gioco non valida. Supportate: (0) Classica; (1) Dominazione");
@@ -50,7 +56,7 @@ public class AppClient {
       case 0:
         // RMI
         try {
-          ClientRMI clientRMI = new ClientRMI(name, domination, true);
+          ClientRMI clientRMI = new ClientRMI(ipAddress, port, name, domination, true);
           client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
           clientRMI.getServer().addClient(client);
         } catch (RemoteException e) {
@@ -61,7 +67,7 @@ public class AppClient {
         break;
       case 1:
         // Socket
-        client = new ClientSocket(name, domination, true);
+        client = new ClientSocket(ipAddress, port, name, domination, true);
         ((Runnable) client).run();
         break;
       default:
@@ -76,6 +82,40 @@ public class AppClient {
         Log.exception(e);
       }
     }
+  }
+
+  private String getInteractiveIpAddress(TUIInputManager inputManager) {
+    inputManager.input(
+            "Inserisci l'indirizzo IP del server (lascia vuoto per usare quello dalla config)",
+            0,
+            Integer.MAX_VALUE);
+    String ipAddress;
+    try {
+      ipAddress = inputManager.waitForStringResult().trim();
+      if (ipAddress.isEmpty()) {
+        return null;
+      }
+    } catch (InputCancelledException ignored) {
+      throw new IllegalStateException("Input cancelled during ip address selection");
+    }
+    return ipAddress;
+  }
+
+  private Integer getInteractivePort(TUIInputManager inputManager) {
+    inputManager.input(
+            "Inserisci la porta da usare (lascia vuoto per usare quella dalla config)",
+            0,
+            Integer.MAX_VALUE);
+    String port;
+    try {
+      port = inputManager.waitForStringResult().trim();
+      if (port.isEmpty()) {
+        return null;
+      }
+    } catch (InputCancelledException ignored) {
+      throw new IllegalStateException("Input cancelled during ip address selection");
+    }
+    return Integer.parseInt(port);
   }
 
   private int getInteractiveConnectionMode(TUIInputManager inputManager) {
