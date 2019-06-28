@@ -373,6 +373,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
     maps.clear();
     Log.info("Selected map #" + selectedMap);
+    board.setMapId(selectedMap);
 
     run();
   }

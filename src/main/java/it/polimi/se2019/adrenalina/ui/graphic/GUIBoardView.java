@@ -17,7 +17,6 @@ import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSpawnPoin
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +59,8 @@ public class GUIBoardView extends BoardView {
   @Override
   public void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) {
     // TODO in board
+    AppGUI.getBoardFXController().highlightSelectableSquares(targets);
+    AppGUI.getBoardFXController().enableSquareSelection(targets, false);
   }
 
   @Override
@@ -71,6 +72,8 @@ public class GUIBoardView extends BoardView {
   @Override
   public void showSquareSelect(List<Target> targets) {
     // TODO in board
+    AppGUI.getBoardFXController().highlightSelectableSquares(targets);
+    AppGUI.getBoardFXController().enableSquareSelection(targets, false);
   }
 
   @Override

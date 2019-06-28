@@ -38,7 +38,7 @@ public class Payment extends GameAction {
       Log.debug("Sono nella payment free");
       Log.debug("Il mio item è:" + item.getBuyableType());
       item.afterPaymentCompleted(getTurnController(), board, getPlayer());
-    } else {
+    } else if (canAffordToPay()) {
       Log.debug("Sono nella payment a pagamento");
       getPlayer().setCurrentBuying(item);
       try {
@@ -53,6 +53,9 @@ public class Payment extends GameAction {
       } catch (RemoteException e) {
         Log.exception(e);
       }
+    } else {
+      // skip the action
+      getTurnController().executeGameActionQueue();
     }
   }
 
@@ -62,5 +65,13 @@ public class Payment extends GameAction {
         && item.getCost(AmmoColor.BLUE) == 0
         && item.getCost(AmmoColor.YELLOW) == 0
         && item.getCost(AmmoColor.ANY) == 0;
+  }
+
+  /**
+   * Confirms that the player is able to complete the payment.
+   * @return true if the player can complete the payment, false otherwise
+   */
+  private boolean canAffordToPay() {
+    return item.getCost(AmmoColor.RED) <= getPlayer().getAmmo(AmmoColor.RED) + getPlayer().getPowerUps().stream().filter(x -> x.getColor() == AmmoColor.RED).count() && item.getCost(AmmoColor.BLUE) <= getPlayer().getAmmo(AmmoColor.BLUE) + getPlayer().getPowerUps().stream().filter(x -> x.getColor() == AmmoColor.BLUE).count() && item.getCost(AmmoColor.YELLOW) <= getPlayer().getAmmo(AmmoColor.YELLOW) + getPlayer().getPowerUps().stream().filter(x -> x.getColor() == AmmoColor.YELLOW).count() && item.getCost(AmmoColor.ANY) <= getPlayer().getAmmos().values().stream().mapToInt(Integer::intValue).sum() + getPlayer().getPowerUps().size();
   }
 }
