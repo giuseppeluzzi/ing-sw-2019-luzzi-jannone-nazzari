@@ -176,9 +176,11 @@ public class TUIBoardView extends BoardView {
       if (target.getSquare().isSpawnPoint()) {
         fetchHelper = "(Spawnpoint)";
       } else if (fetch) {
-        fetchHelper =
-            "(" + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
-                + ")";
+        if (target.getSquare().getAmmoCard() != null) {
+          fetchHelper =
+              "(" + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
+                  + ")";
+        }
       }
       choices.add(
           String.format("%sx: %d y:%d %s%s%s",
@@ -363,7 +365,12 @@ public class TUIBoardView extends BoardView {
    * Asks master player to choose a game map.
    */
   private void showGameMapSelection() {
-    List<String> mapNames = new ArrayList<>(Arrays.asList("Mappa 1", "Mappa 2", "Mappa 3", "Mappa 4"));
+    List<String> mapNames = new ArrayList<>(
+        Arrays.asList(
+            "Mappa 1" + ", consigliata per 3/4 giocatori",
+            "Mappa 2" + ", consigliata per un numero qualsiasi di giocatori",
+            "Mappa 3" + ", consigliata per 4/5 giocatori",
+            "Mappa 4" + ", consigliata per per un numero qualsiasi di giocatori"));
     preGameInputManager.input("Scegli la mappa da usare in questa partita", mapNames);
     try {
       getClient().suspendOutput(true);
