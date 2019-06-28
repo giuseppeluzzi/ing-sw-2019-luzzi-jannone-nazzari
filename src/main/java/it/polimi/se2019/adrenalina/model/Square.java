@@ -419,6 +419,14 @@ public class Square extends Observable implements Target {
     return output;
   }
 
+  /**
+   * Returns a string containing the correctly formatted coordinates of the square
+   * @return
+   */
+  public String getCoordinatesAsString() {
+    return "posX: " + posX + ", posY: " + posY;
+  }
+
   public String serialize() {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.addSerializationExclusionStrategy(new NotExposeExclusionStrategy())

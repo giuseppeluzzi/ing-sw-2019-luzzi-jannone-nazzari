@@ -419,9 +419,10 @@ public abstract class PlayerDashboardsView extends Observable implements
       }
     } catch (RemoteException
         | NoSuchMethodException
-        | InvocationTargetException
         | IllegalAccessException ignored) {
       //
+    } catch (InvocationTargetException e) {
+      Log.exception(e);
     }
   }
 

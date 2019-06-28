@@ -36,6 +36,9 @@ public class MoveAction implements WeaponAction {
               object.getTargetHistory(target).getPlayer(),
               object.getTargetHistory(target).getPlayer().getSquare());
         }
+        Log.debug("Destination: " + destination);
+        Log.debug("Destination not null?: " + object.getTargetHistory(destination));
+        Log.debug("Destination square: " + object.getTargetHistory(destination).getSquare().getCoordinatesAsString());
         object.getTargetHistory(target).getPlayer()
             .setSquare(object.getTargetHistory(destination).getSquare());
       } catch (InvalidSquareException e) {

@@ -30,12 +30,16 @@ public class Payment extends GameAction {
 
   @Override
   public void execute(Board board) {
+    Log.debug("Sono nella payment");
     if (! isEnabled()) {
       getTurnController().executeGameActionQueue();
     }
     if (isFree()) {
+      Log.debug("Sono nella payment free");
+      Log.debug("Il mio item è:" + item.getBuyableType());
       item.afterPaymentCompleted(getTurnController(), board, getPlayer());
     } else {
+      Log.debug("Sono nella payment a pagamento");
       getPlayer().setCurrentBuying(item);
       try {
         List<PowerUp> spendablePowerUps =  getPlayer().getPowerUps();

@@ -195,6 +195,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
     Buyable buyable = new PowerUpUsage(powerUp);
     player.setCurrentBuying(buyable);
+    player.setOldExecutable(player.getCurrentExecutable());
     player.setCurrentExecutable(powerUp);
     boardController.getTurnController()
         .addTurnActions(new Payment(boardController.getTurnController(), player, buyable));
@@ -490,8 +491,10 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       try {
         getClass().getMethod("update", event.getEventType().getEventClass())
             .invoke(this, event);
-      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+      } catch (NoSuchMethodException | IllegalAccessException ignored) {
         //
+      } catch (InvocationTargetException e) {
+        Log.exception(e);
       }
     }
   }
