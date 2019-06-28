@@ -53,9 +53,7 @@ public class TUIBoardView extends BoardView {
   @Override
   public void cancelInput() {
     preGameInputManager.cancel("La partita è incominciata!");
-    if (endLoadingThread != null) {
-      endLoadingThread.interrupt();
-    }
+    endLoadingThread.interrupt();
   }
 
   /**

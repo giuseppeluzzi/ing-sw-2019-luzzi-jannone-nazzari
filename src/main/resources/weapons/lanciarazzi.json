@@ -43,7 +43,6 @@
                     "differentFrom": [],
                     "between": [],
                     "optional": true,
-                    "skippable": true,
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "MOVE_SQUARE",
