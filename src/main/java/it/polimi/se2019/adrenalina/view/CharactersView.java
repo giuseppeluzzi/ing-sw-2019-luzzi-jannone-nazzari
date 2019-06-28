@@ -74,8 +74,11 @@ public abstract class CharactersView extends Observable implements CharactersVie
 
     try {
       boardView.getBoard().getPlayerByColor(event.getPlayerColor()).setSquare(newSquare);
+      boardView.showBoard();
     } catch (InvalidPlayerException e) {
       Log.critical("Player not found!");
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 

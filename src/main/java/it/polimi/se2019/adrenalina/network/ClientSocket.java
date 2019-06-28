@@ -5,14 +5,41 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.event.*;
-import it.polimi.se2019.adrenalina.event.invocations.*;
+import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.PingEvent;
+import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
+import it.polimi.se2019.adrenalina.event.PlayerDisconnectEvent;
+import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowPaymentOptionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowPowerUpSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowReloadWeaponSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowSquareSelectInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowSwapWeaponSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowTargetSelectInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowTurnActionSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.ShowWeaponSelectionInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.SwitchToFinalFrenzyInvocation;
+import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Target;
-import it.polimi.se2019.adrenalina.utils.*;
 
-import java.io.*;
+import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonPowerUpDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonTargetDeserializer;
+import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
+import it.polimi.se2019.adrenalina.utils.Observer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
@@ -101,9 +128,12 @@ public class ClientSocket extends Client implements Runnable, Observer {
 
   private void mainLoop() {
     try {
-      while (socket.isConnected() && running) {
-        String message = bufferedReader.readLine();
-
+      String message = null;
+      while (socket != null && socket.isConnected() && running) {
+        message = bufferedReader.readLine();
+        if (message == null) {
+          break;
+        }
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Effect.class, new JsonEffectDeserializer());
         gsonBuilder.registerTypeAdapter(PowerUp.class, new JsonPowerUpDeserializer());
@@ -233,6 +263,9 @@ public class ClientSocket extends Client implements Runnable, Observer {
             getCharactersView().update(event);
             getPlayerDashboardsView().update(event);
         }
+      }
+      if (socket == null || message == null) {
+        disconnect("La connessione con il server è stata persa!");
       }
     } catch (IOException e) {
       disconnect("La connessione con il server è stata persa!");

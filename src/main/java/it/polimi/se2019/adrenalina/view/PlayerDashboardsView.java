@@ -72,44 +72,75 @@ public abstract class PlayerDashboardsView extends Observable implements
                   event.getKillerColor().getAnsiColor(),
                   killerName,
                   ANSIColor.RESET));
+          boardView.showBoard();
         } else {
-          boardView.getClient().showGameMessage(
-              String.format(
-                  "%s%s%s ha inflitto %d danni a %s%s%s!",
-                  event.getKillerColor().getAnsiColor(),
-                  killerName,
-                  ANSIColor.RESET,
-                  newDamages.size(),
-                  event.getPlayerColor().getAnsiColor(),
-                  playerName,
-                  ANSIColor.RESET));
+          if (newDamages.size() == 1) {
+            boardView.getClient().showGameMessage(
+                String.format(
+                    "%s%s%s ha inflitto %d dann0 a %s%s%s!",
+                    event.getKillerColor().getAnsiColor(),
+                    killerName,
+                    ANSIColor.RESET,
+                    newDamages.size(),
+                    event.getPlayerColor().getAnsiColor(),
+                    playerName,
+                    ANSIColor.RESET));
+          } else {
+            boardView.getClient().showGameMessage(
+                String.format(
+                    "%s%s%s ha inflitto %d danni a %s%s%s!",
+                    event.getKillerColor().getAnsiColor(),
+                    killerName,
+                    ANSIColor.RESET,
+                    newDamages.size(),
+                    event.getPlayerColor().getAnsiColor(),
+                    playerName,
+                    ANSIColor.RESET));
+          }
         }
       }
 
       if (!newTags.isEmpty()) {
+        Log.debug("Numero di marchi: " + newTags.size());
         if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
           boardView.getClient().showGameMessage(
               String.format(
                   "Hai ricevuto %d marchi da %s%s%s!",
-                  newDamages.size(),
-                  event.getKillerColor().getAnsiColor(),
-                  killerName,
-                  ANSIColor.RESET));
-        } else {
-          boardView.getClient().showGameMessage(
-              String.format(
-                  "%s%s%s ha inflitto %d marchi a %s%s%s!",
-                  event.getPlayerColor().getAnsiColor(),
-                  killerName,
-                  ANSIColor.RESET,
                   newTags.size(),
                   event.getKillerColor().getAnsiColor(),
-                  playerName,
+                  killerName,
                   ANSIColor.RESET));
+          boardView.showBoard();
+        } else {
+          if (newTags.size() == 1) {
+            boardView.getClient().showGameMessage(
+                String.format(
+                    "%s%s%s ha inflitto %d marchio a %s%s%s!",
+                    event.getPlayerColor().getAnsiColor(),
+                    killerName,
+                    ANSIColor.RESET,
+                    newTags.size(),
+                    event.getKillerColor().getAnsiColor(),
+                    playerName,
+                    ANSIColor.RESET));
+          } else {
+            boardView.getClient().showGameMessage(
+                String.format(
+                    "%s%s%s ha inflitto %d marchi a %s%s%s!",
+                    event.getPlayerColor().getAnsiColor(),
+                    killerName,
+                    ANSIColor.RESET,
+                    newTags.size(),
+                    event.getKillerColor().getAnsiColor(),
+                    playerName,
+                    ANSIColor.RESET));
+          }
         }
       }
     } catch (InvalidPlayerException ignored) {
       //
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
 
     player.updateDamages(event.getDamages());
@@ -378,9 +409,12 @@ public abstract class PlayerDashboardsView extends Observable implements
                     event.getCurrentPlayerColor().getAnsiColor(),
                     newPlayer.getName(),
                     ANSIColor.RESET));
+            boardView.showBoard();
           }
         } catch (InvalidPlayerException ignored) {
           //
+        } catch (RemoteException e) {
+          Log.exception(e);
         }
       }
       boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());

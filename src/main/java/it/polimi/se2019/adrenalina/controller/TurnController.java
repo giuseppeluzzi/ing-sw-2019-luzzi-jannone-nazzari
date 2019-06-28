@@ -254,6 +254,10 @@ public class TurnController implements Serializable {
     }
   }
 
+  public int getActionQueueSize() {
+    return turnActionsQueue.size();
+  }
+
   /**
    * Disables all game actions that can be disabled (ExecutableEffect actions)
    */
