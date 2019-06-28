@@ -36,6 +36,7 @@ public class CheckRespawn extends GameAction {
         }
       }
       getTurnController().addRespawn(player);
+      getTurnController().executeGameActionQueue();
     }
   }
 
