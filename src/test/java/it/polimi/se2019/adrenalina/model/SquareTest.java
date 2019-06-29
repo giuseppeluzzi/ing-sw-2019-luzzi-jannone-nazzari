@@ -251,14 +251,14 @@ public class SquareTest {
     Square square3 = new Square(2, 2, SquareColor.BLUE, WALL, WALL, WALL, WALL, board);
     assertEquals("unexpected result from getSquare", square1, square1.getSquare());
     assertEquals("unexpected board", board, square1.getBoard());
-    square1.addDamages(PlayerColor.BLUE, 1);
+    square1.addDamages(PlayerColor.BLUE, 1, false);
     square1.addTags(PlayerColor.GREEN, 1);
     assertEquals("unexpected result from getSquare", square2, square2.getSquare());
     assertEquals("unexpected board", board, square2.getBoard());
-    square2.addDamages(PlayerColor.BLUE, 1);
+    square2.addDamages(PlayerColor.BLUE, 1, false);
     assertEquals("unexpected result from getSquare", square3, square3.getSquare());
     assertEquals("unexpected board", board, square3.getBoard());
-    square3.addDamages(PlayerColor.BLUE, 1);
+    square3.addDamages(PlayerColor.BLUE, 1, false);
     assertEquals("unexpected result after addDamages", 1, board.getRedDamages().size());
     assertEquals("unexpected result after addDamages", PlayerColor.BLUE, board.getRedDamages().get(0));
   }
@@ -269,7 +269,7 @@ public class SquareTest {
     Square square1 = new Square(2, 2, SquareColor.PURPLE, WALL, WALL, WALL, WALL, board);
     assertEquals("unexpected result from getSquare", square1, square1.getSquare());
     assertEquals("unexpected board", board, square1.getBoard());
-    square1.addDamages(PlayerColor.BLUE, 1);
+    square1.addDamages(PlayerColor.BLUE, 1, false);
     square1.addTags(PlayerColor.GREEN, 1);
   }
 

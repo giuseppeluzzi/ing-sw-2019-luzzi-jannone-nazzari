@@ -21,7 +21,8 @@
                     "useLastDirection": false,
                     "differentRoom": false,
                     "selectType": "ATTACK_TARGET",
-                    "type": "SELECT"
+                    "type": "SELECT",
+                    "stopPropagation": true
                 },
                 {
                     "target": 1,
@@ -52,7 +53,8 @@
                             "useLastDirection": false,
                             "differentRoom": false,
                             "selectType": "ATTACK_TARGET",
-                            "type": "SELECT"
+                            "type": "SELECT",
+                            "stopPropagation": true
                         },
                         {
                             "target": 2,
@@ -84,7 +86,8 @@
                                     "useLastDirection": false,
                                     "differentRoom": false,
                                     "selectType": "ATTACK_TARGET",
-                                    "type": "SELECT"
+                                    "type": "SELECT",
+                                    "stopPropagation": true
                                 },
                                 {
                                     "target": 3,

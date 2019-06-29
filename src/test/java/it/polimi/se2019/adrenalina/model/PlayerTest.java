@@ -37,8 +37,8 @@ public class PlayerTest {
 
   @Test
   public void testAddDamage() {
-    player.addDamages(PlayerColor.BLUE, 2);
-    player.addDamages(PlayerColor.YELLOW, 1);
+    player.addDamages(PlayerColor.BLUE, 2, false);
+    player.addDamages(PlayerColor.YELLOW, 1, false);
     List<PlayerColor> damages = new ArrayList<>();
     damages.add(PlayerColor.BLUE);
     damages.add(PlayerColor.BLUE);
@@ -116,8 +116,8 @@ public class PlayerTest {
     String json;
 
     player.addWeapon(weapon);
-    player.addDamages(PlayerColor.BLUE, 2);
-    player.addDamages(PlayerColor.YELLOW, 1);
+    player.addDamages(PlayerColor.BLUE, 2, false);
+    player.addDamages(PlayerColor.YELLOW, 1, false);
     player.addTags(PlayerColor.BLUE, 2);
     player.addTags(PlayerColor.YELLOW, 1);
     json = player.serialize();
@@ -223,9 +223,9 @@ public class PlayerTest {
   @Test
   public void testAddDamages() {
     player.addTags(PlayerColor.GREY, 5);
-    player.addDamages(PlayerColor.GREY, 1);
+    player.addDamages(PlayerColor.GREY, 1, false);
     player.isDead();
-    assertEquals(4, player.getDamages().size());
+    assertEquals(3, player.getDamages().size());
   }
 
   @Test
@@ -267,11 +267,11 @@ public class PlayerTest {
     player4 = new Player("yellow", PlayerColor.YELLOW, board);
     player.setMaster(true);
     board.setDoubleKill(player2);
-    player.addDamages(PlayerColor.BLUE, Constants.NORMAL_DEATH);
+    player.addDamages(PlayerColor.BLUE, Constants.NORMAL_DEATH, false);
     board.setSkulls(1);
-    player.addDamages(PlayerColor.GREY, 1);
+    player.addDamages(PlayerColor.GREY, 1, false);
     board.setFinalFrenzySelected(true);
-    player.addDamages(PlayerColor.YELLOW, 1);
+    player.addDamages(PlayerColor.YELLOW, 1, false);
     assertTrue(player.isDead());
     player2.updateDamages(player.getDamages());
     player.assignPoints();
@@ -292,7 +292,7 @@ public class PlayerTest {
   public void testHandleLastSkull() {
     board.setFinalFrenzySelected(true);
     board.setSkulls(1);
-    player.addDamages(PlayerColor.GREY, Constants.NORMAL_DEATH);
+    player.addDamages(PlayerColor.GREY, Constants.NORMAL_DEATH, false);
   }
 
   @Test

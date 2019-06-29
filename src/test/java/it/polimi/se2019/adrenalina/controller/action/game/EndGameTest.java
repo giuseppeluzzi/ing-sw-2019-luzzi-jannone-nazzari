@@ -17,7 +17,7 @@ public class EndGameTest {
     Player player2 = new Player("blue", PlayerColor.BLUE, board);
     board.addPlayer(player);
     board.addPlayer(player2);
-    player2.addDamages(PlayerColor.PURPLE, Constants.NORMAL_DEATH);
+    player2.addDamages(PlayerColor.PURPLE, Constants.NORMAL_DEATH, false);
     EndGame endGame = new EndGame();
     endGame.execute(board);
     assertEquals(0, player2.getDamages().size());

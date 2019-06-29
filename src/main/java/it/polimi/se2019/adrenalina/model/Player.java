@@ -158,6 +158,7 @@ public class Player extends Observable implements Target {
     return square;
   }
 
+  @Override
   public void setSquare(Square square) {
     if (this.square != null) {
       this.square.removePlayer(this);
@@ -290,18 +291,29 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds a new damage to a player including damages given by tags and, possibly, inflicts death.
-   *
-   * @param killerColor color of the killer that inflicted the damage
+   * @param killerColor color of the player that inflicted the damage
    */
   @Override
-  public void addDamages(PlayerColor killerColor, int num) {
-    int maxDamages = Constants.OVERKILL_DEATH - damages.size();
-    for (int i = 0; i < Math.min(num, maxDamages); i++) {
+  public void addDamages(PlayerColor killerColor, int num, boolean powerup) {
+    if (powerup) {
       damages.add(killerColor);
+    } else {
+      int maxDamages = Constants.OVERKILL_DEATH - damages.size();
+      for (int i = 0; i < Math.min(num, maxDamages); i++) {
+        damages.add(killerColor);
+      }
+      if (num > 0) {
+        addDamagesFromTags(killerColor);
+      }
     }
-    if (num > 0) {
-      addDamagesFromTags(killerColor);
-    }
+    handleDamagesUpdate(killerColor);
+  }
+
+  /**
+   * Private method that notifies all the observers with correct updates in case of death and damages updates
+   * @param killerColor player that inflicted the damage
+   */
+  private void handleDamagesUpdate(PlayerColor killerColor) {
     if (damages.size() == Constants.OVERKILL_DEATH) {
       try {
         board.getPlayerByColor(damages.get(Constants.NORMAL_DEATH)).addTags(color, 1);

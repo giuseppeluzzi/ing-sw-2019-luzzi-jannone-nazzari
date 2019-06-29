@@ -4,7 +4,12 @@ import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
-import it.polimi.se2019.adrenalina.event.modelview.*;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -60,7 +65,11 @@ public class GUIBoardView extends BoardView {
   public void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) {
     // TODO in board
     AppGUI.getBoardFXController().highlightSelectableSquares(targets);
-    AppGUI.getBoardFXController().enableSquareSelection(targets, false);
+    if (type == TargetType.ATTACK_TARGET) {
+      AppGUI.getBoardFXController().enablePlayerSelection(targets, skippable);
+    } else {
+      AppGUI.getBoardFXController().enableSquareSelection(targets, false, skippable);
+    }
   }
 
   @Override
@@ -73,7 +82,7 @@ public class GUIBoardView extends BoardView {
   public void showSquareSelect(List<Target> targets) {
     // TODO in board
     AppGUI.getBoardFXController().highlightSelectableSquares(targets);
-    AppGUI.getBoardFXController().enableSquareSelection(targets, false);
+    AppGUI.getBoardFXController().enableSquareSelection(targets, true, false);
   }
 
   @Override

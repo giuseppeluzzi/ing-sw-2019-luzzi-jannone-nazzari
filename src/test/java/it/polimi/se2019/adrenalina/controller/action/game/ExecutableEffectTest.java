@@ -28,7 +28,7 @@ public class ExecutableEffectTest {
    Square square  = new Square(2, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
    Square square2 = new Square(2, 3, SquareColor.RED, WALL, WALL, WALL, WALL, null);
    Weapon weapon = new Weapon(1,0,0, AmmoColor.BLUE,"test","f");
-   ExecutableEffect executableEffect = new ExecutableEffect(turnController, player, weapon, new ShootAction(1,1,1));
+   ExecutableEffect executableEffect = new ExecutableEffect(turnController, player, weapon, new ShootAction(1,1,1, false));
    weapon.setTargetHistory(0,player);
    weapon.setTargetHistory(1,player2);
    player.setSquare(square);

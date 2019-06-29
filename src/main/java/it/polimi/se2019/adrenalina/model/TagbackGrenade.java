@@ -13,7 +13,7 @@ public class TagbackGrenade extends PowerUp {
 
   public TagbackGrenade(AmmoColor color) {
     super(color, false, PowerUpType.TAGBACK_GRANADE);
-    addAction(new ShootAction(1,0,1));
+    addAction(new ShootAction(1,0,1, false));
   }
 
   @Override

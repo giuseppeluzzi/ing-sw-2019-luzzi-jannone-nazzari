@@ -12,6 +12,7 @@ public interface Target extends Serializable {
   boolean isPlayer();
   Square getSquare();
   Player getPlayer() throws InvalidSquareException;
-  void addDamages(PlayerColor player, int num);
+  void addDamages(PlayerColor player, int num, boolean powerup);
   void addTags(PlayerColor player, int num);
+  void setSquare(Square square);
 }

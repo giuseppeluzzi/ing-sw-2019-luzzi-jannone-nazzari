@@ -184,3 +184,11 @@
 .ammo-yellow {
   -fx-background-image: url("img/ammo-yellow.png");
 }
+
+.debugPlayerDashboard {
+  -fx-background-image: url("img/dashboard_YELLOW.png");
+}
+
+.turnActionButton {
+
+}

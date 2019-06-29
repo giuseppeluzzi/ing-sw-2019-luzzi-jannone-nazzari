@@ -17,7 +17,7 @@ public class ShootRoomAction extends ShootAction {
   private static final long serialVersionUID = 3506478747182803402L;
 
   public ShootRoomAction(int target, int damages, int tag) {
-    super(target, damages, tag);
+    super(target, damages, tag, false);
     type = WeaponActionType.SHOOT_ROOM;
   }
 
@@ -25,7 +25,7 @@ public class ShootRoomAction extends ShootAction {
   public void execute(Board board, ExecutableObject object) {
     List<Player> players = getPlayers(board, object);
     for (Player player : players) {
-      player.addDamages(object.getOwner().getColor(), getDamages());
+      player.addDamages(object.getOwner().getColor(), getDamages(), false);
       player.addTags(object.getOwner().getColor(), getTag());
     }
   }
