@@ -45,9 +45,9 @@ public class TUIBoardView extends BoardView {
         showSkullsSelection();
         showFinalFrenzySelection();
       }
-      Log.println("È tutto pronto! La partita inizierà a breve.");
+      Log.println("È tutto pronto!");
     });
-    //endLoadingThread.start();
+    endLoadingThread.start();
   }
 
   @Override
@@ -312,10 +312,10 @@ public class TUIBoardView extends BoardView {
    * Show spawn point track selection prompt to the user.
    */
   @Override
-  public void showSpawnPointTrackSelection() {
+  public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
     AmmoColor chosen = null;
     try {
-      chosen = TUIUtils.showAmmoColorSelection(false);
+      chosen = TUIUtils.showAmmoColorSelection(false, damages);
     } catch (InputCancelledException e) {
       return;
     }

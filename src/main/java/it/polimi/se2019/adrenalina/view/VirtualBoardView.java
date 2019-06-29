@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.view;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBoardInvocation;
@@ -21,6 +22,7 @@ import it.polimi.se2019.adrenalina.utils.Observable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Virtual board view, relays invocations over the network to the actual board view.
@@ -104,8 +106,8 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
   }
 
   @Override
-  public void showSpawnPointTrackSelection() {
-    clientSocket.sendEvent(new ShowSpawnPointTrackSelectionInvocation());
+  public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
+    clientSocket.sendEvent(new ShowSpawnPointTrackSelectionInvocation(damages));
   }
 
   @Override

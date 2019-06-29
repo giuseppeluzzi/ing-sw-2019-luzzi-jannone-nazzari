@@ -42,8 +42,7 @@ public class Player extends Observable implements Target {
   private int weaponCount;
   private int score;
   private int timeoutCount;
-
-  private int killScore; // TODO: this should be updated in Final Frenzy mode
+  private int killScore;
 
   private List<PlayerColor> damages;
   private List<PlayerColor> tags;
@@ -55,6 +54,7 @@ public class Player extends Observable implements Target {
 
   @NotExpose
   private ExecutableObject currentExecutable;
+  @NotExpose
   private ExecutableObject oldExecutable;
   @NotExpose
   private Buyable currentBuying;
@@ -315,7 +315,6 @@ public class Player extends Observable implements Target {
       Log.exception(e);
     }
     if (damages.size() >= Constants.NORMAL_DEATH) {
-      setStatus(PlayerStatus.WAITING);
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
       } else if (board.getSkulls() == 1) {
@@ -358,10 +357,8 @@ public class Player extends Observable implements Target {
         board.setFinalFrenzyActivator(color);
       }
       if (!frenzy) {
-        setFrenzy(true);
+        enableFrenzy();
       }
-    } else {
-      // TODO Fine partita
     }
   }
 
@@ -420,16 +417,17 @@ public class Player extends Observable implements Target {
         //
       }
     }
-    int awardedScore = killScore;
-
-    if (awardedScore == 0) {
+    int awardedScore;
+    if (killScore > 0) {
+      awardedScore = killScore;
+    } else {
       awardedScore = 1;
     }
 
     for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
       if (playerColor != color) {
         try {
-          board.getPlayerByColor(playerColor).setScore(score + awardedScore);
+          board.getPlayerByColor(playerColor).setScore(board.getPlayerByColor(playerColor).score + awardedScore);
         } catch (InvalidPlayerException ignored) {
           //
         }
@@ -444,8 +442,14 @@ public class Player extends Observable implements Target {
       }
     }
     if (!board.isDominationBoard()) {
-      board.addKillShot(
-          new Kill(damages.get(10), damages.get(Constants.NORMAL_DEATH) == damages.get(10)));
+      if (damages.size() <= Constants.OVERKILL_DEATH-1) {
+        board.addKillShot(
+            new Kill(damages.get(Constants.NORMAL_DEATH-1), false));
+      } else {
+        board.addKillShot(
+            new Kill(damages.get(Constants.NORMAL_DEATH-1),
+                damages.get(Constants.OVERKILL_DEATH-1) == damages.get(Constants.NORMAL_DEATH-1)));
+      }
     }
     decrementKillScore();
     damages.clear();
@@ -799,10 +803,16 @@ public class Player extends Observable implements Target {
     return frenzy;
   }
 
-  public void setFrenzy(boolean frenzy) {
-    this.frenzy = frenzy;
+  public void enableFrenzy() {
+    frenzy = true;
+    killScore = 2;
     try {
       notifyObservers(new PlayerFrenzyUpdate(color, frenzy));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+    try {
+      notifyObservers(new PlayerKillScoreUpdate(color, killScore));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -840,13 +850,16 @@ public class Player extends Observable implements Target {
     killScore = score;
   }
 
+  /**
+   * Decrements a player's kill score. The {@code killScore} attribute can run below 1
+   * in order to keep track of how many skulls to show on the player's dashboard.
+   * When evaluated, any kill score below 1 will count as 1.
+   */
   private void decrementKillScore() {
-    if (killScore == 2) {
-      killScore = 1;
-    } else if (killScore > 1) {
-      killScore -= 2;
+    if (killScore <= 2) {
+      killScore -= 1;
     } else {
-      killScore = 0;
+      killScore -= 2;
     }
   }
 

@@ -20,6 +20,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -29,6 +30,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -407,6 +409,19 @@ public class Board extends Observable implements Serializable {
         .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED
             && x.getStatus() != PlayerStatus.SUSPENDED && x.getStatus() != PlayerStatus.WAITING)
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Function that tells if a player has received at least @see(Constants.OVERKILL_DEATH)
+   * @return true if it exists, false otherwise
+   */
+  public boolean existsOverkilledPlayer() {
+    for (Player player : players) {
+      if (player.getDamages().size() == Constants.OVERKILL_DEATH) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

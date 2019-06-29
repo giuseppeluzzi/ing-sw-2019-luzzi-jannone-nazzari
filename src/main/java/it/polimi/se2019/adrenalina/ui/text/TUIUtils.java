@@ -9,7 +9,9 @@ import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Additional utils needed by Text User Interface.
@@ -61,17 +63,22 @@ public class TUIUtils {
    * @return the chosen ammoColor
    * @throws InputCancelledException thrown if the user's input is cancelled
    */
-  static AmmoColor showAmmoColorSelection(boolean anyAllowed) throws InputCancelledException {
+  static AmmoColor showAmmoColorSelection(boolean anyAllowed, Map<AmmoColor, Integer> damages)
+      throws InputCancelledException {
+
     List<AmmoColor> colors;
     if (anyAllowed) {
       colors = Arrays.asList(AmmoColor.values());
     } else {
       colors = AmmoColor.getValidColor();
     }
+
     List<String> choices = new ArrayList<>();
+
     for (AmmoColor color : colors) {
-      choices.add(color.toString());
+      choices.add(color.getAnsiColor() + color.toString() + ANSIColor.RESET + " (danni ricevuti: " + damages.get(color) + ")");
     }
+
     inputManager.input("Scegli un colore:", choices);
     return colors.get(inputManager.waitForIntResult());
   }

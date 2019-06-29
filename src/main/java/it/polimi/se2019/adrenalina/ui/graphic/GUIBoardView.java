@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.ui.graphic;
 
 import it.polimi.se2019.adrenalina.AppGUI;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
@@ -22,6 +23,8 @@ import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -88,7 +91,7 @@ public class GUIBoardView extends BoardView {
   }
 
   @Override
-  public void showSpawnPointTrackSelection() {
+  public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
     new DialogSpawnPointTrackSelection().show();
   }
 

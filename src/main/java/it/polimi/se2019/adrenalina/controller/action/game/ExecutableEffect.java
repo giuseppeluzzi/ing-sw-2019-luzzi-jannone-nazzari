@@ -91,11 +91,13 @@ public class ExecutableEffect extends GameAction {
 
         if (((ShootAction) weaponAction).getDamages() > 0) {
           getTurnController().addTurnActions(
-                  new PowerUpSelection(getTurnController(), getPlayer(), target,
-                          false, true));
-          getTurnController().addTurnActions(
-                  new PowerUpSelection(getTurnController(), target.getPlayer(),
-                          null, false, false));
+              new PowerUpSelection(getTurnController(), getPlayer(), target,
+                  false, true));
+          if (target.isPlayer()) {
+            getTurnController().addTurnActions(
+                new PowerUpSelection(getTurnController(), target.getPlayer(),
+                    null, false, false));
+          }
         }
         ((Weapon) executableObject).setLoaded(false);
         break;

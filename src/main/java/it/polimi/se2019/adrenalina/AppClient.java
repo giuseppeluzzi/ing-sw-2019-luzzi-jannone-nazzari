@@ -85,37 +85,45 @@ public class AppClient {
   }
 
   private String getInteractiveIpAddress(TUIInputManager inputManager) {
-    inputManager.input(
-            "Inserisci l'indirizzo IP del server (lascia vuoto per usare quello dalla config)",
-            0,
-            Integer.MAX_VALUE);
-    String ipAddress;
-    try {
-      ipAddress = inputManager.waitForStringResult().trim();
-      if (ipAddress.isEmpty()) {
-        return null;
+    while (true) {
+      inputManager.input(
+              "Inserisci l'indirizzo IP del server (lascia vuoto per usare quello dalla config)",
+              0,
+              Integer.MAX_VALUE);
+      try {
+        String ipAddress = inputManager.waitForStringResult().trim();
+        if (ipAddress.isEmpty()) {
+          return null;
+        } else if (ipAddress.matches("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$")) {
+          return ipAddress;
+        } else {
+          Log.println("Indirizzo non valido");
+        }
+      } catch (InputCancelledException ignored) {
+        throw new IllegalStateException("Input cancelled during ip address selection");
       }
-    } catch (InputCancelledException ignored) {
-      throw new IllegalStateException("Input cancelled during ip address selection");
     }
-    return ipAddress;
   }
 
   private Integer getInteractivePort(TUIInputManager inputManager) {
-    inputManager.input(
-            "Inserisci la porta da usare (lascia vuoto per usare quella dalla config)",
-            0,
-            Integer.MAX_VALUE);
-    String port;
-    try {
-      port = inputManager.waitForStringResult().trim();
-      if (port.isEmpty()) {
-        return null;
+    while (true) {
+      inputManager.input(
+              "Inserisci la porta da usare (lascia vuoto per usare quella dalla config)",
+              0,
+              Integer.MAX_VALUE);
+      try {
+        String port = inputManager.waitForStringResult().trim();
+        if (port.isEmpty()) {
+          return null;
+        } else if (port.matches("^\\d{1,5}$")) {
+          return Integer.parseInt(port);
+        } else {
+          Log.println("Porta non valida");
+        }
+      } catch (InputCancelledException ignored) {
+        throw new IllegalStateException("Input cancelled during ip address selection");
       }
-    } catch (InputCancelledException ignored) {
-      throw new IllegalStateException("Input cancelled during ip address selection");
     }
-    return Integer.parseInt(port);
   }
 
   private int getInteractiveConnectionMode(TUIInputManager inputManager) {

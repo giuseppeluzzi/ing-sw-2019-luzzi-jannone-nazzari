@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
 
@@ -18,7 +19,7 @@ public class SpawnPointTrackSelection extends GameAction {
   @Override
   public void execute(Board board) {
     try {
-      getPlayer().getClient().getBoardView().showSpawnPointTrackSelection();
+      getPlayer().getClient().getBoardView().showSpawnPointTrackSelection(((DominationBoard) board).getSpawnPointDamages());
     } catch (RemoteException e) {
       Log.exception(e);
     }

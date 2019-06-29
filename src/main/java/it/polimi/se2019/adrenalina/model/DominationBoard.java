@@ -8,7 +8,10 @@ import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A Board during a Domination match.
@@ -124,6 +127,18 @@ public class DominationBoard extends Board {
     } else if (color == AmmoColor.YELLOW) {
       yellowDamages = new ArrayList<>(damages);
     }
+  }
+
+  /**
+   * Returns an enummap where each color is associated to the ammount of damages received
+   * @return an enummap
+   */
+  public Map<AmmoColor, Integer> getSpawnPointDamages() {
+    Map<AmmoColor, Integer> damages = new EnumMap<>(AmmoColor.class);
+    damages.put(AmmoColor.RED, getRedDamages().size());
+    damages.put(AmmoColor.BLUE, getBlueDamages().size());
+    damages.put(AmmoColor.YELLOW, getYellowDamages().size());
+    return damages;
   }
 
   /**
