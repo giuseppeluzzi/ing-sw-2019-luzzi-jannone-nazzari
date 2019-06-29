@@ -72,7 +72,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void switchToFinalFrenzy(PlayerColor playerColor) {
-    // TODO
+    Log.println("Sei passato in modalità frenesia finale!");
   }
 
   /**

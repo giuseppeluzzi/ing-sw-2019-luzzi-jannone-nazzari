@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@assets/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
   <children>
@@ -43,16 +42,23 @@
         </rowConstraints>
       </GridPane>
 
-      <!-- powerup and weapons -->
-      <GridPane fx:id="wpGrid" id="wpGrid" gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-        <columnConstraints>
-        </columnConstraints>
-      </GridPane>
-
       <!-- enemy dashboards -->
       <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
         <VBox fx:id="enemyDashboards" alignment="TOP_RIGHT" spacing="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
       </AnchorPane>
+
+      <HBox fx:id="bottomGrid" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <Region fx:id="spacerBottomGrid" />
+        <!-- turn actions -->
+        <VBox alignment="BOTTOM_RIGHT" maxWidth="320" minWidth="300" minHeight="100" spacing="10">
+          <padding>
+            <Insets top="10" bottom="10" />
+          </padding>
+          <Button fx:id="skipTurnActionButton" alignment="CENTER" styleClass="turnActionButton" prefWidth="300" visible="false">Prosegui</Button>
+          <VBox fx:id="turnActionButtons" alignment="TOP_CENTER" spacing="10"/>
+        </VBox>
+      </HBox>
+
     </GridPane>
   </children>
 </AnchorPane>

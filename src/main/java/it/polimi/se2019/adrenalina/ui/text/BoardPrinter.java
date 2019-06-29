@@ -472,7 +472,7 @@ public final class BoardPrinter {
     map[baseX + DASHBOARD_WIDTH - 3][posY] = " ";
 
     // Kill score
-    for (char c : Integer.toString(player.getKillScore()).toCharArray()) {
+    for (char c : (player.getKillScore() > 0 ? Integer.toString(player.getKillScore()) : "1").toCharArray()) {
       map[posX][posY] = playerColor + c;
       posX++;
     }
@@ -481,7 +481,7 @@ public final class BoardPrinter {
     posX++;
 
     // Bottom edge line
-    for (int i = 0; i < DASHBOARD_WIDTH - 14 - player.getKillScore() / 10; i++) {
+    for (int i = 0; i < DASHBOARD_WIDTH - 14 - (player.getKillScore() > 0 ? player.getKillScore() : 1) / 10; i++) {
       map[posX][posY] = playerColor + HORIZONTAL_LINE;
       posX++;
     }

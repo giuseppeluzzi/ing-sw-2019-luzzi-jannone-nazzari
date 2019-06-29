@@ -79,6 +79,7 @@ public class AppGUI extends Application {
 
     primaryStage.setResizable(false);
     primaryStage.setTitle("Adrenalina");
+    primaryStage.setScene(boardScene);
     primaryStage.setScene(startScene);
     primaryStage.show();
   }

@@ -45,7 +45,7 @@ public class TUIBoardView extends BoardView {
         showSkullsSelection();
         showFinalFrenzySelection();
       }
-      Log.println("È tutto pronto! La partita inizierà a breve.");
+      Log.println("È tutto pronto!");
     });
     endLoadingThread.start();
   }

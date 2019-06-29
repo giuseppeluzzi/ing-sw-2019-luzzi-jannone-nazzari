@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
+<GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" alignment="BOTTOM_LEFT" gridLinesVisible="true">
   <columnConstraints>
+    <ColumnConstraints hgrow="NEVER" maxWidth="90 "/>
     <ColumnConstraints hgrow="NEVER" />
-    <ColumnConstraints hgrow="NEVER" percentWidth="48.5" />
-    <ColumnConstraints hgrow="NEVER" />
+    <ColumnConstraints hgrow="NEVER" maxWidth="90" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints vgrow="SOMETIMES" />
@@ -54,7 +54,7 @@
     </ImageView>-->
   </HBox>
 
-  <GridPane id="playerDashboard" fx:id="playerDashboard" gridLinesVisible="true" minWidth="760.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+  <GridPane id="playerDashboard" fx:id="playerDashboard" gridLinesVisible="true" minWidth="760.0" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="debugPlayerDashboard">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
@@ -62,13 +62,13 @@
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="24" />
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints percentHeight="24" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="20" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="13" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="12" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="8" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="9" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="27" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="23" vgrow="SOMETIMES" />
     </rowConstraints>
 
     <HBox id="playerTagsContainer" fx:id="playerTagsContainer" alignment="CENTER_RIGHT" minHeight="32" spacing="11" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />

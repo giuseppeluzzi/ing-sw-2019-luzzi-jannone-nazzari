@@ -26,7 +26,6 @@ import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogEffectSel
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogReloadWeaponSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogShowPaymentOption;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSwapWeaponSelection;
-import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogTurnActionSelection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogUnsuspend;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
@@ -187,9 +186,11 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
-    DialogTurnActionSelection dialog = new DialogTurnActionSelection();
+    /*DialogTurnActionSelection dialog = new DialogTurnActionSelection();
     dialog.setActions(actions);
-    dialog.show();
+    dialog.show();*/
+    AppGUI.getBoardFXController().showTurnActions(actions);
+
   }
 
   @Override
