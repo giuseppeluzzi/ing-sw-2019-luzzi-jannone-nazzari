@@ -225,7 +225,7 @@ public class PlayerTest {
     player.addTags(PlayerColor.GREY, 5);
     player.addDamages(PlayerColor.GREY, 1, false);
     player.isDead();
-    assertEquals(3, player.getDamages().size());
+    assertEquals(4, player.getDamages().size());
   }
 
   @Test

@@ -13,6 +13,7 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 
+import it.polimi.se2019.adrenalina.utils.Observable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -269,6 +270,17 @@ public class Weapon extends ExecutableObject implements Buyable {
   @Override
   public boolean isWeapon() {
     return true;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    return object instanceof Weapon &&
+        ((Weapon) object).name.equals(name);
+  }
+
+  @Override
+  public int hashCode() {
+    return getCost(AmmoColor.RED) + getCost(AmmoColor.BLUE) + getCost(AmmoColor.YELLOW);
   }
 
   /**
