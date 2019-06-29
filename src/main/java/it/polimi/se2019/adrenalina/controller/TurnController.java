@@ -156,7 +156,7 @@ public class TurnController implements Serializable {
     if (boardController.getBoard().getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()
         || boardController.getBoard().getSkulls() == 0 && ! boardController.getBoard().isFinalFrenzyActive()
         || boardController.getBoard().isFinalFrenzyActive()
-            && currentPlayerIndex == (getFfActivatorIndex() - 1) % boardController.getBoard().getPlayers().size()) {
+            && currentPlayerIndex == getFfActivatorIndex()) {
       endGame = true;
       turnActionsQueue.add(new EndGame());
       executeGameActionQueue();
@@ -239,12 +239,18 @@ public class TurnController implements Serializable {
 
         if (playerIndex > getFfActivatorIndex()) {
           addTurnActions(
-              new PowerUpSelection(this, player, null, false, false),
-              new ActionSelection(this, player),
-              new PowerUpSelection(this, player, null, false, false),
-              new CheckRespawn(this, player));
+                  new PowerUpSelection(this, player, null, false, false),
+                  new ActionSelection(this, player),
+                  new PowerUpSelection(this, player, null, false, false),
+                  new ActionSelection(this, player),
+                  new PowerUpSelection(this, player, null, false, false),
+                  new CheckRespawn(this, player));
         } else {
-          addBaseGameTurnActions(player);
+          addTurnActions(
+                  new PowerUpSelection(this, player, null, false, false),
+                  new ActionSelection(this, player),
+                  new PowerUpSelection(this, player, null, false, false),
+                  new CheckRespawn(this, player));
         }
       } else {
         addBaseGameTurnActions(player);
