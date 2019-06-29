@@ -805,16 +805,18 @@ public class Player extends Observable implements Target {
 
   public void enableFrenzy() {
     frenzy = true;
-    killScore = 2;
     try {
       notifyObservers(new PlayerFrenzyUpdate(color, frenzy));
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    try {
-      notifyObservers(new PlayerKillScoreUpdate(color, killScore));
-    } catch (RemoteException e) {
-      Log.exception(e);
+    if (damages.isEmpty()) {
+      killScore = 2;
+      try {
+        notifyObservers(new PlayerKillScoreUpdate(color, killScore));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
   }
 
