@@ -28,9 +28,13 @@ public class WeaponTest {
 
   @Test
   public void testSerialization() {
-    Weapon weapon = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X");
-    Effect base = new Effect("test", weapon, 0, 1, 2, false);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{}, new int[]{}, true, false, true, false, TargetType.ATTACK_TARGET, false));
+    Weapon weapon = new Weapon(0, 1, 2,
+        AmmoColor.YELLOW, "test", "X");
+    Effect base = new Effect("test", weapon, 0,
+        1, 2, false);
+    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{},
+        new int[]{}, true, false, true, false,
+        TargetType.ATTACK_TARGET, false, true));
 
     weapon.addEffect(base);
     String json = weapon.serialize();

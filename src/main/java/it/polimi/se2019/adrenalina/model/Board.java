@@ -28,6 +28,7 @@ import it.polimi.se2019.adrenalina.utils.Observer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;

@@ -32,15 +32,16 @@ public class MoveAction implements WeaponAction {
     if (object.getTargetHistory(target) != null) {
       try {
         if (! object.isInitialPositionSet(object.getTargetHistory(target).getPlayer())) {
-          object.setInitialPlayerPosition(
-              object.getTargetHistory(target).getPlayer(),
-              object.getTargetHistory(target).getPlayer().getSquare());
+          if (object.getTargetHistory(target).getPlayer() != null) {
+            object.setInitialPlayerPosition(
+                object.getTargetHistory(target).getPlayer(),
+                object.getTargetHistory(target).getPlayer().getSquare());
+          }
         }
         Log.debug("Destination: " + destination);
         Log.debug("Destination not null?: " + object.getTargetHistory(destination));
         Log.debug("Destination square: " + object.getTargetHistory(destination).getSquare().getCoordinatesAsString());
-        object.getTargetHistory(target).getPlayer()
-            .setSquare(object.getTargetHistory(destination).getSquare());
+        object.getTargetHistory(target).setSquare(object.getTargetHistory(destination).getSquare());
       } catch (InvalidSquareException e) {
         Log.debug("Too many players in selected square");
       }

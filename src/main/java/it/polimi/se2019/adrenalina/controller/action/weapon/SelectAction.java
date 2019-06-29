@@ -4,7 +4,11 @@ import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.ExecutableObject;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
@@ -31,13 +35,15 @@ public class SelectAction implements WeaponAction {
   private boolean skippable = false;
   private boolean useLastDirection = false;
   private boolean differentRoom = false;
+  private boolean stopPropagation = true;
   private TargetType selectType = TargetType.ATTACK_TARGET;
   private WeaponActionType type = WeaponActionType.SELECT;
 
   public SelectAction(int from, int target, int minDistance,
                       int maxDistance, int[] differentFrom, int[] between,
                       Boolean visible, boolean optional, boolean useLastDirection,
-                      boolean differentRoom, TargetType selectType, boolean skippable) {
+                      boolean differentRoom, TargetType selectType, boolean skippable,
+                      boolean stopPropagation) {
 
     this.from = from;
     this.target = target;
@@ -51,6 +57,7 @@ public class SelectAction implements WeaponAction {
     this.useLastDirection = useLastDirection;
     this.differentRoom = differentRoom;
     this.selectType = selectType;
+    this.stopPropagation = stopPropagation;
     type = WeaponActionType.SELECT;
   }
 
@@ -85,6 +92,8 @@ public class SelectAction implements WeaponAction {
 
   @Override
   public void execute(Board board, ExecutableObject object) throws NoTargetsException, NoTargetsExceptionOptional {
+
+
     List<Target> targets = getTargets(board, object);
 
     if (optional && object.targetHistoryContainsKey(target)) {
@@ -99,6 +108,9 @@ public class SelectAction implements WeaponAction {
 
     if (optional && targets.isEmpty()) {
       throw new NoTargetsExceptionOptional("No targets available in optional SelectAction");
+    }
+    if (!object.getTargetHistory(from).isPlayer() && stopPropagation) {
+      throw new NoTargetsExceptionOptional("No propagation allowed");
     }
 
     if (!optional || !targets.isEmpty()) {
@@ -196,9 +208,8 @@ public class SelectAction implements WeaponAction {
     return gson.fromJson(json, SelectAction.class);
   }
 
-  public List<Target> filter(List<Target> targets) {
-    // TODO: implement filter
-    return new ArrayList<>();
+  public boolean isStopPropagation() {
+    return stopPropagation;
   }
 
   public int getFrom() {

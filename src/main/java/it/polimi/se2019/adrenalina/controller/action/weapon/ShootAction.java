@@ -13,12 +13,14 @@ public class ShootAction implements WeaponAction {
   private int target;
   private int damages;
   private int tag;
+  private boolean powerup;
   WeaponActionType type = WeaponActionType.SHOOT;
 
-  public ShootAction(int target, int damages, int tag) {
+  public ShootAction(int target, int damages, int tag, boolean powerup) {
     this.target = target;
     this.damages = damages;
     this.tag = tag;
+    this.powerup = powerup;
     type = WeaponActionType.SHOOT;
   }
 
@@ -30,7 +32,7 @@ public class ShootAction implements WeaponAction {
   @Override
   public void execute(Board board, ExecutableObject object) {
     if (object.targetHistoryContainsKey(target)) {
-      object.getTargetHistory(target).addDamages(object.getOwner().getColor(), damages);
+      object.getTargetHistory(target).addDamages(object.getOwner().getColor(), damages, powerup);
       object.getTargetHistory(target).addTags(object.getOwner().getColor(), tag);
     }
   }
@@ -47,6 +49,10 @@ public class ShootAction implements WeaponAction {
     }
     Gson gson = new Gson();
     return gson.fromJson(json, ShootAction.class);
+  }
+
+  public boolean isPowerup() {
+    return powerup;
   }
 
   public int getTarget() {
