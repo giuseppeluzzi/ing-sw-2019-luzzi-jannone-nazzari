@@ -2,8 +2,11 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SkipSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -15,17 +18,22 @@ import java.rmi.RemoteException;
 import java.util.EnumMap;
 import java.util.List;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -42,9 +50,17 @@ public class BoardFXController {
   @FXML
   private GridPane mapGrid;
   @FXML
+  private Region spacerBottomGrid;
+  @FXML
+  private HBox bottomGrid;
+  @FXML
   private Pane playerDashboardContainer;
   @FXML
   private VBox enemyDashboards;
+  @FXML
+  private Button skipTurnActionButton;
+  @FXML
+  private VBox turnActionButtons;
 
   @FXML
   private Pane weapon;
@@ -53,6 +69,7 @@ public class BoardFXController {
 
   private final EnumMap<PlayerColor, GUIPlayerTile> playerTiles;
   private final EnumMap<PlayerColor, DashboardFXController> dashboardControllers;
+  private EventHandler<ActionEvent> skipEventHandler;
 
   public BoardFXController() {
     dashboardControllers = new EnumMap<>(PlayerColor.class);
@@ -83,12 +100,14 @@ public class BoardFXController {
         grid[x][y] = new GUIGridSquare(x, y, cellTilePane, cellHoverPane);
       }
     }
+
+    HBox.setHgrow(spacerBottomGrid, Priority.ALWAYS);
   }
 
   public void setMapId(int mapId) {
     Platform.runLater(() ->
         mapGrid.setStyle(
-          "-fx-background-image: url(\"gui/assets/img/map" + mapId + ".png\");")
+            "-fx-background-image: url(\"gui/assets/img/map" + mapId + ".png\");")
     );
   }
 
@@ -116,9 +135,11 @@ public class BoardFXController {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
         playerDashboard.setId(PLAYER_DASHBOARD_PREFIX + color);
-        GridPane.setRowIndex(playerDashboard, 1);
+        /*GridPane.setRowIndex(playerDashboard, 1);
         GridPane.setColumnIndex(playerDashboard, 0);
-        boardGrid.getChildren().add(playerDashboard);
+        GridPane.setColumnSpan(playerDashboard, 2);*/
+        HBox.setHgrow(playerDashboard, Priority.NEVER);
+        bottomGrid.getChildren().add(0, playerDashboard);
       } catch (IOException e) {
         Log.exception(e);
       }
@@ -229,18 +250,50 @@ public class BoardFXController {
     }
   }
 
+  public void showTurnActions(List<TurnAction> turnActions) {
+    Platform.runLater(() -> {
+      for (TurnAction turnAction : turnActions) {
+        Button button = new Button(turnAction.getName());
+        button.setTooltip(new Tooltip(turnAction.getDescription()));
+        button.setPrefWidth(300);
+
+        button.setOnAction(event -> {
+          try {
+            ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+                new PlayerActionSelectionEvent(AppGUI.getClient().getPlayerColor(), turnAction));
+          } catch (RemoteException e) {
+            Log.exception(e);
+          }
+          clearTurnActions();
+        });
+
+        turnActionButtons.getChildren().add(button);
+      }
+    });
+  }
+
+  public void clearTurnActions() {
+    Platform.runLater(() -> turnActionButtons.getChildren().clear());
+  }
+
   public void showSkip() {
-    // TODO
+    Platform.runLater(() -> skipTurnActionButton.setVisible(true));
   }
 
   public void hideSkip() {
-    // TODO
+    Platform.runLater(() -> skipTurnActionButton.setVisible(false));
   }
 
   /**
    * Removes the selectable view from the map grid
    */
   public void disableTargetSelection() {
+    hideSkip();
+
+    if (skipEventHandler != null) {
+      skipTurnActionButton.setOnAction(null);
+    }
+
     Platform.runLater(() -> {
       for (int x = 0; x < 4; x++) {
         for (int y = 0; y < 3; y++) {
@@ -284,7 +337,7 @@ public class BoardFXController {
    *
    * @param squares target squares
    */
-  public void enableSquareSelection(List<Target> squares, final boolean move) {
+  public void enableSquareSelection(List<Target> squares, final boolean move, boolean skippable) {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         if (containsTarget(squares, x, y)) {
@@ -305,6 +358,21 @@ public class BoardFXController {
             }
             disableTargetSelection();
           };
+
+          if (skippable) {
+            skipEventHandler = event -> {
+              try {
+                ((BoardView) AppGUI.getClient().getBoardView())
+                    .sendEvent(new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
+              } catch (RemoteException e) {
+                Log.exception(e);
+              }
+              disableTargetSelection();
+            };
+            skipTurnActionButton.setOnAction(skipEventHandler);
+
+            showSkip();
+          }
           grid[x][y].setClickHandler(clickHandler);
           grid[x][y].getTilePane().addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
         }
@@ -317,7 +385,7 @@ public class BoardFXController {
    *
    * @param players target players
    */
-  public void enablePlayerSelection(List<Target> players) {
+  public void enablePlayerSelection(List<Target> players, boolean skippable) {
     for (Target target : players) {
       if (target.isPlayer() && playerTiles.containsKey(((Player) target).getColor())) {
         EventHandler<MouseEvent> clickHandler = event -> {
@@ -330,6 +398,21 @@ public class BoardFXController {
           }
           disableTargetSelection();
         };
+
+        if (skippable) {
+          skipEventHandler = event -> {
+            try {
+              ((BoardView) AppGUI.getClient().getBoardView())
+                  .sendEvent(new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
+            } catch (RemoteException e) {
+              Log.exception(e);
+            }
+            disableTargetSelection();
+          };
+          skipTurnActionButton.setOnAction(skipEventHandler);
+
+          showSkip();
+        }
 
         playerTiles.get(((Player) target).getColor()).getPlayerIcon()
             .addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
