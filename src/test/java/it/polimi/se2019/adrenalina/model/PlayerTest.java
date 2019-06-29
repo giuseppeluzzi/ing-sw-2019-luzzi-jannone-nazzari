@@ -231,7 +231,7 @@ public class PlayerTest {
   @Test
   public void testHasWeaponReload() {
     Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test", "X");
-    Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test", "X");
+    Weapon weapon2 = new Weapon(2,1,0, AmmoColor.RED, "test2", "X2");
     player.addWeapon(weapon);
     player.addAmmo(AmmoColor.BLUE, 1);
     player.addAmmo(AmmoColor.YELLOW, 1);

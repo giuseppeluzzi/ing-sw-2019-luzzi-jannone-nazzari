@@ -53,6 +53,6 @@ public class CheckRespawn extends GameAction {
 
   @Override
   public boolean isSync() {
-    return getTurnController().getBoardController().getBoard().existsOverkilledPlayer();
+    return getTurnController().getBoardController().getBoard().existsKilledPlayer();
   }
 }

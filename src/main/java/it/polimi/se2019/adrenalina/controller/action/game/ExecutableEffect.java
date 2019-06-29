@@ -140,7 +140,8 @@ public class ExecutableEffect extends GameAction {
       getTurnController().disableActionsUntilPowerup();
       try {
         getPlayer().getClient()
-                .showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione.");
+                .showGameMessage("L'effetto scelto non è utilizzabile, scegli una nuova azione."
+                );
       } catch (RemoteException remoteException) {
         Log.exception(remoteException);
       }

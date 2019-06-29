@@ -14,16 +14,16 @@ public enum SquareColor {
   RED(ANSIColor.RED, AmmoColor.RED);
 
   private final ANSIColor ansiColor;
-  private final AmmoColor equivalentSquareColor;
+  private final AmmoColor equivalentAmmoColor;
 
   SquareColor(ANSIColor ansiColor) {
     this.ansiColor = ansiColor;
-    equivalentSquareColor = null;
+    equivalentAmmoColor = null;
   }
 
-  SquareColor(ANSIColor ansiColor, AmmoColor equivalentSquareColor) {
+  SquareColor(ANSIColor ansiColor, AmmoColor equivalentAmmoColor) {
     this.ansiColor = ansiColor;
-    this.equivalentSquareColor = equivalentSquareColor;
+    this.equivalentAmmoColor = equivalentAmmoColor;
   }
 
   public ANSIColor getAnsiColor() {
@@ -31,6 +31,6 @@ public enum SquareColor {
   }
 
   public AmmoColor getEquivalentAmmoColor() {
-    return equivalentSquareColor;
+    return equivalentAmmoColor;
   }
 }

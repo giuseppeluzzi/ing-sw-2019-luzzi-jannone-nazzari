@@ -4,8 +4,6 @@ import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
 
-import java.rmi.RemoteException;
-
 import static org.fusesource.jansi.Ansi.ansi;
 
 /**
@@ -22,12 +20,9 @@ public class TUITimer extends Timer {
 
   @Override
   public void tick() {
-    try {
-      client.showGameMessage(
-          "La partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
-              + " second" + (getRemainingSeconds() != 1 ? "i" : "o"));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
+    Log.print(
+        "La partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
+            + " second" + (getRemainingSeconds() != 1 ? "i" : "o") + "\r");
+    Log.println("");
   }
 }
