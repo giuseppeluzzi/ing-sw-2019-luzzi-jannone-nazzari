@@ -51,9 +51,6 @@
         <Region fx:id="spacerBottomGrid" />
         <!-- turn actions -->
         <VBox alignment="BOTTOM_RIGHT" maxWidth="320" minWidth="300" minHeight="100" spacing="10">
-          <padding>
-            <Insets top="10" bottom="10" />
-          </padding>
           <Button fx:id="skipTurnActionButton" alignment="CENTER" styleClass="turnActionButton" prefWidth="300" visible="false">Prosegui</Button>
           <VBox fx:id="turnActionButtons" alignment="TOP_CENTER" spacing="10"/>
         </VBox>

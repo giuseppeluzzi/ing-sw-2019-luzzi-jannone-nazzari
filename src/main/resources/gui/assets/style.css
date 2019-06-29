@@ -48,9 +48,15 @@
   -fx-font-size: 24;
 }
 
+.helperText {
+  -fx-text-fill: #cccccc;
+  -fx-font-weight: bold;
+  -fx-font-size: 24;
+}
+
 .wrong-field {
-  -fx-text-box-border: red ;
-  -fx-focus-color: red ;
+  -fx-text-box-border: red;
+  -fx-focus-color: red;
 }
 
 .loadingImg {
@@ -187,8 +193,4 @@
 
 .debugPlayerDashboard {
   -fx-background-image: url("img/dashboard_YELLOW.png");
-}
-
-.turnActionButton {
-
 }

@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
+import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
@@ -39,6 +40,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 public class BoardFXController {
 
@@ -64,6 +66,8 @@ public class BoardFXController {
 
   @FXML
   private Pane weapon;
+
+  private Text helperText;
 
   private GUIGridSquare[][] grid;
 
@@ -126,7 +130,7 @@ public class BoardFXController {
   public void loadPlayerDashboard(PlayerColor color) {
     FXMLLoader loaderPlayerDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));
-    DashboardFXController playerDashboardFXController = new PlayerDashboardFXController(
+    PlayerDashboardFXController playerDashboardFXController = new PlayerDashboardFXController(
         color);
     dashboardControllers.put(color, playerDashboardFXController);
     loaderPlayerDashboard.setController(playerDashboardFXController);
@@ -134,10 +138,8 @@ public class BoardFXController {
     Platform.runLater(() -> {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
+        helperText = playerDashboardFXController.getHelperText();
         playerDashboard.setId(PLAYER_DASHBOARD_PREFIX + color);
-        /*GridPane.setRowIndex(playerDashboard, 1);
-        GridPane.setColumnIndex(playerDashboard, 0);
-        GridPane.setColumnSpan(playerDashboard, 2);*/
         HBox.setHgrow(playerDashboard, Priority.NEVER);
         bottomGrid.getChildren().add(0, playerDashboard);
       } catch (IOException e) {
@@ -295,6 +297,7 @@ public class BoardFXController {
     }
 
     Platform.runLater(() -> {
+      helperText.setText("");
       for (int x = 0; x < 4; x++) {
         for (int y = 0; y < 3; y++) {
           grid[x][y].getHoverPane().setVisible(false);
@@ -337,7 +340,12 @@ public class BoardFXController {
    *
    * @param squares target squares
    */
-  public void enableSquareSelection(List<Target> squares, final boolean move, boolean skippable) {
+  public void enableSquareSelection(TargetType selectType, List<Target> squares, final boolean move, boolean skippable) {
+    if (selectType == TargetType.ATTACK_ROOM) {
+      Platform.runLater(() -> helperText.setText("Seleziona una stanza"));
+    } else {
+      Platform.runLater(() -> helperText.setText("Seleziona un quadrato"));
+    }
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         if (containsTarget(squares, x, y)) {
@@ -386,6 +394,7 @@ public class BoardFXController {
    * @param players target players
    */
   public void enablePlayerSelection(List<Target> players, boolean skippable) {
+    Platform.runLater(() -> helperText.setText("Seleziona un bersaglio"));
     for (Target target : players) {
       if (target.isPlayer() && playerTiles.containsKey(((Player) target).getColor())) {
         EventHandler<MouseEvent> clickHandler = event -> {

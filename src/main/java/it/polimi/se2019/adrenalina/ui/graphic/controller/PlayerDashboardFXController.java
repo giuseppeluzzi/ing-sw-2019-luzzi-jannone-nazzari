@@ -24,8 +24,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 public class PlayerDashboardFXController extends DashboardFXController {
+
+  @FXML
+  private Text helperText;
 
   @FXML
   private GridPane playerDashboard;
@@ -99,6 +103,10 @@ public class PlayerDashboardFXController extends DashboardFXController {
     pane.setPrefWidth(32);
     pane.setStyle("-fx-background-color: " + color.getHexColor() + ";");
     return pane;
+  }
+
+  public Text getHelperText() {
+    return helperText;
   }
 
   @Override

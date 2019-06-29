@@ -23,11 +23,9 @@ import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.application.Platform;
-
-import java.util.List;
 
 public class GUIBoardView extends BoardView {
 
@@ -68,7 +66,7 @@ public class GUIBoardView extends BoardView {
     if (type == TargetType.ATTACK_TARGET) {
       AppGUI.getBoardFXController().enablePlayerSelection(targets, skippable);
     } else {
-      AppGUI.getBoardFXController().enableSquareSelection(targets, false, skippable);
+      AppGUI.getBoardFXController().enableSquareSelection(type, targets, false, skippable);
     }
   }
 
@@ -82,7 +80,7 @@ public class GUIBoardView extends BoardView {
   public void showSquareSelect(List<Target> targets) {
     // TODO in board
     AppGUI.getBoardFXController().highlightSelectableSquares(targets);
-    AppGUI.getBoardFXController().enableSquareSelection(targets, true, false);
+    AppGUI.getBoardFXController().enableSquareSelection(TargetType.MOVE_SQUARE, targets, true, false);
   }
 
   @Override

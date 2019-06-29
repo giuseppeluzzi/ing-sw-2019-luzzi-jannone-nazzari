@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.VBox?>
 <GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" alignment="BOTTOM_LEFT" gridLinesVisible="true">
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" maxWidth="90 "/>
@@ -70,6 +68,10 @@
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints percentHeight="23" vgrow="SOMETIMES" />
     </rowConstraints>
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4" alignment="CENTER">
+      <Text fx:id="helperText" textAlignment="CENTER" styleClass="helperText" />
+    </VBox>
 
     <HBox id="playerTagsContainer" fx:id="playerTagsContainer" alignment="CENTER_RIGHT" minHeight="32" spacing="11" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
