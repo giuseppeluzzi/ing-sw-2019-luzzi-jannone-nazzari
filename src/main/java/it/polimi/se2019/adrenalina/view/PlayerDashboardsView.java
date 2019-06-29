@@ -161,7 +161,7 @@ public abstract class PlayerDashboardsView extends Observable implements
       return;
     }
 
-    player.setFrenzy(event.isFrenzy());
+    player.enableFrenzy();
   }
 
   /**
