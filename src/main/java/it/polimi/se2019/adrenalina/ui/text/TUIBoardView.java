@@ -47,7 +47,7 @@ public class TUIBoardView extends BoardView {
       }
       Log.println("È tutto pronto!");
     });
-    endLoadingThread.start();
+    //endLoadingThread.start();
   }
 
   @Override
