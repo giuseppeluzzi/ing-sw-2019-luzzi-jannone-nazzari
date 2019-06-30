@@ -66,13 +66,17 @@ public class AttackController extends UnicastRemoteObject implements Observer {
 
     if (event.getWeaponName() != null) {
       Weapon realoadingWeapon = boardController.getBoard().getWeaponByName(event.getWeaponName());
-      boardController.getTurnController().addTurnActions(new Payment(boardController.getTurnController(), player,
-          new WeaponReload(realoadingWeapon)));
-
       List<Weapon> weapons = getReloadableWeapons(player, realoadingWeapon);
 
-      if (! weapons.isEmpty()) {
-        boardController.getTurnController().addTurnActions(new CheckReloadWeapons(boardController.getTurnController(), player));
+      if (weapons.isEmpty()) {
+        boardController.getTurnController()
+            .addTurnActions(new Payment(boardController.getTurnController(), player,
+                new WeaponReload(realoadingWeapon)));
+      } else {
+        boardController.getTurnController()
+            .addTurnActions(new Payment(boardController.getTurnController(), player,
+                    new WeaponReload(realoadingWeapon)),
+                new CheckReloadWeapons(boardController.getTurnController(), player));
       }
     }
 
