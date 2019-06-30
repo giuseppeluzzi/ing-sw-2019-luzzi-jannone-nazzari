@@ -66,7 +66,7 @@ public class TUIBoardView extends BoardView {
   public void showBoard() {
     Log.print(ansi().eraseScreen().toString());
     if (getBoard().getLastGameMessage() != null) {
-      Log.print(getBoard().getLastGameMessage());
+      Log.println(getBoard().getLastGameMessage());
     }
     BoardPrinter.print(getBoard());
   }

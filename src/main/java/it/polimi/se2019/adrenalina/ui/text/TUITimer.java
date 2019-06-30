@@ -22,13 +22,9 @@ public class TUITimer extends Timer {
   @Override
   public void tick() {
     if (! ((Client) client).isOutputSuspended()) {
-      /* Sonar will complaint about this, but System.out is the correct thing to use
-       * when directly printing text for the user.
-       */
-      System.out.print(
-          "\rLa partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
-              + " second" + (getRemainingSeconds() != 1 ? "i" : "o"));
-      System.out.println();
+      Log.print(
+          "La partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
+              + " second" + (getRemainingSeconds() != 1 ? "i" : "o") + "\r");
     }
   }
 }

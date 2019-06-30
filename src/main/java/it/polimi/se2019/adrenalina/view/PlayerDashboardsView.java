@@ -313,13 +313,6 @@ public abstract class PlayerDashboardsView extends Observable implements
     }
 
     player.updatePowerUps(event.getPowerUps());
-
-    if (event.getPlayerColor() == boardView.getClient().getPlayerColor()) {
-      String powerUpDesc = event.getPowerUps().stream()
-          .map(x -> x.getColor().getAnsiColor() + x.getName() + ANSIColor.RESET).collect(
-              Collectors.joining(", "));
-      boardView.getClient().showGameMessage("Potenziamenti attuali: " + powerUpDesc);
-    }
   }
 
   private List<PowerUp> addNewtons(Map<AmmoColor, Integer> powerUpData) {
