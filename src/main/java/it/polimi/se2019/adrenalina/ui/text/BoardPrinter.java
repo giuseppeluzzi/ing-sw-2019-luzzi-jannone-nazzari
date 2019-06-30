@@ -31,6 +31,7 @@ public final class BoardPrinter {
   private static final String SPAWN_POINT_ICON = Configuration.getInstance().getTuiSpawnPointIcon();
   private static final String TAG_ICON = Configuration.getInstance().getTuiTagIcon();
   private static final String DAMAGE_ICON = Configuration.getInstance().getTuiDamageIcon();
+  private static final String EMPTY_DAMAGES = "(nessuno)"; // TODO spostare in config
 
   private BoardPrinter() {
     throw new IllegalStateException("BoardPrinter cannot be instantiated");
@@ -530,6 +531,19 @@ public final class BoardPrinter {
   }
 
   /**
+   * Used to print a placeholder when spawn point damages is empty
+   * @param map the print matrix
+   * @param posX the current cursor X position
+   * @param posY the current cursor Y position
+   */
+  private static void printEmptyDamages(String[][] map, int posX, int posY) {
+    for (char c : EMPTY_DAMAGES.toCharArray()) {
+      map[posX][posY] = ANSIColor.WHITE + Character.toString(c) + ANSIColor.RESET;
+      posX++;
+    }
+  }
+
+  /**
    * Generates spawn point track damages for domination mode and adds them to the print matrix.
    * @param map the print matrix
    * @param plainBoard the game board
@@ -542,9 +556,16 @@ public final class BoardPrinter {
       map[posX][posY] = ANSIColor.RED + Character.toString(c) + ANSIColor.RESET;
       posX++;
     }
+    printEmptyDamages(map, posX, posY);
     for (PlayerColor damageColor : board.getRedDamages()) {
       map[posX][posY] = damageColor.getAnsiColor() + DAMAGE_ICON + ANSIColor.RESET;
       posX++;
+    }
+    if (! board.getRedDamages().isEmpty()) {
+      for (int i = 0; i < EMPTY_DAMAGES.length() - board.getRedDamages().size(); i++) {
+        map[posX][posY] = " ";
+        posX++;
+      }
     }
     posX = 0;
     posY++;
@@ -552,9 +573,16 @@ public final class BoardPrinter {
       map[posX][posY] = ANSIColor.BLUE + Character.toString(c) + ANSIColor.RESET;
       posX++;
     }
+    printEmptyDamages(map, posX, posY);
     for (PlayerColor damageColor : board.getBlueDamages()) {
       map[posX][posY] = damageColor.getAnsiColor() + DAMAGE_ICON + ANSIColor.RESET;
       posX++;
+    }
+    if (! board.getBlueDamages().isEmpty()) {
+      for (int i = 0; i < EMPTY_DAMAGES.length() - board.getBlueDamages().size(); i++) {
+        map[posX][posY] = " ";
+        posX++;
+      }
     }
     posX = 0;
     posY++;
@@ -562,9 +590,16 @@ public final class BoardPrinter {
       map[posX][posY] = ANSIColor.YELLOW + Character.toString(c) + ANSIColor.RESET;
       posX++;
     }
+    printEmptyDamages(map, posX, posY);
     for (PlayerColor damageColor : board.getYellowDamages()) {
       map[posX][posY] = damageColor.getAnsiColor() + DAMAGE_ICON + ANSIColor.RESET;
       posX++;
+    }
+    if (! board.getYellowDamages().isEmpty()) {
+      for (int i = 0; i < EMPTY_DAMAGES.length() - board.getYellowDamages().size(); i++) {
+        map[posX][posY] = " ";
+        posX++;
+      }
     }
   }
 

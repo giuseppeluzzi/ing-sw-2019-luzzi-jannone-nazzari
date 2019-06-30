@@ -47,6 +47,7 @@ public class Board extends Observable implements Serializable {
   private int mapId = 1;
   private int turnCounter = 1;
   private int skulls = 8;
+  private String lastGameMessage;
 
   private PlayerColor currentPlayer;
   private final List<Player> players;
@@ -345,6 +346,14 @@ public class Board extends Observable implements Serializable {
    */
   public void setFinalFrenzyActivator(PlayerColor playerColor) {
     finalFrenzyActivator = playerColor;
+  }
+
+  public String getLastGameMessage() {
+    return lastGameMessage;
+  }
+
+  public void setLastGameMessage(String lastGameMessage) {
+    this.lastGameMessage = lastGameMessage;
   }
 
   /**
