@@ -30,6 +30,7 @@ import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.PowerUpUsage;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.model.WeaponBuy;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 
@@ -219,6 +220,21 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
 
+    for (Player notCurrentPlayer : board.getPlayers()) {
+      if (notCurrentPlayer.getColor() != player.getColor()) {
+        try {
+          player.getClient().showGameMessage(
+              String.format("%s%s%s ha scelto di %s",
+                  player.getColor().getAnsiColor(),
+                  player.getName(),
+                  ANSIColor.RESET,
+                  event.getTurnAction().getMessage()));
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
+      }
+    }
+
     List<GameAction> actions = new ArrayList<>();
     switch (event.getTurnAction()) {
       case RUN:
@@ -404,7 +420,14 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       for (Player player1 : board.getPlayers()) {
         if (player1.getColor() != player.getColor()) {
           try {
-            player1.getClient().showGameMessage(player.getName() + " sta usando: " + selectedWeapon.getName());
+            player1.getClient().showGameMessage(
+                String.format("%s%s%s sta usando %s%s%s",
+                    player.getColor().getAnsiColor(),
+                    player.getName(),
+                    ANSIColor.RESET,
+                    selectedWeapon.getBaseCost().getAnsiColor(),
+                    selectedWeapon.getName(),
+                    ANSIColor.RESET));
           } catch (RemoteException e) {
             Log.exception(e);
           }

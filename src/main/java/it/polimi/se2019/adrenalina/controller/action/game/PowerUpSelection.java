@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
@@ -116,6 +117,15 @@ public class PowerUpSelection extends GameAction {
 
     try {
       if (discard) {
+        for (Player player : board.getPlayers()) {
+          if (player.getColor() != getPlayer().getColor()) {
+            player.getClient().showGameMessage(
+                String.format("%s%s%s sta scegliendo quale potenziamento scartare",
+                    getPlayer().getColor().getAnsiColor(),
+                    getPlayer().getName(),
+                    ANSIColor.RESET));
+          }
+        }
         getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer()
             .getPowerUps(), discard);
       } else {
@@ -123,6 +133,15 @@ public class PowerUpSelection extends GameAction {
         if (validPowerUps.isEmpty()) {
           getTurnController().executeGameActionQueue();
         } else {
+          for (Player player : board.getPlayers()) {
+            if (player.getColor() != getPlayer().getColor()) {
+              player.getClient().showGameMessage(
+                  String.format("%s%s%s sta scegliendo quale potenziamento usare",
+                      getPlayer().getColor().getAnsiColor(),
+                      getPlayer().getName(),
+                      ANSIColor.RESET));
+            }
+          }
           getPlayer().getClient().getPlayerDashboardsView()
               .showPowerUpSelection(validPowerUps, discard);
         }

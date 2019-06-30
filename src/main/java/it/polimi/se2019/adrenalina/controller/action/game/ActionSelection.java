@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
@@ -72,6 +73,15 @@ public class ActionSelection extends GameAction {
 
 
     try {
+      for (Player notCurrentPlayer : board.getPlayers()) {
+        if (notCurrentPlayer.getColor() != player.getColor()) {
+          notCurrentPlayer.getClient().showGameMessage(
+              String.format("%s%s%s sta scegliendo un'azione",
+                  player.getColor().getAnsiColor(),
+                  player.getName(),
+                  ANSIColor.RESET));
+        }
+      }
       getPlayer().getClient().getPlayerDashboardsView().showTurnActionSelection(turnActions);
     } catch (RemoteException e) {
       Log.exception(e);

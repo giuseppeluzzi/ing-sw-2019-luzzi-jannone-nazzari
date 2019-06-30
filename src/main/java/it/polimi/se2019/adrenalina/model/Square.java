@@ -227,14 +227,16 @@ public class Square extends Observable implements Target {
    */
   @Override
   public void addDamages(PlayerColor player, int num, boolean powerup) {
-    if (color == SquareColor.BLUE) {
-      ((DominationBoard) board).addBlueDamage(player);
-    } else if (color == SquareColor.RED) {
-      ((DominationBoard) board).addRedDamage(player);
-    } else if (color == SquareColor.YELLOW) {
-      ((DominationBoard) board).addYellowDamage(player);
-    } else {
-      throw new IllegalStateException("Invalid square color");
+    if (spawnPoint) {
+      if (color == SquareColor.BLUE) {
+        ((DominationBoard) board).addBlueDamage(player);
+      } else if (color == SquareColor.RED) {
+        ((DominationBoard) board).addRedDamage(player);
+      } else if (color == SquareColor.YELLOW) {
+        ((DominationBoard) board).addYellowDamage(player);
+      } else {
+        throw new IllegalStateException("Invalid square color");
+      }
     }
   }
 
