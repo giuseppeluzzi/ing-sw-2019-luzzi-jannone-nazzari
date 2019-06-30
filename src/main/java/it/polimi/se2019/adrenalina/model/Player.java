@@ -419,11 +419,37 @@ public class Player extends Observable implements Target {
     for (PlayerColor damage : damages) {
       if (damage != color) {
         try {
-          board.getPlayerByColor(damage).setScore(score + 1);
+          board.getPlayerByColor(damage).setScore(board.getPlayerByColor(damage).score + 1);
         } catch (InvalidPlayerException ignored) {
           //
         }
         break;
+      }
+    }
+  }
+
+  /**
+   * Handles damages points assignemnt.
+   */
+  private void assignDamagesPoints() {
+    int awardedScore;
+    if (killScore > 0) {
+      awardedScore = killScore;
+    } else {
+      awardedScore = 1;
+    }
+    for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
+      if (playerColor != color) {
+        try {
+          board.getPlayerByColor(playerColor).setScore(board.getPlayerByColor(playerColor).score + awardedScore);
+        } catch (InvalidPlayerException ignored) {
+          //
+        }
+      }
+      if (awardedScore > 2) {
+        awardedScore -= 2;
+      } else {
+        awardedScore = 1;
       }
     }
   }
@@ -438,39 +464,14 @@ public class Player extends Observable implements Target {
     if (!board.isFinalFrenzyActive()) {
       assignFirstBlood();
     }
-    int awardedScore;
-    if (killScore > 0) {
-      awardedScore = killScore;
-    } else {
-      awardedScore = 1;
-    }
-
-    for (PlayerColor playerColor : getPlayerRankings()) { // score for damages
-      if (playerColor != color) {
-        try {
-          board.getPlayerByColor(playerColor).setScore(board.getPlayerByColor(playerColor).score + awardedScore);
-        } catch (InvalidPlayerException ignored) {
-          //
-        }
-      }
-      if (awardedScore > 1) {
-        awardedScore -= 2;
-      }
-    }
+    assignDamagesPoints();
     if (board.getDoubleKill() != null) {
       if (board.getDoubleKill().color == color) {
         score += 1;
       }
     }
     if (!board.isDominationBoard()) {
-      if (damages.size() <= Constants.OVERKILL_DEATH-1) {
-        board.addKillShot(
-            new Kill(damages.get(Constants.NORMAL_DEATH-1), false));
-      } else {
-        board.addKillShot(
-            new Kill(damages.get(Constants.NORMAL_DEATH-1),
-                damages.get(Constants.OVERKILL_DEATH-1) == damages.get(Constants.NORMAL_DEATH-1)));
-      }
+      board.addKillShot(new Kill(damages.get(Constants.NORMAL_DEATH - 1), damages.size() < Constants.OVERKILL_DEATH));
     }
     decrementKillScore();
     damages.clear();
