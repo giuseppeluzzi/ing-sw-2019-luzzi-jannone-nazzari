@@ -148,7 +148,7 @@ public class BoardFXController {
         cellHoverPane.setVisible(false);
 
         StackPane cellStackPane = new StackPane(cellTilePane, cellHoverPane);
-        mapGrid.getChildren().add(cellStackPane);
+        mapGrid.getChildren().add(0, cellStackPane);
         GridPane.setColumnIndex(cellStackPane, x + 1);
         GridPane.setRowIndex(cellStackPane, y + 1);
 

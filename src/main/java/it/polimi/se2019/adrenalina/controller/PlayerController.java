@@ -221,7 +221,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
 
     for (Player notCurrentPlayer : board.getPlayers()) {
-      if (notCurrentPlayer.getColor() != player.getColor()) {
+      if (notCurrentPlayer.getColor() != player.getColor() && notCurrentPlayer.getClient() != null) {
         try {
           player.getClient().showGameMessage(
               String.format("%s%s%s ha scelto di %s",
@@ -418,7 +418,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       player.setCurrentExecutable(selectedWeapon);
 
       for (Player player1 : board.getPlayers()) {
-        if (player1.getColor() != player.getColor()) {
+        if (player1.getColor() != player.getColor() && player1.getClient() != null) {
           try {
             player1.getClient().showGameMessage(
                 String.format("%s%s%s sta usando %s%s%s",

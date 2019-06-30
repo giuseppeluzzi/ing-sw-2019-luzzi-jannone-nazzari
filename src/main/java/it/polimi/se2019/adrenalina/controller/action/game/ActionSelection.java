@@ -74,7 +74,7 @@ public class ActionSelection extends GameAction {
 
     try {
       for (Player notCurrentPlayer : board.getPlayers()) {
-        if (notCurrentPlayer.getColor() != player.getColor()) {
+        if (notCurrentPlayer.getColor() != player.getColor() && notCurrentPlayer.getClient() != null) {
           notCurrentPlayer.getClient().showGameMessage(
               String.format("%s%s%s sta scegliendo un'azione",
                   player.getColor().getAnsiColor(),
