@@ -178,11 +178,11 @@ public class TUIBoardView extends BoardView {
     for (Target target : targets) {
       String fetchHelper = "";
       if (target.getSquare().isSpawnPoint()) {
-        fetchHelper = "(Spawnpoint)";
+        fetchHelper = "(punto di generazione)";
       } else if (fetch) {
         if (target.getSquare().getAmmoCard() != null) {
           fetchHelper =
-              "(" + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
+              "(tessera munizioni " + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
                   + ")";
         }
       }
@@ -224,7 +224,7 @@ public class TUIBoardView extends BoardView {
         } else {
           choices.add(
                   String
-                          .format("%sx: %d y:%d (Spawnpoint)%s",
+                          .format("%sx: %d y:%d (punto di generazione)%s",
                                   target.getSquare().getColor().getAnsiColor(),
                                   target.getSquare().getPosX(),
                                   target.getSquare().getPosY(),

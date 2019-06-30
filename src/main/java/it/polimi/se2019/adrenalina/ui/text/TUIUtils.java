@@ -108,7 +108,24 @@ public class TUIUtils {
   static List<Effect> showEffectSelection(List<Effect> effects, boolean areSubEffects) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
     for (Effect effect : effects) {
-      choices.add(effect.getName());
+      if (effect.getCost(AmmoColor.RED) == 0 && effect.getCost(AmmoColor.BLUE) == 0 && effect.getCost(AmmoColor.YELLOW) == 0 && effect.getCost(AmmoColor.ANY) == 0) {
+        choices.add(effect.getName());
+      } else {
+        choices.add(String.format("%s (costo: %s%d rosso%s, %s%d blu%s, %s%d giallo%s, %s%d qualsiasi colore%s)",
+                effect.getName(),
+                AmmoColor.RED.getAnsiColor(),
+                effect.getCost(AmmoColor.RED),
+                ANSIColor.RESET,
+                AmmoColor.BLUE.getAnsiColor(),
+                effect.getCost(AmmoColor.BLUE),
+                ANSIColor.RESET,
+                AmmoColor.YELLOW.getAnsiColor(),
+                effect.getCost(AmmoColor.YELLOW),
+                ANSIColor.RESET,
+                ANSIColor.WHITE,
+                effect.getCost(AmmoColor.ANY),
+                ANSIColor.RESET));
+      }
     }
     List<Effect> output = new ArrayList<>();
     if (areSubEffects) {

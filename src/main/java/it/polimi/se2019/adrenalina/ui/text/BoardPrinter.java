@@ -24,7 +24,7 @@ public final class BoardPrinter {
   private static final int DOOR_WIDTH = Configuration.getInstance().getTuiDoorWidth();
   private static final int DASHBOARD_WIDTH = Configuration.getInstance().getTuiDashboardWidth();
   private static final int DASHBOARD_HEIGHT = Configuration.getInstance().getTuiDashboardHeight();
-  private static final int WEAPON_NAME_WIDTH = 26;
+  private static final int WEAPON_NAME_WIDTH = 26; // TODO spostare in config
   private static final String HORIZONTAL_LINE = Configuration.getInstance().getTuiHorizontalLine();
   private static final String VERTICAL_LINE = Configuration.getInstance().getTuiVerticalLine();
   private static final String PLAYER_ICON = Configuration.getInstance().getTuiPlayerIcon();
@@ -54,25 +54,25 @@ public final class BoardPrinter {
     switch (cornerType) {
       case TOP_LEFT_CORNER:
         x = square.getPosX() * SQUARE_WIDTH + 2;
-        y = square.getPosY() * SQUARE_HEIGHT + 2;
+        y = square.getPosY() * SQUARE_HEIGHT + 6;
         horizontalSide = Direction.WEST;
         verticalSide = Direction.NORTH;
         break;
       case TOP_RIGHT_CORNER:
         x = (square.getPosX() * SQUARE_WIDTH) + SQUARE_WIDTH + 1;
-        y = square.getPosY() * SQUARE_HEIGHT + 2;
+        y = square.getPosY() * SQUARE_HEIGHT + 6;
         horizontalSide = Direction.EAST;
         verticalSide = Direction.NORTH;
         break;
       case BOTTOM_LEFT_CORNER:
         x = square.getPosX() * SQUARE_WIDTH + 2;
-        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT + 1;
+        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT + 5;
         horizontalSide = Direction.WEST;
         verticalSide = Direction.SOUTH;
         break;
       case BOTTOM_RIGHT_CORNER:
         x = (square.getPosX() * SQUARE_WIDTH) + SQUARE_WIDTH + 1;
-        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT + 1;
+        y = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT + 5;
         horizontalSide = Direction.EAST;
         verticalSide = Direction.SOUTH;
         break;
@@ -118,7 +118,7 @@ public final class BoardPrinter {
     switch (direction) {
       case WEST:
         x = square.getPosX() * SQUARE_WIDTH + 2;
-        y = square.getPosY() * SQUARE_HEIGHT + 2 + pos;
+        y = square.getPosY() * SQUARE_HEIGHT + 6 + pos;
         squareDimension = SQUARE_HEIGHT;
         doorDimension = DOOR_HEIGHT;
         line = VERTICAL_LINE;
@@ -127,7 +127,7 @@ public final class BoardPrinter {
         break;
       case EAST:
         x = square.getPosX() * SQUARE_WIDTH + SQUARE_WIDTH + 1;
-        y = square.getPosY() * SQUARE_HEIGHT + 2 + pos;
+        y = square.getPosY() * SQUARE_HEIGHT + 6 + pos;
         squareDimension = SQUARE_HEIGHT;
         doorDimension = DOOR_HEIGHT;
         line = VERTICAL_LINE;
@@ -136,7 +136,7 @@ public final class BoardPrinter {
         break;
       case NORTH:
         x = square.getPosX() * SQUARE_WIDTH + 2 + pos;
-        y = square.getPosY() * SQUARE_HEIGHT + 2;
+        y = square.getPosY() * SQUARE_HEIGHT + 6;
         squareDimension = SQUARE_WIDTH;
         doorDimension = DOOR_WIDTH;
         line = HORIZONTAL_LINE;
@@ -145,7 +145,7 @@ public final class BoardPrinter {
         break;
       case SOUTH:
         x = square.getPosX() * SQUARE_WIDTH + 2 + pos;
-        y = square.getPosY() * SQUARE_HEIGHT + SQUARE_HEIGHT + 1;
+        y = square.getPosY() * SQUARE_HEIGHT + SQUARE_HEIGHT + 5;
         squareDimension = SQUARE_WIDTH;
         doorDimension = DOOR_WIDTH;
         line = HORIZONTAL_LINE;
@@ -192,7 +192,7 @@ public final class BoardPrinter {
    */
   private static void drawAttributes(String [][] map, Square square) {
     int centerX = (square.getPosX() * SQUARE_WIDTH) + 2 + (SQUARE_WIDTH - 1) / 2;
-    int centerY = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT;
+    int centerY = (square.getPosY() * SQUARE_HEIGHT) + SQUARE_HEIGHT + 4;
     if (square.isSpawnPoint()) {
       map[centerX][centerY] = square.getColor().getAnsiColor() + SPAWN_POINT_ICON;
     } else if (square.getAmmoCard() != null) {
@@ -229,7 +229,7 @@ public final class BoardPrinter {
       drawEdge(map, square, Direction.SOUTH, x);
     } else {
       // Inner whitespace fill-up
-      map[square.getPosX() * SQUARE_WIDTH + 2 + x][square.getPosY() * SQUARE_HEIGHT + 2 + y] = " ";
+      map[square.getPosX() * SQUARE_WIDTH + 2 + x][square.getPosY() * SQUARE_HEIGHT + 6 + y] = " ";
     }
   }
 
@@ -271,7 +271,7 @@ public final class BoardPrinter {
       } else {
         y = SQUARE_HEIGHT / 2;
       }
-      map[square.getPosX() * SQUARE_WIDTH + 2 + x][square.getPosY() * SQUARE_HEIGHT + 2 + y] = square.getPlayers().get(i).getColor().getAnsiColor() + PLAYER_ICON;
+      map[square.getPosX() * SQUARE_WIDTH + 2 + x][square.getPosY() * SQUARE_HEIGHT + 6 + y] = square.getPlayers().get(i).getColor().getAnsiColor() + PLAYER_ICON;
     }
   }
 
@@ -283,7 +283,7 @@ public final class BoardPrinter {
     int initXOffset = 2 + (SQUARE_WIDTH - 1) / 2;
     int initYOffset = 2 + SQUARE_HEIGHT / 2;
     for (Integer i = 0; i < 4; i++) {
-      map[initXOffset][0] = ANSIColor.RESET + i.toString();
+      map[initXOffset][4] = ANSIColor.RESET + i.toString();
       initXOffset += SQUARE_WIDTH;
     }
     for (Integer i = 0; i < 3; i++) {
@@ -360,7 +360,7 @@ public final class BoardPrinter {
     String playerColor = player.getColor().getAnsiColor().toString(dim);
     int baseX = 4 * SQUARE_WIDTH + 4;
     int posX = baseX;
-    int posY = num * DASHBOARD_HEIGHT;
+    int posY = num * DASHBOARD_HEIGHT + 4;
 
     // Top corners
     map[posX][posY] = playerColor + CornerType.TOP_LEFT_CORNER;
@@ -513,12 +513,58 @@ public final class BoardPrinter {
       for (Weapon weapon : board.getSpawnPointSquare(color).getWeapons()) {
         int offset = 0;
         for (char c : weapon.getName().toCharArray()) {
-          map[offset + i * WEAPON_NAME_WIDTH][3 * SQUARE_HEIGHT + 2 + colorCount] = color.getAnsiColor() + Character.toString(c) + ANSIColor.RESET;
+          map[offset + i * WEAPON_NAME_WIDTH][3 * SQUARE_HEIGHT + 6 + colorCount] = color.getAnsiColor() + Character.toString(c) + ANSIColor.RESET;
           offset++;
         }
+        map[offset + i * WEAPON_NAME_WIDTH][3 * SQUARE_HEIGHT + 6 + colorCount] = " ";
+        offset++;
+        map[offset + i * WEAPON_NAME_WIDTH][3 * SQUARE_HEIGHT + 6 + colorCount] = "(";
+        offset++;
+        map[offset + i * WEAPON_NAME_WIDTH][3 * SQUARE_HEIGHT + 6 + colorCount] = weapon.getSymbol();
+        offset++;
+        map[offset + i * WEAPON_NAME_WIDTH][3 * SQUARE_HEIGHT + 6 + colorCount] = ")";
         colorCount++;
       }
       i++;
+    }
+  }
+
+  /**
+   * Generates spawn point track damages for domination mode and adds them to the print matrix.
+   * @param map the print matrix
+   * @param plainBoard the game board
+   */
+  private static void drawSpawnpointDamages(String[][] map, Board plainBoard) {
+    DominationBoard board = (DominationBoard) plainBoard;
+    int posX = 0;
+    int posY = 0;
+    for (char c : "Danni punto di generazione rosso:  ".toCharArray()) {
+      map[posX][posY] = ANSIColor.RED + Character.toString(c) + ANSIColor.RESET;
+      posX++;
+    }
+    for (PlayerColor damageColor : board.getRedDamages()) {
+      map[posX][posY] = damageColor.getAnsiColor() + DAMAGE_ICON + ANSIColor.RESET;
+      posX++;
+    }
+    posX = 0;
+    posY++;
+    for (char c : "Danni punto di generazione blu:    ".toCharArray()) {
+      map[posX][posY] = ANSIColor.BLUE + Character.toString(c) + ANSIColor.RESET;
+      posX++;
+    }
+    for (PlayerColor damageColor : board.getBlueDamages()) {
+      map[posX][posY] = damageColor.getAnsiColor() + DAMAGE_ICON + ANSIColor.RESET;
+      posX++;
+    }
+    posX = 0;
+    posY++;
+    for (char c : "Danni punto di generazione giallo: ".toCharArray()) {
+      map[posX][posY] = ANSIColor.YELLOW + Character.toString(c) + ANSIColor.RESET;
+      posX++;
+    }
+    for (PlayerColor damageColor : board.getYellowDamages()) {
+      map[posX][posY] = damageColor.getAnsiColor() + DAMAGE_ICON + ANSIColor.RESET;
+      posX++;
     }
   }
 
@@ -528,7 +574,10 @@ public final class BoardPrinter {
    * @return a print matrix for the game board
    */
   static String[][] buildMap(Board board) {
-    String[][] map = new String[4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5][3 * SQUARE_HEIGHT + 6];
+    String[][] map = new String[4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5][3 * SQUARE_HEIGHT + 10];
+    if (board.isDominationBoard()) {
+      drawSpawnpointDamages(map, board);
+    }
     for (Square square : board.getSquares()) {
       drawSquare(map, square);
       drawPlayers(map, square);
@@ -549,7 +598,8 @@ public final class BoardPrinter {
    */
   static void print(Board board) {
     String[][] map = buildMap(board);
-    for (int y = 0; y < 3 * SQUARE_HEIGHT + 6; y++) {
+    int dominationLines = board.isDominationBoard() ? 0 : 4;
+    for (int y = dominationLines; y < 3 * SQUARE_HEIGHT + 10; y++) {
       for (int x = 0; x < 4 * SQUARE_WIDTH + DASHBOARD_WIDTH + 5; x++) {
         if (map[x][y] != null) {
           Log.print(map[x][y]);

@@ -318,7 +318,7 @@ public abstract class PlayerDashboardsView extends Observable implements
       String powerUpDesc = event.getPowerUps().stream()
           .map(x -> x.getColor().getAnsiColor() + x.getName() + ANSIColor.RESET).collect(
               Collectors.joining(", "));
-      boardView.getClient().showGameMessage("PowerUp attuali: " + powerUpDesc);
+      boardView.getClient().showGameMessage("Potenziamenti attuali: " + powerUpDesc);
     }
   }
 

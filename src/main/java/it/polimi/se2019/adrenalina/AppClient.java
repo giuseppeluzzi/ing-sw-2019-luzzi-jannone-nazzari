@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina;
 
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
@@ -30,9 +31,9 @@ public class AppClient {
 
     if (args.length < 5) {
       TUIInputManager inputManager = new TUIInputManager();
-      ipAddress = getInteractiveIpAddress(inputManager);
-      port = getInteractivePort(inputManager);
       connectionMode = getInteractiveConnectionMode(inputManager);
+      ipAddress = getInteractiveIpAddress(inputManager);
+      port = getInteractivePort(inputManager, connectionMode);
       name = getInteractivePlayerName(inputManager);
       domination = getInteractiveDomination(inputManager);
     } else {
@@ -87,7 +88,7 @@ public class AppClient {
   private String getInteractiveIpAddress(TUIInputManager inputManager) {
     while (true) {
       inputManager.input(
-              "Inserisci l'indirizzo IP del server (lascia vuoto per usare quello dalla config)",
+              String.format("Inserisci l'indirizzo IP del server (default: %s)", Configuration.getInstance().getServerIP()),
               0,
               Integer.MAX_VALUE);
       try {
@@ -105,10 +106,12 @@ public class AppClient {
     }
   }
 
-  private Integer getInteractivePort(TUIInputManager inputManager) {
+  private Integer getInteractivePort(TUIInputManager inputManager, int connectionMode) {
     while (true) {
       inputManager.input(
-              "Inserisci la porta da usare (lascia vuoto per usare quella dalla config)",
+              String.format
+                      ("Inserisci la porta da usare (default: %d)",
+                       connectionMode == 0 ? Configuration.getInstance().getRmiPort() : Configuration.getInstance().getSocketPort()),
               0,
               Integer.MAX_VALUE);
       try {

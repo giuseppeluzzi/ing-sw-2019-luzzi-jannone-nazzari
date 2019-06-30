@@ -21,8 +21,8 @@ public class TUITimer extends Timer {
   @Override
   public void tick() {
     Log.print(
-        "La partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
-            + " second" + (getRemainingSeconds() != 1 ? "i" : "o") + "\r");
+        "\rLa partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
+            + " second" + (getRemainingSeconds() != 1 ? "i" : "o"));
     Log.println("");
   }
 }
