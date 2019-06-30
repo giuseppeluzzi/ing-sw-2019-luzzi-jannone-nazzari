@@ -30,7 +30,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,6 @@ public class Board extends Observable implements Serializable {
   private PlayerColor finalFrenzyActivator;
 
   private final boolean publicCopy;
-  private boolean publicCopyHasWeapons;
   private boolean publicCopyHasAmmoCards;
 
   /**
@@ -413,6 +411,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Function that tells if a player has received at least @see(Constants.OVERKILL_DEATH)
+   *
    * @return true if it exists, false otherwise
    */
   public boolean existsOverkilledPlayer() {
@@ -432,6 +431,12 @@ public class Board extends Observable implements Serializable {
   public void addWeapon(Weapon weapon) {
     weapons.add(weapon);
     //Collections.shuffle(weapons);
+
+    try {
+      notifyObservers(new BoardHasWeaponsUpdate(true));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   /**
@@ -780,16 +785,6 @@ public class Board extends Observable implements Serializable {
       return publicCopyHasWeapons;
     }
     return !weapons.isEmpty();
-  }
-
-  /**
-   * Sets whether the board has any weapons in the stack. This method is used in public copies of
-   * the board.
-   *
-   * @param status true if the board has any weapons left in the stack, false otherwise
-   */
-  public void setPublicCopyHasWeapons(boolean status) {
-    publicCopyHasWeapons = status;
   }
 
   /**

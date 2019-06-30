@@ -12,6 +12,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
@@ -65,6 +66,15 @@ public class BoardFXController {
   private VBox turnActionButtons;
 
   @FXML
+  private VBox redWeapons;
+  @FXML
+  private HBox blueWeapons;
+  @FXML
+  private VBox yellowWeapons;
+  @FXML
+  private VBox boardHasWeapons;
+
+  @FXML
   private Pane weapon;
 
   private Text helperText;
@@ -86,7 +96,7 @@ public class BoardFXController {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         TilePane cellTilePane = new TilePane();
-        //cellTilePane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
+        cellTilePane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
         cellTilePane.setAlignment(Pos.CENTER);
         cellTilePane.setHgap(10);
         cellTilePane.setVgap(10);
@@ -105,7 +115,31 @@ public class BoardFXController {
       }
     }
 
+    for (Node child : redWeapons.getChildren()) {
+      //child.setVisible(false);
+      child.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+        child.setScaleX(2);
+        child.setScaleY(2);
+      });
+      child.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+        child.setScaleX(1);
+        child.setScaleY(1);
+        child.setTranslateX(0);
+      });
+    }
+
+    for (Node child : blueWeapons.getChildren()) {
+      //child.setVisible(false);
+    }
+
+    for (Node child : yellowWeapons.getChildren()) {
+      //child.setVisible(false);
+    }
+
     HBox.setHgrow(spacerBottomGrid, Priority.ALWAYS);
+
+    mapGrid.setStyle(
+        "-fx-background-image: url(\"gui/assets/img/map1.png\");");
   }
 
   public void setMapId(int mapId) {
@@ -445,5 +479,65 @@ public class BoardFXController {
       }
     }
     return false;
+  }
+
+  public void updateBlueWeapons(List<Weapon> weapons) {
+    Platform.runLater(() -> {
+      blueWeapons.getChildren().clear();
+      for (Weapon weapon : weapons) {
+        ImageView imageView = new ImageView("gui/assets/img/weapon/" + weapon.getSlug() + ".png");
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(70);
+        blueWeapons.getChildren().add(imageView);
+      }
+    });
+  }
+
+  public void updateRedWeapons(List<Weapon> weapons) {
+    Platform.runLater(() -> {
+      blueWeapons.getChildren().clear();
+      for (Weapon weapon : weapons) {
+        ImageView imageView = new ImageView("gui/assets/img/weapon/rotated/" + weapon.getSlug() + ".png");
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(70);
+        blueWeapons.getChildren().add(imageView);
+      }
+    });
+  }
+
+  public void updateYellowWeapons(List<Weapon> weapons) {
+    Platform.runLater(() -> {
+      blueWeapons.getChildren().clear();
+      for (Weapon weapon : weapons) {
+        ImageView imageView = new ImageView("gui/assets/img/weapon/rotated/" + weapon.getSlug() + ".png");
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(70);
+        blueWeapons.getChildren().add(imageView);
+      }
+    });
+  }
+
+  private void updateWeapons(Pane box, List<Weapon> weapons) {
+    Platform.runLater(() -> {
+      box.getChildren().clear();
+    });
+  }
+
+  private void showWeaponCard(String weaponName) {
+
+  }
+
+  private void hideWeaponsCard() {
+
+  }
+
+  public void showBoardWeapons(boolean full) {
+    Platform.runLater(() -> {
+      if (full) {
+        boardHasWeapons.setVisible(true);
+      } else {
+        boardHasWeapons.setVisible(false);
+      }
+    });
   }
 }

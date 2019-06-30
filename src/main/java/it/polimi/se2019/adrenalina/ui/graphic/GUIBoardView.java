@@ -5,15 +5,18 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Client;
@@ -179,5 +182,29 @@ public class GUIBoardView extends BoardView {
       ammoCardStr = ammoCard.toString();
     }
     Platform.runLater(() -> AppGUI.getBoardFXController().setAmmoCard(event.getPosX(), event.getPosY(), ammoCardStr));
+  }
+
+  @Override
+  public void update(SquareWeaponUpdate event) {
+    super.update(event);
+
+    Square square = getBoard().getSquare(event.getPosX(), event.getPosY());
+    switch (square.getColor()) {
+      case BLUE:
+        AppGUI.getBoardFXController().updateBlueWeapons(square.getWeapons());
+        break;
+      case YELLOW:
+        AppGUI.getBoardFXController().updateYellowWeapons(square.getWeapons());
+        break;
+      case RED:
+        AppGUI.getBoardFXController().updateRedWeapons(square.getWeapons());
+        break;
+    }
+  }
+
+  @Override
+  public void update(BoardHasWeaponsUpdate event) {
+    super.update(event);
+    AppGUI.getBoardFXController().showBoardWeapons(event.hasWeapons());
   }
 }

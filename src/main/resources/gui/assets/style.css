@@ -194,3 +194,8 @@
 .debugPlayerDashboard {
   -fx-background-image: url("img/dashboard_YELLOW.png");
 }
+
+.cardInfoModalBackground {
+  -fx-background-color: black;
+  -fx-opacity: 0.7;
+}
