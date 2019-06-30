@@ -182,12 +182,10 @@ public class TUIBoardView extends BoardView {
       String fetchHelper = "";
       if (target.getSquare().isSpawnPoint()) {
         fetchHelper = "(punto di generazione)";
-      } else if (fetch) {
-        if (target.getSquare().getAmmoCard() != null) {
-          fetchHelper =
-              "(tessera munizioni " + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
-                  + ")";
-        }
+      } else if (fetch && target.getSquare().getAmmoCard() != null) {
+        fetchHelper =
+                "(tessera munizioni " + ANSIColor.WHITE + target.getSquare().getAmmoCard() + ANSIColor.RESET
+                        + ")";
       }
       choices.add(
           String.format("%sx: %d y:%d %s%s%s",

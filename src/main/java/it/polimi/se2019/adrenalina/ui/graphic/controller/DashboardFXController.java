@@ -7,8 +7,6 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.List;
 import java.util.Locale;
 import javafx.application.Platform;
-import javafx.scene.Node;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;

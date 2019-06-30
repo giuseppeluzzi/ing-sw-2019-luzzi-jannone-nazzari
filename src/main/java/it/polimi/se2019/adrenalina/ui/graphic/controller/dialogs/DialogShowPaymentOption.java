@@ -54,39 +54,15 @@ public class DialogShowPaymentOption extends Dialog {
    */
   public void initialize() {
     buttonContinue.setOnAction(event -> {
-      int answerRed = 0;
-      int answerBlue = 0;
-      int answerYellow = 0;
-      List<PowerUp> answerPowerUp = new ArrayList<>();
       List<Integer> answers = new ArrayList<>();
       for (int i = 0; i < flowPane.getChildren().size(); i++) {
         if (((CheckBox) flowPane.getChildren().get(i)).isSelected()) {
           answers.add(i);
         }
       }
-
       spendables = setSpendable(budgetPowerUp, budgetAmmo);
       if (verifyPaymentFullfilled(answers, spendables, buyableCost)) {
-        for (Integer element : answers) {
-          if (spendables.get(element).isPowerUp()) {
-            answerPowerUp.add((PowerUp) spendables.get(element));
-          } else {
-            if (spendables.get(element).getColor() == AmmoColor.RED) {
-              answerRed++;
-            } else if (spendables.get(element).getColor() == AmmoColor.BLUE) {
-              answerBlue++;
-            } else if (spendables.get(element).getColor() == AmmoColor.YELLOW) {
-              answerYellow++;
-            }
-          }
-        }
-        try {
-          AppGUI.getClient().getPlayerDashboardsView()
-              .update(new PlayerPaymentEvent(AppGUI.getClient().getPlayerColor(),
-                  answerRed, answerBlue, answerYellow, answerPowerUp));
-        } catch (RemoteException e) {
-          Log.exception(e);
-        }
+        handlePaymentFullfilled(answers);
       } else {
         Alert alert = new Alert(AlertType.WARNING, "La selezione non è corretta");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -96,31 +72,58 @@ public class DialogShowPaymentOption extends Dialog {
     });
   }
 
+  private void handlePaymentFullfilled(List<Integer> answers) {
+    int answerRed = 0;
+    int answerBlue = 0;
+    int answerYellow = 0;
+    List<PowerUp> answerPowerUp = new ArrayList<>();
+    for (Integer element : answers) {
+      if (spendables.get(element).isPowerUp()) {
+        answerPowerUp.add((PowerUp) spendables.get(element));
+      } else {
+        if (spendables.get(element).getColor() == AmmoColor.RED) {
+          answerRed++;
+        } else if (spendables.get(element).getColor() == AmmoColor.BLUE) {
+          answerBlue++;
+        } else if (spendables.get(element).getColor() == AmmoColor.YELLOW) {
+          answerYellow++;
+        }
+      }
+    }
+    try {
+      AppGUI.getClient().getPlayerDashboardsView()
+              .update(new PlayerPaymentEvent(AppGUI.getClient().getPlayerColor(),
+                      answerRed, answerBlue, answerYellow, answerPowerUp));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
   private List<Spendable> setSpendable(List<PowerUp> powerUps,
       Map<AmmoColor, Integer> budgetAmmo) {
-    List<Spendable> spendables = new ArrayList<>();
+    List<Spendable> spendableList = new ArrayList<>();
     int index = 0;
     int redAmmo = budgetAmmo.get(AmmoColor.RED);
     int blueAmmo = budgetAmmo.get(AmmoColor.BLUE);
     int yellowAmmo = budgetAmmo.get(AmmoColor.YELLOW);
 
     for (int i = 0; i < blueAmmo; i++) {
-      spendables.add(index, AmmoColor.BLUE);
+      spendableList.add(index, AmmoColor.BLUE);
       index++;
     }
     for (int i = 0; i < redAmmo; i++) {
-      spendables.add(index, AmmoColor.RED);
+      spendableList.add(index, AmmoColor.RED);
       index++;
     }
     for (int i = 0; i < yellowAmmo; i++) {
-      spendables.add(index, AmmoColor.YELLOW);
+      spendableList.add(index, AmmoColor.YELLOW);
       index++;
     }
     for (PowerUp powerUp : powerUps) {
-      spendables.add(index, powerUp);
+      spendableList.add(index, powerUp);
       index++;
     }
-    return spendables;
+    return spendableList;
   }
 
   private static boolean verifyPaymentFullfilled(List<Integer> answers, List<Spendable> spendables,
@@ -209,19 +212,7 @@ public class DialogShowPaymentOption extends Dialog {
     }
 
     if (! budgetPowerUp.isEmpty()) {
-      int j = 0;
-      for (PowerUp powerUp : budgetPowerUp) {
-        CheckBox checkBox = new CheckBox(powerUp.getName() + " " + powerUp.getColor());
-        if (powerUp.getColor() == AmmoColor.BLUE) {
-          checkBox.setTextFill(Color.BLUE);
-        } else if (powerUp.getColor() == AmmoColor.YELLOW) {
-          checkBox.setTextFill(Color.ORANGE);
-        } else if (powerUp.getColor() == AmmoColor.RED) {
-          checkBox.setTextFill(Color.RED);
-        }
-        flowPane.getChildren().add(checkBox);
-        j++;
-      }
+      buildPowerUps();
     }
 
     borderPane.setCenter(flowPane);
@@ -233,5 +224,19 @@ public class DialogShowPaymentOption extends Dialog {
     bluText.setFill(Color.BLUE);
     yellowText.setFill(Color.ORANGE);
     subtitleTop.getChildren().addAll(redText, new Text(", "), bluText, new Text(", "), yellowText, new Text(", "), anyText);
+  }
+
+  private void buildPowerUps() {
+    for (PowerUp powerUp : budgetPowerUp) {
+      CheckBox checkBox = new CheckBox(powerUp.getName() + " " + powerUp.getColor());
+      if (powerUp.getColor() == AmmoColor.BLUE) {
+        checkBox.setTextFill(Color.BLUE);
+      } else if (powerUp.getColor() == AmmoColor.YELLOW) {
+        checkBox.setTextFill(Color.ORANGE);
+      } else if (powerUp.getColor() == AmmoColor.RED) {
+        checkBox.setTextFill(Color.RED);
+      }
+      flowPane.getChildren().add(checkBox);
+    }
   }
 }

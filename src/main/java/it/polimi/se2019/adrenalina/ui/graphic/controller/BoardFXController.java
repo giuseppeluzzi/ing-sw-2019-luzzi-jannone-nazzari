@@ -692,6 +692,9 @@ public class BoardFXController {
         return ;
     }
 
+    if (track == null) {
+      return;
+    }
     track.getChildren().clear();
 
     for (PlayerColor kill : players) {

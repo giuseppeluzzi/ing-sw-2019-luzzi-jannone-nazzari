@@ -1,9 +1,7 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 import it.polimi.se2019.adrenalina.AppGUI;
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
@@ -23,8 +21,6 @@ import java.util.List;
 
 public class DialogReloadWeaponSelection extends Dialog {
 
-  private ToggleGroup weaponToggleGroup;
-
   private List<Weapon> weapons;
 
   @FXML
@@ -43,7 +39,7 @@ public class DialogReloadWeaponSelection extends Dialog {
 
   @Override
   public void build() {
-    weaponToggleGroup = new ToggleGroup();
+    ToggleGroup weaponToggleGroup = new ToggleGroup();
     int index = 0;
     for (Weapon weapon : weapons) {
       VBox vBox = new VBox();

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class UIUtils {
 
-    public UIUtils() {
+    private UIUtils() {
         throw new IllegalStateException("Utility class");
     }
 

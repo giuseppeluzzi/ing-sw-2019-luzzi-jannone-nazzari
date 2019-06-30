@@ -11,6 +11,10 @@ import java.io.InputStreamReader;
  */
 public class IOUtils {
 
+  private IOUtils() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static String readFile(String path) throws IOException {
     StringBuilder text = new StringBuilder(1);
     BufferedReader stream = new BufferedReader(new InputStreamReader(

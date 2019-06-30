@@ -2,8 +2,6 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.action.game.SpawnPointTrackSelection;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;

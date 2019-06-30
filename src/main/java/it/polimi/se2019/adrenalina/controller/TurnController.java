@@ -141,11 +141,7 @@ public class TurnController implements Serializable {
 
       currentPlayer.addDamages(currentPlayer.getColor(), 1, false);
 
-      if (currentPlayer.getSquare().getPlayers().size() == 1) {
-        ((DominationBoard) boardController.getBoard())
-            .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
-                currentPlayer.getColor());
-      }
+      addDominationDamages(currentPlayer);
     }
 
     for (Weapon weapon : currentPlayer.getWeapons()) {
@@ -192,6 +188,18 @@ public class TurnController implements Serializable {
   }
 
   /**
+   * Adds damages for players who stay alone on a spawnPoint in domination mode.
+   * @param currentPlayer the considered player
+   */
+  private void addDominationDamages(Player currentPlayer) {
+    if (currentPlayer.getSquare().getPlayers().size() == 1) {
+      ((DominationBoard) boardController.getBoard())
+              .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
+                      currentPlayer.getColor());
+    }
+  }
+
+  /**
    * Adds a first spawn action to the queue.
    * @param player the playing player
    */
@@ -228,16 +236,10 @@ public class TurnController implements Serializable {
    */
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
-      if ("PeppeSocket".equals(player.getName()) || "socket2".equals(player.getName())) {
-        // TODO CHEAT SUITE CANCELLARE
-        addTurnActions(new CheckRespawn(this, player));
-      } else {
-        player.addAmmo(AmmoColor.BLUE, 1);
-        player.addAmmo(AmmoColor.RED, 1);
-        player.addAmmo(AmmoColor.YELLOW, 1);
-
-        addBaseGameTurnActions(player);
-      }
+      player.addAmmo(AmmoColor.BLUE, 1);
+      player.addAmmo(AmmoColor.RED, 1);
+      player.addAmmo(AmmoColor.YELLOW, 1);
+      addBaseGameTurnActions(player);
       addFirstSpawn(player);
     } else {
       if (boardController.getBoard().isFinalFrenzySelected() &&
@@ -247,27 +249,11 @@ public class TurnController implements Serializable {
           player.enableFrenzy();
         }
 
-        int playerIndex = boardController.getBoard().getPlayers().indexOf(player);
-
         for (Player player2 : boardController.getBoard().getPlayers()) {
           Log.debug("Indice di " + player2.getName() + ": " + boardController.getBoard().getPlayers().indexOf(player2));
         }
         Log.debug("Indice di " + boardController.getBoard().getFinalFrenzyActivator() + "(attivatore della frenesia): " + getFfActivatorIndex());
-        if (playerIndex > getFfActivatorIndex()) {
-          addTurnActions(
-                  new PowerUpSelection(this, player, null, false, false),
-                  new ActionSelection(this, player),
-                  new PowerUpSelection(this, player, null, false, false),
-                  new ActionSelection(this, player),
-                  new PowerUpSelection(this, player, null, false, false),
-                  new CheckRespawn(this, player));
-        } else {
-          addTurnActions(
-                  new PowerUpSelection(this, player, null, false, false),
-                  new ActionSelection(this, player),
-                  new PowerUpSelection(this, player, null, false, false),
-                  new CheckRespawn(this, player));
-        }
+        addFinalFrenyTurnActions(player);
       } else {
         addBaseGameTurnActions(player);
       }
@@ -316,6 +302,29 @@ public class TurnController implements Serializable {
         new PowerUpSelection(this, player, null, false, false),
         new CheckReloadWeapons(this, player),
         new CheckRespawn(this, player));
+  }
+
+  /**
+   * Adds final frenzy game action.
+   * @param player the considered player
+   */
+  private void addFinalFrenyTurnActions(Player player) {
+    int playerIndex = boardController.getBoard().getPlayers().indexOf(player);
+    if (playerIndex > getFfActivatorIndex()) {
+      addTurnActions(
+              new PowerUpSelection(this, player, null, false, false),
+              new ActionSelection(this, player),
+              new PowerUpSelection(this, player, null, false, false),
+              new ActionSelection(this, player),
+              new PowerUpSelection(this, player, null, false, false),
+              new CheckRespawn(this, player));
+    } else {
+      addTurnActions(
+              new PowerUpSelection(this, player, null, false, false),
+              new ActionSelection(this, player),
+              new PowerUpSelection(this, player, null, false, false),
+              new CheckRespawn(this, player));
+    }
   }
 
   /**

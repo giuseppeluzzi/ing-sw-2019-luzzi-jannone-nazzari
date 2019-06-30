@@ -25,8 +25,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Player dashboards view.
@@ -61,42 +59,7 @@ public abstract class PlayerDashboardsView extends Observable implements
 
     try {
       if (!newDamages.isEmpty()) {
-      String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
-      String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
-        if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
-          boardView.getClient().showGameMessage(
-              String.format(
-                  "Hai subito %d danni da %s%s%s!",
-                  newDamages.size(),
-                  event.getKillerColor().getAnsiColor(),
-                  killerName,
-                  ANSIColor.RESET));
-          boardView.showBoard();
-        } else {
-          if (newDamages.size() == 1) {
-            boardView.getClient().showGameMessage(
-                String.format(
-                    "%s%s%s ha inflitto %d danno a %s%s%s!",
-                    event.getKillerColor().getAnsiColor(),
-                    killerName,
-                    ANSIColor.RESET,
-                    newDamages.size(),
-                    event.getPlayerColor().getAnsiColor(),
-                    playerName,
-                    ANSIColor.RESET));
-          } else {
-            boardView.getClient().showGameMessage(
-                String.format(
-                    "%s%s%s ha inflitto %d danni a %s%s%s!",
-                    event.getKillerColor().getAnsiColor(),
-                    killerName,
-                    ANSIColor.RESET,
-                    newDamages.size(),
-                    event.getPlayerColor().getAnsiColor(),
-                    playerName,
-                    ANSIColor.RESET));
-          }
-        }
+        showTagsDamagesMessage(event);
       }
 
       if (!newTags.isEmpty()) {
@@ -146,6 +109,34 @@ public abstract class PlayerDashboardsView extends Observable implements
 
     player.updateDamages(event.getDamages());
     player.updateTags(event.getTags());
+  }
+
+  private void showTagsDamagesMessage(PlayerDamagesTagsUpdate event) throws InvalidPlayerException, RemoteException {
+    List<PlayerColor> newDamages = new ArrayList<>(event.getDamages());
+    String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
+    String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
+    if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
+      boardView.getClient().showGameMessage(
+              String.format(
+                      "Hai subito %d danni da %s%s%s!",
+                      newDamages.size(),
+                      event.getKillerColor().getAnsiColor(),
+                      killerName,
+                      ANSIColor.RESET));
+      boardView.showBoard();
+    } else {
+      boardView.getClient().showGameMessage(
+              String.format(
+                      "%s%s%s ha inflitto %d dann%s a %s%s%s!",
+                      event.getKillerColor().getAnsiColor(),
+                      killerName,
+                      ANSIColor.RESET,
+                      newDamages.size(),
+                      newDamages.size() == 1 ? "o" : "i",
+                      event.getPlayerColor().getAnsiColor(),
+                      playerName,
+                      ANSIColor.RESET));
+    }
   }
 
   /**
@@ -313,46 +304,6 @@ public abstract class PlayerDashboardsView extends Observable implements
     }
 
     player.updatePowerUps(event.getPowerUps());
-  }
-
-  private List<PowerUp> addNewtons(Map<AmmoColor, Integer> powerUpData) {
-    List<PowerUp> powerUps = new ArrayList<>();
-    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
-      for (int i = 0; i < entrySet.getValue(); i++) {
-        powerUps.add(new Newton(entrySet.getKey()));
-      }
-    }
-    return powerUps;
-  }
-
-  private List<PowerUp> addTargetingScopes(Map<AmmoColor, Integer> powerUpData) {
-    List<PowerUp> powerUps = new ArrayList<>();
-    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
-      for (int i = 0; i < entrySet.getValue(); i++) {
-        powerUps.add(new TargetingScope(entrySet.getKey()));
-      }
-    }
-    return powerUps;
-  }
-
-  private List<PowerUp> addTagbackGranades(Map<AmmoColor, Integer> powerUpData) {
-    List<PowerUp> powerUps = new ArrayList<>();
-    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
-      for (int i = 0; i < entrySet.getValue(); i++) {
-        powerUps.add(new TagbackGrenade(entrySet.getKey()));
-      }
-    }
-    return powerUps;
-  }
-
-  private List<PowerUp> addTeleporters(Map<AmmoColor, Integer> powerUpData) {
-    List<PowerUp> powerUps = new ArrayList<>();
-    for (Map.Entry<AmmoColor, Integer> entrySet : powerUpData.entrySet()) {
-      for (int i = 0; i < entrySet.getValue(); i++) {
-        powerUps.add(new Teleporter(entrySet.getKey()));
-      }
-    }
-    return powerUps;
   }
 
 

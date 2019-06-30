@@ -5,10 +5,7 @@ import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Invocation to print the player's payment options on the client.
@@ -17,17 +14,17 @@ public class ShowPaymentOptionInvocation implements Invocation {
 
   private static final long serialVersionUID = 6348887252528342959L;
   private final BuyableType buyableType;
-  private final HashMap<AmmoColor, Integer> buyableCost;
+  private final EnumMap<AmmoColor, Integer> buyableCost;
   private final List<PowerUp> budgetPowerUps;
-  private final HashMap<AmmoColor, Integer> budgetAmmos;
+  private final EnumMap<AmmoColor, Integer> budgetAmmos;
   private final String prompt;
 
   public ShowPaymentOptionInvocation(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUps, Map<AmmoColor, Integer> budgetAmmos) {
     this.buyableType = buyableType;
-    this.buyableCost = new HashMap<>(buyableCost);
+    this.buyableCost = new EnumMap<>(buyableCost);
     this.budgetPowerUps = new ArrayList<>(budgetPowerUps);
-    this.budgetAmmos = new HashMap<>(budgetAmmos);
+    this.budgetAmmos = new EnumMap<>(budgetAmmos);
     this.prompt = prompt;
   }
 
@@ -36,7 +33,7 @@ public class ShowPaymentOptionInvocation implements Invocation {
   }
 
   public Map<AmmoColor, Integer> getBuyableCost() {
-    return new HashMap<>(buyableCost);
+    return new EnumMap<>(buyableCost);
   }
 
   public List<PowerUp> getBudgetPowerUps() {
@@ -44,7 +41,7 @@ public class ShowPaymentOptionInvocation implements Invocation {
   }
 
   public Map<AmmoColor, Integer> getBudgetAmmos() {
-    return new HashMap<>(budgetAmmos);
+    return new EnumMap<>(budgetAmmos);
   }
 
   public String getPrompt() {

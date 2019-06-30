@@ -31,12 +31,10 @@ public class MoveAction implements WeaponAction {
   public void execute(Board board, ExecutableObject object) {
     if (object.getTargetHistory(target) != null) {
       try {
-        if (! object.isInitialPositionSet(object.getTargetHistory(target).getPlayer())) {
-          if (object.getTargetHistory(target).getPlayer() != null) {
-            object.setInitialPlayerPosition(
-                object.getTargetHistory(target).getPlayer(),
-                object.getTargetHistory(target).getPlayer().getSquare());
-          }
+        if (!object.isInitialPositionSet(object.getTargetHistory(target).getPlayer()) && object.getTargetHistory(target).getPlayer() != null) {
+          object.setInitialPlayerPosition(
+                  object.getTargetHistory(target).getPlayer(),
+                  object.getTargetHistory(target).getPlayer().getSquare());
         }
         Log.debug("Destination: " + destination);
         Log.debug("Destination not null?: " + object.getTargetHistory(destination));

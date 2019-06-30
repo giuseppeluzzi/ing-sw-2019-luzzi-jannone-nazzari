@@ -362,12 +362,10 @@ public class Player extends Observable implements Target {
    */
   private void handleLastSkull(PlayerColor finalFrenzyActivator) {
     board.setSkulls(0);
-    if (board.isFinalFrenzySelected()) {
-      // Attivazione frenesia finale
-      if (!board.isFinalFrenzyActive()) {
-        board.setStatus(BoardStatus.FINAL_FRENZY_ENABLED);
-        board.setFinalFrenzyActivator(finalFrenzyActivator);
-      }
+    // Attivazione frenesia finale
+    if (board.isFinalFrenzySelected() && !board.isFinalFrenzyActive()) {
+      board.setStatus(BoardStatus.FINAL_FRENZY_ENABLED);
+      board.setFinalFrenzyActivator(finalFrenzyActivator);
     }
   }
 
@@ -465,10 +463,8 @@ public class Player extends Observable implements Target {
       assignFirstBlood();
     }
     assignDamagesPoints();
-    if (board.getDoubleKill() != null) {
-      if (board.getDoubleKill().color == color) {
-        score += 1;
-      }
+    if (board.getDoubleKill() != null && board.getDoubleKill().color == color) {
+      score += 1;
     }
     if (!board.isDominationBoard()) {
       board.addKillShot(new Kill(damages.get(Constants.NORMAL_DEATH - 1), damages.size() < Constants.OVERKILL_DEATH));

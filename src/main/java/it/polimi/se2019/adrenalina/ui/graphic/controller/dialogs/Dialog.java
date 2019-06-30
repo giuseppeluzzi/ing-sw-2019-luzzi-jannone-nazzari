@@ -54,7 +54,6 @@ public abstract class Dialog {
       });
     } catch (IOException e) {
       Log.exception(e);
-      e.printStackTrace();
     }
   }
 

@@ -4,8 +4,6 @@ import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;

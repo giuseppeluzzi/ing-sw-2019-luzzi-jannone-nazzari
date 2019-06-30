@@ -80,26 +80,7 @@ public class ExecutableEffect extends GameAction {
   void executeWeapon(Board board) throws InvalidSquareException {
     switch (weaponAction.getActionType()) {
       case SHOOT:
-        Target target = executableObject
-                .getTargetHistory(((ShootAction) weaponAction).getTarget());
-        try {
-          executableObject.setLastUsageDirection(executableObject
-              .getOwner().getSquare().getCardinalDirection(target.getSquare()));
-        } catch (InvalidSquareException e) {
-          executableObject.setLastUsageDirection(null);
-        }
-
-        if (((ShootAction) weaponAction).getDamages() > 0) {
-          getTurnController().addTurnActions(
-              new PowerUpSelection(getTurnController(), getPlayer(), target,
-                  false, true));
-          if (target.isPlayer()) {
-            getTurnController().addTurnActions(
-                new PowerUpSelection(getTurnController(), target.getPlayer(),
-                    null, false, false));
-          }
-        }
-        ((Weapon) executableObject).setLoaded(false);
+        handleNormalShoot();
         break;
       case SHOOT_SQUARE:
         if (((ShootAction) weaponAction).getDamages() > 0) {
@@ -133,6 +114,29 @@ public class ExecutableEffect extends GameAction {
         break;
       default:
     }
+  }
+
+  private void handleNormalShoot() throws InvalidSquareException {
+    Target target = executableObject
+            .getTargetHistory(((ShootAction) weaponAction).getTarget());
+    try {
+      executableObject.setLastUsageDirection(executableObject
+              .getOwner().getSquare().getCardinalDirection(target.getSquare()));
+    } catch (InvalidSquareException e) {
+      executableObject.setLastUsageDirection(null);
+    }
+
+    if (((ShootAction) weaponAction).getDamages() > 0) {
+      getTurnController().addTurnActions(
+              new PowerUpSelection(getTurnController(), getPlayer(), target,
+                      false, true));
+      if (target.isPlayer()) {
+        getTurnController().addTurnActions(
+                new PowerUpSelection(getTurnController(), target.getPlayer(),
+                        null, false, false));
+      }
+    }
+    ((Weapon) executableObject).setLoaded(false);
   }
 
   private void handleNoTargets(boolean isRollback) {

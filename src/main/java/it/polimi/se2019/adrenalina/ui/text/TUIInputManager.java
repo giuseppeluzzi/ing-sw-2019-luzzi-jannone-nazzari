@@ -72,9 +72,7 @@ public class TUIInputManager {
     intResult = null;
     stringResult = null;
     cancelled = false;
-    thread = new Thread(() -> {
-      askIntInputThread(prompt, choices);
-    });
+    thread = new Thread(() -> askIntInputThread(prompt, choices));
     thread.start();
   }
 

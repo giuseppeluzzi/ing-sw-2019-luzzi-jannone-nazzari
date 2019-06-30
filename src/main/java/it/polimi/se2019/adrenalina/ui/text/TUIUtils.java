@@ -9,7 +9,6 @@ import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,13 +83,12 @@ public class TUIUtils {
   }
 
   /**
-   * Verify that the combination of selected effects is valid by checking dependencies.
+   * Verify that the combination of selected effects is valid.
    * @param answers the users selections as string numbers
    * @param choices the list of choices
-   * @param effects the list of effects to choose from
    * @return true if the combination of selected effects is valid, false otherwise
    */
-  private static boolean verifyValidEffects(List<String> answers, List<String> choices, List<Effect> effects) {
+  private static boolean verifyValidEffects(List<String> answers, List<String> choices) {
     if (answers.contains(Integer.toString(choices.size())) && answers.size() != 1) {
       Log.println("La combinazione di eventi scelta non è valida");
       return false;
@@ -135,22 +133,7 @@ public class TUIUtils {
         Log.println(String.format("\t%d) %s", index, choice));
         index++;
       }
-      String response;
-      List<String> answers;
-      String inputValidationRegex = "^(\\d+(,\\d+)*)?$";
-      do {
-        inputManager.input("Inserisci i numeri degli effetti secondari da aggiungere separati da virgola:");
-        try {
-          response = inputManager.waitForStringResult().replace(" ", "");
-        } catch (InputCancelledException e) {
-          return new ArrayList<>();
-        }
-
-        answers = Arrays.asList(response.split(","));
-      } while (!response.matches(inputValidationRegex)
-              || !verifyValidEffects(answers, choices, effects)
-      );
-
+      List<String> answers = readInput(choices);
       if (answers.contains(Integer.toString(index - 1))) {
         return new ArrayList<>();
       }
@@ -181,6 +164,25 @@ public class TUIUtils {
     choices.add("Dopo tutti i precedenti");
     inputManager.input(String.format("Scegli quando vuoi usare l'effetto \"%s\":", anyTimeEffect.getName()), choices);
     return inputManager.waitForIntResult();
+  }
+
+  private static List<String> readInput(List<String> choices) {
+    String response;
+    List<String> answers;
+    String inputValidationRegex = "^(\\d+(,\\d+)*)?$";
+    do {
+      inputManager.input("Inserisci i numeri degli effetti secondari da aggiungere separati da virgola:");
+      try {
+        response = inputManager.waitForStringResult().replace(" ", "");
+      } catch (InputCancelledException e) {
+        return new ArrayList<>();
+      }
+
+      answers = Arrays.asList(response.split(","));
+    } while (!response.matches(inputValidationRegex)
+            || !verifyValidEffects(answers, choices)
+    );
+    return answers;
   }
 
   /**

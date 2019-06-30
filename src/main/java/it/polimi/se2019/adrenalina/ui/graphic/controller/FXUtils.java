@@ -9,6 +9,10 @@ public class FXUtils {
   public static final int TRANSLATE_OUT = 2000;
   public static final int TRANSLATE_DURATION = 500;
 
+  private FXUtils() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static void transition(BorderPane from, BorderPane to) {
     TranslateTransition transOut = new TranslateTransition(Duration.millis(TRANSLATE_DURATION),
         from);

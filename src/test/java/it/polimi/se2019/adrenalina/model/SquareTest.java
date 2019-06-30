@@ -249,6 +249,11 @@ public class SquareTest {
     Square square1 = new Square(2, 2, SquareColor.RED, WALL, WALL, WALL, WALL, board);
     Square square2 = new Square(2, 2, SquareColor.YELLOW, WALL, WALL, WALL, WALL, board);
     Square square3 = new Square(2, 2, SquareColor.BLUE, WALL, WALL, WALL, WALL, board);
+    Square square4 = new Square(2, 2, SquareColor.BLUE, WALL, WALL, WALL, WALL, board);
+    square1.setSpawnPoint(true);
+    square2.setSpawnPoint(true);
+    square3.setSpawnPoint(true);
+    square4.setSpawnPoint(false);
     assertEquals("unexpected result from getSquare", square1, square1.getSquare());
     assertEquals("unexpected board", board, square1.getBoard());
     square1.addDamages(PlayerColor.BLUE, 1, false);
@@ -261,12 +266,15 @@ public class SquareTest {
     square3.addDamages(PlayerColor.BLUE, 1, false);
     assertEquals("unexpected result after addDamages", 1, board.getRedDamages().size());
     assertEquals("unexpected result after addDamages", PlayerColor.BLUE, board.getRedDamages().get(0));
+    square4.addDamages(PlayerColor.BLUE, 1, false);
+    assertEquals("unexpected result after addDamages", 1, board.getRedDamages().size());
   }
 
   @Test (expected = IllegalStateException.class)
   public void testAddDamagesException() {
     DominationBoard board = new DominationBoard();
     Square square1 = new Square(2, 2, SquareColor.PURPLE, WALL, WALL, WALL, WALL, board);
+    square1.setSpawnPoint(true);
     assertEquals("unexpected result from getSquare", square1, square1.getSquare());
     assertEquals("unexpected board", board, square1.getBoard());
     square1.addDamages(PlayerColor.BLUE, 1, false);

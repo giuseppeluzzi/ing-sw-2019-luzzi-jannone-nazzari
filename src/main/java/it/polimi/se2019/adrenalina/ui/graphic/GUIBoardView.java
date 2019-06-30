@@ -48,9 +48,7 @@ public class GUIBoardView extends BoardView {
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
-      Platform.runLater(() -> {
-        AppGUI.getLobbyFXController().endLoading(masterPlayer);
-      });
+      Platform.runLater(() -> AppGUI.getLobbyFXController().endLoading(masterPlayer));
     }).start();
   }
 
@@ -108,9 +106,7 @@ public class GUIBoardView extends BoardView {
   public void update(BoardStatusUpdate event) {
     super.update(event);
     if (event.getStatus() == BoardStatus.MATCH) {
-      Platform.runLater(() -> {
-        AppGUI.getStage().setScene(AppGUI.getBoardScene());
-      });
+      Platform.runLater(() -> AppGUI.getStage().setScene(AppGUI.getBoardScene()));
     }
   }
 
@@ -202,6 +198,8 @@ public class GUIBoardView extends BoardView {
       case RED:
         AppGUI.getBoardFXController().updateRedWeapons(square.getWeapons());
         break;
+      default:
+        throw new IllegalStateException("Illegal square color");
     }
   }
 

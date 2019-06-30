@@ -117,17 +117,7 @@ public class PowerUpSelection extends GameAction {
 
     try {
       if (discard) {
-        for (Player player : board.getPlayers()) {
-          if (player.getColor() != getPlayer().getColor()) {
-            player.getClient().showGameMessage(
-                String.format("%s%s%s sta scegliendo quale potenziamento scartare",
-                    getPlayer().getColor().getAnsiColor(),
-                    getPlayer().getName(),
-                    ANSIColor.RESET));
-          }
-        }
-        getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer()
-            .getPowerUps(), discard);
+        handlePowerUpDiscard(board);
       } else {
         List<PowerUp> validPowerUps = getValidPowerUps(board, attack);
         if (validPowerUps.isEmpty()) {
@@ -149,6 +139,20 @@ public class PowerUpSelection extends GameAction {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+  }
+
+  private void handlePowerUpDiscard(Board board) throws RemoteException {
+    for (Player player : board.getPlayers()) {
+      if (player.getColor() != getPlayer().getColor()) {
+        player.getClient().showGameMessage(
+                String.format("%s%s%s sta scegliendo quale potenziamento scartare",
+                        getPlayer().getColor().getAnsiColor(),
+                        getPlayer().getName(),
+                        ANSIColor.RESET));
+      }
+    }
+    getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer()
+            .getPowerUps(), discard);
   }
 
   @Override

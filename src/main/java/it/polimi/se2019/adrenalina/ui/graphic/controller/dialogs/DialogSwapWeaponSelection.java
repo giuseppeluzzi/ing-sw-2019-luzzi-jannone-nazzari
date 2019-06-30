@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 import it.polimi.se2019.adrenalina.AppGUI;
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -11,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -22,9 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DialogSwapWeaponSelection extends Dialog {
-
-  private ToggleGroup pickWeaponToggleGroup;
-  private ToggleGroup swapWeaponToggleGroup;
 
   private List<Weapon> pickableWeapons;
   private List<Weapon> swappableWeapons;
@@ -83,9 +78,9 @@ public class DialogSwapWeaponSelection extends Dialog {
     swappableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "Falce protonica", "X"));
     swappableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "ZX-2", "X"));
      */
-    pickWeaponToggleGroup = new ToggleGroup();
+    ToggleGroup pickWeaponToggleGroup = new ToggleGroup();
     addWeaponsToHbox(pickableHBox, pickableWeapons, pickWeaponToggleGroup);
-    swapWeaponToggleGroup = new ToggleGroup();
+    ToggleGroup swapWeaponToggleGroup = new ToggleGroup();
     addWeaponsToHbox(swappableHBox, swappableWeapons, swapWeaponToggleGroup);
     buttonNext.setOnAction(event -> {
       Weapon pickedWeapon = pickableWeapons.get(Integer.parseInt(((Styleable) pickWeaponToggleGroup.getSelectedToggle()).getId()));

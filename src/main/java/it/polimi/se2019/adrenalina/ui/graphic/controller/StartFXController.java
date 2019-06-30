@@ -3,10 +3,7 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.utils.Constants;
-import it.polimi.se2019.adrenalina.utils.Log;
 import javafx.animation.TranslateTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -19,7 +16,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
 
 public class StartFXController {
 
