@@ -60,7 +60,7 @@ public abstract class CharactersView extends Observable implements CharactersVie
       if (player.getSquare() == null) {
         boardView.getClient().showGameMessage(
             String.format(
-                "%s%s%s ha scartato un %sPowerUp%s!",
+                "%s%s%s ha scartato un %spotenziamento%s!",
                 event.getPlayerColor().getAnsiColor(),
                 player.getName(),
                 ANSIColor.RESET,

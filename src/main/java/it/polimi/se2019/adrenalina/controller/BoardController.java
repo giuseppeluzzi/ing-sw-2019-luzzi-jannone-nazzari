@@ -588,6 +588,20 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     } catch (RemoteException e) {
       Log.exception(e);
     }
+
+    for (ClientInterface client : getClients().keySet()) {
+      try {
+        if (client.getPlayerColor() != event.getNewPlayerColor()) {
+          client.showGameMessage(String.format("%s ha cambiato personaggio in %s%s%s",
+                  player.getName(),
+                  event.getNewPlayerColor().getAnsiColor(),
+                  event.getNewPlayerColor().getCharacterName(),
+                  ANSIColor.RESET));
+        }
+      } catch (RemoteException e) {
+        // ignore
+      }
+    }
   }
 
   /**

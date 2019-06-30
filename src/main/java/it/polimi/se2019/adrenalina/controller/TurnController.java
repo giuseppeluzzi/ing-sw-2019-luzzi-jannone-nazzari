@@ -136,13 +136,16 @@ public class TurnController implements Serializable {
     currentPlayer.setCurrentBuying(null);
     currentPlayer.setCurrentExecutable(null);
 
-    if (boardController.getBoard().isDominationBoard() && currentPlayer.getSquare().getPlayers().size() == 1
-            && currentPlayer.getSquare().isSpawnPoint()
-            && currentPlayer.getSquare().getColor().getEquivalentAmmoColor() != null) {
+    if (boardController.getBoard().isDominationBoard() && currentPlayer.getSquare().isSpawnPoint()
+    && currentPlayer.getSquare().getColor().getEquivalentAmmoColor() != null) {
 
-      ((DominationBoard) boardController.getBoard())
-              .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
-                      currentPlayer.getColor());
+      currentPlayer.addDamages(currentPlayer.getColor(), 1, false);
+
+      if (currentPlayer.getSquare().getPlayers().size() == 1) {
+        ((DominationBoard) boardController.getBoard())
+            .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
+                currentPlayer.getColor());
+      }
     }
 
     for (Weapon weapon : currentPlayer.getWeapons()) {
@@ -225,7 +228,7 @@ public class TurnController implements Serializable {
    */
   private void addGameTurn(Player player) {
     if (boardController.getBoard().getTurnCounter() == 1) {
-      if (player.getName().equals("PeppeSocket")) {
+      if ("PeppeSocket".equals(player.getName()) || "socket2".equals(player.getName())) {
         // TODO CHEAT SUITE CANCELLARE
         addTurnActions(new CheckRespawn(this, player));
       } else {

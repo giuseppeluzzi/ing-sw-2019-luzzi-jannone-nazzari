@@ -510,17 +510,21 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     List<String> choices = new ArrayList<>();
 
     if (discard) {
-      prompt = "Seleziona quale PowerUp scartare:";
+      prompt = "Seleziona quale potenziamento scartare:";
       timer.start(Configuration.getInstance().getTurnTimeout(),
-          () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un powerUp a caso"));
+          () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un potenziamento a caso"));
     } else {
-      prompt = "Seleziona quale PowerUp usare:";
-      choices.add("Non usare nessun PowerUp");
+      prompt = "Seleziona quale potenziamento usare:";
+      choices.add("Non usare nessun potenziamento");
       timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
           WAIT_TIMEOUT_MSG));
     }
     for (PowerUp powerUp : powerUps) {
-      choices.add(powerUp.getColor().getAnsiColor() + powerUp.getName() + ANSIColor.RESET);
+      choices.add(String.format("%s%s%s (%s)",
+              powerUp.getColor().getAnsiColor(),
+              powerUp.getName(),
+              ANSIColor.RESET,
+              powerUp.getSymbol()));
     }
     inputManager.input(prompt, choices);
     try {

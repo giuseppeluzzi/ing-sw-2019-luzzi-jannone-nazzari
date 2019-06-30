@@ -400,7 +400,18 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     Weapon selectedWeapon = board.getWeaponByName(event.getWeaponName());
     if (selectedWeapon != null) {
       player.setCurrentExecutable(selectedWeapon);
+
+      for (Player player1 : board.getPlayers()) {
+        if (player1.getColor() != player.getColor()) {
+          try {
+            player1.getClient().showGameMessage(player.getName() + " sta usando: " + selectedWeapon.getName());
+          } catch (RemoteException e) {
+            Log.exception(e);
+          }
+        }
+      }
     }
+
 
     boardController.getTurnController().executeGameActionQueue();
   }

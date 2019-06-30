@@ -37,6 +37,7 @@ public class ActionSelection extends GameAction {
     List<TurnAction> turnActions = null;
 
     if (board.isFinalFrenzyActive()) {
+
       int playerIndex = board.getPlayers().indexOf(getPlayer());
       int finalFrenzyActivator;
 
@@ -103,15 +104,15 @@ public class ActionSelection extends GameAction {
     List<TurnAction> actions = new ArrayList<>();
 
     if (playerIndex > finalFrenzyActivatorIndex) {
-      actions.add(TurnAction.FF_WALK_FETCH);
-      if (playerHasLoadedWeapons) {
-        actions.add(TurnAction.FF_WALK_RELOAD_SHOOT);
-      }
-    } else {
       actions.add(TurnAction.FF_RUN);
       actions.add(TurnAction.FF_RUN_FETCH);
       if (playerHasLoadedWeapons) {
         actions.add(TurnAction.FF_RUN_RELOAD_SHOOT);
+      }
+    } else {
+      actions.add(TurnAction.FF_WALK_FETCH);
+      if (playerHasLoadedWeapons) {
+        actions.add(TurnAction.FF_WALK_RELOAD_SHOOT);
       }
     }
 
