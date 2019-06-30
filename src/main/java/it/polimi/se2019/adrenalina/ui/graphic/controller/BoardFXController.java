@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
@@ -11,6 +12,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SkipSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.model.Kill;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -35,6 +37,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -81,9 +84,23 @@ public class BoardFXController {
   private VBox yellowWeaponsHover;
   @FXML
   private VBox boardHasWeapons;
+  @FXML
+  private HBox normalBoardSkulls;
+  @FXML
+  private FlowPane dominationBoardSkulls;
+  @FXML
+  private HBox dominationKilltrack;
+  @FXML
+  private HBox blueSpawnPointDamages;
+  @FXML
+  private HBox redSpawnPointDamages;
+  @FXML
+  private HBox yellowSpawnPointDamages;
 
   private Text helperText;
+  private Pane boardSkulls;
 
+  private boolean domination;
   private GUIGridSquare[][] grid;
 
   private final EnumMap<PlayerColor, GUIPlayerTile> playerTiles;
@@ -172,6 +189,19 @@ public class BoardFXController {
     dashboardControllers.put(color, playerDashboardFXController);
     loaderPlayerDashboard.setController(playerDashboardFXController);
 
+    try {
+      domination = AppGUI.getClient().isDomination();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+
+    if (domination) {
+      loadDominationInterface();
+    } else {
+      boardSkulls = normalBoardSkulls;
+    }
+    loadBoardSkulls();
+
     Platform.runLater(() -> {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
@@ -183,6 +213,30 @@ public class BoardFXController {
         Log.exception(e);
       }
     });
+  }
+
+  private void loadBoardSkulls() {
+    int skulls = 0;
+
+    try {
+      skulls = AppGUI.getClient().getBoardView().getBoard().getSkulls();
+    } catch (RemoteException e) {
+      Log.exception(e);
+      return ;
+    }
+
+    for (int i = 0; i < skulls; i++) {
+      Circle skull = new Circle();
+      skull.getStyleClass().add("boardSkull");
+      boardSkulls.getChildren().add(skull);
+    }
+  }
+
+  private void loadDominationInterface() {
+    normalBoardSkulls.setVisible(false);
+    dominationBoardSkulls.setVisible(true);
+    boardSkulls = dominationBoardSkulls;
+
   }
 
   public void loadEnemyDashboard(PlayerColor color) {
@@ -257,7 +311,8 @@ public class BoardFXController {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         for (Node node : grid[x][y].getTilePane().getChildren()) {
-          if (node.getProperties().containsKey("playerColor") && node.getProperties().get("playerColor") == playerColor) {
+          if (node.getProperties().containsKey("playerColor")
+              && node.getProperties().get("playerColor") == playerColor) {
             removeX = x;
             removeY = y;
             toRemove = node;
@@ -510,8 +565,7 @@ public class BoardFXController {
       box.getChildren().clear();
       boxHover.getChildren().clear();
 
-      for (int i = 0; i < weapons.size(); i++) {
-        Weapon weapon = weapons.get(i);
+      for (Weapon weapon : weapons) {
         Image image;
         if (rotatedImages) {
           image = new Image("gui/assets/img/weapon/rotated/weapon_" + weapon.getSlug() + ".png");
@@ -593,4 +647,71 @@ public class BoardFXController {
     });
   }
 
+  public void updateKilltrack(List<Kill> kills, int total) {
+    Platform.runLater(() -> {
+      boardSkulls.getChildren().clear();
+      for (Kill kill : kills) {
+        Circle skull = new Circle();
+        skull.setFill(Color.web(kill.getPlayerColor().getHexColor()));
+        skull.setStrokeWidth(1);
+        skull.setStroke(Color.BLACK);
+        if (domination) {
+          skull.setRadius(5);
+        } else {
+          skull.setRadius(9.5);
+        }
+        boardSkulls.getChildren().add(skull);
+      }
+
+      for (int i = 0; i < total - kills.size(); i++) {
+        Circle skull = new Circle();
+        skull.getStyleClass().add("boardSkull");
+        if (domination) {
+          skull.setRadius(5);
+        } else {
+          skull.setRadius(9.5);
+        }
+        boardSkulls.getChildren().add(skull);
+      }
+    });
+  }
+
+  public void updateSpawnpointDamages(AmmoColor spawnPointColor, List<PlayerColor> players) {
+    HBox track = null;
+    switch (spawnPointColor) {
+      case BLUE:
+        track = blueSpawnPointDamages;
+        break;
+      case RED:
+        track = redSpawnPointDamages;
+        break;
+      case YELLOW:
+        track = yellowSpawnPointDamages;
+        break;
+      case ANY:
+        return ;
+    }
+
+    track.getChildren().clear();
+
+    for (PlayerColor kill : players) {
+      Circle circle = new Circle();
+      circle.setFill(Color.web(kill.getHexColor()));
+      circle.setStrokeWidth(1);
+      circle.setStroke(Color.BLACK);
+      circle.setRadius(5);
+      track.getChildren().add(circle);
+    }
+  }
+
+  public void switchDashboardToFrenzy(PlayerColor color) {
+    dashboardControllers.get(color).setFrenzy();
+  }
+
+  public void reset() {
+    clearTurnActions();
+    hideSkip();
+    disableTargetSelection();
+    disableBoardWeapons();
+  }
 }

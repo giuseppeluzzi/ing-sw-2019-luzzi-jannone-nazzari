@@ -199,3 +199,17 @@
   -fx-background-color: black;
   -fx-opacity: 0.7;
 }
+
+#dominationKilltrack {
+  -fx-background-image: url("img/domination_killtrack.png");
+  -fx-background-size: contain;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: 50;
+}
+
+.boardSkull {
+  -fx-background-color: #abb0b3;
+  -fx-border-color: #000000;
+  -fx-border-width: 1;
+
+}

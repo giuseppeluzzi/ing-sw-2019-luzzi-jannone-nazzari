@@ -121,4 +121,6 @@ public abstract class DashboardFXController {
   public abstract void updateWeapons(List<Weapon> weapons, int weaponsNum);
   public abstract void updatePowerUps(List<PowerUp> powerUps);
   public abstract void updateDashboard(PlayerColor color);
+
+  public abstract void setFrenzy();
 }

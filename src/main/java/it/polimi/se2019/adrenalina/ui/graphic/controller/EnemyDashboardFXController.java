@@ -144,6 +144,14 @@ public class EnemyDashboardFXController extends DashboardFXController {
     Platform.runLater(() -> setDashboardColor(color));
   }
 
+  @Override
+  public void setFrenzy() {
+    Platform.runLater(() ->
+        enemyDashboard.setStyle(
+            "-fx-background-image: url(\"gui/assets/img/ff_dashboard_" + getPlayerColor()
+                + ".png\");"));
+  }
+
   private void setDashboardColor(PlayerColor color) {
     enemyDashboard.setStyle(
         "-fx-background-image: url(\"gui/assets/img/dashboard_" + getPlayerColor() + ".png\");");

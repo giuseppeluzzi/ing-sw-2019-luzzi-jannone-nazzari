@@ -6,9 +6,11 @@ import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardRemovePlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
@@ -91,8 +93,6 @@ public class GUIBoardView extends BoardView {
     // TODO in board
     AppGUI.getBoardFXController().enableBoardWeapons(weapons);
   }
-
-
 
   @Override
   public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
@@ -207,5 +207,17 @@ public class GUIBoardView extends BoardView {
 
   public void update(BoardHasWeaponsUpdate event) {
     AppGUI.getBoardFXController().showBoardWeaponsDeck(event.hasWeapons());
+  }
+
+  @Override
+  public void update(BoardKillShotsUpdate event) {
+    super.update(event);
+    AppGUI.getBoardFXController().updateKilltrack(event.getPlayers(), getBoard().getSkulls());
+  }
+
+  @Override
+  public void update(DominationBoardDamagesUpdate event) {
+    super.update(event);
+    AppGUI.getBoardFXController().updateSpawnpointDamages(event.getSpawnPointColor(), event.getPlayers());
   }
 }

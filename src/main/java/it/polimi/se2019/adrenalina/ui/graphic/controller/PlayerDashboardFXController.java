@@ -182,6 +182,14 @@ public class PlayerDashboardFXController extends DashboardFXController {
     });
   }
 
+  @Override
+  public void setFrenzy() {
+    Platform.runLater(() ->
+        playerDashboard.setStyle(
+            "-fx-background-image: url(\"gui/assets/img/ff_dashboard_" + getPlayerColor()
+                + ".png\");"));
+  }
+
   private void setDashboardColor(PlayerColor color) {
     playerDashboard.setStyle(
         "-fx-background-image: url(\"gui/assets/img/dashboard_" + color + ".png\");");

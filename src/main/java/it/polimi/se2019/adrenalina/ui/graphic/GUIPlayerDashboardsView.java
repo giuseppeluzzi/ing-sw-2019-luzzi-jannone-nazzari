@@ -170,7 +170,11 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void switchToFinalFrenzy(PlayerColor playerColor) {
-
+    try {
+      AppGUI.getBoardFXController().getDashboardController(playerColor).setFrenzy();
+    } catch (InvalidPlayerException ignored) {
+      //
+    }
   }
 
   @Override
@@ -208,6 +212,7 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showUnsuspendPrompt() {
+    AppGUI.getBoardFXController().reset();
     new DialogUnsuspend().show();
   }
 
