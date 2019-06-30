@@ -261,7 +261,6 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
-   *
    * @param event the received event
    * @see MapSelectionEvent
    */
@@ -271,7 +270,6 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
-   *
    * @param event the received event
    * @see PlayerColorSelectionEvent
    */

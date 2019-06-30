@@ -158,6 +158,7 @@ public class Player extends Observable implements Target {
     return square;
   }
 
+  @Override
   public void setSquare(Square square) {
     if (this.square != null) {
       this.square.removePlayer(this);
@@ -290,18 +291,29 @@ public class Player extends Observable implements Target {
 
   /**
    * Adds a new damage to a player including damages given by tags and, possibly, inflicts death.
-   *
-   * @param killerColor color of the killer that inflicted the damage
+   * @param killerColor color of the player that inflicted the damage
    */
   @Override
-  public void addDamages(PlayerColor killerColor, int num) {
-    int maxDamages = Constants.OVERKILL_DEATH - damages.size();
-    for (int i = 0; i < Math.min(num, maxDamages); i++) {
+  public void addDamages(PlayerColor killerColor, int num, boolean powerup) {
+    if (powerup) {
       damages.add(killerColor);
+    } else {
+      int maxDamages = Constants.OVERKILL_DEATH - damages.size();
+      for (int i = 0; i < Math.min(num, maxDamages); i++) {
+        damages.add(killerColor);
+      }
+      if (num > 0) {
+        addDamagesFromTags(killerColor);
+      }
     }
-    if (num > 0) {
-      addDamagesFromTags(killerColor);
-    }
+    handleDamagesUpdate(killerColor);
+  }
+
+  /**
+   * Private method that notifies all the observers with correct updates in case of death and damages updates
+   * @param killerColor player that inflicted the damage
+   */
+  private void handleDamagesUpdate(PlayerColor killerColor) {
     if (damages.size() == Constants.OVERKILL_DEATH) {
       try {
         board.getPlayerByColor(damages.get(Constants.NORMAL_DEATH)).addTags(color, 1);
@@ -318,7 +330,7 @@ public class Player extends Observable implements Target {
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
       } else if (board.getSkulls() == 1) {
-        handleLastSkull();
+        handleLastSkull(killerColor);
       }
 
       try {
@@ -348,16 +360,13 @@ public class Player extends Observable implements Target {
   /**
    * Handles the case when the last skull is taken.
    */
-  private void handleLastSkull() {
+  private void handleLastSkull(PlayerColor finalFrenzyActivator) {
     board.setSkulls(0);
     if (board.isFinalFrenzySelected()) {
       // Attivazione frenesia finale
       if (!board.isFinalFrenzyActive()) {
-        board.setStatus(BoardStatus.FINAL_FRENZY);
-        board.setFinalFrenzyActivator(color);
-      }
-      if (!frenzy) {
-        enableFrenzy();
+        board.setStatus(BoardStatus.FINAL_FRENZY_ENABLED);
+        board.setFinalFrenzyActivator(finalFrenzyActivator);
       }
     }
   }
@@ -805,16 +814,18 @@ public class Player extends Observable implements Target {
 
   public void enableFrenzy() {
     frenzy = true;
-    killScore = 2;
     try {
       notifyObservers(new PlayerFrenzyUpdate(color, frenzy));
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    try {
-      notifyObservers(new PlayerKillScoreUpdate(color, killScore));
-    } catch (RemoteException e) {
-      Log.exception(e);
+    if (damages.isEmpty()) {
+      killScore = 2;
+      try {
+        notifyObservers(new PlayerKillScoreUpdate(color, killScore));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
   }
 

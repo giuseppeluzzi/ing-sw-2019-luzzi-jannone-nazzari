@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
+import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
@@ -28,6 +29,7 @@ import it.polimi.se2019.adrenalina.utils.Observer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -100,9 +102,18 @@ public class Board extends Observable implements Serializable {
       throw new IllegalArgumentException("spawnPointColor can't be AmmoColor.ANY");
     }
 
+    SquareColor squareColor = null;
+
+    for (SquareColor color : SquareColor.values()) {
+      if (color.getEquivalentAmmoColor() == spawnPointColor) {
+        squareColor = color;
+        break;
+      }
+    }
+
     for (Square square : getSquares()) {
       if (square.isSpawnPoint() &&
-          square.getColor() == spawnPointColor.getEquivalentSquareColor()) {
+          square.getColor() == squareColor) {
         return square;
       }
     }
@@ -414,9 +425,9 @@ public class Board extends Observable implements Serializable {
    *
    * @return true if it exists, false otherwise
    */
-  public boolean existsOverkilledPlayer() {
+  public boolean existsKilledPlayer() {
     for (Player player : players) {
-      if (player.getDamages().size() == Constants.OVERKILL_DEATH) {
+      if (player.getDamages().size() == Constants.NORMAL_DEATH) {
         return true;
       }
     }
@@ -430,7 +441,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addWeapon(Weapon weapon) {
     weapons.add(weapon);
-    //Collections.shuffle(weapons);
+    Collections.shuffle(weapons);
 
     try {
       notifyObservers(new BoardHasWeaponsUpdate(true));
@@ -484,7 +495,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addPowerUp(PowerUp powerup) {
     powerUps.add(powerup);
-    //Collections.shuffle(powerUps);
+    Collections.shuffle(powerUps);
   }
 
   /**
@@ -513,7 +524,7 @@ public class Board extends Observable implements Serializable {
     }
     takenPowerUps.remove(powerUp);
     powerUps.add(powerUp);
-    //Collections.shuffle(powerUps);
+    Collections.shuffle(powerUps);
   }
 
 
@@ -562,7 +573,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addAmmoCard(AmmoCard ammoCard) {
     ammoCards.add(ammoCard);
-    //Collections.shuffle(ammoCards);
+    Collections.shuffle(ammoCards);
   }
 
   /**
@@ -597,7 +608,7 @@ public class Board extends Observable implements Serializable {
     }
     takenAmmoCards.remove(ammoCard);
     ammoCards.add(ammoCard);
-    //Collections.shuffle(ammoCards);
+    Collections.shuffle(ammoCards);
   }
 
 

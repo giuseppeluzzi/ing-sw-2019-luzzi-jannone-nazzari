@@ -16,7 +16,7 @@ public class CheckRespawnTest {
     Player player2 = new Player("test2", PlayerColor.GREY, board);
     board.addPlayer(player1);
     board.addPlayer(player2);
-    player1.addDamages(PlayerColor.PURPLE, 12);
+    player1.addDamages(PlayerColor.PURPLE, 12, false);
     assertEquals(1, CheckRespawn.getDeadPlayers(board).size());
   }
 

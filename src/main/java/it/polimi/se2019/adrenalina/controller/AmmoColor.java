@@ -10,21 +10,14 @@ import java.util.List;
  * Enumeration of all possible colors of an ammo.
  */
 public enum AmmoColor implements Spendable {
-  BLUE(SquareColor.BLUE, ANSIColor.BLUE),
-  RED(SquareColor.RED, ANSIColor.RED),
-  YELLOW(SquareColor.YELLOW, ANSIColor.YELLOW),
+  BLUE(ANSIColor.BLUE),
+  RED(ANSIColor.RED),
+  YELLOW(ANSIColor.YELLOW),
   ANY(ANSIColor.WHITE);
 
-  private final SquareColor equivalentSquareColor;
   private final ANSIColor ansiColor;
 
   AmmoColor(ANSIColor ansiColor) {
-    equivalentSquareColor = null;
-    this.ansiColor = ansiColor;
-  }
-
-  AmmoColor(SquareColor equivalentSquareColor, ANSIColor ansiColor) {
-    this.equivalentSquareColor = equivalentSquareColor;
     this.ansiColor = ansiColor;
   }
 
@@ -38,10 +31,6 @@ public enum AmmoColor implements Spendable {
 
   public ANSIColor getAnsiColor() {
     return ansiColor;
-  }
-
-  public SquareColor getEquivalentSquareColor() {
-    return equivalentSquareColor;
   }
   
   @Override

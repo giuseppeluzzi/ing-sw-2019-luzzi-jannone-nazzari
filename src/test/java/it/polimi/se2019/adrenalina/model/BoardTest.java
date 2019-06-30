@@ -321,4 +321,14 @@ public class BoardTest {
   public void testSetDoubleKillException() {
     board.setDoubleKill(null);
   }
+
+  @Test
+  public void testGetSpawnPointByColor() {
+    Square square = new Square(0,0,SquareColor.RED,WALL,WALL,WALL,WALL,board);
+    square.setSpawnPoint(true);
+    board.setSquare(square);
+    assertEquals(0, board.getSpawnPointSquare(AmmoColor.RED).getPosX());
+
+  }
+
 }

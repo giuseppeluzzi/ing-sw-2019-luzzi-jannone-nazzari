@@ -21,7 +21,7 @@ public class ShootSquareAction extends ShootAction {
   private final int[] exclude;
 
   public ShootSquareAction(int target, int damages, int tag, int distance, int[] exclude) {
-    super(target, damages, tag);
+    super(target, damages, tag, false);
     this.distance = distance;
     this.exclude = exclude.clone();
     type = WeaponActionType.SHOOT_SQUARE;
@@ -33,7 +33,7 @@ public class ShootSquareAction extends ShootAction {
     List<Player> players = getPlayers(board, object);
     for (Player player : players) {
       if (! player.getName().equals(object.getOwner().getName())) {
-        player.addDamages(object.getOwner().getColor(), getDamages());
+        player.addDamages(object.getOwner().getColor(), getDamages(), false);
         player.addTags(object.getOwner().getColor(), getTag());
       }
     }

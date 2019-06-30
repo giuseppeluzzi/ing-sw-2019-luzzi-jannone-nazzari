@@ -50,18 +50,6 @@ public class BoardControllerTest {
   }
 
   @Test
-  public void testGet() {
-    try {
-      BoardController boardController = new BoardController(true);
-      assertTrue(boardController.getBoard().isDominationBoard());
-      assertEquals(PlayerColor.GREEN, boardController.getTurnController().getBoardController().getPlayerController().createPlayer("test", PlayerColor.GREEN).getColor());
-      boardController.addPlayer(new Player("test", PlayerColor.GREEN, null));
-    } catch (RemoteException | FullBoardException | EndedGameException | PlayingBoardException ignore) {
-      //
-    }
-  }
-
-  @Test
   public void testGetFreePlayerColor() {
     try {
       BoardController boardController = new BoardController(false);

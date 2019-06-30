@@ -226,7 +226,7 @@ public class Square extends Observable implements Target {
    * @param num the number of damages
    */
   @Override
-  public void addDamages(PlayerColor player, int num) {
+  public void addDamages(PlayerColor player, int num, boolean powerup) {
     if (color == SquareColor.BLUE) {
       ((DominationBoard) board).addBlueDamage(player);
     } else if (color == SquareColor.RED) {
@@ -360,6 +360,7 @@ public class Square extends Observable implements Target {
   }
 
   public void removeWeapon(Weapon weapon) {
+    Log.debug("Sono dentro la remove weapon per: " + weapon.getName());
     weapons.remove(weapon);
     try {
       notifyObservers(new SquareWeaponUpdate(posX, posY, getWeapons()));
@@ -417,6 +418,16 @@ public class Square extends Observable implements Target {
       }
     }
     return output;
+  }
+
+  /**
+   * Method that moves a target from it's square to the specified one, since a square can't be
+   * moved it does nothing.
+   * @param square where the target will be moved
+   */
+  @Override
+  public void setSquare(Square square) {
+    //do nothing since a square can't be moved
   }
 
   /**
