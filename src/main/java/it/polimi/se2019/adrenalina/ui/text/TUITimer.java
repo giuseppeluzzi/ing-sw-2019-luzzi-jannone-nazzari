@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
@@ -20,9 +21,11 @@ public class TUITimer extends Timer {
 
   @Override
   public void tick() {
-    Log.print(
-        "\rLa partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
-            + " second" + (getRemainingSeconds() != 1 ? "i" : "o"));
-    Log.println("");
+    if (! ((Client) client).isOutputSuspended()) {
+      Log.print(
+          "\rLa partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
+              + " second" + (getRemainingSeconds() != 1 ? "i" : "o"));
+      Log.println("");
+    }
   }
 }

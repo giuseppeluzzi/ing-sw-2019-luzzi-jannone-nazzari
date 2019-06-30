@@ -117,22 +117,22 @@ public abstract class PlayerDashboardsView extends Observable implements
             boardView.getClient().showGameMessage(
                 String.format(
                     "%s%s%s ha inflitto %d marchio a %s%s%s!",
-                    event.getPlayerColor().getAnsiColor(),
+                    event.getKillerColor().getAnsiColor(),
                     killerName,
                     ANSIColor.RESET,
                     newTags.size(),
-                    event.getKillerColor().getAnsiColor(),
+                    event.getPlayerColor().getAnsiColor(),
                     playerName,
                     ANSIColor.RESET));
           } else {
             boardView.getClient().showGameMessage(
                 String.format(
                     "%s%s%s ha inflitto %d marchi a %s%s%s!",
-                    event.getPlayerColor().getAnsiColor(),
+                    event.getKillerColor().getAnsiColor(),
                     killerName,
                     ANSIColor.RESET,
                     newTags.size(),
-                    event.getKillerColor().getAnsiColor(),
+                    event.getPlayerColor().getAnsiColor(),
                     playerName,
                     ANSIColor.RESET));
           }
