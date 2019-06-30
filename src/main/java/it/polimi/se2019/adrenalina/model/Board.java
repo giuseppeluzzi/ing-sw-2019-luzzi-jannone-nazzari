@@ -66,9 +66,6 @@ public class Board extends Observable implements Serializable {
   private boolean finalFrenzySelected;
   private PlayerColor finalFrenzyActivator;
 
-  private final boolean publicCopy;
-  private boolean publicCopyHasAmmoCards;
-
   /**
    * Class constructor. Creates an empty Board to which objects have to be added.
    */
@@ -86,9 +83,6 @@ public class Board extends Observable implements Serializable {
     ammoCards = new ArrayList<>();
     takenAmmoCards = new ArrayList<>();
     killShots = new ArrayList<>();
-    publicCopy = false;
-    publicCopyHasWeapons = false;
-    publicCopyHasAmmoCards = false;
   }
 
   /**
@@ -785,41 +779,21 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Returns whether the board has any Weapons left in the stack. This method works even if this
-   * object is the publicCopy of a board (and thus has no Weapons saved into it), thanks to the
-   * {@code publicCopyHasWeapons} attribute.
+   * Returns whether the board has any Weapons left in the stack.
    *
    * @return true if the board has any weapons left in the stack, false otherwise
    */
   public boolean hasWeapons() {
-    if (publicCopy) {
-      return publicCopyHasWeapons;
-    }
     return !weapons.isEmpty();
   }
 
   /**
-   * Returns whether the board has any ammoCards left in the stack. This method works even if this
-   * object is the publicCopy of a board (and thus has no ammoCards saved into it), thanks to the
-   * {@code publicCopyHasAmmoCards} attribute.
+   * Returns whether the board has any ammoCards left in the stack.
    *
    * @return true if the board has any ammoCards left in the stack, false otherwise
    */
   public boolean hasAmmoCards() {
-    if (publicCopy) {
-      return publicCopyHasAmmoCards;
-    }
     return !ammoCards.isEmpty();
-  }
-
-  /**
-   * Sets whether the board has any ammoCards in the stack. This method is used in public copies of
-   * the board.
-   *
-   * @param status true if the board has any ammoCards left in the stack, false otherwise
-   */
-  public void setPublicCopyHasAmmoCards(boolean status) {
-    publicCopyHasAmmoCards = status;
   }
 
   /**

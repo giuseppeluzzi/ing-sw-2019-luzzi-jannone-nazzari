@@ -202,7 +202,6 @@ public class GUIBoardView extends BoardView {
     }
   }
 
-  @Override
   public void update(BoardHasWeaponsUpdate event) {
     super.update(event);
     AppGUI.getBoardFXController().showBoardWeapons(event.hasWeapons());

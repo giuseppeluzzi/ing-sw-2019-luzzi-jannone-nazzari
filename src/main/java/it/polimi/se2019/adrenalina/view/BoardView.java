@@ -187,26 +187,6 @@ public abstract class BoardView extends Observable implements BoardViewInterface
    * Event handing.
    *
    * @param event the received event
-   * @see BoardHasWeaponsUpdate
-   */
-  public void update(BoardHasWeaponsUpdate event) {
-    board.setPublicCopyHasWeapons(event.hasWeapons());
-  }
-
-  /**
-   * Event handing.
-   *
-   * @param event the received event
-   * @see BoardHasAmmoCardsUpdate
-   */
-  public void update(BoardHasAmmoCardsUpdate event) {
-    board.setPublicCopyHasAmmoCards(event.hasAmmoCards());
-  }
-
-  /**
-   * Event handing.
-   *
-   * @param event the received event
    * @see BoardKillShotsUpdate
    */
   public void update(BoardKillShotsUpdate event) {

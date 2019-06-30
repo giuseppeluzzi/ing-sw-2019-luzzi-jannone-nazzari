@@ -291,7 +291,6 @@ public class BoardTest {
     TargetingScope targetingScope = new TargetingScope(AmmoColor.BLUE);
     TargetingScope targetingScope2 = new TargetingScope(AmmoColor.YELLOW);
     board.addPowerUp(newton2);
-    board.setPublicCopyHasWeapons(true);
     board.addPowerUp(targetingScope);
     board.addPowerUp(targetingScope2);
     board.addPowerUp(newton);
@@ -304,7 +303,6 @@ public class BoardTest {
   public void testGetFreePlayerColor() {
     Player player = new Player("test", PlayerColor.GREEN, board);
     board.addPlayer(player);
-    board.setPublicCopyHasAmmoCards(true);
     assertEquals(4, board.getFreePlayerColors().size());
   }
 
