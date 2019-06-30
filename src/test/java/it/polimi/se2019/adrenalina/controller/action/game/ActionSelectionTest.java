@@ -39,21 +39,21 @@ public class ActionSelectionTest {
     List<TurnAction> turnActions;
 
     turnActions = ActionSelection.finalFrenzyTurnActions(0, false, 1);
-    assertEquals(2, turnActions.size());
-    assertTrue(turnActions.contains(TurnAction.FF_RUN));
-    assertTrue(turnActions.contains(TurnAction.FF_RUN_FETCH));
+    assertEquals(1, turnActions.size());
+    assertTrue(turnActions.contains(TurnAction.FF_WALK_FETCH));
 
     turnActions = ActionSelection.finalFrenzyTurnActions(0, true, 1);
-    assertTrue(turnActions.contains(TurnAction.FF_RUN_RELOAD_SHOOT));
-    assertEquals(3, turnActions.size());
-
-    turnActions = ActionSelection.finalFrenzyTurnActions(1, false, 0);
-    assertTrue(turnActions.contains(TurnAction.FF_WALK_FETCH));
-    assertEquals(1, turnActions.size());
-
-    turnActions = ActionSelection.finalFrenzyTurnActions(1, true, 0);
     assertTrue(turnActions.contains(TurnAction.FF_WALK_RELOAD_SHOOT));
     assertEquals(2, turnActions.size());
+
+    turnActions = ActionSelection.finalFrenzyTurnActions(1, false, 0);
+    assertTrue(turnActions.contains(TurnAction.FF_RUN));
+    assertTrue(turnActions.contains(TurnAction.FF_RUN_FETCH));
+    assertEquals(2, turnActions.size());
+
+    turnActions = ActionSelection.finalFrenzyTurnActions(1, true, 0);
+    assertTrue(turnActions.contains(TurnAction.FF_RUN_RELOAD_SHOOT));
+    assertEquals(3, turnActions.size());
   }
 
   @Test
@@ -88,8 +88,7 @@ public class ActionSelectionTest {
     board.setFinalFrenzyActivator(PlayerColor.GREEN);
     board.setStatus(BoardStatus.FINAL_FRENZY);
     List<TurnAction> actions = actionSelection.setTurnActions(board);
-    assertTrue(actions.contains(TurnAction.FF_RUN));
-    assertTrue(actions.contains(TurnAction.FF_RUN_FETCH));
-    assertTrue(actions.contains(TurnAction.FF_RUN_RELOAD_SHOOT));
+    assertTrue(actions.contains(TurnAction.FF_WALK_FETCH));
+    assertTrue(actions.contains(TurnAction.FF_WALK_RELOAD_SHOOT));
   }
 }

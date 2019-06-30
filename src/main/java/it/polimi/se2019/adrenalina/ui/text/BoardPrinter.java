@@ -281,7 +281,7 @@ public final class BoardPrinter {
    */
   private static void drawCoordinates(String[][] map) {
     int initXOffset = 2 + (SQUARE_WIDTH - 1) / 2;
-    int initYOffset = 2 + SQUARE_HEIGHT / 2;
+    int initYOffset = 6 + SQUARE_HEIGHT / 2;
     for (Integer i = 0; i < 4; i++) {
       map[initXOffset][4] = ANSIColor.RESET + i.toString();
       initXOffset += SQUARE_WIDTH;
@@ -371,7 +371,7 @@ public final class BoardPrinter {
     String title = " " + player.getName() + " (" + player.getScore() + ") ";
 
     // Left part of top edge
-    for (int i = 0; i < (DASHBOARD_WIDTH - title.length()) / 2; i++) {
+    for (int i = 0; i < (DASHBOARD_WIDTH - 2 - title.length()) / 2; i++) {
       map[posX][posY] = playerColor + HORIZONTAL_LINE;
       posX++;
     }

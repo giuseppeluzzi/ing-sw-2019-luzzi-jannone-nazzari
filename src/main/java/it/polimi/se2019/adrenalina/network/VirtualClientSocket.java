@@ -163,8 +163,12 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
 
   @Override
   public void ping() {
-    if (clientSocket != null && (clientSocket.isClosed() || !clientSocket.isConnected() || System.currentTimeMillis() - lastPing > 2 * Constants.PING_INTERVAL)) {
+    if (clientSocket != null && (clientSocket.isClosed() || !clientSocket.isConnected() || System.currentTimeMillis() - lastPing > 5 * Constants.PING_INTERVAL)) {
       Log.warn("Client " + name + " has stopped pinging; disconnecting");
+      Log.warn("** CLIENT SOCKET CHIUSO: " +  clientSocket.isClosed());
+      Log.warn("** CLIENT SOCKET CONNESSO: " + clientSocket.isConnected());
+      Log.warn("** ULTIMO PING: " + lastPing);
+      Log.warn("** TIMESTAMP ATTUALE: " + System.currentTimeMillis());
       server.clientDisconnect(this);
     }
   }
