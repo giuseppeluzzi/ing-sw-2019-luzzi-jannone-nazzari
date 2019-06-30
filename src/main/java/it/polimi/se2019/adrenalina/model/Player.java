@@ -413,6 +413,22 @@ public class Player extends Observable implements Target {
   }
 
   /**
+   * Handles "first blood" points assignment.
+   */
+  private void assignFirstBlood() {
+    for (PlayerColor damage : damages) {
+      if (damage != color) {
+        try {
+          board.getPlayerByColor(damage).setScore(score + 1);
+        } catch (InvalidPlayerException ignored) {
+          //
+        }
+        break;
+      }
+    }
+  }
+
+  /**
    * Handles score assignment after the death of a player and clears its status.
    */
   public void assignPoints() {
@@ -420,11 +436,7 @@ public class Player extends Observable implements Target {
       throw new IllegalStateException("Player is not dead");
     }
     if (!board.isFinalFrenzyActive()) {
-      try {
-        board.getPlayerByColor(damages.get(0)).setScore(score + 1); // first blood
-      } catch (InvalidPlayerException ignored) {
-        //
-      }
+      assignFirstBlood();
     }
     int awardedScore;
     if (killScore > 0) {

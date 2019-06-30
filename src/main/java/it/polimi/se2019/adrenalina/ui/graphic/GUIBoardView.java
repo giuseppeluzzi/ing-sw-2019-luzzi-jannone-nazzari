@@ -89,7 +89,10 @@ public class GUIBoardView extends BoardView {
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
     // TODO in board
+    AppGUI.getBoardFXController().enableBoardWeapons(weapons);
   }
+
+
 
   @Override
   public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
@@ -203,7 +206,6 @@ public class GUIBoardView extends BoardView {
   }
 
   public void update(BoardHasWeaponsUpdate event) {
-    super.update(event);
-    AppGUI.getBoardFXController().showBoardWeapons(event.hasWeapons());
+    AppGUI.getBoardFXController().showBoardWeaponsDeck(event.hasWeapons());
   }
 }

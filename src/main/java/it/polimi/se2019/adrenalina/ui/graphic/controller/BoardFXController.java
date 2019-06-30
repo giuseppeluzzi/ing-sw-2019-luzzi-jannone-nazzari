@@ -5,6 +5,7 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SkipSelectionEvent;
@@ -18,6 +19,7 @@ import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -29,6 +31,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -44,8 +48,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 public class BoardFXController {
-
-  private static final String PLAYER_DASHBOARD_PREFIX = "dashboard-";
 
   @FXML
   private GridPane boardGrid;
@@ -68,14 +70,17 @@ public class BoardFXController {
   @FXML
   private VBox redWeapons;
   @FXML
+  private VBox redWeaponsHover;
+  @FXML
   private HBox blueWeapons;
+  @FXML
+  private HBox blueWeaponsHover;
   @FXML
   private VBox yellowWeapons;
   @FXML
-  private VBox boardHasWeapons;
-
+  private VBox yellowWeaponsHover;
   @FXML
-  private Pane weapon;
+  private VBox boardHasWeapons;
 
   private Text helperText;
 
@@ -83,11 +88,29 @@ public class BoardFXController {
 
   private final EnumMap<PlayerColor, GUIPlayerTile> playerTiles;
   private final EnumMap<PlayerColor, DashboardFXController> dashboardControllers;
+  private final HashMap<String, ImageView> squareWeapons;
   private EventHandler<ActionEvent> skipEventHandler;
+
+  private final EventHandler<MouseEvent> buyWeaponEventHandler;
 
   public BoardFXController() {
     dashboardControllers = new EnumMap<>(PlayerColor.class);
     playerTiles = new EnumMap<>(PlayerColor.class);
+    squareWeapons = new HashMap<>();
+
+    buyWeaponEventHandler = event -> {
+      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get("weapon"))
+          .getName();
+
+      disableBoardWeapons();
+
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerCollectWeaponEvent(AppGUI.getClient().getPlayerColor(), weaponName));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    };
   }
 
   public void initialize() {
@@ -102,7 +125,8 @@ public class BoardFXController {
         cellTilePane.setVgap(10);
 
         Pane cellHoverPane = new Pane();
-        cellHoverPane.setId(x + "-" + y);
+        cellHoverPane.getProperties().put("x", x);
+        cellHoverPane.getProperties().put("y", y);
         cellHoverPane.getStyleClass().add("disabledSquare");
         cellHoverPane.setVisible(false);
 
@@ -113,27 +137,6 @@ public class BoardFXController {
 
         grid[x][y] = new GUIGridSquare(x, y, cellTilePane, cellHoverPane);
       }
-    }
-
-    for (Node child : redWeapons.getChildren()) {
-      //child.setVisible(false);
-      child.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-        child.setScaleX(2);
-        child.setScaleY(2);
-      });
-      child.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
-        child.setScaleX(1);
-        child.setScaleY(1);
-        child.setTranslateX(0);
-      });
-    }
-
-    for (Node child : blueWeapons.getChildren()) {
-      //child.setVisible(false);
-    }
-
-    for (Node child : yellowWeapons.getChildren()) {
-      //child.setVisible(false);
     }
 
     HBox.setHgrow(spacerBottomGrid, Priority.ALWAYS);
@@ -173,7 +176,7 @@ public class BoardFXController {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
         helperText = playerDashboardFXController.getHelperText();
-        playerDashboard.setId(PLAYER_DASHBOARD_PREFIX + color);
+        playerDashboard.getProperties().put("color", color);
         HBox.setHgrow(playerDashboard, Priority.NEVER);
         bottomGrid.getChildren().add(0, playerDashboard);
       } catch (IOException e) {
@@ -193,7 +196,7 @@ public class BoardFXController {
     Platform.runLater(() -> {
       try {
         Parent dashboard = loaderEnemyDashboard.load();
-        dashboard.setId(PLAYER_DASHBOARD_PREFIX + color);
+        dashboard.getProperties().put("color", color);
         enemyDashboards.getChildren().add(dashboard);
       } catch (IOException e) {
         Log.exception(e);
@@ -216,7 +219,7 @@ public class BoardFXController {
       dashboardControllers.remove(color);
       Platform.runLater(() -> {
         for (Node child : enemyDashboards.getChildren()) {
-          if (child.getId().equals(PLAYER_DASHBOARD_PREFIX + color)) {
+          if (color == child.getProperties().get("color")) {
             enemyDashboards.getChildren().remove(child);
             break;
           }
@@ -243,7 +246,7 @@ public class BoardFXController {
       imageView.getStyleClass().add("ammoCard");
       imageView.setPreserveRatio(true);
       imageView.setFitWidth(35);
-      grid[posX][posY].getTilePane().getChildren().add(imageView);
+      grid[posX][posY].getTilePane().getChildren().add(0, imageView);
     }
   }
 
@@ -254,7 +257,7 @@ public class BoardFXController {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         for (Node node : grid[x][y].getTilePane().getChildren()) {
-          if (node.getStyleClass().contains("player_" + playerColor.name())) {
+          if (node.getProperties().containsKey("playerColor") && node.getProperties().get("playerColor") == playerColor) {
             removeX = x;
             removeY = y;
             toRemove = node;
@@ -275,10 +278,11 @@ public class BoardFXController {
     }
     Circle playerIcon = new Circle(13, Color.web(playerColor.getHexColor()));
     playerIcon.getStyleClass().add("player");
-    playerIcon.getStyleClass().add("player_" + playerColor.name());
+    playerIcon.getProperties().put("playerColor", playerColor);
     playerIcon.setStroke(Color.WHITE);
     playerIcon.setStrokeWidth(1);
-    grid[posX][posY].getTilePane().getChildren().add(playerIcon);
+    grid[posX][posY].getTilePane().getChildren().add(0, playerIcon);
+
     if (playerTiles.containsKey(playerColor)) {
       playerTiles.get(playerColor).setPlayerIcon(playerIcon);
     } else {
@@ -374,7 +378,8 @@ public class BoardFXController {
    *
    * @param squares target squares
    */
-  public void enableSquareSelection(TargetType selectType, List<Target> squares, final boolean move, boolean skippable) {
+  public void enableSquareSelection(TargetType selectType, List<Target> squares, final boolean move,
+      boolean skippable) {
     if (selectType == TargetType.ATTACK_ROOM) {
       Platform.runLater(() -> helperText.setText("Seleziona una stanza"));
     } else {
@@ -482,62 +487,110 @@ public class BoardFXController {
   }
 
   public void updateBlueWeapons(List<Weapon> weapons) {
-    Platform.runLater(() -> {
-      blueWeapons.getChildren().clear();
-      for (Weapon weapon : weapons) {
-        ImageView imageView = new ImageView("gui/assets/img/weapon/" + weapon.getSlug() + ".png");
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(70);
-        blueWeapons.getChildren().add(imageView);
-      }
-    });
+    updateWeapons(blueWeapons, blueWeaponsHover, weapons, false);
   }
 
   public void updateRedWeapons(List<Weapon> weapons) {
-    Platform.runLater(() -> {
-      blueWeapons.getChildren().clear();
-      for (Weapon weapon : weapons) {
-        ImageView imageView = new ImageView("gui/assets/img/weapon/rotated/" + weapon.getSlug() + ".png");
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(70);
-        blueWeapons.getChildren().add(imageView);
-      }
-    });
+    updateWeapons(redWeapons, redWeaponsHover, weapons, true);
   }
 
   public void updateYellowWeapons(List<Weapon> weapons) {
-    Platform.runLater(() -> {
-      blueWeapons.getChildren().clear();
-      for (Weapon weapon : weapons) {
-        ImageView imageView = new ImageView("gui/assets/img/weapon/rotated/" + weapon.getSlug() + ".png");
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(70);
-        blueWeapons.getChildren().add(imageView);
-      }
-    });
+    updateWeapons(yellowWeapons, yellowWeaponsHover, weapons, true);
   }
 
-  private void updateWeapons(Pane box, List<Weapon> weapons) {
+  private void updateWeapons(Pane box, Pane boxHover, List<Weapon> weapons, boolean rotatedImages) {
     Platform.runLater(() -> {
+      ColorAdjust bnEffect = new ColorAdjust();
+      bnEffect.setSaturation(-1);
+
+      for (Node weaponImageView : boxHover.getChildren()) {
+        squareWeapons.remove(((Weapon) weaponImageView.getProperties().get("weapon")).getName());
+      }
+
       box.getChildren().clear();
-    });
-  }
+      boxHover.getChildren().clear();
 
-  private void showWeaponCard(String weaponName) {
+      for (int i = 0; i < weapons.size(); i++) {
+        Weapon weapon = weapons.get(i);
+        Image image;
+        if (rotatedImages) {
+          image = new Image("gui/assets/img/weapon/rotated/weapon_" + weapon.getSlug() + ".png");
+        } else {
+          image = new Image("gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
+        }
 
-  }
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        if (rotatedImages) {
+          imageView.setFitHeight(70);
+        } else {
+          imageView.setFitWidth(70);
+        }
+        imageView.setEffect(bnEffect);
+        box.getChildren().add(imageView);
 
-  private void hideWeaponsCard() {
+        ImageView imageViewHover = new ImageView(image);
+        imageViewHover.setPreserveRatio(true);
+        if (rotatedImages) {
+          imageViewHover.setFitHeight(70);
+        } else {
+          imageViewHover.setFitWidth(70);
+        }
+        imageViewHover.setOpacity(0);
+        imageViewHover.getProperties().put("weapon", weapon);
+        boxHover.getChildren().add(imageViewHover);
+        squareWeapons.put(weapon.getName(), imageViewHover);
 
-  }
+        imageViewHover.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, event -> {
+          imageViewHover.setOpacity(1);
+          imageViewHover.setScaleX(2);
+          imageViewHover.setScaleY(2);
+          if (rotatedImages) {
+            imageViewHover.setTranslateX(50);
+          } else {
+            imageViewHover.setTranslateY(50);
+          }
+        });
 
-  public void showBoardWeapons(boolean full) {
-    Platform.runLater(() -> {
-      if (full) {
-        boardHasWeapons.setVisible(true);
-      } else {
-        boardHasWeapons.setVisible(false);
+        imageViewHover.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, event -> {
+          imageViewHover.setScaleX(1);
+          imageViewHover.setScaleY(1);
+          imageViewHover.setTranslateX(0);
+          imageViewHover.setTranslateY(0);
+          imageViewHover.setOpacity(0);
+        });
       }
     });
   }
+
+  public void showBoardWeaponsDeck(boolean full) {
+    Platform.runLater(() -> boardHasWeapons.setVisible(full));
+  }
+
+  public void enableBoardWeapons(List<Weapon> weapons) {
+    Platform.runLater(() -> {
+      for (Weapon weapon : weapons) {
+        if (squareWeapons.containsKey(weapon.getName())) {
+          squareWeapons.get(weapon.getName()).setEffect(null);
+          squareWeapons.get(weapon.getName())
+              .addEventHandler(MouseEvent.MOUSE_CLICKED, buyWeaponEventHandler);
+        }
+      }
+    });
+  }
+
+  public void disableBoardWeapons() {
+    Platform.runLater(() -> {
+      ColorAdjust bnEffect = new ColorAdjust();
+      bnEffect.setSaturation(-1);
+
+      for (Node node : squareWeapons.values()) {
+        if (node.getEffect() != null) {
+          node.removeEventHandler(MouseEvent.MOUSE_CLICKED, buyWeaponEventHandler);
+          node.setEffect(null);
+        }
+      }
+    });
+  }
+
 }

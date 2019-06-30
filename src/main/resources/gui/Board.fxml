@@ -12,11 +12,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.Pane?>
-
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@assets/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <GridPane fx:id="boardGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
+    <GridPane fx:id="boardGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
       <columnConstraints>
         <ColumnConstraints hgrow="NEVER" minWidth="10.0" percentWidth="49.5" />
         <ColumnConstraints hgrow="SOMETIMES" />
@@ -66,78 +64,37 @@
           </ImageView>
         </VBox>
 
-        <HBox fx:id="blueWeapons" alignment="TOP_RIGHT" spacing="13" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="0">
+        <HBox alignment="TOP_RIGHT" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="0">
           <padding>
             <Insets top="-10" />
           </padding>
-          <!--<children>
-            <ImageView fitWidth="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-            <ImageView fitWidth="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-            <ImageView fitWidth="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-          </children>-->
+          <StackPane>
+            <HBox fx:id="blueWeapons" alignment="TOP_RIGHT" spacing="13" />
+            <HBox fx:id="blueWeaponsHover" alignment="TOP_RIGHT" spacing="13" />
+          </StackPane>
         </HBox>
 
-        <VBox fx:id="redWeapons" alignment="BOTTOM_LEFT" spacing="12" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="5" translateY="-132" translateX="-15">
-          <!--<children>
-            <ImageView fitHeight="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/rotated/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-            <ImageView fitHeight="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/rotated/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-            <ImageView fitHeight="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/rotated/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-          </children>-->
+        <VBox alignment="BOTTOM_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="5" translateY="-132" translateX="-15">
+          <StackPane>
+            <VBox fx:id="redWeapons" alignment="BOTTOM_LEFT" spacing="12" />
+            <VBox fx:id="redWeaponsHover" alignment="BOTTOM_LEFT" spacing="12" />
+          </StackPane>
         </VBox>
 
-        <VBox fx:id="yellowWeapons" alignment="TOP_RIGHT" spacing="13" GridPane.columnIndex="5" GridPane.rowIndex="0" GridPane.rowSpan="5" translateX="25" translateY="-15" rotate="180">
+        <VBox alignment="TOP_RIGHT" GridPane.columnIndex="5" GridPane.rowIndex="0" GridPane.rowSpan="5" translateX="25" translateY="-15" rotate="180">
           <padding>
             <Insets bottom="15" />
           </padding>
-          <!--<children>
-            <ImageView fitHeight="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/rotated/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-            <ImageView fitHeight="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/rotated/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-            <ImageView fitHeight="70.0" preserveRatio="true">
-              <image>
-                <Image url="@assets/img/weapon/rotated/weapon_cannone_vortex.png" />
-              </image>
-            </ImageView>
-          </children>-->
+          <StackPane>
+            <VBox fx:id="yellowWeapons" alignment="TOP_RIGHT" spacing="13"/>
+            <VBox fx:id="yellowWeaponsHover" alignment="TOP_RIGHT" spacing="13"/>
+          </StackPane>
         </VBox>
-
-
       </GridPane>
 
       <!-- enemy dashboards -->
       <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
-        <VBox fx:id="enemyDashboards" alignment="TOP_RIGHT" spacing="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+        <VBox fx:id="enemyDashboards" alignment="TOP_RIGHT" spacing="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="30" />
       </AnchorPane>
 
       <HBox fx:id="bottomGrid" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">

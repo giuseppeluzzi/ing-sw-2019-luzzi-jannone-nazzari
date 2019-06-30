@@ -47,7 +47,7 @@ public class TUIBoardView extends BoardView {
       }
       Log.println("È tutto pronto!");
     });
-    endLoadingThread.start();
+    //endLoadingThread.start();
   }
 
   @Override
@@ -65,6 +65,9 @@ public class TUIBoardView extends BoardView {
   @Override
   public void showBoard() {
     Log.print(ansi().eraseScreen().toString());
+    if (getBoard().getLastGameMessage() != null) {
+      Log.print(getBoard().getLastGameMessage());
+    }
     BoardPrinter.print(getBoard());
   }
 

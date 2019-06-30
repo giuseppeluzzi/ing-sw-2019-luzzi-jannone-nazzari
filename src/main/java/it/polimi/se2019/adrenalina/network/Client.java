@@ -16,6 +16,7 @@ import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 /**
  * The client object, one for each player.
@@ -129,6 +130,11 @@ public abstract class Client implements ClientInterface, Serializable {
   @Override
   public void showGameMessage(String message) {
     showMessage(MessageSeverity.GAME, "", message);
+    try {
+      boardView.getBoard().setLastGameMessage(message);
+    } catch (RemoteException e) {
+      // ignore
+    }
   }
 
 
