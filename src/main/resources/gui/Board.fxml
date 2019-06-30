@@ -142,6 +142,9 @@
         <Region fx:id="spacerBottomGrid"/>
         <!-- turn actions -->
         <VBox alignment="BOTTOM_RIGHT" maxWidth="320" minHeight="100" minWidth="300" spacing="10">
+          <Button fx:id="noPowerUpTurnActionButton" alignment="CENTER" prefWidth="300"
+            styleClass="turnActionButton" visible="false">Nessun potenziamento
+          </Button>
           <Button fx:id="skipTurnActionButton" alignment="CENTER" prefWidth="300"
             styleClass="turnActionButton" visible="false">Prosegui
           </Button>

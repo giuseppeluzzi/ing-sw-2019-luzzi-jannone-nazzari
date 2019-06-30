@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -49,8 +50,7 @@ public class DialogShowPaymentOption extends Dialog {
   }
 
   /**
-   * Initilize method, sets the onAction event that is executed
-   * when buttonContinue is pressed.
+   * Initilize method, sets the onAction event that is executed when buttonContinue is pressed.
    */
   public void initialize() {
     buttonContinue.setOnAction(event -> {
@@ -91,9 +91,10 @@ public class DialogShowPaymentOption extends Dialog {
       }
     }
     try {
-      AppGUI.getClient().getPlayerDashboardsView()
-              .update(new PlayerPaymentEvent(AppGUI.getClient().getPlayerColor(),
-                      answerRed, answerBlue, answerYellow, answerPowerUp));
+      ((BoardView) AppGUI.getClient().getBoardView())
+          .sendEvent(new PlayerPaymentEvent(AppGUI.getClient().getPlayerColor(),
+              answerRed, answerBlue, answerYellow, answerPowerUp));
+      close();
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -178,8 +179,7 @@ public class DialogShowPaymentOption extends Dialog {
   }
 
   /**
-   * Build method that creates a checkbox for every ammo and powerup
-   * possesed by the user
+   * Build method that creates a checkbox for every ammo and powerup possesed by the user
    */
   @Override
   public void build() {
@@ -211,19 +211,21 @@ public class DialogShowPaymentOption extends Dialog {
       }
     }
 
-    if (! budgetPowerUp.isEmpty()) {
+    if (!budgetPowerUp.isEmpty()) {
       buildPowerUps();
     }
 
     borderPane.setCenter(flowPane);
-    Text redText =  new Text(buyableCost.get(AmmoColor.RED) + " rosso");
+    Text redText = new Text(buyableCost.get(AmmoColor.RED) + " rosso");
     Text bluText = new Text(buyableCost.get(AmmoColor.BLUE) + " blu");
     Text yellowText = new Text(buyableCost.get(AmmoColor.YELLOW) + " giallo");
     Text anyText = new Text(buyableCost.get(AmmoColor.ANY) + " qualsiasi colore");
     redText.setFill(Color.RED);
     bluText.setFill(Color.BLUE);
     yellowText.setFill(Color.ORANGE);
-    subtitleTop.getChildren().addAll(redText, new Text(", "), bluText, new Text(", "), yellowText, new Text(", "), anyText);
+    subtitleTop.getChildren()
+        .addAll(redText, new Text(", "), bluText, new Text(", "), yellowText, new Text(", "),
+            anyText);
   }
 
   private void buildPowerUps() {

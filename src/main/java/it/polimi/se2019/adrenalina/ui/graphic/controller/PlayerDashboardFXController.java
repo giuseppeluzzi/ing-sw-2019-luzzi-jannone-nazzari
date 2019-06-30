@@ -125,8 +125,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
 
       for (Weapon weapon : weapons) {
         ImageView imageView = new ImageView(
-            "gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
-        imageView.setFitHeight(141);
+            "gui/assets/img/weapon/rotated/weapon_" + weapon.getSlug() + ".png");
+        imageView.setFitHeight(182);
         imageView.setPreserveRatio(true);
         imageView.setVisible(true);
         imageView.setOpacity(1);
@@ -231,10 +231,15 @@ public class PlayerDashboardFXController extends DashboardFXController {
                           .valueOf(powerup[1])));
             }
             disablePowerUps();
+            AppGUI.getBoardFXController().hidePowerUpSkip();
           } catch (RemoteException e) {
             Log.exception(e);
           }
         };
+
+        if (! discard) {
+          AppGUI.getBoardFXController().showPowerUpSkip();
+        }
 
         powerUpEventHandler.put((ImageView) image, eventHandler);
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);

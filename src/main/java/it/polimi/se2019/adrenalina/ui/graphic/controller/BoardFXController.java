@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SkipSelectionEvent;
@@ -23,6 +24,7 @@ import java.rmi.RemoteException;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -68,6 +70,8 @@ public class BoardFXController {
   @FXML
   private Button skipTurnActionButton;
   @FXML
+  private Button noPowerUpTurnActionButton;
+  @FXML
   private VBox turnActionButtons;
 
   @FXML
@@ -106,6 +110,7 @@ public class BoardFXController {
   private final EnumMap<PlayerColor, GUIPlayerTile> playerTiles;
   private final EnumMap<PlayerColor, DashboardFXController> dashboardControllers;
   private final HashMap<String, ImageView> squareWeapons;
+  private final HashMap<String, ImageView> squareWeaponsHover;
   private EventHandler<ActionEvent> skipEventHandler;
 
   private final EventHandler<MouseEvent> buyWeaponEventHandler;
@@ -114,6 +119,7 @@ public class BoardFXController {
     dashboardControllers = new EnumMap<>(PlayerColor.class);
     playerTiles = new EnumMap<>(PlayerColor.class);
     squareWeapons = new HashMap<>();
+    squareWeaponsHover = new HashMap<>();
 
     buyWeaponEventHandler = event -> {
       final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get("weapon"))
@@ -160,6 +166,16 @@ public class BoardFXController {
 
     mapGrid.setStyle(
         "-fx-background-image: url(\"gui/assets/img/map1.png\");");
+
+    noPowerUpTurnActionButton.setOnAction(event -> {
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
+        hidePowerUpSkip();
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    });
   }
 
   public void setMapId(int mapId) {
@@ -222,7 +238,7 @@ public class BoardFXController {
       skulls = AppGUI.getClient().getBoardView().getBoard().getSkulls();
     } catch (RemoteException e) {
       Log.exception(e);
-      return ;
+      return;
     }
 
     for (int i = 0; i < skulls; i++) {
@@ -377,6 +393,14 @@ public class BoardFXController {
 
   public void hideSkip() {
     Platform.runLater(() -> skipTurnActionButton.setVisible(false));
+  }
+
+  public void showPowerUpSkip() {
+    Platform.runLater(() -> noPowerUpTurnActionButton.setVisible(true));
+  }
+
+  public void hidePowerUpSkip() {
+    Platform.runLater(() -> noPowerUpTurnActionButton.setVisible(false));
   }
 
   /**
@@ -560,6 +584,8 @@ public class BoardFXController {
 
       for (Node weaponImageView : boxHover.getChildren()) {
         squareWeapons.remove(((Weapon) weaponImageView.getProperties().get("weapon")).getName());
+        squareWeaponsHover
+            .remove(((Weapon) weaponImageView.getProperties().get("weapon")).getName());
       }
 
       box.getChildren().clear();
@@ -593,7 +619,8 @@ public class BoardFXController {
         imageViewHover.setOpacity(0);
         imageViewHover.getProperties().put("weapon", weapon);
         boxHover.getChildren().add(imageViewHover);
-        squareWeapons.put(weapon.getName(), imageViewHover);
+        squareWeapons.put(weapon.getName(), imageView);
+        squareWeaponsHover.put(weapon.getName(), imageViewHover);
 
         imageViewHover.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, event -> {
           imageViewHover.setOpacity(1);
@@ -626,7 +653,7 @@ public class BoardFXController {
       for (Weapon weapon : weapons) {
         if (squareWeapons.containsKey(weapon.getName())) {
           squareWeapons.get(weapon.getName()).setEffect(null);
-          squareWeapons.get(weapon.getName())
+          squareWeaponsHover.get(weapon.getName())
               .addEventHandler(MouseEvent.MOUSE_CLICKED, buyWeaponEventHandler);
         }
       }
@@ -638,10 +665,10 @@ public class BoardFXController {
       ColorAdjust bnEffect = new ColorAdjust();
       bnEffect.setSaturation(-1);
 
-      for (Node node : squareWeapons.values()) {
-        if (node.getEffect() != null) {
-          node.removeEventHandler(MouseEvent.MOUSE_CLICKED, buyWeaponEventHandler);
-          node.setEffect(null);
+      for (Entry<String, ImageView> node : squareWeaponsHover.entrySet()) {
+        if (node.getValue().getEffect() != null) {
+          node.getValue().removeEventHandler(MouseEvent.MOUSE_CLICKED, buyWeaponEventHandler);
+          squareWeapons.get(node.getKey()).setEffect(bnEffect);
         }
       }
     });
@@ -689,7 +716,7 @@ public class BoardFXController {
         track = yellowSpawnPointDamages;
         break;
       case ANY:
-        return ;
+        return;
     }
 
     if (track == null) {

@@ -14,17 +14,17 @@ public class ShowPaymentOptionInvocation implements Invocation {
 
   private static final long serialVersionUID = 6348887252528342959L;
   private final BuyableType buyableType;
-  private final EnumMap<AmmoColor, Integer> buyableCost;
+  private final HashMap<AmmoColor, Integer> buyableCost;
   private final List<PowerUp> budgetPowerUps;
-  private final EnumMap<AmmoColor, Integer> budgetAmmos;
+  private final HashMap<AmmoColor, Integer> budgetAmmos;
   private final String prompt;
 
   public ShowPaymentOptionInvocation(BuyableType buyableType, String prompt, Map<AmmoColor, Integer> buyableCost,
       List<PowerUp> budgetPowerUps, Map<AmmoColor, Integer> budgetAmmos) {
     this.buyableType = buyableType;
-    this.buyableCost = new EnumMap<>(buyableCost);
+    this.buyableCost = new HashMap<>(buyableCost);
     this.budgetPowerUps = new ArrayList<>(budgetPowerUps);
-    this.budgetAmmos = new EnumMap<>(budgetAmmos);
+    this.budgetAmmos = new HashMap<>(budgetAmmos);
     this.prompt = prompt;
   }
 
