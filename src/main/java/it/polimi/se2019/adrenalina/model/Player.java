@@ -330,7 +330,7 @@ public class Player extends Observable implements Target {
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
       } else if (board.getSkulls() == 1) {
-        handleLastSkull();
+        handleLastSkull(killerColor);
       }
 
       try {
@@ -360,16 +360,13 @@ public class Player extends Observable implements Target {
   /**
    * Handles the case when the last skull is taken.
    */
-  private void handleLastSkull() {
+  private void handleLastSkull(PlayerColor finalFrenzyActivator) {
     board.setSkulls(0);
     if (board.isFinalFrenzySelected()) {
       // Attivazione frenesia finale
       if (!board.isFinalFrenzyActive()) {
-        board.setStatus(BoardStatus.FINAL_FRENZY);
-        board.setFinalFrenzyActivator(color);
-      }
-      if (!frenzy) {
-        enableFrenzy();
+        board.setStatus(BoardStatus.FINAL_FRENZY_ENABLED);
+        board.setFinalFrenzyActivator(finalFrenzyActivator);
       }
     }
   }

@@ -7,5 +7,6 @@ public enum BoardStatus {
   LOBBY,
   MATCH,
   FINAL_FRENZY,
+  FINAL_FRENZY_ENABLED,
   END
 }

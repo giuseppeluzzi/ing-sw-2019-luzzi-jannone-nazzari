@@ -16,10 +16,24 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Target;
-import it.polimi.se2019.adrenalina.utils.*;
-import it.polimi.se2019.adrenalina.view.*;
 
-import java.io.*;
+import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.JsonEffectDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonPowerUpDeserializer;
+import it.polimi.se2019.adrenalina.utils.JsonTargetDeserializer;
+import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
+import it.polimi.se2019.adrenalina.view.BoardViewInterface;
+import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
+import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
+import it.polimi.se2019.adrenalina.view.VirtualBoardView;
+import it.polimi.se2019.adrenalina.view.VirtualCharactersView;
+import it.polimi.se2019.adrenalina.view.VirtualPlayerDashboardsView;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 

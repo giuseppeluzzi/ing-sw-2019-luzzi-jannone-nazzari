@@ -154,7 +154,7 @@ public class TurnController implements Serializable {
     boardController.getBoard().removeDoubleKill();
 
     if (boardController.getBoard().getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()
-        || boardController.getBoard().getSkulls() == 0 && ! boardController.getBoard().isFinalFrenzyActive()
+        || boardController.getBoard().getSkulls() == 0 && ! boardController.getBoard().isFinalFrenzySelected()
         || boardController.getBoard().isFinalFrenzyActive()
             && currentPlayerIndex == getFfActivatorIndex()) {
       endGame = true;
@@ -177,6 +177,11 @@ public class TurnController implements Serializable {
       currentPlayer = boardController.getBoard().getPlayers().get(currentPlayerIndex);
       next = currentPlayer.getStatus() == PlayerStatus.SUSPENDED;
     }
+
+    if (boardController.getBoard().getStatus() == BoardStatus.FINAL_FRENZY_ENABLED) {
+      boardController.getBoard().setStatus(BoardStatus.FINAL_FRENZY);
+    }
+
     boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
     refillMap();
     addGameTurn(currentPlayer);
@@ -235,8 +240,16 @@ public class TurnController implements Serializable {
       if (boardController.getBoard().isFinalFrenzySelected() &&
           boardController.getBoard().isFinalFrenzyActive()) {
 
+        if (! player.isFrenzy()) {
+          player.enableFrenzy();
+        }
+
         int playerIndex = boardController.getBoard().getPlayers().indexOf(player);
 
+        for (Player player2 : boardController.getBoard().getPlayers()) {
+          Log.debug("Indice di " + player2.getName() + ": " + boardController.getBoard().getPlayers().indexOf(player2));
+        }
+        Log.debug("Indice di " + boardController.getBoard().getFinalFrenzyActivator() + "(attivatore della frenesia): " + getFfActivatorIndex());
         if (playerIndex > getFfActivatorIndex()) {
           addTurnActions(
                   new PowerUpSelection(this, player, null, false, false),
