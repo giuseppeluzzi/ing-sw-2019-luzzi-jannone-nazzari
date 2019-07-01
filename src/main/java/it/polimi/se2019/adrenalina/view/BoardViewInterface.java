@@ -24,7 +24,6 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
       registeredEvents.add(EventType.BOARD_STATUS_UPDATE);
       registeredEvents.add(EventType.BOARD_SKULLS_UPDATE);
       registeredEvents.add(EventType.BOARD_HAS_WEAPON_UPDATE);
-      registeredEvents.add(EventType.BOARD_HAS_AMMO_CARDS_UPDATE);
       registeredEvents.add(EventType.BOARD_KILL_SHOTS_UPDATE);
       registeredEvents.add(EventType.BOARD_ADD_PLAYER_UPDATE);
       registeredEvents.add(EventType.BOARD_REMOVE_PLAYER_UPDATE);

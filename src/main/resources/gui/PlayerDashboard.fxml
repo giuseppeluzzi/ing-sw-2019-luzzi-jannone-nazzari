@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.VBox?>
-<GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" alignment="BOTTOM_LEFT" gridLinesVisible="true">
+<GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" alignment="BOTTOM_LEFT">
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" maxWidth="90 "/>
     <ColumnConstraints hgrow="NEVER" />
@@ -52,7 +52,7 @@
     </ImageView>-->
   </HBox>
 
-  <GridPane id="playerDashboard" fx:id="playerDashboard" gridLinesVisible="true" minWidth="760.0" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="debugPlayerDashboard">
+  <GridPane id="playerDashboard" fx:id="playerDashboard" minWidth="760.0" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="debugPlayerDashboard">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />

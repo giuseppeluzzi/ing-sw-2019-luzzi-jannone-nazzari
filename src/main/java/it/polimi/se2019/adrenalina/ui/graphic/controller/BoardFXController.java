@@ -134,6 +134,17 @@ public class BoardFXController {
         Log.exception(e);
       }
     };
+
+    noPowerUpTurnActionButton.setOnAction(event -> {
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
+        hidePowerUpSkip();
+        AppGUI.getPlayerDashboardFXController().disablePowerUps();
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    });
   }
 
   public void initialize() {
@@ -166,16 +177,6 @@ public class BoardFXController {
 
     mapGrid.setStyle(
         "-fx-background-image: url(\"gui/assets/img/map1.png\");");
-
-    noPowerUpTurnActionButton.setOnAction(event -> {
-      try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-            new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
-        hidePowerUpSkip();
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
-    });
   }
 
   public void setMapId(int mapId) {
@@ -741,6 +742,7 @@ public class BoardFXController {
   public void reset() {
     clearTurnActions();
     hideSkip();
+    hidePowerUpSkip();
     disableTargetSelection();
     disableBoardWeapons();
   }

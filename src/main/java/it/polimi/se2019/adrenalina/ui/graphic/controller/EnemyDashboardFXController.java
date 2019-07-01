@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import it.polimi.se2019.adrenalina.utils.Log;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -69,16 +68,26 @@ public class EnemyDashboardFXController extends DashboardFXController {
   }
 
   @Override
-  Pane generateTag(PlayerColor damage) {
+  Pane generateTag(PlayerColor color) {
     Pane pane = new Pane();
-    pane.getStyleClass().add("enemySkull");
+    pane.setPrefWidth(18);
+    pane.setPrefHeight(18);
+    pane.setMinWidth(18);
+    pane.setMinHeight(18);
+    pane.setStyle("-fx-background-image: url(\"gui/assets/img/tag_" + color
+        + ".png\"); -fx-background-size: cover; -fx-background-repeat: no-repeat;"
+        + "-fx-background-position: center;");
     return pane;
   }
 
   @Override
   Pane generateSkull() {
     Pane pane = new Pane();
-    pane.getStyleClass().add("enemyDamage");
+    pane.setPrefWidth(18);
+    pane.setPrefHeight(18);
+    pane.setMinWidth(18);
+    pane.setMinHeight(18);
+    pane.getStyleClass().add("boardSkull");
     return pane;
   }
 
@@ -115,7 +124,6 @@ public class EnemyDashboardFXController extends DashboardFXController {
         enemyWeapons.getChildren().add(imageView);
       }
       enemyWeapons.setVisible(true);
-      Log.debug(">>>>>>>>>>>>>>> e uw");
 
     });
   }
@@ -135,7 +143,6 @@ public class EnemyDashboardFXController extends DashboardFXController {
         }
       }
       enemyPowerUps.setVisible(true);
-      Log.debug(">>>>>>>>>>>>>>> e up");
     });
   }
 
