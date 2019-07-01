@@ -113,13 +113,13 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     Log.println(
         String.format(
-            "Devi pagare:\t%s%d rosso%s, %s%d blu%s, %s%d giallo%s, %s%d qualsiasi colore%s%n"
+            "Devi pagare:\t%s%d blu%s, %s%d rosso%s, %s%d giallo%s, %s%d qualsiasi colore%s%n"
                 + "Come preferisci pagare %s?%n",
-            AmmoColor.RED.getAnsiColor(),
-            buyableCost.get(AmmoColor.RED),
-            ANSIColor.RESET,
             AmmoColor.BLUE.getAnsiColor(),
             buyableCost.get(AmmoColor.BLUE),
+            ANSIColor.RESET,
+            AmmoColor.RED.getAnsiColor(),
+            buyableCost.get(AmmoColor.RED),
             ANSIColor.RESET,
             AmmoColor.YELLOW.getAnsiColor(),
             buyableCost.get(AmmoColor.YELLOW),

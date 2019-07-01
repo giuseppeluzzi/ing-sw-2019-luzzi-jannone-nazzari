@@ -422,9 +422,9 @@ public class Board extends Observable implements Serializable {
    * Function that tells if any player has died
    * @return true if it exists, false otherwise
    */
-  public boolean existsKilledPlayer() {
+  public boolean existsOverKilledPlayer() {
     for (Player player : players) {
-      if (player.getDamages().size() == Configuration.getInstance().getDeathDamages()) {
+      if (player.getDamages().size() == Configuration.getInstance().getDeathDamages()+1) {
         return true;
       }
     }

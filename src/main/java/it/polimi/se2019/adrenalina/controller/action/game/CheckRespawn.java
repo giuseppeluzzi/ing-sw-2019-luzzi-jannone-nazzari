@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
 import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.PlayerController;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -8,7 +9,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 
-import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -35,7 +36,10 @@ public class CheckRespawn extends GameAction {
     }
 
     for (Player player : getDeadPlayers(board)) {
-      if (board.isDominationBoard() && player.getDamages().size() == Configuration.getInstance().getDeathDamages() + 1) {
+      PlayerController.sendMessageAllClients(player,
+          String.format("%s%s%s è morto", player.getColor().getAnsiColor(), player.getName(),
+          ANSIColor.RESET), board);
+      if (isSync()) {
         try {
           board.getPlayerByColor(player.getDamages().get(Configuration.getInstance().getDeathDamages()))
               .getClient().getBoardView().showSpawnPointTrackSelection(((DominationBoard) board).getSpawnPointDamages());
@@ -75,6 +79,9 @@ public class CheckRespawn extends GameAction {
 
   @Override
   public boolean isSync() {
-    return getTurnController().getBoardController().getBoard().existsKilledPlayer();
+    if (getTurnController().getBoardController().getBoard().isDominationBoard()) {
+      return getTurnController().getBoardController().getBoard().existsOverKilledPlayer();
+    }
+    return false;
   }
 }

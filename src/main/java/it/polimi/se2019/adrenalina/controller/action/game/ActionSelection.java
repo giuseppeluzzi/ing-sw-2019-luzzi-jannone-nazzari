@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.PlayerController;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -73,15 +74,10 @@ public class ActionSelection extends GameAction {
 
 
     try {
-      for (Player notCurrentPlayer : board.getPlayers()) {
-        if (notCurrentPlayer.getColor() != player.getColor() && notCurrentPlayer.getClient() != null) {
-          notCurrentPlayer.getClient().showGameMessage(
-              String.format("%s%s%s sta scegliendo un'azione",
-                  player.getColor().getAnsiColor(),
-                  player.getName(),
-                  ANSIColor.RESET));
-        }
-      }
+      PlayerController.sendMessageAllClients(player,  String.format("%s%s%s sta scegliendo un'azione",
+          player.getColor().getAnsiColor(),
+          player.getName(),
+          ANSIColor.RESET), board);
       getPlayer().getClient().getPlayerDashboardsView().showTurnActionSelection(turnActions);
     } catch (RemoteException e) {
       Log.exception(e);
