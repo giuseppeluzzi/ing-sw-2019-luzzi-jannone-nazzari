@@ -136,14 +136,6 @@ public class TurnController implements Serializable {
     currentPlayer.setCurrentBuying(null);
     currentPlayer.setCurrentExecutable(null);
 
-    if (boardController.getBoard().isDominationBoard() && currentPlayer.getSquare().isSpawnPoint()
-    && currentPlayer.getSquare().getColor().getEquivalentAmmoColor() != null) {
-
-      currentPlayer.addDamages(currentPlayer.getColor(), 1, false);
-
-      addDominationDamages(currentPlayer);
-    }
-
     for (Weapon weapon : currentPlayer.getWeapons()) {
       weapon.reset();
     }
@@ -185,18 +177,6 @@ public class TurnController implements Serializable {
     refillMap();
     addGameTurn(currentPlayer);
     executeGameActionQueue();
-  }
-
-  /**
-   * Adds damages for players who stay alone on a spawnPoint in domination mode.
-   * @param currentPlayer the considered player
-   */
-  private void addDominationDamages(Player currentPlayer) {
-    if (currentPlayer.getSquare().getPlayers().size() == 1) {
-      ((DominationBoard) boardController.getBoard())
-              .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
-                      currentPlayer.getColor());
-    }
   }
 
   /**

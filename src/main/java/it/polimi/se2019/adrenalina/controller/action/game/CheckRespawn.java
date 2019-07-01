@@ -24,6 +24,15 @@ public class CheckRespawn extends GameAction {
 
   @Override
   public void execute(Board board) {
+
+    if (board.isDominationBoard() && getPlayer().getSquare().isSpawnPoint()
+        && getPlayer().getSquare().getColor().getEquivalentAmmoColor() != null) {
+
+      getPlayer().addDamages(getPlayer().getColor(), 1, false);
+
+      addDominationDamages(getPlayer(), board);
+    }
+
     for (Player player : getDeadPlayers(board)) {
       if (board.isDominationBoard() && player.getDamages().size() == Constants.OVERKILL_DEATH) {
         try {
@@ -37,6 +46,18 @@ public class CheckRespawn extends GameAction {
       }
       getTurnController().addRespawn(player);
       getTurnController().executeGameActionQueue();
+    }
+  }
+
+  /**
+   * Adds damages for players who stay alone on a spawnPoint in domination mode.
+   * @param currentPlayer the considered player
+   */
+  private void addDominationDamages(Player currentPlayer, Board board) {
+    if (currentPlayer.getSquare().getPlayers().size() == 1) {
+      ((DominationBoard) board)
+          .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
+              currentPlayer.getColor());
     }
   }
 
