@@ -124,7 +124,7 @@ public abstract class PlayerDashboardsView extends Observable implements
                       killerName,
                       ANSIColor.RESET));
       boardView.showBoard();
-    } else {
+    } else if (event.getKillerColor() != event.getPlayerColor()) {
       boardView.getClient().showGameMessage(
               String.format(
                       "%s%s%s ha inflitto %d dann%s a %s%s%s!",
@@ -135,6 +135,13 @@ public abstract class PlayerDashboardsView extends Observable implements
                       newDamages.size() == 1 ? "o" : "i",
                       event.getPlayerColor().getAnsiColor(),
                       playerName,
+                      ANSIColor.RESET));
+    } else {
+      boardView.getClient().showGameMessage(
+              String.format(
+                      "%s%s%s ha ricevuto un danno dal punto di generazione!",
+                      event.getKillerColor().getAnsiColor(),
+                      killerName,
                       ANSIColor.RESET));
     }
   }

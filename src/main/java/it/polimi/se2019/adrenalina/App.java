@@ -1,7 +1,16 @@
 package it.polimi.se2019.adrenalina;
 
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.IOUtils;
+import it.polimi.se2019.adrenalina.utils.Log;
 import org.fusesource.jansi.AnsiConsole;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * The main class of the application.
@@ -13,8 +22,23 @@ public class App {
       AnsiConsole.systemInstall();
     }
 
-    // Verify if the configuration exists
-    Configuration.getInstance();
+    File extConfig = new File(Constants.CONFIG_FILE);
+    if (! extConfig.isFile()) {
+      byte[] intConfig = null;
+      try {
+        intConfig = IOUtils.readResourceFile(Constants.CONFIG_FILE).getBytes(StandardCharsets.UTF_8);
+      } catch (IOException e) {
+        Log.severe("Configuration file not found!");
+        System.exit(1);
+      }
+      Path extFile = Paths.get(Constants.CONFIG_FILE);
+      try {
+        Files.write(extFile, intConfig);
+      } catch (IOException e) {
+        Log.severe("Unable to write configuration file: " + e);
+        System.exit(1);
+      }
+    }
 
     if (args.length > 0 && "--server".equalsIgnoreCase(args[0])) {
       new AppServer();
