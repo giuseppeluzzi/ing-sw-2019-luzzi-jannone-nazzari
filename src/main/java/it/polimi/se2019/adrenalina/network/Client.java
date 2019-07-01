@@ -108,12 +108,17 @@ public abstract class Client implements ClientInterface, Serializable {
 
     Log.debug("Sono nella showMessage è l'output è: " + (outputSuspended ? "sospeso" : "non sospeso"));
 
-    if (! outputSuspended && tui) {
+    if (! outputSuspended) {
       if (severity == MessageSeverity.GAME) {
         if (tui) {
           Log.println(message);
         } else {
           AppGUI.getBoardFXController().setHelpText(message);
+        }
+        try {
+          boardView.getBoard().setLastGameMessage(message);
+        } catch (RemoteException e) {
+          // ignore
         }
       } else {
         if (!"".equalsIgnoreCase(title)) {
@@ -138,11 +143,6 @@ public abstract class Client implements ClientInterface, Serializable {
   @Override
   public void showGameMessage(String message) {
     showMessage(MessageSeverity.GAME, "", message);
-    try {
-      boardView.getBoard().setLastGameMessage(message);
-    } catch (RemoteException e) {
-      // ignore
-    }
   }
 
 
