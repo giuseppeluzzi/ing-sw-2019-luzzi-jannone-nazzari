@@ -66,7 +66,7 @@ public class TUIBoardView extends BoardView {
   public void showBoard() {
     Log.print(ansi().eraseScreen().toString());
     if (getBoard().getLastGameMessage() != null) {
-      Log.println(getBoard().getLastGameMessage());
+      Log.println(getBoard().getLastGameMessage() + "\n");
     }
     BoardPrinter.print(getBoard());
   }
@@ -316,7 +316,7 @@ public class TUIBoardView extends BoardView {
   public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
     AmmoColor chosen = null;
     try {
-      chosen = TUIUtils.showAmmoColorSelection(false, damages);
+      chosen = TUIUtils.showSpawnPointColorSelection(damages);
     } catch (InputCancelledException e) {
       return;
     }

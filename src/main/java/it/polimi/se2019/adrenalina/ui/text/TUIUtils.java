@@ -58,19 +58,13 @@ public class TUIUtils {
 
   /**
    * AmmoColor selection prompt
-   * @param anyAllowed whether "ANY" is an option
    * @return the chosen ammoColor
    * @throws InputCancelledException thrown if the user's input is cancelled
    */
-  static AmmoColor showAmmoColorSelection(boolean anyAllowed, Map<AmmoColor, Integer> damages)
+  static AmmoColor showSpawnPointColorSelection(Map<AmmoColor, Integer> damages)
       throws InputCancelledException {
 
-    List<AmmoColor> colors;
-    if (anyAllowed) {
-      colors = Arrays.asList(AmmoColor.values());
-    } else {
-      colors = AmmoColor.getValidColor();
-    }
+    List<AmmoColor> colors = AmmoColor.getValidColor();
 
     List<String> choices = new ArrayList<>();
 
@@ -78,7 +72,7 @@ public class TUIUtils {
       choices.add(color.getAnsiColor() + color.toString() + ANSIColor.RESET + " (danni ricevuti: " + damages.get(color) + ")");
     }
 
-    inputManager.input("Scegli un colore:", choices);
+    inputManager.input("Scegli il colore di un punto di generazione:", choices);
     return colors.get(inputManager.waitForIntResult());
   }
 

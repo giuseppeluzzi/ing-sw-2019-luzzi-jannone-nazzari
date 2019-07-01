@@ -414,14 +414,12 @@ public class Player extends Observable implements Target {
    * Handles "first blood" points assignment.
    */
   private void assignFirstBlood() {
-    for (PlayerColor damage : damages) {
-      if (damage != color) {
-        try {
-          board.getPlayerByColor(damage).setScore(board.getPlayerByColor(damage).score + 1);
-        } catch (InvalidPlayerException ignored) {
-          //
-        }
-        break;
+    PlayerColor firstDamage = damages.get(0);
+    if (firstDamage != color) {
+      try {
+        board.getPlayerByColor(firstDamage).setScore(board.getPlayerByColor(firstDamage).score + 1);
+      } catch (InvalidPlayerException ignored) {
+        //
       }
     }
   }
