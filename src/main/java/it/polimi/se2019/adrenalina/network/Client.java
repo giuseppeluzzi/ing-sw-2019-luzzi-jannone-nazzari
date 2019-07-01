@@ -1,6 +1,8 @@
 package it.polimi.se2019.adrenalina.network;
 
 
+import it.polimi.se2019.adrenalina.App;
+import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
@@ -29,6 +31,7 @@ public abstract class Client implements ClientInterface, Serializable {
   private boolean domination;
   private Long lastPing;
   private boolean outputSuspended;
+  private boolean tui;
 
   private final BoardViewInterface boardView;
   private final CharactersViewInterface charactersView;
@@ -37,6 +40,7 @@ public abstract class Client implements ClientInterface, Serializable {
   protected Client(String playerName, boolean domination, boolean tui) {
     this.playerName = playerName;
     this.domination = domination;
+    this.tui = tui;
 
     if (tui) {
       boardView = new TUIBoardView(this);
@@ -104,9 +108,13 @@ public abstract class Client implements ClientInterface, Serializable {
 
     Log.debug("Sono nella showMessage è l'output è: " + (outputSuspended ? "sospeso" : "non sospeso"));
 
-    if (! outputSuspended) {
+    if (! outputSuspended && tui) {
       if (severity == MessageSeverity.GAME) {
-        Log.println(message);
+        if (tui) {
+          Log.println(message);
+        } else {
+          AppGUI.getBoardFXController().setHelpText(message);
+        }
       } else {
         if (!"".equalsIgnoreCase(title)) {
           Log.println(String.format("%s: %s", severity, title));

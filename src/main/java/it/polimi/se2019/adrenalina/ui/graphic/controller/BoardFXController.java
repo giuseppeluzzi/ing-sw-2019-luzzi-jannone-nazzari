@@ -186,6 +186,10 @@ public class BoardFXController {
     );
   }
 
+  public void setHelpText(String text) {
+    helperText.setText(text);
+  }
+
   public boolean isDashboardCreated(PlayerColor color) {
     return dashboardControllers.containsKey(color);
   }
@@ -651,6 +655,7 @@ public class BoardFXController {
 
   public void enableBoardWeapons(List<Weapon> weapons) {
     Platform.runLater(() -> {
+      setHelpText("Seleziona un'arma da raccogliere");
       for (Weapon weapon : weapons) {
         if (squareWeapons.containsKey(weapon.getName())) {
           squareWeapons.get(weapon.getName()).setEffect(null);
@@ -740,6 +745,8 @@ public class BoardFXController {
   }
 
   public void reset() {
+    Platform.runLater(() -> helperText.setText(""));
+
     clearTurnActions();
     hideSkip();
     hidePowerUpSkip();

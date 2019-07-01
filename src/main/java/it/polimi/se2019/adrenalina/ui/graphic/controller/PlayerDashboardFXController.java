@@ -243,6 +243,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void disablePowerUps() {
+    Platform.runLater(() -> helperText.setText(""));
+
     ColorAdjust bnEffect = new ColorAdjust();
     bnEffect.setSaturation(-1);
 
@@ -255,6 +257,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void disableWeapons() {
+    Platform.runLater(() -> helperText.setText(""));
+
     ColorAdjust bnEffect = new ColorAdjust();
     bnEffect.setSaturation(-1);
 
@@ -267,6 +271,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void usingPowerUp(boolean discard) {
+    Platform.runLater(() -> helperText.setText("Seleziona un powerup"));
     for (Node image : getPowerUpsContainer().getChildren()) {
       if (image.getProperties().containsKey("powerup")) {
         Platform.runLater(() -> image.setEffect(null));
@@ -284,6 +289,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void usingWeapon() {
+    Platform.runLater(() -> helperText.setText("Seleziona un'arma"));
+
     for (Node weapon : playerWeapons.getChildren()) {
       if (weapon.getProperties().containsKey("weapon")) {
         Platform.runLater(() -> weapon.setEffect(null));
