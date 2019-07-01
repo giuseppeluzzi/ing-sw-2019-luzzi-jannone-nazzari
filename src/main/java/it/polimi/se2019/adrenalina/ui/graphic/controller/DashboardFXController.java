@@ -1,9 +1,12 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
+import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.Log;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Locale;
 import javafx.application.Platform;
@@ -67,34 +70,61 @@ public abstract class DashboardFXController {
   public void updateSkulls(int killScore) {
     Platform.runLater(() -> {
       getSkullsContainer().getChildren().clear();
-      switch (killScore) {
-        case 0:
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          break;
-        case 1:
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          break;
-        case 2:
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          break;
-        case 4:
-          getSkullsContainer().getChildren().add(generateSkull());
-          getSkullsContainer().getChildren().add(generateSkull());
-          break;
-        case 6:
-          getSkullsContainer().getChildren().add(generateSkull());
-          break;
-        default:
-          break;
+      try {
+        if (AppGUI.getClient().getBoardView().getBoard().isFinalFrenzyActive()) {
+          Pane placeholder = generateSkull();
+          placeholder.setOpacity(0);
+          getSkullsContainer().getChildren().add(placeholder);
+          getSkullsContainer().getChildren().add(placeholder);
+          switch (killScore) {
+            case -1:
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            case 0:
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            case 1:
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            default:
+              break;
+          }
+        } else {
+          switch (killScore) {
+            case 0:
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            case 1:
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            case 2:
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            case 4:
+              getSkullsContainer().getChildren().add(generateSkull());
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            case 6:
+              getSkullsContainer().getChildren().add(generateSkull());
+              break;
+            default:
+              break;
+          }
+        }
+      } catch (RemoteException e) {
+        Log.exception(e);
       }
     });
   }
