@@ -4,11 +4,13 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
 import it.polimi.se2019.adrenalina.model.Weapon;
@@ -43,33 +45,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     this.boardView = (TUIBoardView) boardView;
   }
 
-  private List<Spendable> setSpendable(List<PowerUp> powerUps,
-      Map<AmmoColor, Integer> budgetAmmo) {
-    List<Spendable> spendables = new ArrayList<>();
-    int index = 0;
-    int redAmmo = budgetAmmo.get(AmmoColor.RED);
-    int blueAmmo = budgetAmmo.get(AmmoColor.BLUE);
-    int yellowAmmo = budgetAmmo.get(AmmoColor.YELLOW);
-
-    for (int i = 0; i < blueAmmo; i++) {
-      spendables.add(index, AmmoColor.BLUE);
-      index++;
-    }
-    for (int i = 0; i < redAmmo; i++) {
-      spendables.add(index, AmmoColor.RED);
-      index++;
-    }
-    for (int i = 0; i < yellowAmmo; i++) {
-      spendables.add(index, AmmoColor.YELLOW);
-      index++;
-    }
-    for (PowerUp powerUp : powerUps) {
-      spendables.add(index, powerUp);
-      index++;
-    }
-    return spendables;
-  }
-
   @Override
   public void switchToFinalFrenzy(PlayerColor playerColor) {
     Log.println("Sei passato in modalità frenesia finale!");
@@ -98,7 +73,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     costs.put(AmmoColor.YELLOW, buyableCost.get(AmmoColor.YELLOW));
     costs.put(AmmoColor.ANY, buyableCost.get(AmmoColor.ANY));
 
-    List<Spendable> spendables = setSpendable(budgetPowerUp, budgetAmmo);
+    List<Spendable> spendables = Player.setSpendable(budgetPowerUp, budgetAmmo);
     List<PowerUp> answerPowerUp = new ArrayList<>();
     Set<String> answers = null;
 
@@ -144,12 +119,21 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       }
 
       answers = new HashSet<>(Arrays.asList(response.split(",")));
+
+      if (Payment.verifyPaymentAnswers(answers, spendables) == -1) {
+        Log.println("Hai selezionato un'opzione non valida!");
+      } else {
+        if (Payment.verifyPaymentFullfilled(answers, spendables, costs) == -1) {
+          Log.println("Hai selezionato un'opzione non valida!");
+        }
+      }
+
     } while (!response.matches(inputValidationRegex)
-        || !verifyPaymentAnswers(answers, spendables)
-        || !verifyPaymentFullfilled(answers, spendables, costs)
+        || Payment.verifyPaymentAnswers(answers, spendables) != 0
+        || Payment.verifyPaymentFullfilled(answers, spendables, costs) != 0
     );
 
-    timer.stop();
+
 
     for (String element : answers) {
       if (spendables.get(Integer.parseInt(element) - 1).isPowerUp()) {
@@ -198,59 +182,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (InputCancelledException ignored) {
       // return
     }
-  }
-
-  private static boolean verifyPaymentAnswers(Set<String> answers, List<Spendable> spendables) {
-    if (answers.isEmpty()) {
-      Log.println("Hai selezionato un'opzione non valida!");
-      return false;
-    }
-    for (String answer : answers) {
-      if (Integer.parseInt(answer) - 1 > spendables.size()) {
-        Log.println("Hai selezionato un'opzione non valida!");
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private static boolean verifyPaymentFullfilled(Set<String> answers, List<Spendable> spendables,
-      Map<AmmoColor, Integer> costs) {
-
-    int blueCost = costs.get(AmmoColor.BLUE);
-    int redCost = costs.get(AmmoColor.RED);
-    int yellowCost = costs.get(AmmoColor.YELLOW);
-    int anyCost = costs.get(AmmoColor.ANY);
-
-    for (String answer : answers) {
-      switch (spendables.get(Integer.parseInt(answer) - 1).getColor()) {
-        case BLUE:
-          if (blueCost > 0) {
-            blueCost--;
-          } else if (anyCost > 0) {
-            anyCost--;
-          }
-          break;
-        case RED:
-          if (redCost > 0) {
-            redCost--;
-          } else if (anyCost > 0) {
-            anyCost--;
-          }
-          break;
-        case YELLOW:
-          if (yellowCost > 0) {
-            yellowCost--;
-          } else if (anyCost > 0) {
-            anyCost--;
-          }
-          break;
-        default:
-          throw new IllegalStateException("Illegal spendable color");
-      }
-    }
-
-    return blueCost + redCost + yellowCost + anyCost == 0;
   }
 
   /**

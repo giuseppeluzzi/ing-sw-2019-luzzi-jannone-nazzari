@@ -897,6 +897,40 @@ public class Player extends Observable implements Target {
   }
 
   /**
+   * Given a list of powerUps and a map of AmmoColor,Integer returns a list of spendables
+   * containing all the powerUps and ammos
+   * @param powerUps powerups
+   * @param budgetAmmo ammos
+   * @return List of spendables
+   */
+  public static List<Spendable> setSpendable(List<PowerUp> powerUps,
+      Map<AmmoColor, Integer> budgetAmmo) {
+    List<Spendable> spendableList = new ArrayList<>();
+    int index = 0;
+    int redAmmo = budgetAmmo.get(AmmoColor.RED);
+    int blueAmmo = budgetAmmo.get(AmmoColor.BLUE);
+    int yellowAmmo = budgetAmmo.get(AmmoColor.YELLOW);
+
+    for (int i = 0; i < blueAmmo; i++) {
+      spendableList.add(index, AmmoColor.BLUE);
+      index++;
+    }
+    for (int i = 0; i < redAmmo; i++) {
+      spendableList.add(index, AmmoColor.RED);
+      index++;
+    }
+    for (int i = 0; i < yellowAmmo; i++) {
+      spendableList.add(index, AmmoColor.YELLOW);
+      index++;
+    }
+    for (PowerUp powerUp : powerUps) {
+      spendableList.add(index, powerUp);
+      index++;
+    }
+    return spendableList;
+  }
+
+  /**
    * Gson serialization.
    *
    * @return JSON string containing serialized object

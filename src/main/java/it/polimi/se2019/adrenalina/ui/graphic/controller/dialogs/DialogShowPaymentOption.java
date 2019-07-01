@@ -3,7 +3,9 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Spendable;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -11,8 +13,10 @@ import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Alert;
@@ -54,28 +58,37 @@ public class DialogShowPaymentOption extends Dialog {
    */
   public void initialize() {
     buttonContinue.setOnAction(event -> {
-      List<Integer> answers = new ArrayList<>();
+      Set<String> answers = new HashSet<>();
       for (int i = 0; i < flowPane.getChildren().size(); i++) {
         if (((CheckBox) flowPane.getChildren().get(i)).isSelected()) {
-          answers.add(i);
+          answers.add(Integer.toString(i));
         }
       }
-      spendables = setSpendable(budgetPowerUp, budgetAmmo);
-      if (verifyPaymentFullfilled(answers, spendables, buyableCost)) {
-        handlePaymentFullfilled(answers);
-      } else {
+
+      spendables = Player.setSpendable(budgetPowerUp, budgetAmmo);
+
+      if (Payment.verifyPaymentAnswers(answers, spendables) != 0 ||
+          Payment.verifyPaymentFullfilled(answers, spendables, buyableCost) != 0) {
         Alert alert = new Alert(AlertType.WARNING, "La selezione non è corretta");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.setAlwaysOnTop(true);
         alert.showAndWait();
+      } else {
+        handlePaymentFullfilled(answers);
       }
     });
   }
 
-  private void handlePaymentFullfilled(List<Integer> answers) {
+  private void handlePaymentFullfilled(Set<String> answersStrings) {
     int answerRed = 0;
     int answerBlue = 0;
     int answerYellow = 0;
+    List<Integer> answers = new ArrayList<>();
+
+    for (String answer : answersStrings) {
+      answers.add(Integer.valueOf(answer));
+    }
+
     List<PowerUp> answerPowerUp = new ArrayList<>();
     for (Integer element : answers) {
       if (spendables.get(element).isPowerUp()) {
@@ -100,71 +113,6 @@ public class DialogShowPaymentOption extends Dialog {
     }
   }
 
-  private List<Spendable> setSpendable(List<PowerUp> powerUps,
-      Map<AmmoColor, Integer> budgetAmmo) {
-    List<Spendable> spendableList = new ArrayList<>();
-    int index = 0;
-    int redAmmo = budgetAmmo.get(AmmoColor.RED);
-    int blueAmmo = budgetAmmo.get(AmmoColor.BLUE);
-    int yellowAmmo = budgetAmmo.get(AmmoColor.YELLOW);
-
-    for (int i = 0; i < blueAmmo; i++) {
-      spendableList.add(index, AmmoColor.BLUE);
-      index++;
-    }
-    for (int i = 0; i < redAmmo; i++) {
-      spendableList.add(index, AmmoColor.RED);
-      index++;
-    }
-    for (int i = 0; i < yellowAmmo; i++) {
-      spendableList.add(index, AmmoColor.YELLOW);
-      index++;
-    }
-    for (PowerUp powerUp : powerUps) {
-      spendableList.add(index, powerUp);
-      index++;
-    }
-    return spendableList;
-  }
-
-  private static boolean verifyPaymentFullfilled(List<Integer> answers, List<Spendable> spendables,
-      Map<AmmoColor, Integer> costs) {
-
-    int blueCost = costs.get(AmmoColor.BLUE);
-    int redCost = costs.get(AmmoColor.RED);
-    int yellowCost = costs.get(AmmoColor.YELLOW);
-    int anyCost = costs.get(AmmoColor.ANY);
-
-    for (Integer answer : answers) {
-      switch (spendables.get(answer).getColor()) {
-        case BLUE:
-          if (blueCost > 0) {
-            blueCost--;
-          } else if (anyCost > 0) {
-            anyCost--;
-          }
-          break;
-        case RED:
-          if (redCost > 0) {
-            redCost--;
-          } else if (anyCost > 0) {
-            anyCost--;
-          }
-          break;
-        case YELLOW:
-          if (yellowCost > 0) {
-            yellowCost--;
-          } else if (anyCost > 0) {
-            anyCost--;
-          }
-          break;
-        default:
-          throw new IllegalStateException("Illegal spendable color");
-      }
-    }
-
-    return blueCost + redCost + yellowCost + anyCost == 0;
-  }
 
   public void setBudgetAmmo(Map<AmmoColor, Integer> budgetAmmo) {
     this.budgetAmmo = new EnumMap<>(budgetAmmo);
