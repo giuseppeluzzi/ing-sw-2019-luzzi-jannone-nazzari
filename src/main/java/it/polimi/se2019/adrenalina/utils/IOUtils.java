@@ -15,7 +15,7 @@ public class IOUtils {
     throw new IllegalStateException("Utility class");
   }
 
-  public static String readFile(String path) throws IOException {
+  public static String readResourceFile(String path) throws IOException {
     StringBuilder text = new StringBuilder(1);
     BufferedReader stream = new BufferedReader(new InputStreamReader(
         Configuration.class.getClassLoader().getResourceAsStream(path)));
@@ -25,5 +25,4 @@ public class IOUtils {
     }
     return text.toString();
   }
-
 }

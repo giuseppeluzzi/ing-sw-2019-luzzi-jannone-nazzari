@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -34,9 +35,9 @@ public class CheckRespawn extends GameAction {
     }
 
     for (Player player : getDeadPlayers(board)) {
-      if (board.isDominationBoard() && player.getDamages().size() == Constants.OVERKILL_DEATH) {
+      if (board.isDominationBoard() && player.getDamages().size() == Configuration.getInstance().getDeathDamages() + 1) {
         try {
-          board.getPlayerByColor(player.getDamages().get(Constants.OVERKILL_DEATH-1))
+          board.getPlayerByColor(player.getDamages().get(Configuration.getInstance().getDeathDamages()))
               .getClient().getBoardView().showSpawnPointTrackSelection(((DominationBoard) board).getSpawnPointDamages());
         } catch (RemoteException e) {
           Log.exception(e);
