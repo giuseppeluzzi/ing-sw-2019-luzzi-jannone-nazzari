@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.PlayerController;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -120,18 +121,12 @@ public class PowerUpSelection extends GameAction {
         handlePowerUpDiscard(board);
       } else {
         List<PowerUp> validPowerUps = getValidPowerUps(board, attack);
-        if (validPowerUps.isEmpty()) {
-          getTurnController().executeGameActionQueue();
-        } else {
-          for (Player player : board.getPlayers()) {
-            if (player.getColor() != getPlayer().getColor()) {
-              player.getClient().showGameMessage(
-                  String.format("%s%s%s sta scegliendo quale potenziamento usare",
-                      getPlayer().getColor().getAnsiColor(),
-                      getPlayer().getName(),
-                      ANSIColor.RESET));
-            }
-          }
+        if (isSync()) {
+          PlayerController.sendMessageAllClients(getPlayer(), String.format(
+              "%s%s%s sta scegliendo quale potenziamento usare",
+              getPlayer().getColor().getAnsiColor(),
+              getPlayer().getName(),
+              ANSIColor.RESET), board);
           getPlayer().getClient().getPlayerDashboardsView()
               .showPowerUpSelection(validPowerUps, discard);
         }
@@ -142,25 +137,30 @@ public class PowerUpSelection extends GameAction {
   }
 
   private void handlePowerUpDiscard(Board board) throws RemoteException {
-    for (Player player : board.getPlayers()) {
-      if (player.getColor() != getPlayer().getColor()) {
-        player.getClient().showGameMessage(
-                String.format("%s%s%s sta scegliendo quale potenziamento scartare",
-                        getPlayer().getColor().getAnsiColor(),
-                        getPlayer().getName(),
-                        ANSIColor.RESET));
-      }
-    }
+    PlayerController.sendMessageAllClients(getPlayer(), String.format(
+        "%s%s%s sta scegliendo quale potenziamento scartare",
+        getPlayer().getColor().getAnsiColor(),
+        getPlayer().getName(),
+        ANSIColor.RESET), board);
+
     getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer()
             .getPowerUps(), discard);
   }
 
   @Override
   public void handleTimeout() {
-    if (isDiscard()) {
+    if (discard) {
       int randomPowerUpIndex = new Random().nextInt(getPlayer().getPowerUps().size());
       PowerUp powerUp = getPlayer().getPowerUps().get(randomPowerUpIndex);
       getTurnController().getBoardController().getPlayerController().spawnPlayer(getPlayer(), powerUp);
     }
+  }
+
+  @Override
+  public boolean isSync() {
+    if (discard) {
+      return true;
+    }
+    return !getValidPowerUps(getTurnController().getBoardController().getBoard(), attack).isEmpty();
   }
 }
