@@ -59,12 +59,6 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void update(PlayerFrenzyUpdate event) {
-    super.update(event);
-    // TODO ?
-  }
-
-  @Override
   public void update(PlayerScoreUpdate event) {
     super.update(event);
     // TODO ?
@@ -116,6 +110,14 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   public void update(EnemyWeaponUpdate event) {
     super.update(event);
     DashboardFXController dashboard = null;
+
+    try {
+      if (event.getPlayerColor() == AppGUI.getClient().getPlayerColor()) {
+        return;
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
 
     try {
       dashboard = AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor());
@@ -190,16 +192,16 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
-    /*DialogTurnActionSelection dialog = new DialogTurnActionSelection();
-    dialog.setActions(actions);
-    dialog.show();*/
     AppGUI.getBoardFXController().showTurnActions(actions);
 
   }
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
-    // TODO in board
+    final PlayerDashboardFXController playerDashboardFXController = AppGUI
+        .getPlayerDashboardFXController();
+
+    Platform.runLater(playerDashboardFXController::usingWeapon);
   }
 
   @Override

@@ -13,7 +13,7 @@ public class FXUtils {
     throw new IllegalStateException("Utility class");
   }
 
-  public static void transition(BorderPane from, BorderPane to) {
+  public static void lobbyTransition(BorderPane from, BorderPane to) {
     TranslateTransition transOut = new TranslateTransition(Duration.millis(TRANSLATE_DURATION),
         from);
     transOut.setToX(-TRANSLATE_OUT);

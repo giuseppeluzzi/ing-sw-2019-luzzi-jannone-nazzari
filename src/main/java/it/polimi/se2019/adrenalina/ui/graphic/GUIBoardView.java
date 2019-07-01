@@ -64,7 +64,6 @@ public class GUIBoardView extends BoardView {
 
   @Override
   public void showTargetSelect(TargetType type, List<Target> targets, boolean skippable) {
-    // TODO in board
     AppGUI.getBoardFXController().highlightSelectableSquares(targets);
     if (type == TargetType.ATTACK_TARGET) {
       AppGUI.getBoardFXController().enablePlayerSelection(targets, skippable);
@@ -81,14 +80,12 @@ public class GUIBoardView extends BoardView {
 
   @Override
   public void showSquareSelect(List<Target> targets) {
-    // TODO in board
     AppGUI.getBoardFXController().highlightSelectableSquares(targets);
     AppGUI.getBoardFXController().enableSquareSelection(TargetType.MOVE_SQUARE, targets, true, false);
   }
 
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
-    // TODO in board
     AppGUI.getBoardFXController().enableBoardWeapons(weapons);
   }
 

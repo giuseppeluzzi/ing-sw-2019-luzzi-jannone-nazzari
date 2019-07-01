@@ -108,15 +108,15 @@ public class LobbyFXController {
       }
 
       if (masterPlayer) {
-        FXUtils.transition(lobbyConnecting, lobbyConfigurationMap);
+        FXUtils.lobbyTransition(lobbyConnecting, lobbyConfigurationMap);
       } else {
-        FXUtils.transition(lobbyConnecting, lobbyPlayers);
+        FXUtils.lobbyTransition(lobbyConnecting, lobbyPlayers);
       }
     });
   }
 
   public void nextMap(ActionEvent actionEvent) {
-    FXUtils.transition(lobbyConfigurationMap, lobbyConfigurationSkulls);
+    FXUtils.lobbyTransition(lobbyConfigurationMap, lobbyConfigurationSkulls);
     buttonNextSkulls.requestFocus();
     int mapId = Integer.valueOf(((Styleable) map.getSelectedToggle()).getId().replace("map", ""));
     try {
@@ -127,7 +127,7 @@ public class LobbyFXController {
   }
 
   public void nextSkulls(ActionEvent actionEvent) {
-    FXUtils.transition(lobbyConfigurationSkulls, lobbyPlayers);
+    FXUtils.lobbyTransition(lobbyConfigurationSkulls, lobbyPlayers);
   }
 
   public void addPlayer(Player player) {

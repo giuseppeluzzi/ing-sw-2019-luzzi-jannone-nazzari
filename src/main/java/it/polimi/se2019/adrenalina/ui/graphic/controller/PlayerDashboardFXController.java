@@ -1,17 +1,15 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.model.PowerUp;
-import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -46,11 +44,55 @@ public class PlayerDashboardFXController extends DashboardFXController {
   @FXML
   private HBox playerPowerUps;
 
-  private final HashMap<ImageView, EventHandler<MouseEvent>> powerUpEventHandler;
+  private final EventHandler<MouseEvent> selectWeaponEventHandler;
+  private final EventHandler<MouseEvent> selectPowerUpEventHandler;
+  private final EventHandler<MouseEvent> discardPowerUpEventHandler;
+  private EventHandler<MouseEvent> powerUpEventHandler;
 
   public PlayerDashboardFXController(PlayerColor playerColor) {
     super(playerColor);
-    powerUpEventHandler = new HashMap<>();
+
+    selectWeaponEventHandler = event -> {
+      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get("weapon"))
+          .getName();
+
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerSelectWeaponEvent(AppGUI.getClient().getPlayerColor(), weaponName));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+
+      disableWeapons();
+    };
+
+    selectPowerUpEventHandler = event -> {
+      PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get("powerup");
+
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), powerup.getType(),
+                powerup.getColor()));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+
+      disablePowerUps();
+    };
+
+    discardPowerUpEventHandler = event -> {
+      PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get("powerup");
+
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerDiscardPowerUpEvent(AppGUI.getClient().getPlayerColor(), powerup.getType(),
+                powerup.getColor()));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+
+      disablePowerUps();
+    };
   }
 
   public void initialize() {
@@ -92,7 +134,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     Pane pane = new Pane();
     pane.setPrefHeight(32);
     pane.setPrefWidth(32);
-    pane.setStyle("-fx-background-color: blue;");
+    pane.getStyleClass().add("boardSkull");
     return pane;
   }
 
@@ -101,7 +143,11 @@ public class PlayerDashboardFXController extends DashboardFXController {
     Pane pane = new Pane();
     pane.setPrefHeight(32);
     pane.setPrefWidth(32);
-    pane.setStyle("-fx-background-color: " + color.getHexColor() + ";");
+    pane.setMinWidth(32);
+    pane.setMinHeight(32);
+    pane.setStyle("-fx-background-image: url(\"gui/assets/img/tag_" + color
+        + ".png\"); -fx-background-size: cover; -fx-background-repeat: no-repeat; "
+        + " -fx-background-position: center;");
     return pane;
   }
 
@@ -112,6 +158,9 @@ public class PlayerDashboardFXController extends DashboardFXController {
   @Override
   public void updateWeapons(List<Weapon> weapons, int weaponsNum) {
     Platform.runLater(() -> {
+      ColorAdjust bnEffect = new ColorAdjust();
+      bnEffect.setSaturation(-1);
+
       playerWeapons.getChildren().clear();
       for (int i = 0; i < 3 - weaponsNum; i++) {
         ImageView imageView = new ImageView(
@@ -128,8 +177,9 @@ public class PlayerDashboardFXController extends DashboardFXController {
             "gui/assets/img/weapon/rotated/weapon_" + weapon.getSlug() + ".png");
         imageView.setFitHeight(182);
         imageView.setPreserveRatio(true);
-        imageView.setVisible(true);
         imageView.setOpacity(1);
+        imageView.getProperties().put("weapon", weapon);
+        imageView.setEffect(bnEffect);
         playerWeapons.getChildren().add(imageView);
       }
       playerWeapons.setVisible(true);
@@ -141,7 +191,6 @@ public class PlayerDashboardFXController extends DashboardFXController {
   public void updatePowerUps(List<PowerUp> powerUps) {
     Platform.runLater(() -> {
       playerPowerUps.getChildren().clear();
-      powerUpEventHandler.clear();
 
       for (int i = 0; i < 3 - powerUps.size(); i++) {
         ImageView imageView = new ImageView(
@@ -164,14 +213,12 @@ public class PlayerDashboardFXController extends DashboardFXController {
         imageView.setPreserveRatio(true);
         imageView.setVisible(true);
         imageView.setOpacity(1);
-        imageView.setId(powerUp.getType().toString() + "-" + powerUp.getColor());
+        imageView.getProperties().put("powerup", powerUp);
         imageView.setEffect(bnEffect);
-        imageView.setMouseTransparent(true);
 
         playerPowerUps.getChildren().add(imageView);
         playerPowerUps.setVisible(true);
       }
-      Log.debug(">>>>>>>>>>>>>>> p up");
     });
   }
 
@@ -199,50 +246,48 @@ public class PlayerDashboardFXController extends DashboardFXController {
     ColorAdjust bnEffect = new ColorAdjust();
     bnEffect.setSaturation(-1);
 
-    for (Node image : getPowerUpsContainer().getChildren()) {
-      if (image.getId() != null && powerUpEventHandler.containsKey(image)) {
-        image.removeEventHandler(MouseEvent.MOUSE_CLICKED, powerUpEventHandler.get(image));
-        powerUpEventHandler.remove(image);
+    for (Node powerup : getPowerUpsContainer().getChildren()) {
+      if (powerup.getProperties().containsKey("powerup")) {
+        Platform.runLater(() -> powerup.setEffect(bnEffect));
+        powerup.removeEventHandler(MouseEvent.MOUSE_CLICKED, powerUpEventHandler);
+      }
+    }
+  }
 
-        image.setMouseTransparent(true);
-        image.setEffect(bnEffect);
+  public void disableWeapons() {
+    ColorAdjust bnEffect = new ColorAdjust();
+    bnEffect.setSaturation(-1);
+
+    for (Node weapon : getWeaponContainer().getChildren()) {
+      if (weapon.getProperties().containsKey("weapon")) {
+        Platform.runLater(() -> weapon.setEffect(bnEffect));
+        weapon.removeEventHandler(MouseEvent.MOUSE_CLICKED, selectWeaponEventHandler);
       }
     }
   }
 
   public void usingPowerUp(boolean discard) {
     for (Node image : getPowerUpsContainer().getChildren()) {
-      if (image.getId() != null) {
-        image.setEffect(null);
-        image.setMouseTransparent(false);
+      if (image.getProperties().containsKey("powerup")) {
+        Platform.runLater(() -> image.setEffect(null));
 
-        EventHandler<MouseEvent> eventHandler = event -> {
-          String[] powerup = image.getId().split("-");
-          try {
-            if (discard) {
-              ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                  new PlayerDiscardPowerUpEvent(getPlayerColor(), PowerUpType.valueOf(powerup[0]),
-                      AmmoColor
-                          .valueOf(powerup[1])));
-            } else {
-              ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                  new PlayerPowerUpEvent(getPlayerColor(), PowerUpType.valueOf(powerup[0]),
-                      AmmoColor
-                          .valueOf(powerup[1])));
-            }
-            disablePowerUps();
-            AppGUI.getBoardFXController().hidePowerUpSkip();
-          } catch (RemoteException e) {
-            Log.exception(e);
-          }
-        };
-
-        if (! discard) {
+        if (discard) {
+          powerUpEventHandler = discardPowerUpEventHandler;
+        } else {
+          powerUpEventHandler = selectPowerUpEventHandler;
           AppGUI.getBoardFXController().showPowerUpSkip();
         }
 
-        powerUpEventHandler.put((ImageView) image, eventHandler);
-        image.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+        image.addEventHandler(MouseEvent.MOUSE_CLICKED, powerUpEventHandler);
+      }
+    }
+  }
+
+  public void usingWeapon() {
+    for (Node weapon : playerWeapons.getChildren()) {
+      if (weapon.getProperties().containsKey("weapon")) {
+        Platform.runLater(() -> weapon.setEffect(null));
+        weapon.addEventHandler(MouseEvent.MOUSE_CLICKED, selectWeaponEventHandler);
       }
     }
   }

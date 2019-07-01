@@ -5,7 +5,11 @@ import it.polimi.se2019.adrenalina.model.Player;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -20,6 +24,7 @@ public class FinalRanksFXController {
   public static final String DARK_GREY = "#B0B0B0";
   public static final String LIGHT_GREY = "#E0E0E0";
   public static final String SUBTITLE_CLASS = "subtitle";
+
   @FXML
   private GridPane ranksTable;
 

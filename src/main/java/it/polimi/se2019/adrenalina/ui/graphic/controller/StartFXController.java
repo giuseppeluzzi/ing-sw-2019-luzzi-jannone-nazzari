@@ -96,7 +96,7 @@ public class StartFXController {
 
     choosenRMI = checkBoxRMI.isSelected();
 
-    FXUtils.transition(startServerSelection, startGameModeSelector);
+    FXUtils.lobbyTransition(startServerSelection, startGameModeSelector);
 
     buttonNext1.requestFocus();
   }
@@ -110,7 +110,7 @@ public class StartFXController {
       textNameTitle.setText("Modalità Classica");
     }
 
-    FXUtils.transition(startGameModeSelector, startNameSelector);
+    FXUtils.lobbyTransition(startGameModeSelector, startNameSelector);
 
     textFieldName.requestFocus();
   }
@@ -124,7 +124,7 @@ public class StartFXController {
       return;
     }
 
-    FXUtils.transition(startNameSelector, null);
+    FXUtils.lobbyTransition(startNameSelector, null);
 
     TranslateTransition transOut = new TranslateTransition(
         Duration.millis(FXUtils.TRANSLATE_DURATION),

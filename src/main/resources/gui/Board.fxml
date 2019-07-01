@@ -14,11 +14,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.layout.FlowPane?>
+
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@assets/style.css"
-  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" id="gameContainer">
   <children>
-    <GridPane fx:id="boardGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="10.0"
-      AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+    <GridPane fx:id="boardGrid" AnchorPane.bottomAnchor="20.0"
+      AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="30.0">
       <columnConstraints>
         <ColumnConstraints hgrow="NEVER" minWidth="10.0" percentWidth="49.5"/>
         <ColumnConstraints hgrow="SOMETIMES"/>
@@ -29,7 +30,7 @@
       </rowConstraints>
 
       <!-- map grid -->
-      <GridPane id="mapGrid" fx:id="mapGrid" gridLinesVisible="true" GridPane.columnIndex="0"
+      <GridPane id="mapGrid" fx:id="mapGrid" GridPane.columnIndex="0"
         GridPane.rowIndex="0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="16" prefWidth="100.0"/>
@@ -57,7 +58,7 @@
           </padding>
         </HBox>
 
-        <HBox fx:id="dominationKilltrack" id="dominationKilltrack"
+        <HBox fx:id="dominationKilltrack" id="dominationKilltrack" visible="false"
           GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" minHeight="100" maxHeight="100" >
           <padding>
             <Insets left="35"/>
@@ -79,7 +80,7 @@
 
         <VBox GridPane.columnIndex="5" GridPane.rowIndex="0" alignment="BOTTOM_CENTER">
           <padding>
-            <Insets bottom="8.5" left="20"/>
+            <Insets bottom="8.5" left="18"/>
           </padding>
           <ImageView fitWidth="50.0" preserveRatio="true">
             <image>
@@ -134,20 +135,23 @@
       <!-- enemy dashboards -->
       <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
         <VBox fx:id="enemyDashboards" alignment="TOP_RIGHT" spacing="10" AnchorPane.leftAnchor="0"
-          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="30"/>
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+          <padding>
+            <Insets top="-5" />
+          </padding>
+        </VBox>
       </AnchorPane>
 
       <HBox fx:id="bottomGrid" GridPane.columnIndex="0" GridPane.columnSpan="2"
         GridPane.rowIndex="1">
+        <!-- playerdashboard -->
         <Region fx:id="spacerBottomGrid"/>
         <!-- turn actions -->
         <VBox alignment="BOTTOM_RIGHT" maxWidth="320" minHeight="100" minWidth="300" spacing="10">
           <Button fx:id="noPowerUpTurnActionButton" alignment="CENTER" prefWidth="300"
-            styleClass="turnActionButton" visible="false">Nessun potenziamento
-          </Button>
+            styleClass="turnActionButton" visible="false">Non usare nessun potenziamento</Button>
           <Button fx:id="skipTurnActionButton" alignment="CENTER" prefWidth="300"
-            styleClass="turnActionButton" visible="false">Prosegui
-          </Button>
+            styleClass="turnActionButton" visible="false">Prosegui</Button>
           <VBox fx:id="turnActionButtons" alignment="TOP_CENTER" spacing="10"/>
         </VBox>
       </HBox>

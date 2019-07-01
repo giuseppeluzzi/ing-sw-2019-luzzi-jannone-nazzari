@@ -105,6 +105,7 @@ public class DialogEffectSelection extends Dialog {
         }
       }
     }
+
     List<String> output = new ArrayList<>();
     for (int i = 0; i < chosenEffects.size(); i++) {
       if (anyTimeIndex != null && i == anyTimeIndex) {
@@ -115,13 +116,14 @@ public class DialogEffectSelection extends Dialog {
     if (anyTimeIndex != null && anyTimeIndex == chosenEffects.size()) {
       output.add(anyTimeEffect.getName());
     }
-/*    try {
+
+    try {
       ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
               new PlayerSelectWeaponEffectEvent(AppGUI.getClient().getPlayerColor(), weapon.getName(), output));
     } catch (RemoteException e) {
       Log.exception(e);
-    }*/
-    Log.println(output.toString());
+    }
+
     close();
   }
 
