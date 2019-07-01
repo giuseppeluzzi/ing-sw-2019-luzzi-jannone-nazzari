@@ -1,5 +1,7 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.PlayerController;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -7,7 +9,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
 
-import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -24,10 +26,22 @@ public class CheckRespawn extends GameAction {
 
   @Override
   public void execute(Board board) {
+
+    if (board.isDominationBoard() && getPlayer().getSquare().isSpawnPoint()
+        && getPlayer().getSquare().getColor().getEquivalentAmmoColor() != null) {
+
+      getPlayer().addDamages(getPlayer().getColor(), 1, false);
+
+      addDominationDamages(getPlayer(), board);
+    }
+
     for (Player player : getDeadPlayers(board)) {
-      if (board.isDominationBoard() && player.getDamages().size() == Constants.OVERKILL_DEATH) {
+      PlayerController.sendMessageAllClients(player,
+          String.format("%s%s%s è morto", player.getColor().getAnsiColor(), player.getName(),
+          ANSIColor.RESET), board);
+      if (isSync()) {
         try {
-          board.getPlayerByColor(player.getDamages().get(Constants.OVERKILL_DEATH-1))
+          board.getPlayerByColor(player.getDamages().get(Configuration.getInstance().getDeathDamages()))
               .getClient().getBoardView().showSpawnPointTrackSelection(((DominationBoard) board).getSpawnPointDamages());
         } catch (RemoteException e) {
           Log.exception(e);
@@ -37,6 +51,18 @@ public class CheckRespawn extends GameAction {
       }
       getTurnController().addRespawn(player);
       getTurnController().executeGameActionQueue();
+    }
+  }
+
+  /**
+   * Adds damages for players who stay alone on a spawnPoint in domination mode.
+   * @param currentPlayer the considered player
+   */
+  private void addDominationDamages(Player currentPlayer, Board board) {
+    if (currentPlayer.getSquare().getPlayers().size() == 1) {
+      ((DominationBoard) board)
+          .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
+              currentPlayer.getColor());
     }
   }
 
@@ -53,6 +79,9 @@ public class CheckRespawn extends GameAction {
 
   @Override
   public boolean isSync() {
-    return getTurnController().getBoardController().getBoard().existsKilledPlayer();
+    if (getTurnController().getBoardController().getBoard().isDominationBoard()) {
+      return getTurnController().getBoardController().getBoard().existsOverKilledPlayer();
+    }
+    return false;
   }
 }

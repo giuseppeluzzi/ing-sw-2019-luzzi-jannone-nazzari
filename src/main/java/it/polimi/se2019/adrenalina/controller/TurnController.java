@@ -3,6 +3,8 @@ package it.polimi.se2019.adrenalina.controller;
 import it.polimi.se2019.adrenalina.controller.action.game.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
@@ -136,14 +138,6 @@ public class TurnController implements Serializable {
     currentPlayer.setCurrentBuying(null);
     currentPlayer.setCurrentExecutable(null);
 
-    if (boardController.getBoard().isDominationBoard() && currentPlayer.getSquare().isSpawnPoint()
-    && currentPlayer.getSquare().getColor().getEquivalentAmmoColor() != null) {
-
-      currentPlayer.addDamages(currentPlayer.getColor(), 1, false);
-
-      addDominationDamages(currentPlayer);
-    }
-
     for (Weapon weapon : currentPlayer.getWeapons()) {
       weapon.reset();
     }
@@ -152,10 +146,20 @@ public class TurnController implements Serializable {
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);
     boardController.getBoard().removeDoubleKill();
 
-    if (boardController.getBoard().getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()
-        || boardController.getBoard().getSkulls() == 0 && ! boardController.getBoard().isFinalFrenzySelected()
-        || boardController.getBoard().isFinalFrenzyActive()
-            && currentPlayerIndex == getFfActivatorIndex()) {
+    if (boardController.getBoard().getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()) {
+      showEndGameReason("Il numero di giocatori è sceso sotto al limite minimo!");
+      endGame = true;
+      turnActionsQueue.add(new EndGame());
+      executeGameActionQueue();
+      return;
+    } else if (boardController.getBoard().getSkulls() == 0 && !boardController.getBoard().isFinalFrenzySelected()) {
+      showEndGameReason("Tutti i teschi del tracciato mortale sono stati presi!");
+      endGame = true;
+      turnActionsQueue.add(new EndGame());
+      executeGameActionQueue();
+      return;
+    } else if (boardController.getBoard().isFinalFrenzyActive() && currentPlayerIndex == getFfActivatorIndex()) {
+      showEndGameReason("La frenesia finale è terminata!");
       endGame = true;
       turnActionsQueue.add(new EndGame());
       executeGameActionQueue();
@@ -188,14 +192,12 @@ public class TurnController implements Serializable {
   }
 
   /**
-   * Adds damages for players who stay alone on a spawnPoint in domination mode.
-   * @param currentPlayer the considered player
+   * Shows a message on all clients explaining the reason why the game has ended.
+   * @param message the message to show
    */
-  private void addDominationDamages(Player currentPlayer) {
-    if (currentPlayer.getSquare().getPlayers().size() == 1) {
-      ((DominationBoard) boardController.getBoard())
-              .addDamage(currentPlayer.getSquare().getColor().getEquivalentAmmoColor(),
-                      currentPlayer.getColor());
+  private void showEndGameReason(String message) {
+    for (ClientInterface client : boardController.getClients().keySet()) {
+      ((Client) client).showGameMessage(message);
     }
   }
 
@@ -218,7 +220,7 @@ public class TurnController implements Serializable {
     player.assignPoints(); // Assign points and clear his status
     addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, null, true, false));
     if (boardController.getBoard().isDominationBoard()
-        && player.getDamages().size() == Constants.OVERKILL_DEATH) {
+        && player.getDamages().size() == Configuration.getInstance().getDeathDamages() + 1) {
       Player killer = null;
       try {
         killer = boardController.getBoard()

@@ -204,6 +204,34 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
   }
 
   /**
+   * Sends a message to all the players, if excludedPlayer is not null the message will not be sent to him
+   * @param excludedPlayer player that does not recevie the message
+   * @param message message sent
+   * @param board board
+   */
+  public static void sendMessageAllClients(Player excludedPlayer, String message, Board board) {
+    if (excludedPlayer != null) {
+      for (Player notCurrentPlayer : board.getPlayers()) {
+        if (notCurrentPlayer.getColor() != excludedPlayer.getColor() && notCurrentPlayer.getClient() != null) {
+          try {
+            notCurrentPlayer.getClient().showGameMessage(message);
+          } catch (RemoteException e) {
+            Log.exception(e);
+          }
+        }
+      }
+    } else {
+      for (Player player : board.getPlayers()) {
+        try {
+          player.getClient().showGameMessage(message);
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
+      }
+    }
+  }
+
+  /**
    * Event handling.
    * @param event the received event
    * @see PlayerActionSelectionEvent
@@ -220,20 +248,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
 
-    for (Player notCurrentPlayer : board.getPlayers()) {
-      if (notCurrentPlayer.getColor() != player.getColor() && notCurrentPlayer.getClient() != null) {
-        try {
-          player.getClient().showGameMessage(
-              String.format("%s%s%s ha scelto di %s",
-                  player.getColor().getAnsiColor(),
-                  player.getName(),
-                  ANSIColor.RESET,
-                  event.getTurnAction().getMessage()));
-        } catch (RemoteException e) {
-          Log.exception(e);
-        }
-      }
-    }
+    sendMessageAllClients(player, String.format("%s%s%s ha scelto di %s",
+        player.getColor().getAnsiColor(),
+        player.getName(),
+        ANSIColor.RESET,
+        event.getTurnAction().getMessage()), board);
 
     List<GameAction> actions = new ArrayList<>();
     switch (event.getTurnAction()) {
@@ -417,22 +436,13 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (selectedWeapon != null) {
       player.setCurrentExecutable(selectedWeapon);
 
-      for (Player player1 : board.getPlayers()) {
-        if (player1.getColor() != player.getColor() && player1.getClient() != null) {
-          try {
-            player1.getClient().showGameMessage(
-                String.format("%s%s%s sta usando %s%s%s",
-                    player.getColor().getAnsiColor(),
-                    player.getName(),
-                    ANSIColor.RESET,
-                    selectedWeapon.getBaseCost().getAnsiColor(),
-                    selectedWeapon.getName(),
-                    ANSIColor.RESET));
-          } catch (RemoteException e) {
-            Log.exception(e);
-          }
-        }
-      }
+      sendMessageAllClients(player, String.format("%s%s%s sta usando %s%s%s",
+          player.getColor().getAnsiColor(),
+          player.getName(),
+          ANSIColor.RESET,
+          selectedWeapon.getBaseCost().getAnsiColor(),
+          selectedWeapon.getName(),
+          ANSIColor.RESET), board);
     }
 
 

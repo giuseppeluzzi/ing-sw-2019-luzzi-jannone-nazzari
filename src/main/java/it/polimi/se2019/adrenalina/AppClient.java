@@ -51,6 +51,8 @@ public class AppClient {
       }
     }
 
+    Log.print("Connessione in corso...\r");
+
     ClientInterface client = null;
 
     switch (connectionMode) {

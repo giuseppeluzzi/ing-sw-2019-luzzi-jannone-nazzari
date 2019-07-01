@@ -25,9 +25,11 @@
         </VBox>
       </center>
       <bottom>
-        <Button fx:id="buttonNext" alignment="CENTER" defaultButton="true"
-          mnemonicParsing="false" text="Continua"
-          BorderPane.alignment="BOTTOM_CENTER"/>
+        <HBox alignment="CENTER" spacing="30" BorderPane.alignment="BOTTOM_CENTER">
+          <Button fx:id="buttonCancel" mnemonicParsing="false" text="Non ricaricare"/>
+          <Button fx:id="buttonNext" alignment="CENTER" defaultButton="true"
+                  mnemonicParsing="false" text="Continua"/>
+        </HBox>
       </bottom>
     </BorderPane>
   </children>

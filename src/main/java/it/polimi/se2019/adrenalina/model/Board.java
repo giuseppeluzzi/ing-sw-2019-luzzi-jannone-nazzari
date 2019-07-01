@@ -2,12 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BoardStatus;
-import it.polimi.se2019.adrenalina.controller.BorderType;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.PlayerStatus;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasAmmoCardsUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardHasWeaponsUpdate;
@@ -424,13 +419,12 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Function that tells if a player has received at least @see(Constants.OVERKILL_DEATH)
-   *
+   * Function that tells if any player has died
    * @return true if it exists, false otherwise
    */
-  public boolean existsKilledPlayer() {
+  public boolean existsOverKilledPlayer() {
     for (Player player : players) {
-      if (player.getDamages().size() == Constants.NORMAL_DEATH) {
+      if (player.getDamages().size() == Configuration.getInstance().getDeathDamages()+1) {
         return true;
       }
     }

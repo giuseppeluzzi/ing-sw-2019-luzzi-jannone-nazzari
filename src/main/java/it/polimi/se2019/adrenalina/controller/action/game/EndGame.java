@@ -24,7 +24,7 @@ public class EndGame extends GameActionAsync {
           player.assignPoints();
         }
         if (player.getClient() != null) {
-          player.getClient().showGameMessage("Partita terminata ciao");
+          player.getClient().showGameMessage("La partita è terminata.");
           player.getClient().getBoardView().showFinalRanks();
           player.getClient().disconnect("");
         }

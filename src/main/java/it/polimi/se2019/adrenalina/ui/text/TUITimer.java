@@ -24,7 +24,7 @@ public class TUITimer extends Timer {
     if (! ((Client) client).isOutputSuspended()) {
       Log.print(
           "La partita inizierà tra " + ansi().bold() + getRemainingSeconds() + ansi().boldOff()
-              + " second" + (getRemainingSeconds() != 1 ? "i" : "o") + "\r");
+              + " second" + (getRemainingSeconds() != 1 ? "i" : "o") + "    \r");
     }
   }
 }

@@ -1,10 +1,13 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
-import it.polimi.se2019.adrenalina.utils.IOUtils;
+import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,25 +21,13 @@ public class Configuration {
   private Integer socketPort;
   private Integer joinTimeout;
   private Integer turnTimeout;
-  private Integer powerUpTimeout;
-  private Integer tuiDashboardWidth;
-  private Integer tuiDashboardHeight;
-  private Integer tuiSquareWidth;
-  private Integer tuiDoorWidth;
-  private String tuiHorizontalLine;
-  private String tuiPlayerIcon;
-  private Integer tuiDoorHeight;
-  private Integer tuiSquareHeight;
-  private String tuiVerticalLine;
-  private String tuiSpawnPointIcon;
-  private String tuiTagIcon;
-  private String tuiDamageIcon;
+  private Integer deathDamages;
   private List<String> weaponFiles;
   private List<String> mapFiles;
   private Integer suspendTimeoutCount;
   private Integer minNumPlayers;
 
-  private static Configuration instance;
+  private static Configuration instance = null;
 
   private Configuration() {
     // private constructor
@@ -45,11 +36,12 @@ public class Configuration {
   public static synchronized Configuration getInstance() {
     if (instance == null) {
       String json = null;
+      Path extFile = Paths.get(Constants.CONFIG_FILE);
       try {
-        json = IOUtils.readFile("config.json");
+        json = String.join("\n", Files.readAllLines(extFile));
       } catch (IOException e) {
         Log.severe("Configuration file not found!");
-        System.exit(0);
+        System.exit(1);
       }
       Gson gson = new Gson();
       instance = gson.fromJson(json, Configuration.class);
@@ -77,58 +69,6 @@ public class Configuration {
     return socketPort;
   }
 
-  public Integer getPowerUpTimeout() {
-    return powerUpTimeout;
-  }
-
-  public Integer getTuiDashboardWidth() {
-    return tuiDashboardWidth;
-  }
-
-  public Integer getTuiDashboardHeight() {
-    return tuiDashboardHeight;
-  }
-
-  public Integer getTuiSquareWidth() {
-    return tuiSquareWidth;
-  }
-
-  public Integer getTuiDoorWidth() {
-    return tuiDoorWidth;
-  }
-
-  public String getTuiHorizontalLine() {
-    return tuiHorizontalLine;
-  }
-
-  public String getTuiPlayerIcon() {
-    return tuiPlayerIcon;
-  }
-
-  public Integer getTuiDoorHeight() {
-    return tuiDoorHeight;
-  }
-
-  public Integer getTuiSquareHeight() {
-    return tuiSquareHeight;
-  }
-
-  public String getTuiVerticalLine() {
-    return tuiVerticalLine;
-  }
-
-  public String getTuiSpawnPointIcon() {
-    return tuiSpawnPointIcon;
-  }
-
-  public String getTuiTagIcon() {
-    return tuiTagIcon;
-  }
-
-  public String getTuiDamageIcon() {
-    return tuiDamageIcon;
-  }
-
   public List<String> getWeaponFiles() {
     return new ArrayList<>(weaponFiles);
   }
@@ -143,5 +83,9 @@ public class Configuration {
 
   public Integer getMinNumPlayers() {
     return minNumPlayers;
+  }
+
+  public Integer getDeathDamages() {
+    return deathDamages;
   }
 }

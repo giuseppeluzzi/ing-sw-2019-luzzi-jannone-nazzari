@@ -2,10 +2,7 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BoardStatus;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.PlayerStatus;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.event.modelview.*;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -298,7 +295,7 @@ public class Player extends Observable implements Target {
     if (powerup) {
       damages.add(killerColor);
     } else {
-      int maxDamages = Constants.OVERKILL_DEATH - damages.size();
+      int maxDamages = Configuration.getInstance().getDeathDamages() + 1 - damages.size();
       for (int i = 0; i < Math.min(num, maxDamages); i++) {
         damages.add(killerColor);
       }
@@ -314,9 +311,9 @@ public class Player extends Observable implements Target {
    * @param killerColor player that inflicted the damage
    */
   private void handleDamagesUpdate(PlayerColor killerColor) {
-    if (damages.size() == Constants.OVERKILL_DEATH) {
+    if (damages.size() == Configuration.getInstance().getDeathDamages() + 1) {
       try {
-        board.getPlayerByColor(damages.get(Constants.NORMAL_DEATH)).addTags(color, 1);
+        board.getPlayerByColor(damages.get(Configuration.getInstance().getDeathDamages())).addTags(color, 1);
       } catch (InvalidPlayerException ignored) {
         //
       }
@@ -326,7 +323,7 @@ public class Player extends Observable implements Target {
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    if (damages.size() >= Constants.NORMAL_DEATH) {
+    if (damages.size() >= Configuration.getInstance().getDeathDamages()) {
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
       } else if (board.getSkulls() == 1) {
@@ -349,7 +346,7 @@ public class Player extends Observable implements Target {
     for (PlayerColor tag : new ArrayList<>(tags)) {
       if (tag == killerColor) {
 
-        if (damages.size() < Constants.OVERKILL_DEATH) {
+        if (damages.size() < Configuration.getInstance().getDeathDamages() + 1) {
           damages.add(killerColor);
         }
         tags.remove(tag);
@@ -378,7 +375,7 @@ public class Player extends Observable implements Target {
   }
 
   public boolean isDead() {
-    return damages.size() >= Constants.NORMAL_DEATH;
+    return damages.size() >= Configuration.getInstance().getDeathDamages();
   }
 
   /**
@@ -414,14 +411,12 @@ public class Player extends Observable implements Target {
    * Handles "first blood" points assignment.
    */
   private void assignFirstBlood() {
-    for (PlayerColor damage : damages) {
-      if (damage != color) {
-        try {
-          board.getPlayerByColor(damage).setScore(board.getPlayerByColor(damage).score + 1);
-        } catch (InvalidPlayerException ignored) {
-          //
-        }
-        break;
+    PlayerColor firstDamage = damages.get(0);
+    if (firstDamage != color) {
+      try {
+        board.getPlayerByColor(firstDamage).setScore(board.getPlayerByColor(firstDamage).score + 1);
+      } catch (InvalidPlayerException ignored) {
+        //
       }
     }
   }
@@ -467,7 +462,7 @@ public class Player extends Observable implements Target {
       score += 1;
     }
     if (!board.isDominationBoard()) {
-      board.addKillShot(new Kill(damages.get(Constants.NORMAL_DEATH - 1), damages.size() < Constants.OVERKILL_DEATH));
+      board.addKillShot(new Kill(damages.get(Configuration.getInstance().getDeathDamages() - 1), damages.size() < Configuration.getInstance().getDeathDamages() + 1));
     }
     decrementKillScore();
     damages.clear();

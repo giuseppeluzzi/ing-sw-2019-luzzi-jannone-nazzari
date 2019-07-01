@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
@@ -34,6 +35,7 @@ public class PlayerTest {
     board.addPlayer(player3);
     board.addPlayer(player4);
   }
+
 
   @Test
   public void testAddDamage() {
@@ -108,6 +110,7 @@ public class PlayerTest {
       player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon", "X"));
     }
   }
+
 
   @Test
   public void testSerialization() {
@@ -220,6 +223,7 @@ public class PlayerTest {
     assertEquals(square2, player.getSquare());
   }
 
+
   @Test
   public void testAddDamages() {
     player.addTags(PlayerColor.GREY, 5);
@@ -267,7 +271,7 @@ public class PlayerTest {
     player4 = new Player("yellow", PlayerColor.YELLOW, board);
     player.setMaster(true);
     board.setDoubleKill(player2);
-    player.addDamages(PlayerColor.BLUE, Constants.NORMAL_DEATH, false);
+    player.addDamages(PlayerColor.BLUE, Configuration.getInstance().getDeathDamages(), false);
     board.setSkulls(1);
     player.addDamages(PlayerColor.GREY, 1, false);
     board.setFinalFrenzySelected(true);
@@ -292,7 +296,7 @@ public class PlayerTest {
   public void testHandleLastSkull() {
     board.setFinalFrenzySelected(true);
     board.setSkulls(1);
-    player.addDamages(PlayerColor.GREY, Constants.NORMAL_DEATH, false);
+    player.addDamages(PlayerColor.GREY, Configuration.getInstance().getDeathDamages(), false);
   }
 
   @Test

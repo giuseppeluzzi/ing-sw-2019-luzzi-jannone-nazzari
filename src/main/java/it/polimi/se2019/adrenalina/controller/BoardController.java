@@ -118,7 +118,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     Gson gson = new Gson();
     for (String mapName : Configuration.getInstance().getMapFiles()) {
       try {
-        String json = IOUtils.readFile("maps/" + mapName);
+        String json = IOUtils.readResourceFile("maps/" + mapName);
         GameMap gameMap = gson.fromJson(json, GameMap.class);
         maps.add(gameMap);
       } catch (IOException e) {
@@ -153,7 +153,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void loadWeapons() {
     for (String weaponName : Configuration.getInstance().getWeaponFiles()) {
       try {
-        String json = IOUtils.readFile("weapons/" + weaponName);
+        String json = IOUtils.readResourceFile("weapons/" + weaponName);
         board.addWeapon(Weapon.deserialize(json));
       } catch (IOException e) {
         Log.critical(weaponName + " not found");
@@ -171,7 +171,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void loadAmmoCards() {
     Gson gson = new Gson();
     try {
-      String json = IOUtils.readFile("ammocards.json");
+      String json = IOUtils.readResourceFile("ammocards.json");
       AmmoCard[] ammoCards = gson.fromJson(json, AmmoCard[].class);
       for (AmmoCard ammoCard : ammoCards) {
         board.addAmmoCard(
