@@ -33,7 +33,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 
 /**
  * Virtual client socket. Relays events over the network to the actual client socket.
@@ -99,8 +98,6 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
 
         if (eventType == EventType.PING_EVENT) {
           lastPing = System.currentTimeMillis();
-          Date date = new Date();
-          Log.println(date + " - PING RICEVUTO DA " + name);
         } else if (eventType == EventType.PLAYER_CONNECT_EVENT) {
           Log.debug("Event received: PLAYER_CONNECT_EVENT");
           PlayerConnectEvent connectEvent = gson.fromJson(message, PlayerConnectEvent.class);
@@ -163,7 +160,7 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
 
   @Override
   public void ping() {
-    if (clientSocket != null && System.currentTimeMillis() - lastPing > 6 * Constants.PING_INTERVAL) {
+    if (clientSocket != null && lastPing != null && System.currentTimeMillis() - lastPing > 8 * Constants.PING_INTERVAL) {
       Log.warn("Client " + name + " has stopped pinging; disconnecting");
       server.clientDisconnect(this);
     }

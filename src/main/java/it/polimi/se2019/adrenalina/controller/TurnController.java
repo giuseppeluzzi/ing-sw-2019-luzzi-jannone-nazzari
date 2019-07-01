@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -197,7 +198,11 @@ public class TurnController implements Serializable {
    */
   private void showEndGameReason(String message) {
     for (ClientInterface client : boardController.getClients().keySet()) {
-      ((Client) client).showGameMessage(message);
+      try {
+        client.showGameMessage(message);
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
   }
 
