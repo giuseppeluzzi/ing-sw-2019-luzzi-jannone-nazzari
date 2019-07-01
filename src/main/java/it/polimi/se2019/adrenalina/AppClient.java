@@ -37,13 +37,13 @@ public class AppClient {
       name = getInteractivePlayerName(inputManager);
       domination = getInteractiveDomination(inputManager);
     } else {
-      ipAddress = args[0];
-      port = Integer.parseInt(args[1]);
-      name = args[2];
-      connectionMode = Integer.parseInt(args[3]);
-      if (args[4].charAt(0) == '0') {
+      ipAddress = args[1];
+      port = Integer.parseInt(args[2]);
+      name = args[3];
+      connectionMode = Integer.parseInt(args[4]);
+      if (args[5].charAt(0) == '0') {
         domination = false;
-      } else if (args[4].charAt(0) == '1') {
+      } else if (args[5].charAt(0) == '1') {
         domination = true;
       } else {
         Log.severe("Modalità di gioco non valida. Supportate: (0) Classica; (1) Dominazione");
