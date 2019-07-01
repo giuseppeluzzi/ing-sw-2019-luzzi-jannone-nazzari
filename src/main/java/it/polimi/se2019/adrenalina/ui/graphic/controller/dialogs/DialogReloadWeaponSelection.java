@@ -29,6 +29,9 @@ public class DialogReloadWeaponSelection extends Dialog {
   @FXML
   private Button buttonNext;
 
+  @FXML
+  private Button buttonCancel;
+
   public DialogReloadWeaponSelection() {
     super("Ricarica arma arma", true);
   }
@@ -67,6 +70,16 @@ public class DialogReloadWeaponSelection extends Dialog {
       try {
         ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
                 new PlayerReloadEvent(AppGUI.getClient().getPlayerColor(), weapon.getName()));
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+      close();
+    });
+
+    buttonCancel.setOnAction(event -> {
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+                new PlayerReloadEvent(AppGUI.getClient().getPlayerColor(), null));
       } catch (RemoteException e) {
         Log.exception(e);
       }

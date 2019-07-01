@@ -68,7 +68,7 @@ public class Configuration {
   public Integer getSocketPort() {
     return socketPort;
   }
-  
+
   public List<String> getWeaponFiles() {
     return new ArrayList<>(weaponFiles);
   }
