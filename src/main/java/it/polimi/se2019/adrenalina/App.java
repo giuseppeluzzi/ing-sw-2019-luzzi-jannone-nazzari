@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
+import javafx.application.Application;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.io.File;
@@ -40,15 +41,29 @@ public class App {
       }
     }
 
-    if (args.length > 0 && "--server".equalsIgnoreCase(args[0])) {
-      new AppServer();
+    if (args.length > 0) {
+      switch (args[0]) {
+        case "--server":
+          new AppServer();
+          break;
+        case "--tui":
+          new AppClient(args);
+          break;
+        default:
+          startGUI();
+          break;
+      }
     } else {
-      new AppClient(args);
+      startGUI();
     }
 
     if (!runningFromIntelliJ()) {
       AnsiConsole.systemUninstall();
     }
+  }
+
+  private static void startGUI() {
+    new Thread(() -> Application.launch(AppGUI.class)).start();
   }
 
   private static boolean runningFromIntelliJ() {

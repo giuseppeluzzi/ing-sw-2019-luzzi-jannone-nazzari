@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina;
 
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
@@ -29,30 +30,6 @@ public class AppGUI extends Application {
   private static LobbyFXController lobbyFXController = null;
   private static BoardFXController boardFXController = null;
 
-  public static void main(String... args) {
-    Log.setName("ClientGUI");
-    launch(args);
-  }
-
-  public static void startClient(String ipAddress, int port, String name, boolean domination, boolean socket) {
-    new Thread(() -> {
-      if (socket) {
-        client = new ClientSocket(ipAddress, port, name, domination, false);
-        ((Runnable) client).run();
-      } else {
-        ClientRMI clientRMI = new ClientRMI(ipAddress, port, name, domination, false);
-        try {
-          client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
-          clientRMI.getServer().addClient(client);
-        } catch (RemoteException e) {
-          Log.exception(e);
-        } catch (InvalidPlayerException ignored) {
-          //
-        }
-      }
-    }).start();
-  }
-
   @Override
   public void start(Stage primaryStage) throws Exception {
     setStage(primaryStage);
@@ -80,8 +57,28 @@ public class AppGUI extends Application {
     primaryStage.setResizable(false);
     primaryStage.setTitle("Adrenalina");
     primaryStage.setScene(boardScene);
-    primaryStage.setScene(startScene);
+    boardFXController.loadPlayerDashboard(PlayerColor.YELLOW);
+    //primaryStage.setScene(startScene);
     primaryStage.show();
+  }
+
+  public static void startClient(String ipAddress, int port, String name, boolean domination, boolean socket) {
+    new Thread(() -> {
+      if (socket) {
+        client = new ClientSocket(ipAddress, port, name, domination, false);
+        ((Runnable) client).run();
+      } else {
+        ClientRMI clientRMI = new ClientRMI(ipAddress, port, name, domination, false);
+        try {
+          client = (ClientInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
+          clientRMI.getServer().addClient(client);
+        } catch (RemoteException e) {
+          Log.exception(e);
+        } catch (InvalidPlayerException ignored) {
+          //
+        }
+      }
+    }).start();
   }
 
   public static ClientInterface getClient() {
