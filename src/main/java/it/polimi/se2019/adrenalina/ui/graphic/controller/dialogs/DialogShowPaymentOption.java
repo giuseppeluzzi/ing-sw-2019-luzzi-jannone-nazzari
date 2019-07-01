@@ -67,8 +67,8 @@ public class DialogShowPaymentOption extends Dialog {
 
       spendables = Player.setSpendable(budgetPowerUp, budgetAmmo);
 
-      if (Payment.verifyPaymentAnswers(answers, spendables) != 0 ||
-          Payment.verifyPaymentFullfilled(answers, spendables, buyableCost) != 0) {
+      if (!Payment.verifyPaymentAnswers(answers, spendables) ||
+          !Payment.verifyPaymentFullfilled(answers, spendables, buyableCost)) {
         Alert alert = new Alert(AlertType.WARNING, "La selezione non è corretta");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.setAlwaysOnTop(true);

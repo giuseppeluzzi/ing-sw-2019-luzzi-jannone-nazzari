@@ -120,17 +120,17 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
       answers = new HashSet<>(Arrays.asList(response.split(",")));
 
-      if (Payment.verifyPaymentAnswers(answers, spendables) == -1) {
+      if (!Payment.verifyPaymentAnswers(answers, spendables)) {
         Log.println("Hai selezionato un'opzione non valida!");
       } else {
-        if (Payment.verifyPaymentFullfilled(answers, spendables, costs) == -1) {
+        if (!Payment.verifyPaymentFullfilled(answers, spendables, costs)) {
           Log.println("Hai selezionato un'opzione non valida!");
         }
       }
 
     } while (!response.matches(inputValidationRegex)
-        || Payment.verifyPaymentAnswers(answers, spendables) != 0
-        || Payment.verifyPaymentFullfilled(answers, spendables, costs) != 0
+        || !Payment.verifyPaymentAnswers(answers, spendables)
+        || !Payment.verifyPaymentFullfilled(answers, spendables, costs)
     );
 
 

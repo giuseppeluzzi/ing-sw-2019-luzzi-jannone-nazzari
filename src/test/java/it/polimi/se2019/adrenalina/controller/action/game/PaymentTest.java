@@ -41,18 +41,15 @@ public class PaymentTest {
     buyableCost.put(AmmoColor.YELLOW, 1);
     buyableCost.put(AmmoColor.ANY, 1);
     List<Spendable> spendables = Player.setSpendable(powerUps, budgetAmmo);
-    assertEquals(java.util.Optional.of(-1),
-        java.util.Optional.of(Payment.verifyPaymentAnswers(
-            new HashSet<>(), spendables)));
+    assertFalse(Payment.verifyPaymentAnswers(
+        new HashSet<>(), spendables));
     Set<String> answers = new HashSet<>();
     answers.add("0");
-    assertEquals(java.util.Optional.of(0),
-        java.util.Optional.of(Payment.verifyPaymentAnswers(
-            answers, spendables)));
+    assertTrue(Payment.verifyPaymentAnswers(
+        answers, spendables));
     answers.add("11");
-    assertEquals(java.util.Optional.of(-1),
-        java.util.Optional.of(Payment.verifyPaymentAnswers(
-            answers, spendables)));
+    assertFalse(Payment.verifyPaymentAnswers(
+        answers, spendables));
   }
 
   @Test
@@ -74,13 +71,9 @@ public class PaymentTest {
     answers.add("0");
     answers.add("1");
     answers.add("2");
-    assertEquals(
-        java.util.Optional.of(0),
-        java.util.Optional.of(Payment.verifyPaymentFullfilled(
-            answers, spendables, buyableCost)));
-    assertEquals(
-        java.util.Optional.of(-1),
-        java.util.Optional.of(Payment.verifyPaymentFullfilled(
-            new HashSet<>(), spendables, buyableCost)));
+    assertTrue(Payment.verifyPaymentFullfilled(
+        answers, spendables, buyableCost));
+    assertFalse(Payment.verifyPaymentFullfilled(
+            new HashSet<>(), spendables, buyableCost));
   }
 }

@@ -18,7 +18,7 @@ public class BuyableTest {
   @Test
   public void testGetCost() {
     assertEquals(BuyableType.WEAPON, buyable.getBuyableType());
-    assertEquals(java.util.Optional.ofNullable(2), java.util.Optional.ofNullable(buyable.getCost().get(AmmoColor.BLUE)));
+    assertEquals(new Integer(2), buyable.getCost().get(AmmoColor.BLUE));
     buyable.promptMessage();
     assertEquals(2, buyable.getCost(AmmoColor.BLUE));
   }

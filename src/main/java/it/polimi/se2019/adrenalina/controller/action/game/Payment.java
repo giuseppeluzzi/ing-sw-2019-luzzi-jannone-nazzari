@@ -85,16 +85,16 @@ public class Payment extends GameAction {
    * @param spendables spendables available
    * @return 0 if all the conditions are matched, -1 otherwise
    */
-  public static Integer verifyPaymentAnswers(Set<String> answers, List<Spendable> spendables) {
+  public static boolean verifyPaymentAnswers(Set<String> answers, List<Spendable> spendables) {
     if (answers.isEmpty()) {
-      return -1;
+      return false;
     }
     for (String answer : answers) {
       if (Integer.parseInt(answer) > spendables.size()) {
-        return -1;
+        return false;
       }
     }
-    return 0;
+    return true;
   }
 
   /**
@@ -105,7 +105,7 @@ public class Payment extends GameAction {
    * @param costs cost to be payed
    * @return 0 if the cost is correctly fullfilled, -1 if too much or too little is selected
    */
-  public static Integer verifyPaymentFullfilled(Set<String> answers, List<Spendable> spendables,
+  public static boolean verifyPaymentFullfilled(Set<String> answers, List<Spendable> spendables,
       Map<AmmoColor, Integer> costs) {
 
     int blueCost = costs.get(AmmoColor.BLUE);
@@ -117,7 +117,7 @@ public class Payment extends GameAction {
         costs.get(AmmoColor.RED) +
         costs.get(AmmoColor.YELLOW) +
         costs.get(AmmoColor.ANY)) {
-      return -1;
+      return false;
     }
 
     for (String answer : answers) {
@@ -148,11 +148,7 @@ public class Payment extends GameAction {
       }
     }
 
-    if (blueCost + redCost + yellowCost + anyCost == 0) {
-      return 0;
-    } else {
-      return -1;
-    }
+    return blueCost + redCost + yellowCost + anyCost == 0;
 
   }
 }
