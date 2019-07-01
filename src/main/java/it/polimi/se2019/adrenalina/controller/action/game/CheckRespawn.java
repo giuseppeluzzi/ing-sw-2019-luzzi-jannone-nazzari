@@ -48,9 +48,9 @@ public class CheckRespawn extends GameAction {
         } catch (InvalidPlayerException ignore) {
           //
         }
+      } else {
+        getTurnController().addRespawn(player);
       }
-      getTurnController().addRespawn(player);
-      getTurnController().executeGameActionQueue();
     }
   }
 
