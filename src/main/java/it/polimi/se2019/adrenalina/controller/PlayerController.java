@@ -223,7 +223,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     for (Player notCurrentPlayer : board.getPlayers()) {
       if (notCurrentPlayer.getColor() != player.getColor() && notCurrentPlayer.getClient() != null) {
         try {
-          player.getClient().showGameMessage(
+          notCurrentPlayer.getClient().showGameMessage(
               String.format("%s%s%s ha scelto di %s",
                   player.getColor().getAnsiColor(),
                   player.getName(),

@@ -6,6 +6,7 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 
+import it.polimi.se2019.adrenalina.model.Square;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class ShootRoomAction extends ShootAction {
     for (Player player : players) {
       player.addDamages(object.getOwner().getColor(), getDamages(), false);
       player.addTags(object.getOwner().getColor(), getTag());
+    }
+
+    if (board.isDominationBoard()) {
+      Square square = board.getSpawnPointSquare(object.getTargetHistory(getTarget()).getSquare().getColor().getEquivalentAmmoColor());
+      square.addDamages(object.getOwner().getColor(), getDamages(), false);
     }
   }
 

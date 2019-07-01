@@ -37,6 +37,9 @@ public class ShootSquareAction extends ShootAction {
         player.addTags(object.getOwner().getColor(), getTag());
       }
     }
+    if (board.isDominationBoard() && object.getOwner().getSquare().isSpawnPoint()) {
+      object.getOwner().getSquare().addDamages(object.getOwner().getColor(), getDamages(), false);
+    }
   }
 
   private List<Player> getPlayersToExclude(ExecutableObject object) {
