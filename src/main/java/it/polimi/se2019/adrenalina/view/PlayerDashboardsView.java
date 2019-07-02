@@ -115,7 +115,7 @@ public abstract class PlayerDashboardsView extends Observable implements
     List<PlayerColor> newDamages = new ArrayList<>(event.getDamages());
     String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
     String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
-    if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
+    if (boardView.getClient().getPlayerColor() == event.getPlayerColor() && event.getKillerColor() != event.getPlayerColor()) {
       boardView.getClient().showGameMessage(
               String.format(
                       "Hai subito %d danni da %s%s%s!",
@@ -124,6 +124,8 @@ public abstract class PlayerDashboardsView extends Observable implements
                       killerName,
                       ANSIColor.RESET));
       boardView.showBoard();
+    } else if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
+      boardView.getClient().showGameMessage("Hai subito un danno dal punto di generazione!");
     } else if (event.getKillerColor() != event.getPlayerColor()) {
       boardView.getClient().showGameMessage(
               String.format(
