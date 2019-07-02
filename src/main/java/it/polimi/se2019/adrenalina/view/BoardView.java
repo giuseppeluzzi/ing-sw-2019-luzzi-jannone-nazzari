@@ -24,6 +24,7 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
@@ -269,15 +270,10 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     try {
       if (getHandledEvents().contains(event.getEventType())) {
         Log.debug("BoardView", "Event received: " + event.getEventType());
-        getClass().getMethod("update", event.getEventType().getEventClass())
-            .invoke(this, event);
+        Observer.invokeEventHandler(this, event);
       }
-    } catch (RemoteException
-        | NoSuchMethodException
-        | IllegalAccessException ignored) {
-      //
-    } catch (InvocationTargetException e) {
-      Log.exception(e);
+    } catch (RemoteException ex) {
+      Log.exception(ex);
     }
   }
 

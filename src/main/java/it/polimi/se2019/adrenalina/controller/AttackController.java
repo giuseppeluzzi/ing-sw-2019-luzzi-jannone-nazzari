@@ -200,11 +200,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     if (registeredEvents.contains(event.getEventType())) {
       Log.debug("AttackController", "Event received: " + event.getEventType());
       try {
-        getClass().getMethod("update", event.getEventType().getEventClass())
-            .invoke(this, event);
-      } catch (NoSuchMethodException | IllegalAccessException ignored) {
-        //
-      } catch (InvocationTargetException e) {
+        Observer.invokeEventHandler(this, event);
+      } catch (RemoteException e) {
         Log.exception(e);
       }
     }

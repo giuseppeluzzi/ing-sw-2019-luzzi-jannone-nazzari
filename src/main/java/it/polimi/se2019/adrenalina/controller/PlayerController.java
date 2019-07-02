@@ -332,9 +332,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     // CHEAT SUITE
     // TODO CANCELLARE
-    player.addAmmo(AmmoColor.RED, 3);
-    player.addAmmo(AmmoColor.BLUE, 3);
-    player.addAmmo(AmmoColor.YELLOW, 3);
+    //player.addAmmo(AmmoColor.RED, 3);
+    //player.addAmmo(AmmoColor.BLUE, 3);
+    //player.addAmmo(AmmoColor.YELLOW, 3);
     /*Weapon weapon = board.getWeapons().get(0);
     Weapon weapon1 = board.getWeapons().get(1);
     Weapon weapon2 = board.getWeapons().get(2);
@@ -533,11 +533,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     if (registeredEvents.contains(event.getEventType())) {
       Log.debug("PlayerController", "Event received: " + event.getEventType());
       try {
-        getClass().getMethod("update", event.getEventType().getEventClass())
-            .invoke(this, event);
-      } catch (NoSuchMethodException | IllegalAccessException ignored) {
-        //
-      } catch (InvocationTargetException e) {
+        Observer.invokeEventHandler(this, event);
+      } catch (RemoteException e) {
         Log.exception(e);
       }
     }

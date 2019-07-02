@@ -20,6 +20,7 @@ import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
@@ -367,14 +368,9 @@ public abstract class PlayerDashboardsView extends Observable implements
     try {
       if (getHandledEvents().contains(event.getEventType())) {
         Log.debug("PlayerDashboardsView", "Event received: " + event.getEventType());
-        getClass().getMethod("update", event.getEventType().getEventClass())
-            .invoke(this, event);
+        Observer.invokeEventHandler(this, event);
       }
-    } catch (RemoteException
-        | NoSuchMethodException
-        | IllegalAccessException ignored) {
-      //
-    } catch (InvocationTargetException e) {
+    } catch (RemoteException e) {
       Log.exception(e);
     }
   }

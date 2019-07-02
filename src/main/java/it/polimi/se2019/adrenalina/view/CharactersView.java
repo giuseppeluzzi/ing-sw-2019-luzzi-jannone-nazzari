@@ -10,6 +10,7 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Observer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
@@ -124,14 +125,9 @@ public abstract class CharactersView extends Observable implements CharactersVie
     try {
       if (getHandledEvents().contains(event.getEventType())) {
         Log.debug("CharactersView", "Event received: " + event.getEventType());
-        getClass().getMethod("update", event.getEventType().getEventClass())
-            .invoke(this, event);
+        Observer.invokeEventHandler(this, event);
       }
-    } catch (RemoteException
-        | NoSuchMethodException
-        | IllegalAccessException ignored) {
-      //
-    } catch (InvocationTargetException e) {
+    } catch (RemoteException e) {
       Log.exception(e);
     }
   }
