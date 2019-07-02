@@ -2,15 +2,15 @@ package it.polimi.se2019.adrenalina.model;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
+import it.polimi.se2019.adrenalina.controller.Configuration;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * A Board during a Domination match.
@@ -40,6 +40,9 @@ public class DominationBoard extends Board {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+    if (isFinalFrenzySelected() && ! isFinalFrenzyActive()) {
+      checkEnableFrenzy(color);
+    }
   }
 
   /**
@@ -60,6 +63,9 @@ public class DominationBoard extends Board {
       notifyObservers(new DominationBoardDamagesUpdate(AmmoColor.RED, getRedDamages()));
     } catch (RemoteException e) {
       Log.exception(e);
+    }
+    if (isFinalFrenzySelected() && ! isFinalFrenzyActive()) {
+      checkEnableFrenzy(color);
     }
   }
 
@@ -82,6 +88,9 @@ public class DominationBoard extends Board {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+    if (isFinalFrenzySelected() && ! isFinalFrenzyActive()) {
+      checkEnableFrenzy(color);
+    }
   }
 
   /**
@@ -102,6 +111,17 @@ public class DominationBoard extends Board {
         break;
       case ANY:
         break;
+    }
+  }
+
+  /**
+   * Checks if Final Frenzy has to be enabled after two spawn point tracks have reached
+   * at least 8 skulls.
+   */
+  private void checkEnableFrenzy(PlayerColor activatorColor) {
+    if (Stream.of(blueDamages, yellowDamages, redDamages).filter(x -> x.size() >= Configuration.getInstance().getSpawnPointDamagesFF()).count() >= 2) {
+      setFinalFrenzyActivator(activatorColor);
+      setStatus(BoardStatus.FINAL_FRENZY_ENABLED);
     }
   }
 

@@ -22,6 +22,7 @@ public class Configuration {
   private Integer joinTimeout;
   private Integer turnTimeout;
   private Integer deathDamages;
+  private Integer spawnPointDamagesFF;
   private List<String> weaponFiles;
   private List<String> mapFiles;
   private Integer suspendTimeoutCount;
@@ -87,5 +88,9 @@ public class Configuration {
 
   public Integer getDeathDamages() {
     return deathDamages;
+  }
+
+  public Integer getSpawnPointDamagesFF() {
+    return spawnPointDamagesFF;
   }
 }

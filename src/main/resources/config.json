@@ -1,5 +1,6 @@
 {
     "deathDamages": 11,
+    "spawnPointDamagesFF": 8,
     "joinTimeout": 30,
     "rmiPort": 2234,
     "turnTimeout": 120,
