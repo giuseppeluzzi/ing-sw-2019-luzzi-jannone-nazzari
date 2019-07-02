@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -8,62 +7,69 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-
-<GridPane alignment="CENTER" maxWidth="20" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="CENTER" maxWidth="20" xmlns="http://javafx.com/javafx/8.0.121"
+  xmlns:fx="http://javafx.com/fxml/1" gridLinesVisible="false">
   <columnConstraints>
-    <ColumnConstraints hgrow="NEVER" />
-    <ColumnConstraints hgrow="NEVER" />
-    <ColumnConstraints hgrow="NEVER" />
+    <ColumnConstraints hgrow="NEVER"/>
+    <ColumnConstraints hgrow="NEVER"/>
+    <ColumnConstraints hgrow="NEVER"/>
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="141" vgrow="NEVER"/>
   </rowConstraints>
 
-  <HBox fx:id="enemyWeapons" alignment="CENTER_LEFT" maxWidth="90" minWidth="90" prefWidth="90" spacing="-209" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+  <HBox fx:id="enemyWeapons" alignment="CENTER_LEFT" maxWidth="90" minWidth="90" prefWidth="90"
+    spacing="-209" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 
-  <HBox fx:id="enemyPowerUps" styleClass="enemyPowerUps" alignment="CENTER_RIGHT" maxWidth="90" minWidth="90" prefWidth="90" spacing="-250" GridPane.columnIndex="2" GridPane.rowIndex="0">
+  <HBox fx:id="enemyPowerUps" styleClass="enemyPowerUps" alignment="CENTER_RIGHT" maxWidth="90"
+    minWidth="90" prefWidth="90" spacing="-250" GridPane.columnIndex="2" GridPane.rowIndex="0">
     <ImageView fitHeight="141" opacity="0" preserveRatio="true">
       <image>
-        <Image url="@assets/img/powerups/rotated/powerup_back.png" />
+        <Image url="@assets/img/powerups/rotated/powerup_back.png"/>
       </image>
     </ImageView>
     <ImageView fitHeight="141" opacity="0" preserveRatio="true">
       <image>
-        <Image url="@assets/img/powerups/rotated/powerup_back.png" />
+        <Image url="@assets/img/powerups/rotated/powerup_back.png"/>
       </image>
     </ImageView>
     <ImageView fitHeight="141" opacity="0" preserveRatio="true">
       <image>
-        <Image url="@assets/img/powerups/rotated/powerup_back.png" />
+        <Image url="@assets/img/powerups/rotated/powerup_back.png"/>
       </image>
     </ImageView>
   </HBox>
 
-  <GridPane fx:id="enemyDashboard" minWidth="576.0" styleClass="enemyDashboard" GridPane.columnIndex="1" GridPane.rowIndex="0">
+  <GridPane fx:id="enemyDashboard" minWidth="576.0" styleClass="enemyDashboard"
+    GridPane.columnIndex="1" GridPane.rowIndex="0" gridLinesVisible="false">
     <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" percentWidth="9" />
-      <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
-      <ColumnConstraints hgrow="SOMETIMES" />
-      <ColumnConstraints hgrow="SOMETIMES" percentWidth="25" />
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="9"/>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5"/>
+      <ColumnConstraints hgrow="SOMETIMES"/>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="25"/>
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints percentHeight="3" vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="21" vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="19" vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="10" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="NEVER" minHeight="27" maxHeight="27"/>
+      <RowConstraints minHeight="30" maxHeight="30" vgrow="NEVER"/>
+      <RowConstraints vgrow="NEVER" minHeight="27" maxHeight="27"/>
+      <RowConstraints minHeight="23" maxHeight="23" vgrow="NEVER"/>
+      <RowConstraints vgrow="NEVER" minHeight="27" maxHeight="27"/>
     </rowConstraints>
 
-    <HBox fx:id="enemyTagsContainer" alignment="CENTER_RIGHT" minHeight="24" styleClass="enemyTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+    <HBox fx:id="enemyTagsContainer" alignment="CENTER_RIGHT" minHeight="24"
+      styleClass="enemyTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2"
+      GridPane.rowIndex="0"/>
 
-    <HBox fx:id="enemyDamagesContainer" alignment="CENTER_LEFT" minHeight="24" styleClass="enemyDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+    <HBox fx:id="enemyDamagesContainer" alignment="CENTER_LEFT" minHeight="24"
+      styleClass="enemyDamagesContainer" GridPane.columnIndex="1" GridPane.columnSpan="2"
+      GridPane.rowIndex="2"/>
 
-    <HBox fx:id="enemySkulls" minHeight="18" styleClass="enemySkulls" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+    <HBox fx:id="enemySkulls" minHeight="20" styleClass="enemySkulls" GridPane.columnIndex="2"
+      GridPane.rowIndex="4"/>
 
-    <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
-      <FlowPane id="enemyAmmos" fx:id="enemyAmmos" alignment="CENTER" hgap="5" maxWidth="82" vgap="5" />
+    <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.rowSpan="5">
+      <FlowPane id="enemyAmmos" fx:id="enemyAmmos" alignment="CENTER" hgap="5" maxWidth="82"
+        vgap="5"/>
     </HBox>
   </GridPane>
 </GridPane>

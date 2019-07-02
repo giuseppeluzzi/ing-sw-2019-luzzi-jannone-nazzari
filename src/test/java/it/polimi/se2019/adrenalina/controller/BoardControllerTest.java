@@ -1,18 +1,15 @@
 package it.polimi.se2019.adrenalina.controller;
 
+import static org.junit.Assert.assertEquals;
+
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
-import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import java.rmi.RemoteException;
-import org.junit.Test;
-
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class BoardControllerTest {
 

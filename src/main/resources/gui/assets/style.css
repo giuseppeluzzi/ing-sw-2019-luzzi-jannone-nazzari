@@ -55,6 +55,12 @@
   -fx-font-size: 24;
 }
 
+.logLine {
+  -fx-font-weight: 600;
+  -fx-font-size: 14;
+  -fx-text-fill: #ffffff;
+}
+
 .helperText {
   -fx-text-fill: #cfcfcf;
   -fx-font-weight: bold;
@@ -117,21 +123,28 @@
   -fx-background-size: contain;
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
+}
+
+#playerDashboardBorders {
   -fx-border-color: #393939;
   -fx-border-width: 2;
-  -fx-border-style: solid inside;
+  -fx-border-style: solid;
+  -fx-border-insets: 80 0;
 }
 
 #playerSkulls {
-  -fx-spacing: 8;
+  -fx-padding: 0 0 0 3;
+  -fx-spacing: 13;
 }
 
 #playerDamagesContainer {
-  -fx-padding: 0 0 0 7;
+  -fx-padding: 0 0 0 2;
+  -fx-spacing: 9;
 }
 
 #playerTagsContainer {
-  -fx-padding: 0 7 0 0;
+  -fx-padding: 12 0 0 0;
+  -fx-spacing: -3;
 }
 
 #playerPowerUps {
@@ -164,8 +177,7 @@
 }
 
 .enemySkulls {
-  -fx-spacing: 12.5;
-  -fx-padding: 0 0 0 1;
+  -fx-spacing: 9;
 }
 
 .enemyPowerUps {
@@ -173,12 +185,13 @@
 }
 
 .enemyDamagesContainer {
-  -fx-spacing: 12.4;
-  -fx-padding: 0 0 0 6;
+  -fx-spacing: 7;
+  -fx-padding: 0 0 0 1;
 }
 
 .enemyTagsContainer {
   -fx-spacing: 3;
+  -fx-padding: 4 0 0 0;
 }
 
 .enemyWeapon {
@@ -207,10 +220,6 @@
   -fx-background-image: url("img/ammo-yellow.png");
 }
 
-.debugPlayerDashboard {
-  -fx-background-image: url("img/dashboard_YELLOW.png");
-}
-
 .cardInfoModalBackground {
   -fx-background-color: black;
   -fx-opacity: 0.7;
@@ -224,8 +233,7 @@
 }
 
 .boardSkull {
-  -fx-background-color: #abb0b3;
-  -fx-border-color: #000000;
-  -fx-border-width: 1;
-
+  -fx-fill: #545454;
+  -fx-stroke: #000000;
+  -fx-stroke-width: 1;
 }
