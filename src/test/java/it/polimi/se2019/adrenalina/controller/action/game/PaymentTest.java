@@ -68,9 +68,9 @@ public class PaymentTest {
     buyableCost.put(AmmoColor.ANY, 1);
     List<Spendable> spendables = Player.setSpendable(powerUps, budgetAmmo);
     Set<String> answers = new HashSet<>();
-    answers.add("0");
     answers.add("1");
     answers.add("2");
+    answers.add("3");
     assertTrue(Payment.verifyPaymentFullfilled(
         answers, spendables, buyableCost));
     assertFalse(Payment.verifyPaymentFullfilled(

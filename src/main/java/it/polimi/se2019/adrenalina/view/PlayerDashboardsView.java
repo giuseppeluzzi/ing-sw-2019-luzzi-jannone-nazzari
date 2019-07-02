@@ -56,6 +56,8 @@ public abstract class PlayerDashboardsView extends Observable implements
     List<PlayerColor> newTags = new ArrayList<>(event.getTags());
     newDamages.removeAll(player.getDamages());
     newTags.removeAll(player.getTags());
+    player.updateDamages(event.getDamages());
+    player.updateTags(event.getTags());
 
     try {
       if (!newDamages.isEmpty()) {
@@ -106,9 +108,6 @@ public abstract class PlayerDashboardsView extends Observable implements
     } catch (RemoteException e) {
       Log.exception(e);
     }
-
-    player.updateDamages(event.getDamages());
-    player.updateTags(event.getTags());
   }
 
   private void showTagsDamagesMessage(PlayerDamagesTagsUpdate event) throws InvalidPlayerException, RemoteException {
