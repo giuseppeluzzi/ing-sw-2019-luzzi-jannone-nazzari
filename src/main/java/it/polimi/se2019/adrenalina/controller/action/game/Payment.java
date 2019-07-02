@@ -121,7 +121,7 @@ public class Payment extends GameAction {
     }
 
     for (String answer : answers) {
-      switch (spendables.get(Integer.parseInt(answer)).getColor()) {
+      switch (spendables.get(Integer.parseInt(answer) - 1).getColor()) {
         case BLUE:
           if (blueCost > 0) {
             blueCost--;

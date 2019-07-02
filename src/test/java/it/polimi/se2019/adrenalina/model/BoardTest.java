@@ -116,7 +116,7 @@ public class BoardTest {
   @Test(expected = IllegalArgumentException.class)
   public void testDrawPowerUpException() {
     Newton powerUp1 = new Newton(AmmoColor.YELLOW);
-    Newton powerUp2 = new Newton(AmmoColor.YELLOW);
+    Newton powerUp2 = new Newton(AmmoColor.BLUE);
     board.addPowerUp(powerUp1);
     board.drawPowerUp(powerUp2);
   }
