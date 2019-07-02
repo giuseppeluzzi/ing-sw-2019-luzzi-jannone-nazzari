@@ -296,13 +296,16 @@ public class Player extends Observable implements Target {
       damages.add(killerColor);
     } else {
       int maxDamages = Configuration.getInstance().getDeathDamages() + 1 - damages.size();
+
       if (damages.size() <= Configuration.getInstance().getDeathDamages() &&
           damages.size() + Math.min(num, maxDamages) >= Configuration.getInstance().getDeathDamages() + 1) {
+
         try {
-          board.getPlayerByColor(damages.get(Configuration.getInstance().getDeathDamages())).addTags(color, 1);
+          board.getPlayerByColor(killerColor).addTags(color, 1);
         } catch (InvalidPlayerException ignored) {
           //
         }
+
       }
       for (int i = 0; i < Math.min(num, maxDamages); i++) {
         damages.add(killerColor);
