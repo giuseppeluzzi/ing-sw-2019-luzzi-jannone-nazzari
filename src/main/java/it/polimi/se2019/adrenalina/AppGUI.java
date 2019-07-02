@@ -1,10 +1,6 @@
 package it.polimi.se2019.adrenalina;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.model.Kill;
-import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
@@ -14,8 +10,6 @@ import it.polimi.se2019.adrenalina.ui.graphic.controller.PlayerDashboardFXContro
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -38,6 +32,15 @@ public class AppGUI extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     setStage(primaryStage);
+    Log.setName("ClientGUI");
+
+    primaryStage.setOnCloseRequest(windowEvent -> {
+      try {
+        stop();
+      } catch (Exception ignored) {
+        //
+      }
+    });
 
     FXMLLoader loaderLobby = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/Lobby.fxml"));
@@ -69,19 +72,14 @@ public class AppGUI extends Application {
     boardFXController.getDashboardController(PlayerColor.GREEN).updateAmmos(1,1,1);
     boardFXController.getDashboardController(PlayerColor.YELLOW).updateAmmos(1,1,1);
     /*boardFXController.loadEnemyDashboard(PlayerColor.BLUE);
-    boardFXController.loadEnemyDashboard(PlayerColor.GREY);
-    boardFXController.updateKilltrack(Arrays.asList(new Kill[]{
-        new Kill(PlayerColor.YELLOW, true),
-        new Kill(PlayerColor.BLUE, false),
-        new Kill(PlayerColor.GREEN, true),
-        new Kill(PlayerColor.GREEN, true),
-        new Kill(PlayerColor.GREEN, true),
-        new Kill(PlayerColor.GREEN, true),
+    boardFXController.loadEnemyDashboard(PlayerColor.GREY);*/
+    /*boardFXController.updateKilltrack(Arrays.asList(new Kill[]{
+        new Kill(PlayerColor.GREEN, false),
         new Kill(PlayerColor.GREEN, true),
         new Kill(PlayerColor.GREEN, true),
         new Kill(PlayerColor.GREEN, true),
         new Kill(PlayerColor.YELLOW, false)
-    }), 8);
+    }), 8);/*
     boardFXController.updateSpawnpointDamages(AmmoColor.RED, Arrays.asList(new PlayerColor[] {
         PlayerColor.YELLOW,
         PlayerColor.BLUE,
@@ -112,17 +110,8 @@ public class AppGUI extends Application {
         PlayerColor.YELLOW,
         PlayerColor.YELLOW,
         PlayerColor.YELLOW,
-        PlayerColor.YELLOW,
-        PlayerColor.YELLOW,
-        PlayerColor.BLUE,
-        PlayerColor.GREEN,
-        PlayerColor.GREEN,
-        PlayerColor.GREEN,
-        PlayerColor.GREEN,
-        PlayerColor.GREEN,
-        PlayerColor.PURPLE
     }));
-    boardFXController.getDashboardController(PlayerColor.GREEN).updateDamages(Arrays.asList(new PlayerColor[] {
+    /*boardFXController.getDashboardController(PlayerColor.GREEN).updateDamages(Arrays.asList(new PlayerColor[] {
         PlayerColor.YELLOW,
         PlayerColor.YELLOW,
         PlayerColor.YELLOW,
@@ -164,13 +153,14 @@ public class AppGUI extends Application {
         PlayerColor.GREEN,
         PlayerColor.PURPLE
     }));
-    boardFXController.getDashboardController(PlayerColor.GREEN).updateSkulls(2);
-    boardFXController.getDashboardController(PlayerColor.YELLOW).updateSkulls(2);*/
+    boardFXController.getDashboardController(PlayerColor.GREEN).updateSkulls(2);*/
+    //boardFXController.getDashboardController(PlayerColor.YELLOW).updateSkulls(2);
     primaryStage.setScene(startScene);
     primaryStage.show();
   }
 
-  public static void startClient(String ipAddress, int port, String name, boolean domination, boolean socket) {
+  public static void startClient(String ipAddress, int port, String name, boolean domination,
+      boolean socket) {
     new Thread(() -> {
       if (socket) {
         client = new ClientSocket(ipAddress, port, name, domination, false);

@@ -143,7 +143,7 @@
         </VBox>
       </AnchorPane>
 
-      <GridPane fx:id="bottomGrid" gridLinesVisible="true" GridPane.columnIndex="0"
+      <GridPane fx:id="bottomGrid" gridLinesVisible="false" GridPane.columnIndex="0"
         GridPane.columnSpan="2" GridPane.rowIndex="1" translateY="55">
         <rowConstraints>
           <RowConstraints minHeight="180" maxHeight="180" vgrow="NEVER"/>

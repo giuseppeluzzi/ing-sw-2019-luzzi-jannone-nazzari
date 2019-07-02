@@ -57,7 +57,11 @@ import javafx.scene.shape.Circle;
 
 public class BoardFXController {
 
+  private static final String WEAPON_PROP = "weapon";
+  private static final String DASHBOARD_COLOR_PROP = "color";
+  private static final String TILE_PLAYER_COLOR_PROP = "playerColor";
   private static final double LOG_PAST_OPACITY = 0.6;
+
   @FXML
   private GridPane boardGrid;
 
@@ -128,7 +132,7 @@ public class BoardFXController {
     squareWeaponsHover = new HashMap<>();
 
     buyWeaponEventHandler = event -> {
-      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get("weapon"))
+      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get(WEAPON_PROP))
           .getName();
 
       disableBoardWeapons();
@@ -148,7 +152,6 @@ public class BoardFXController {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         TilePane cellTilePane = new TilePane();
-        //cellTilePane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
         cellTilePane.setAlignment(Pos.CENTER);
         cellTilePane.setHgap(10);
         cellTilePane.setVgap(10);
@@ -171,7 +174,7 @@ public class BoardFXController {
     mapGrid.setStyle(
         "-fx-background-image: url(\"gui/assets/img/map1.png\");");
 
-    gameLogMessages.addListener((ListChangeListener<String>) change -> {
+    gameLogMessages.addListener((ListChangeListener<String>) change ->
       Platform.runLater(() -> {
         change.next();
         if (change.getList().size() > 5) {
@@ -185,8 +188,8 @@ public class BoardFXController {
         Label text = new Label(newLine);
         text.getStyleClass().add("logLine");
         gameLog.getChildren().add(text);
-      });
-    });
+      })
+    );
 
     noPowerUpTurnActionButton.setOnAction(event -> {
       try {
@@ -243,7 +246,6 @@ public class BoardFXController {
     }
     // END DEBUG
 
-    domination = false;
     if (domination) {
       loadDominationInterface();
     } else {
@@ -254,7 +256,7 @@ public class BoardFXController {
     Platform.runLater(() -> {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
-        playerDashboard.getProperties().put("color", color);
+        playerDashboard.getProperties().put(DASHBOARD_COLOR_PROP, color);
         GridPane.setRowIndex(playerDashboard, 0);
         GridPane.setColumnIndex(playerDashboard, 1);
         GridPane.setRowSpan(playerDashboard, 2);
@@ -268,18 +270,28 @@ public class BoardFXController {
   private void loadBoardSkulls() {
     int skulls = 0;
 
-    // TODO
+    // TODO comment in debug
     try {
       skulls = AppGUI.getClient().getBoardView().getBoard().getSkulls();
     } catch (RemoteException e) {
       Log.exception(e);
       return;
     }
+    // end comment in debug
+
+    double radius;
+    if (domination) {
+      radius = 5;
+    } else {
+      radius = 9.5;
+    }
 
     for (int i = 0; i < skulls; i++) {
       Circle skull = new Circle();
       skull.getStyleClass().add("boardSkull");
+      skull.setRadius(radius);
       boardSkulls.getChildren().add(skull);
+
     }
     boardSkulls.setVisible(true);
   }
@@ -301,7 +313,7 @@ public class BoardFXController {
     Platform.runLater(() -> {
       try {
         Parent dashboard = loaderEnemyDashboard.load();
-        dashboard.getProperties().put("color", color);
+        dashboard.getProperties().put(DASHBOARD_COLOR_PROP, color);
         enemyDashboards.getChildren().add(dashboard);
       } catch (IOException e) {
         Log.exception(e);
@@ -324,7 +336,7 @@ public class BoardFXController {
       dashboardControllers.remove(color);
       Platform.runLater(() -> {
         for (Node child : enemyDashboards.getChildren()) {
-          if (color == child.getProperties().get("color")) {
+          if (color == child.getProperties().get(DASHBOARD_COLOR_PROP)) {
             enemyDashboards.getChildren().remove(child);
             break;
           }
@@ -362,8 +374,8 @@ public class BoardFXController {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         for (Node node : grid[x][y].getTilePane().getChildren()) {
-          if (node.getProperties().containsKey("playerColor")
-              && node.getProperties().get("playerColor") == playerColor) {
+          if (node.getProperties().containsKey(TILE_PLAYER_COLOR_PROP)
+              && node.getProperties().get(TILE_PLAYER_COLOR_PROP) == playerColor) {
             removeX = x;
             removeY = y;
             toRemove = node;
@@ -384,7 +396,7 @@ public class BoardFXController {
     }
     Circle playerIcon = new Circle(13, Color.web(playerColor.getHexColor()));
     playerIcon.getStyleClass().add("player");
-    playerIcon.getProperties().put("playerColor", playerColor);
+    playerIcon.getProperties().put(TILE_PLAYER_COLOR_PROP, playerColor);
     playerIcon.setStroke(Color.WHITE);
     playerIcon.setStrokeWidth(1);
     grid[posX][posY].getTilePane().getChildren().add(0, playerIcon);
@@ -635,9 +647,9 @@ public class BoardFXController {
       bnEffect.setSaturation(-1);
 
       for (Node weaponImageView : boxHover.getChildren()) {
-        squareWeapons.remove(((Weapon) weaponImageView.getProperties().get("weapon")).getName());
+        squareWeapons.remove(((Weapon) weaponImageView.getProperties().get(WEAPON_PROP)).getName());
         squareWeaponsHover
-            .remove(((Weapon) weaponImageView.getProperties().get("weapon")).getName());
+            .remove(((Weapon) weaponImageView.getProperties().get(WEAPON_PROP)).getName());
       }
 
       box.getChildren().clear();
@@ -669,7 +681,7 @@ public class BoardFXController {
           imageViewHover.setFitWidth(70);
         }
         imageViewHover.setOpacity(0);
-        imageViewHover.getProperties().put("weapon", weapon);
+        imageViewHover.getProperties().put(WEAPON_PROP, weapon);
         boxHover.getChildren().add(imageViewHover);
         squareWeapons.put(weapon.getName(), imageView);
         squareWeaponsHover.put(weapon.getName(), imageViewHover);
@@ -679,9 +691,9 @@ public class BoardFXController {
           imageViewHover.setScaleX(2.5);
           imageViewHover.setScaleY(2.5);
           if (rotatedImages) {
-            imageViewHover.setTranslateX(55);
+            imageViewHover.setTranslateX(80);
           } else {
-            imageViewHover.setTranslateY(95);
+            imageViewHover.setTranslateY(88);
           }
         });
 

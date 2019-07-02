@@ -22,7 +22,7 @@ import java.util.Arrays;
 public class AppClient {
 
   public AppClient(String... args) {
-    Log.setName("ClientRMI");
+    Log.setName("ClientTUI");
     try {
       IOUtils.loadClientConfiguration();
     } catch (IOException e) {

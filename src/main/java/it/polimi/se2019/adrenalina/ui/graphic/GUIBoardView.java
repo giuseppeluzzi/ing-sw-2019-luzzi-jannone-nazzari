@@ -41,6 +41,11 @@ public class GUIBoardView extends BoardView {
   }
 
   @Override
+  public GUITimer getTimer() {
+    return (GUITimer) super.getTimer();
+  }
+
+  @Override
   public void endLoading(boolean masterPlayer) {
     new Thread(() -> {
       try {
@@ -81,7 +86,8 @@ public class GUIBoardView extends BoardView {
   @Override
   public void showSquareSelect(List<Target> targets) {
     AppGUI.getBoardFXController().highlightSelectableSquares(targets);
-    AppGUI.getBoardFXController().enableSquareSelection(TargetType.MOVE_SQUARE, targets, true, false);
+    AppGUI.getBoardFXController()
+        .enableSquareSelection(TargetType.MOVE_SQUARE, targets, true, false);
   }
 
   @Override
@@ -157,7 +163,8 @@ public class GUIBoardView extends BoardView {
   public void update(PlayerColorSelectionEvent event) {
     super.update(event);
     AppGUI.getLobbyFXController().setPlayerColor(event.getPlayerColor(), event.getNewPlayerColor());
-    AppGUI.getBoardFXController().changeDashboardColor(event.getPlayerColor(), event.getNewPlayerColor());
+    AppGUI.getBoardFXController()
+        .changeDashboardColor(event.getPlayerColor(), event.getNewPlayerColor());
 
   }
 
@@ -171,13 +178,16 @@ public class GUIBoardView extends BoardView {
   public void update(SquareAmmoCardUpdate event) {
     super.update(event);
     String ammoCardStr;
-    if (event.getBlue() == 0 && event.getRed() == 0 && event.getYellow() == 0 && event.getPowerUps() == 0) {
+    if (event.getBlue() == 0 && event.getRed() == 0 && event.getYellow() == 0
+        && event.getPowerUps() == 0) {
       ammoCardStr = null;
     } else {
-      AmmoCard ammoCard = new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps());
+      AmmoCard ammoCard = new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(),
+          event.getPowerUps());
       ammoCardStr = ammoCard.toString();
     }
-    Platform.runLater(() -> AppGUI.getBoardFXController().setAmmoCard(event.getPosX(), event.getPosY(), ammoCardStr));
+    Platform.runLater(() -> AppGUI.getBoardFXController()
+        .setAmmoCard(event.getPosX(), event.getPosY(), ammoCardStr));
   }
 
   @Override
@@ -213,6 +223,7 @@ public class GUIBoardView extends BoardView {
   @Override
   public void update(DominationBoardDamagesUpdate event) {
     super.update(event);
-    AppGUI.getBoardFXController().updateSpawnpointDamages(event.getSpawnPointColor(), event.getPlayers());
+    AppGUI.getBoardFXController()
+        .updateSpawnpointDamages(event.getSpawnPointColor(), event.getPlayers());
   }
 }

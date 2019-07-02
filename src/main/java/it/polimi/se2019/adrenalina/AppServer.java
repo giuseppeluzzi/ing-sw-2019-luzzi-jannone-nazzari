@@ -40,7 +40,7 @@ public class AppServer {
       }
     }
 
-    Log.setName("ServerRMI");
+    Log.setName("Server");
     Log.info("Server started!");
 
     try {
