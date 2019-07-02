@@ -1,7 +1,8 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
+import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -60,16 +61,16 @@ public class StartFXController {
     startNameSelector.setVisible(false);
     startServerSelection.setVisible(true);
 
-    textFieldIpAddress.setText(Configuration.getInstance().getServerIP());
-    textFieldPort.setText(Integer.toString(Configuration.getInstance().getSocketPort()));
+    textFieldIpAddress.setText(ClientConfig.getInstance().getServerIP());
+    textFieldPort.setText(Integer.toString(ClientConfig.getInstance().getSocketPort()));
     buttonNext0.requestFocus();
 
     checkBoxRMI.selectedProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue != oldValue) {
         if (newValue) {
-          textFieldPort.setText(Integer.toString(Configuration.getInstance().getRmiPort()));
+          textFieldPort.setText(Integer.toString(ClientConfig.getInstance().getRmiPort()));
         } else {
-          textFieldPort.setText(Integer.toString(Configuration.getInstance().getSocketPort()));
+          textFieldPort.setText(Integer.toString(ClientConfig.getInstance().getSocketPort()));
         }
       }
     });

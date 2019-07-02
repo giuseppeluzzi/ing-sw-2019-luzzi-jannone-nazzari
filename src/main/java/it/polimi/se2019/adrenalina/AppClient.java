@@ -1,6 +1,6 @@
 package it.polimi.se2019.adrenalina;
 
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
@@ -8,6 +8,7 @@ import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.ui.text.TUIInputManager;
 import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.io.IOException;
@@ -22,6 +23,12 @@ public class AppClient {
 
   public AppClient(String... args) {
     Log.setName("ClientRMI");
+    try {
+      IOUtils.loadClientConfiguration();
+    } catch (IOException e) {
+      Log.severe("Unable to load client configuration!");
+      System.exit(1);
+    }
 
     String ipAddress;
     Integer port = null;
@@ -90,7 +97,7 @@ public class AppClient {
   private String getInteractiveIpAddress(TUIInputManager inputManager) {
     while (true) {
       inputManager.input(
-              String.format("Inserisci l'indirizzo IP del server (default: %s)", Configuration.getInstance().getServerIP()),
+              String.format("Inserisci l'indirizzo IP del server (default: %s)", ClientConfig.getInstance().getServerIP()),
               0,
               Integer.MAX_VALUE);
       try {
@@ -113,7 +120,7 @@ public class AppClient {
       inputManager.input(
               String.format
                       ("Inserisci la porta da usare (default: %d)",
-                       connectionMode == 0 ? Configuration.getInstance().getRmiPort() : Configuration.getInstance().getSocketPort()),
+                       connectionMode == 0 ? ClientConfig.getInstance().getRmiPort() : ClientConfig.getInstance().getSocketPort()),
               0,
               Integer.MAX_VALUE);
       try {

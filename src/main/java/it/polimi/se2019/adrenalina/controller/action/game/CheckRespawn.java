@@ -1,6 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerController;
 import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
@@ -48,7 +48,7 @@ public class CheckRespawn extends GameActionAsync {
         try {
           getTurnController().addTurnActions(
               new SpawnPointTrackSelection(board.getPlayerByColor(
-                  player.getDamages().get(Configuration.getInstance().getDeathDamages() - 1))));
+                  player.getDamages().get(ServerConfig.getInstance().getDeathDamages() - 1))));
         } catch (InvalidPlayerException ignore) {
           Log.debug("Invalid player exception thrown");
         }

@@ -1,9 +1,6 @@
 package it.polimi.se2019.adrenalina.network;
 
-import it.polimi.se2019.adrenalina.controller.BoardController;
-import it.polimi.se2019.adrenalina.controller.BoardStatus;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.PlayerStatus;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -90,6 +87,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
       return;
     }
 
+    client.updateConfiguration(ServerConfig.getInstance().getTurnTimeout(), ServerConfig.getInstance().getMinNumPlayers());
     Player player = null;
     BoardController game = null;
     BoardController previousGame = getGameByPlayerName(client.getName());

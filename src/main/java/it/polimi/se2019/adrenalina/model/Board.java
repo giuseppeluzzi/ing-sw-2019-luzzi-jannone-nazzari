@@ -16,7 +16,6 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
-import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
 import it.polimi.se2019.adrenalina.utils.Observable;
@@ -433,7 +432,7 @@ public class Board extends Observable implements Serializable {
    */
   public boolean existsOverKilledPlayer() {
     for (Player player : players) {
-      if (player.getDamages().size() == Configuration.getInstance().getDeathDamages() + 1) {
+      if (player.getDamages().size() == ServerConfig.getInstance().getDeathDamages() + 1) {
         return true;
       }
     }

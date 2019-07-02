@@ -3,13 +3,9 @@ package it.polimi.se2019.adrenalina.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.PingEvent;
-import it.polimi.se2019.adrenalina.event.PlayerConnectEvent;
-import it.polimi.se2019.adrenalina.event.PlayerDisconnectEvent;
+import it.polimi.se2019.adrenalina.event.*;
 import it.polimi.se2019.adrenalina.event.invocations.ShowBuyableWeaponsInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowDeathInvocation;
 import it.polimi.se2019.adrenalina.event.invocations.ShowEffectSelectionInvocation;
@@ -74,8 +70,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
 
     try {
       socket = new Socket(
-              ipAddress == null ? Configuration.getInstance().getServerIP() : ipAddress,
-              port == null ? Configuration.getInstance().getSocketPort() : port);
+              ipAddress == null ? ClientConfig.getInstance().getServerIP() : ipAddress,
+              port == null ? ClientConfig.getInstance().getSocketPort() : port);
       OutputStream outputStream = socket.getOutputStream();
       printWriter = new PrintWriter(outputStream, true);
       bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
@@ -149,6 +145,10 @@ public class ClientSocket extends Client implements Runnable, Observer {
         Event event = gson.fromJson(message, eventType.getEventClass());
 
         switch (eventType) {
+          case CONFIGURATION_UPDATE:
+            ConfigurationUpdate configUpdate = gson.fromJson(message, ConfigurationUpdate.class);
+            updateConfiguration(configUpdate.getTurnTimeout(), configUpdate.getMinNumPlayers());
+            break;
           case PLAYER_DISCONNECT_EVENT:
             PlayerDisconnectEvent disconnectEvent = gson
                     .fromJson(message, PlayerDisconnectEvent.class);

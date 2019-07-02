@@ -3,10 +3,7 @@ package it.polimi.se2019.adrenalina.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import it.polimi.se2019.adrenalina.controller.BoardController;
-import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.MessageSeverity;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.event.*;
 import it.polimi.se2019.adrenalina.event.invocations.ShowMessageInvocation;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSetColorEvent;
@@ -79,6 +76,9 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   @Override
   public void run() {
     try {
+      updateConfiguration(
+              ServerConfig.getInstance().getTurnTimeout(),
+              ServerConfig.getInstance().getMinNumPlayers());
       while (clientSocket.isConnected()) {
         String message = bufferedReader.readLine();
         if (message == null) {
@@ -141,6 +141,11 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   @Override
   public void setDomination(boolean domination) {
     this.domination = domination;
+  }
+
+  @Override
+  public void updateConfiguration(int turnTimeout, int minNumPlayers) {
+    sendEvent(new ConfigurationUpdate(turnTimeout, minNumPlayers));
   }
 
   @Override

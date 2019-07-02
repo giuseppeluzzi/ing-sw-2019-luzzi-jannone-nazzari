@@ -1,11 +1,10 @@
 package it.polimi.se2019.adrenalina.model;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
-import it.polimi.se2019.adrenalina.utils.Constants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -270,7 +269,7 @@ public class PlayerTest {
     player3 = new Player("grey", PlayerColor.GREY, board);
     player4 = new Player("yellow", PlayerColor.YELLOW, board);
     player.setMaster(true);
-    player.addDamages(PlayerColor.BLUE, Configuration.getInstance().getDeathDamages(), false);
+    player.addDamages(PlayerColor.BLUE, ServerConfig.getInstance().getDeathDamages(), false);
     board.setSkulls(1);
     player.addDamages(PlayerColor.GREY, 1, false);
     board.setFinalFrenzySelected(true);
@@ -295,7 +294,7 @@ public class PlayerTest {
   public void testHandleLastSkull() {
     board.setFinalFrenzySelected(true);
     board.setSkulls(1);
-    player.addDamages(PlayerColor.GREY, Configuration.getInstance().getDeathDamages(), false);
+    player.addDamages(PlayerColor.GREY, ServerConfig.getInstance().getDeathDamages(), false);
   }
 
   @Test

@@ -4,7 +4,8 @@ package it.polimi.se2019.adrenalina.utils;
  * Internal constants.
  */
 public class Constants {
-  public static final String CONFIG_FILE = "config.json";
+  public static final String SERVER_CONFIG_FILE = "server_config.json";
+  public static final String CLIENT_CONFIG_FILE = "client_config.json";
 
   public static final int PING_INTERVAL = 500;
   public static final int MAX_NAME_LENGTH = 12;

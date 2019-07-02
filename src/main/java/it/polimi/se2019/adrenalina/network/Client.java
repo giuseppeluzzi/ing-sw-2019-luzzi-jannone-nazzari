@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.network;
 
 import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
@@ -85,6 +86,12 @@ public abstract class Client implements ClientInterface, Serializable {
   @Override
   public void setDomination(boolean domination) {
     this.domination = domination;
+  }
+
+  @Override
+  public void updateConfiguration(int turnTimeout, int minNumPlayers) {
+    ClientConfig.getInstance().setTurnTimeout(turnTimeout);
+    ClientConfig.getInstance().setMinNumPlayers(minNumPlayers);
   }
 
   @Override

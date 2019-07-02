@@ -3,7 +3,7 @@ package it.polimi.se2019.adrenalina.model;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.modelview.DominationBoardDamagesUpdate;
 import it.polimi.se2019.adrenalina.utils.Log;
@@ -119,7 +119,7 @@ public class DominationBoard extends Board {
    * at least 8 skulls.
    */
   private void checkEnableFrenzy(PlayerColor activatorColor) {
-    if (Stream.of(blueDamages, yellowDamages, redDamages).filter(x -> x.size() >= Configuration.getInstance().getSpawnPointDamagesFF()).count() >= 2) {
+    if (Stream.of(blueDamages, yellowDamages, redDamages).filter(x -> x.size() >= ServerConfig.getInstance().getSpawnPointDamagesFF()).count() >= 2) {
       setFinalFrenzyActivator(activatorColor);
       setStatus(BoardStatus.FINAL_FRENZY_ENABLED);
     }

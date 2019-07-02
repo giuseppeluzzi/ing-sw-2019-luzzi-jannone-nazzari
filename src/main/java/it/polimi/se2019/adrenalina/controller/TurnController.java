@@ -7,7 +7,6 @@ import it.polimi.se2019.adrenalina.controller.action.game.EndGame;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
 import it.polimi.se2019.adrenalina.controller.action.game.PickPowerUp;
 import it.polimi.se2019.adrenalina.controller.action.game.PowerUpSelection;
-import it.polimi.se2019.adrenalina.controller.action.game.SpawnPointTrackSelection;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Board;
@@ -92,11 +91,11 @@ public class TurnController implements Serializable {
 
     if (gameAction != null) {
       final GameAction gameAction1 = gameAction;
-      timer.start(Configuration.getInstance().getTurnTimeout(), () -> {
+      timer.start(ServerConfig.getInstance().getTurnTimeout(), () -> {
         gameAction1.handleTimeout();
         turnActionsQueue.clear();
         gameAction1.getPlayer().incrementTimeoutCount();
-        if (gameAction1.getPlayer().getTimeoutCount() >= Configuration.getInstance().getSuspendTimeoutCount()) {
+        if (gameAction1.getPlayer().getTimeoutCount() >= ServerConfig.getInstance().getSuspendTimeoutCount()) {
           suspendPlayer = true;
         }
         executeGameActionQueue();
@@ -162,7 +161,7 @@ public class TurnController implements Serializable {
     Log.debug(currentPlayer.getName() + " ha terminato il turno!");
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);
 
-    if (boardController.getBoard().getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()) {
+    if (boardController.getBoard().getActivePlayers().size() < ServerConfig.getInstance().getMinNumPlayers()) {
       showEndGameReason("Il numero di giocatori è sceso sotto al limite minimo!");
       endGame = true;
       turnActionsQueue.add(new EndGame());

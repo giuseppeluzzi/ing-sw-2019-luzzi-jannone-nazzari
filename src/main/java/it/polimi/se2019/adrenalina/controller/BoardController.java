@@ -21,7 +21,6 @@ import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -116,7 +115,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    */
   private void loadMaps() {
     Gson gson = new Gson();
-    for (String mapName : Configuration.getInstance().getMapFiles()) {
+    for (String mapName : ServerConfig.getInstance().getMapFiles()) {
       try {
         String json = IOUtils.readResourceFile("maps/" + mapName);
         GameMap gameMap = gson.fromJson(json, GameMap.class);
@@ -151,7 +150,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * Load weapons from json.
    */
   private void loadWeapons() {
-    for (String weaponName : Configuration.getInstance().getWeaponFiles()) {
+    for (String weaponName : ServerConfig.getInstance().getWeaponFiles()) {
       try {
         String json = IOUtils.readResourceFile("weapons/" + weaponName);
         board.addWeapon(Weapon.deserialize(json));
@@ -225,7 +224,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       player.setStatus(PlayerStatus.WAITING);
       notifyPlayerJoin(player);
 
-      if (board.getPlayers().size() >= Configuration.getInstance().getMinNumPlayers()) {
+      if (board.getPlayers().size() >= ServerConfig.getInstance().getMinNumPlayers()) {
         startJoinTimer();
       }
     } else {
@@ -343,11 +342,11 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    * Starts a timer both server-side and on each client.
    */
   private void startJoinTimer() {
-    timer.start(Configuration.getInstance().getJoinTimeout(), this::chooseMap);
+    timer.start(ServerConfig.getInstance().getJoinTimeout(), this::chooseMap);
 
     board.getPlayers().stream().forEach(p -> {
       try {
-        boardViews.get(p.getClient()).startTimer(Configuration.getInstance().getJoinTimeout());
+        boardViews.get(p.getClient()).startTimer(ServerConfig.getInstance().getJoinTimeout());
       } catch (RemoteException e) {
         Log.exception(e);
       }

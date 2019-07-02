@@ -1,7 +1,8 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
+import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -169,7 +170,7 @@ public class LobbyFXController {
   }
 
   private void updateTitle() {
-    int diff = Configuration.getInstance().getMinNumPlayers() - players.size();
+    int diff = ClientConfig.getInstance().getMinNumPlayers() - players.size();
     if (diff <= 0) {
       lobbyPlayersSubtitle.setText("La partita inizierà a breve");
     } else if (diff == 1) {
@@ -177,7 +178,7 @@ public class LobbyFXController {
           "Per iniziare la partita serve un altro giocatore");
     } else {
       lobbyPlayersSubtitle.setText(
-          "Per iniziare la partita servono altri " + (Configuration.getInstance().getMinNumPlayers()
+          "Per iniziare la partita servono altri " + (ClientConfig.getInstance().getMinNumPlayers()
               - players.size()) + " giocatori");
     }
   }

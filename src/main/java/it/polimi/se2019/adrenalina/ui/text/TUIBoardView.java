@@ -69,6 +69,7 @@ public class TUIBoardView extends BoardView {
     Log.print(ansi().eraseScreen().toString());
     if (getBoard().getLastGameMessage() != null) {
       Log.println(getBoard().getLastGameMessage() + "\n");
+      getBoard().setLastGameMessage(null);
     }
     BoardPrinter.print(getBoard());
   }
@@ -157,7 +158,7 @@ public class TUIBoardView extends BoardView {
       choices.add("Salta azione");
     }
     inputManager.input("Seleziona una stanza:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+    timer.start(ClientConfig.getInstance().getTurnTimeout(), () -> inputManager.cancel(
         WAIT_TIMEOUT_MSG));
     int inputResult = inputManager.waitForIntResult();
     timer.stop();
@@ -202,7 +203,7 @@ public class TUIBoardView extends BoardView {
       choices.add("Salta azione");
     }
     inputManager.input("Seleziona un quadrato:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(),
+    timer.start(ClientConfig.getInstance().getTurnTimeout(),
         () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     int selectionResult = inputManager.waitForIntResult();
     if (skippable && selectionResult == targets.size()) {
@@ -241,7 +242,7 @@ public class TUIBoardView extends BoardView {
       choices.add("Salta (non colpire nessuno)");
     }
     inputManager.input("Seleziona un bersaglio:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(),
+    timer.start(ClientConfig.getInstance().getTurnTimeout(),
         () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     int selectionResult = inputManager.waitForIntResult();
     if (skippable && selectionResult == targets.size()) {
@@ -262,7 +263,7 @@ public class TUIBoardView extends BoardView {
       choices.add(direction.getName());
     }
     inputManager.input("Seleziona una direzione:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(),
+    timer.start(ClientConfig.getInstance().getTurnTimeout(),
         () -> inputManager.cancel(WAIT_TIMEOUT_MSG));
     try {
       notifyObservers(new SelectDirectionEvent(getClient().getPlayerColor(),
