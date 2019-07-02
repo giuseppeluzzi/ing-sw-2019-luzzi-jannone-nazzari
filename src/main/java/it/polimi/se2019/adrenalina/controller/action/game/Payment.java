@@ -103,7 +103,7 @@ public class Payment extends GameAction {
    * @param answers answers given
    * @param spendables spendables available
    * @param costs cost to be payed
-   * @return 0 if the cost is correctly fullfilled, -1 if too much or too little is selected
+   * @return true if the cost is correctly fullfilled otherwise false
    */
   public static boolean verifyPaymentFullfilled(Set<String> answers, List<Spendable> spendables,
       Map<AmmoColor, Integer> costs) {
@@ -121,7 +121,7 @@ public class Payment extends GameAction {
     }
 
     for (String answer : answers) {
-      switch (spendables.get(Integer.parseInt(answer) - 1).getColor()) {
+      switch (spendables.get(Integer.parseInt(answer)).getColor()) {
         case BLUE:
           if (blueCost > 0) {
             blueCost--;
