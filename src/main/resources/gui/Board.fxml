@@ -51,9 +51,9 @@
 
         <HBox visible="false" fx:id="normalBoardSkulls" GridPane.columnIndex="0"
           GridPane.rowIndex="0"
-          GridPane.columnSpan="3" spacing="12.5" alignment="CENTER_RIGHT">
+          GridPane.columnSpan="3" spacing="12.5" alignment="CENTER_LEFT">
           <padding>
-            <Insets top="-19" right="79"/>
+            <Insets top="-20" left="58"/>
           </padding>
         </HBox>
 

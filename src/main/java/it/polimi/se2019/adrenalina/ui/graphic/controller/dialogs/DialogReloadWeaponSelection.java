@@ -33,7 +33,7 @@ public class DialogReloadWeaponSelection extends Dialog {
   private Button buttonCancel;
 
   public DialogReloadWeaponSelection() {
-    super("Ricarica arma arma", true);
+    super("Ricarica arma", true);
   }
 
   public void setWeapons(List<Weapon> weapons) {
@@ -51,7 +51,7 @@ public class DialogReloadWeaponSelection extends Dialog {
       vBox.setPrefHeight(200);
       vBox.setPrefWidth(100);
       ImageView weaponImg = new ImageView("gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
-      weaponImg.setFitHeight(200);
+      weaponImg.setFitHeight(250);
       weaponImg.setPreserveRatio(true);
       RadioButton radioButton = new RadioButton();
       radioButton.setId(Integer.toString(index));

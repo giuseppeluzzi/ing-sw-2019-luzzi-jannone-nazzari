@@ -34,6 +34,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -240,14 +241,15 @@ public class BoardFXController {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+    // END DEBUG
 
+    domination = false;
     if (domination) {
       loadDominationInterface();
     } else {
       boardSkulls = normalBoardSkulls;
     }
     loadBoardSkulls();
-    // END DEBUG
 
     Platform.runLater(() -> {
       try {
@@ -266,6 +268,7 @@ public class BoardFXController {
   private void loadBoardSkulls() {
     int skulls = 0;
 
+    // TODO
     try {
       skulls = AppGUI.getClient().getBoardView().getBoard().getSkulls();
     } catch (RemoteException e) {
@@ -678,7 +681,7 @@ public class BoardFXController {
           if (rotatedImages) {
             imageViewHover.setTranslateX(55);
           } else {
-            imageViewHover.setTranslateY(75);
+            imageViewHover.setTranslateY(95);
           }
         });
 
@@ -751,12 +754,13 @@ public class BoardFXController {
           doubleSkull.setRadius(radius);
 
           VBox vBox = new VBox();
-          vBox.setAlignment(Pos.TOP_CENTER);
-          vBox.getChildren().add(skull);
+          vBox.setPadding(new Insets(-5, 0, 0, 0));
+          vBox.setAlignment(Pos.CENTER);
           vBox.getChildren().add(doubleSkull);
+          vBox.getChildren().add(skull);
           vBox.setTranslateY(2);
 
-          vBox.setSpacing(-14);
+          vBox.setSpacing(- radius/2*3);
           boardSkulls.getChildren().add(vBox);
         } else {
           boardSkulls.getChildren().add(skull);
