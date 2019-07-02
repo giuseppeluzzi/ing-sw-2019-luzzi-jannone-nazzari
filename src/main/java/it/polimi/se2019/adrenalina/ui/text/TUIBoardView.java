@@ -46,6 +46,7 @@ public class TUIBoardView extends BoardView {
         showFinalFrenzySelection();
       }
       Log.println("È tutto pronto!");
+      getClient().suspendOutput(false);
     });
     endLoadingThread.start();
   }
@@ -56,6 +57,7 @@ public class TUIBoardView extends BoardView {
       Log.println("Tempo scaduto! È ora di iniziare la partita.");
     }
     endLoadingThread.interrupt();
+    getClient().suspendOutput(false);
     preGameInputManager.cancel(null);
   }
 

@@ -108,17 +108,20 @@ public abstract class Client implements ClientInterface, Serializable {
 
     Log.debug("Sono nella showMessage è l'output è: " + (outputSuspended ? "sospeso" : "non sospeso"));
 
+    if (severity == MessageSeverity.GAME) {
+      try {
+        boardView.getBoard().setLastGameMessage(message);
+      } catch (RemoteException e) {
+        // ignore
+      }
+    }
+
     if (! outputSuspended) {
       if (severity == MessageSeverity.GAME) {
         if (tui) {
           Log.println(message);
         } else {
           AppGUI.getBoardFXController().setHelpText(message);
-        }
-        try {
-          boardView.getBoard().setLastGameMessage(message);
-        } catch (RemoteException e) {
-          // ignore
         }
       } else {
         if (!"".equalsIgnoreCase(title)) {
