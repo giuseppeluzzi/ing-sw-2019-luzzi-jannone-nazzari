@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.controller.action.game;
 
+import it.polimi.se2019.adrenalina.controller.PlayerStatus;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootRoomAction;
@@ -65,7 +66,7 @@ public class ExecutableEffect extends GameAction {
       Log.debug("WA: " + weaponAction.getActionType());
       weaponAction.execute(board, executableObject);
       if (executableObject.isWeapon()) {
-        executeWeapon(board);
+        handlePowerUps(board);
       }
     } catch (NoTargetsException e) {
       handleNoTargets(e.isRollback());
@@ -77,43 +78,73 @@ public class ExecutableEffect extends GameAction {
     }
   }
 
-  void executeWeapon(Board board) throws InvalidSquareException {
+  void handlePowerUps(Board board) throws InvalidSquareException {
     switch (weaponAction.getActionType()) {
       case SHOOT:
         handleNormalShoot();
         break;
       case SHOOT_SQUARE:
-        if (((ShootAction) weaponAction).getDamages() > 0) {
-          List<Player> squarePlayers = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
-          squarePlayers.remove(executableObject.getOwner());
-          for (Player player : squarePlayers) {
-            getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), getPlayer(),
-                            player, false, true));
-            getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), player,
-                            getPlayer(), false, false));
-          }
-        }
-        ((Weapon) executableObject).setLoaded(false);
+        handleSquareShoot(board);
         break;
       case SHOOT_ROOM:
-        if (((ShootAction) weaponAction).getDamages() > 0) {
-          List<Player> roomPlayers = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
-          roomPlayers.remove(executableObject.getOwner());
-          for (Player player : roomPlayers) {
-            getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), getPlayer(), player,
-                            false, true));
-            getTurnController().addTurnActions(
-                    new PowerUpSelection(getTurnController(), player,
-                            getPlayer(), false, false));
-          }
-        }
-        ((Weapon) executableObject).setLoaded(false);
+        handleRoomShoot(board);
         break;
       default:
     }
+  }
+
+  private void handleRoomShoot(Board board) {
+    if (((ShootAction) weaponAction).getDamages() > 0) {
+      List<Player> roomPlayers = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
+      roomPlayers.remove(executableObject.getOwner());
+      for (Player player : roomPlayers) {
+        if (player.getStatus() != PlayerStatus.DISCONNECTED
+            && player.getStatus() != PlayerStatus.SUSPENDED) {
+          getTurnController().addTurnActions(
+              new PowerUpSelection(getTurnController(), getPlayer(), player,
+                  false, true));
+          getTurnController().addTurnActions(
+              new PowerUpSelection(getTurnController(), player,
+                  getPlayer(), false, false));
+        }
+      }
+      if (board.isDominationBoard()) {
+        getTurnController().addTurnActions(
+            new PowerUpSelection(getTurnController(), getPlayer(),
+                board.getSpawnPointSquare(executableObject
+                    .getTargetHistory(((ShootRoomAction) weaponAction)
+                        .getTarget()).getSquare().getColor()
+                    .getEquivalentAmmoColor()), false, true));
+      }
+    }
+    ((Weapon) executableObject).setLoaded(false);
+  }
+
+  private void handleSquareShoot(Board board) {
+    if (((ShootAction) weaponAction).getDamages() > 0) {
+
+      List<Player> squarePlayers = ((ShootSquareAction) weaponAction).getPlayers(board, executableObject);
+      squarePlayers.remove(executableObject.getOwner());
+
+      for (Player player : squarePlayers) {
+        if (player.getStatus() != PlayerStatus.DISCONNECTED
+            && player.getStatus() != PlayerStatus.SUSPENDED) {
+          getTurnController().addTurnActions(
+              new PowerUpSelection(getTurnController(), getPlayer(),
+                  player, false, true));
+          getTurnController().addTurnActions(
+              new PowerUpSelection(getTurnController(), player,
+                  getPlayer(), false, false));
+        }
+      }
+
+      if (board.isDominationBoard() && getPlayer().getSquare().isSpawnPoint()) {
+        getTurnController().addTurnActions(
+            new PowerUpSelection(getTurnController(), getPlayer(),
+                getPlayer().getSquare(), false, true));
+      }
+    }
+    ((Weapon) executableObject).setLoaded(false);
   }
 
   private void handleNormalShoot() throws InvalidSquareException {

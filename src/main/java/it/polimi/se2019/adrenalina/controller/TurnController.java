@@ -170,7 +170,9 @@ public class TurnController implements Serializable {
       currentPlayer.setStatus(PlayerStatus.SUSPENDED);
       suspendPlayer = false;
     }
+
     boolean next = true;
+
     while (next) {
       if (currentPlayerIndex + 1 == boardController.getBoard().getPlayers().size()) {
         currentPlayerIndex = 0;
@@ -179,7 +181,7 @@ public class TurnController implements Serializable {
         currentPlayerIndex++;
       }
       currentPlayer = boardController.getBoard().getPlayers().get(currentPlayerIndex);
-      next = currentPlayer.getStatus() == PlayerStatus.SUSPENDED;
+      next = currentPlayer.getStatus() == PlayerStatus.SUSPENDED || currentPlayer.getStatus() == PlayerStatus.DISCONNECTED;
     }
 
     if (boardController.getBoard().getStatus() == BoardStatus.FINAL_FRENZY_ENABLED) {
