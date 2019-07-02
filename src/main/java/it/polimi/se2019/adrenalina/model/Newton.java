@@ -17,11 +17,11 @@ public class Newton extends PowerUp {
     super(color, false, PowerUpType.NEWTON);
     addAction(new SelectAction(0,1, 0, -1, new int[]{0},
        new int[]{}, null, false, false, false,
-        TargetType.ATTACK_TARGET, false, true));
+        TargetType.ATTACK_TARGET, false, true, true));
     addAction(new SelectDirectionAction());
     addAction(new SelectAction(1, 2, 0, 2, new int[]{},
         new int[]{}, null, false, true, false,
-        TargetType.MOVE_SQUARE, false, true));
+        TargetType.MOVE_SQUARE, false, true, false));
     addAction(new MoveAction(1,2));
   }
 

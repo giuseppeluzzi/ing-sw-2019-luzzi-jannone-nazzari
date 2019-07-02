@@ -98,6 +98,7 @@ public class ExecutableEffect extends GameAction {
       List<Player> roomPlayers = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
       roomPlayers.remove(executableObject.getOwner());
       for (Player player : roomPlayers) {
+
         if (player.getStatus() != PlayerStatus.DISCONNECTED
             && player.getStatus() != PlayerStatus.SUSPENDED) {
           getTurnController().addTurnActions(
@@ -161,7 +162,9 @@ public class ExecutableEffect extends GameAction {
       getTurnController().addTurnActions(
               new PowerUpSelection(getTurnController(), getPlayer(), target,
                       false, true));
-      if (target.isPlayer()) {
+      if (target.isPlayer()
+          && ((Player) target).getStatus() != PlayerStatus.DISCONNECTED
+          && ((Player) target).getStatus() != PlayerStatus.SUSPENDED) {
         getTurnController().addTurnActions(
                 new PowerUpSelection(getTurnController(), target.getPlayer(),
                         null, false, false));

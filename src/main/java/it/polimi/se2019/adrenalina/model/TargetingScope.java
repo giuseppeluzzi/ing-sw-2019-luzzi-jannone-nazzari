@@ -16,7 +16,7 @@ public class TargetingScope extends PowerUp {
     super(color, true, PowerUpType.TARGETING_SCOPE);
     addAction(new SelectAction(0,1, 0, -1, new int[]{0},
         new int[] {1,2,3,4,5,6,7,8}, null, false, false,
-        false, TargetType.ATTACK_TARGET, false, true));
+        false, TargetType.ATTACK_TARGET, false, true, false));
     addAction(new ShootAction(1, 1, 0, true));
   }
 

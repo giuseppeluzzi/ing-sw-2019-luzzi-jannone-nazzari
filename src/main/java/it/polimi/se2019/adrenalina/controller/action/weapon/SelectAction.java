@@ -35,7 +35,8 @@ public class SelectAction implements WeaponAction {
   private boolean skippable = false;
   private boolean useLastDirection = false;
   private boolean differentRoom = false;
-  private boolean stopPropagation = true;
+  private boolean stopPropagation;
+  private boolean disallowSpawnPoint;
   private TargetType selectType = TargetType.ATTACK_TARGET;
   private WeaponActionType type = WeaponActionType.SELECT;
 
@@ -43,7 +44,7 @@ public class SelectAction implements WeaponAction {
                       int maxDistance, int[] differentFrom, int[] between,
                       Boolean visible, boolean optional, boolean useLastDirection,
                       boolean differentRoom, TargetType selectType, boolean skippable,
-                      boolean stopPropagation) {
+                      boolean stopPropagation, boolean disallowSpawnPoint) {
 
     this.from = from;
     this.target = target;
@@ -58,6 +59,7 @@ public class SelectAction implements WeaponAction {
     this.differentRoom = differentRoom;
     this.selectType = selectType;
     this.stopPropagation = stopPropagation;
+    this.disallowSpawnPoint = disallowSpawnPoint;
     type = WeaponActionType.SELECT;
   }
 
@@ -128,7 +130,7 @@ public class SelectAction implements WeaponAction {
     switch (selectType) {
       case ATTACK_TARGET:
         targets.addAll(board.getShootablePlayers());
-        if (board.isDominationBoard()) {
+        if (board.isDominationBoard() && !disallowSpawnPoint) {
           for (Square square: board.getSquares()) {
             if (square.isSpawnPoint()) {
               targets.add(square);
@@ -142,6 +144,7 @@ public class SelectAction implements WeaponAction {
         targets.addAll(board.getSquares());
         break;
     }
+
     return targets;
   }
 

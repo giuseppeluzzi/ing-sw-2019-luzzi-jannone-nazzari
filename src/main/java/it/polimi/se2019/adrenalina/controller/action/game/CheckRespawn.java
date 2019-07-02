@@ -48,9 +48,15 @@ public class CheckRespawn extends GameAction {
         } catch (InvalidPlayerException ignore) {
           //
         }
-        getTurnController().addRespawn(player);
+        if (player.getStatus() != PlayerStatus.DISCONNECTED
+            && player.getStatus() != PlayerStatus.SUSPENDED) {
+          getTurnController().addRespawn(player);
+        }
       } else {
-        getTurnController().addRespawn(player);
+        if (player.getStatus() != PlayerStatus.DISCONNECTED
+            && player.getStatus() != PlayerStatus.SUSPENDED) {
+          getTurnController().addRespawn(player);
+        }
       }
     }
   }

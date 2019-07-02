@@ -34,7 +34,7 @@ public class WeaponTest {
         1, 2, false);
     base.addAction(new SelectAction(0, 1, 0, 0, new int[]{},
         new int[]{}, true, false, true, false,
-        TargetType.ATTACK_TARGET, false, true));
+        TargetType.ATTACK_TARGET, false, true, false));
 
     weapon.addEffect(base);
     String json = weapon.serialize();

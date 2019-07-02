@@ -407,14 +407,23 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Gets a list of playing (spawned) player of this board
-   *
+   * Gets a list of players that are not disconnected, or suspended or waiting
    * @return a list of Player
    */
   public List<Player> getPlayingPlayers() {
     return players.stream()
         .filter(x -> x.getStatus() != PlayerStatus.DISCONNECTED
             && x.getStatus() != PlayerStatus.SUSPENDED && x.getStatus() != PlayerStatus.WAITING)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Gets a list of spawned players
+   * @return a list of Player
+   */
+  public List<Player> getShootablePlayers() {
+    return players.stream()
+        .filter(x ->  x.getStatus() != PlayerStatus.WAITING)
         .collect(Collectors.toList());
   }
 
@@ -438,7 +447,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addWeapon(Weapon weapon) {
     weapons.add(weapon);
-    Collections.shuffle(weapons);
+    //Collections.shuffle(weapons);
 
     try {
       notifyObservers(new BoardHasWeaponsUpdate(true));

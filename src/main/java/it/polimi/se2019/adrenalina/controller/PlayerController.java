@@ -30,6 +30,7 @@ import it.polimi.se2019.adrenalina.model.PowerUpType;
 import it.polimi.se2019.adrenalina.model.PowerUpUsage;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.model.WeaponBuy;
+import it.polimi.se2019.adrenalina.model.WeaponSwap;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
@@ -466,13 +467,12 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
     Weapon ownWeapon = player.getWeaponByName(event.getOwnWeaponName());
-    Weapon squareWeapon = board.getWeaponByName(event.getSquareWeaponName());
+    Weapon boardWeapon = board.getWeaponByName(event.getSquareWeaponName());
 
-    if (ownWeapon != null && squareWeapon != null) {
-      player.removeWeapon(ownWeapon);
-      player.getSquare().removeWeapon(squareWeapon);
-      player.addWeapon(squareWeapon);
-      player.getSquare().addWeapon(ownWeapon);
+    if (ownWeapon != null && boardWeapon != null) {
+      boardController.getTurnController().addTurnActions(
+          new Payment(boardController.getTurnController(), player,
+              new WeaponSwap(ownWeapon, boardWeapon)));
     }
     boardController.getTurnController().executeGameActionQueue();
   }
