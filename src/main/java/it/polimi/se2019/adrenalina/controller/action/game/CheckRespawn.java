@@ -11,14 +11,13 @@ import it.polimi.se2019.adrenalina.model.Player;
 
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Checks if any player needs to respawn, in that case it allows them to do so.
  */
-public class CheckRespawn extends GameAction {
+public class CheckRespawn extends GameActionAsync {
 
   public CheckRespawn(TurnController turnController, Player player) {
     super(turnController, player);
@@ -39,25 +38,24 @@ public class CheckRespawn extends GameAction {
       PlayerController.sendMessageAllClients(player,
           String.format("%s%s%s è morto", player.getColor().getAnsiColor(), player.getName(),
           ANSIColor.RESET), board);
-      if (isSync()) {
+      if (player.getStatus() != PlayerStatus.DISCONNECTED
+          && player.getStatus() != PlayerStatus.SUSPENDED) {
+        getTurnController().addRespawn(player);
+      }
+
+      if (getTurnController().getBoardController().getBoard().isDominationBoard()
+          && getTurnController().getBoardController().getBoard().existsOverKilledPlayer()) {
         try {
-          board.getPlayerByColor(player.getDamages().get(Configuration.getInstance().getDeathDamages()))
-              .getClient().getBoardView().showSpawnPointTrackSelection(((DominationBoard) board).getSpawnPointDamages());
-        } catch (RemoteException e) {
-          Log.exception(e);
+          getTurnController().addTurnActions(
+              new SpawnPointTrackSelection(board.getPlayerByColor(
+                  player.getDamages().get(Configuration.getInstance().getDeathDamages() - 1))));
         } catch (InvalidPlayerException ignore) {
-          //
-        }
-        if (player.getStatus() != PlayerStatus.DISCONNECTED
-            && player.getStatus() != PlayerStatus.SUSPENDED) {
-          getTurnController().addRespawn(player);
-        }
-      } else {
-        if (player.getStatus() != PlayerStatus.DISCONNECTED
-            && player.getStatus() != PlayerStatus.SUSPENDED) {
-          getTurnController().addRespawn(player);
+          Log.debug("Invalid player exception thrown");
         }
       }
+
+      player.setStatus(PlayerStatus.PLAYING);
+      player.assignPoints(); // Assign points and clear his status
     }
   }
 
@@ -82,13 +80,5 @@ public class CheckRespawn extends GameAction {
       }
     }
     return output;
-  }
-
-  @Override
-  public boolean isSync() {
-    if (getTurnController().getBoardController().getBoard().isDominationBoard()) {
-      return getTurnController().getBoardController().getBoard().existsOverKilledPlayer();
-    }
-    return false;
   }
 }

@@ -328,6 +328,11 @@ public class Player extends Observable implements Target {
       Log.exception(e);
     }
     if (damages.size() >= Configuration.getInstance().getDeathDamages()) {
+
+      if (damages.get(damages.size()-1) != board.getCurrentPlayer()) {
+        board.incrementTurnKillShots();
+      }
+
       if (board.getSkulls() > 1) {
         board.setSkulls(board.getSkulls() - 1);
       } else if (board.getSkulls() == 1) {
@@ -462,11 +467,10 @@ public class Player extends Observable implements Target {
       assignFirstBlood();
     }
     assignDamagesPoints();
-    if (board.getDoubleKill() != null && board.getDoubleKill().color == color) {
-      score += 1;
-    }
+
     if (!board.isDominationBoard()) {
-      board.addKillShot(new Kill(damages.get(Configuration.getInstance().getDeathDamages() - 1), damages.size() < Configuration.getInstance().getDeathDamages() + 1));
+      board.addKillShot(new Kill(damages.get(Configuration.getInstance().getDeathDamages() - 1),
+          damages.size() < Configuration.getInstance().getDeathDamages() + 1));
     }
     decrementKillScore();
     damages.clear();

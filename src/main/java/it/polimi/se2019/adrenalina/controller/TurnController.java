@@ -1,17 +1,31 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import it.polimi.se2019.adrenalina.controller.action.game.*;
+import it.polimi.se2019.adrenalina.controller.action.game.ActionSelection;
+import it.polimi.se2019.adrenalina.controller.action.game.CheckReloadWeapons;
+import it.polimi.se2019.adrenalina.controller.action.game.CheckRespawn;
+import it.polimi.se2019.adrenalina.controller.action.game.EndGame;
+import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
+import it.polimi.se2019.adrenalina.controller.action.game.PickPowerUp;
+import it.polimi.se2019.adrenalina.controller.action.game.PowerUpSelection;
+import it.polimi.se2019.adrenalina.controller.action.game.SpawnPointTrackSelection;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.model.*;
-import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
-import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Timer;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * Controller in charge of handling a player's turn.
@@ -139,13 +153,14 @@ public class TurnController implements Serializable {
     currentPlayer.setCurrentBuying(null);
     currentPlayer.setCurrentExecutable(null);
 
+    assignDoubleKill(boardController.getBoard());
+
     for (Weapon weapon : currentPlayer.getWeapons()) {
       weapon.reset();
     }
 
     Log.debug(currentPlayer.getName() + " ha terminato il turno!");
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);
-    boardController.getBoard().removeDoubleKill();
 
     if (boardController.getBoard().getActivePlayers().size() < Configuration.getInstance().getMinNumPlayers()) {
       showEndGameReason("Il numero di giocatori è sceso sotto al limite minimo!");
@@ -194,6 +209,18 @@ public class TurnController implements Serializable {
     executeGameActionQueue();
   }
 
+  private void assignDoubleKill(Board board) {
+    if (board.getTurnKillShots() > 1) {
+      try {
+        board.getPlayerByColor(board.getCurrentPlayer()).setScore(
+            board.getPlayerByColor(board.getCurrentPlayer()).getScore() + 1);
+      } catch (InvalidPlayerException e) {
+        Log.debug(e.toString());
+      }
+    }
+    board.resetTurnKillShots();
+  }
+
   /**
    * Shows a message on all clients explaining the reason why the game has ended.
    * @param message the message to show
@@ -223,20 +250,7 @@ public class TurnController implements Serializable {
    * @param player the playing player
    */
   public void addRespawn(Player player) {
-    player.setStatus(PlayerStatus.PLAYING);
-    player.assignPoints(); // Assign points and clear his status
     addTurnActions(new PickPowerUp(player), new PowerUpSelection(this, player, null, true, false));
-    if (boardController.getBoard().isDominationBoard()
-        && player.getDamages().size() == Configuration.getInstance().getDeathDamages() + 1) {
-      Player killer = null;
-      try {
-        killer = boardController.getBoard()
-            .getPlayerByColor(player.getDamages().get(player.getDamages().size() - 1));
-        addTurnActions(new SpawnPointTrackSelection(killer));
-      } catch (InvalidPlayerException ignored) {
-        //
-      }
-    }
   }
 
   /**
@@ -244,6 +258,11 @@ public class TurnController implements Serializable {
    * @param player the player for which to add a game turn
    */
   private void addGameTurn(Player player) {
+    //CHEAT
+    player.addAmmo(AmmoColor.BLUE, 3);
+    player.addAmmo(AmmoColor.RED, 3);
+    player.addAmmo(AmmoColor.YELLOW, 3);
+    //MUST BE REMOVED
     if (boardController.getBoard().getTurnCounter() == 1) {
       player.addAmmo(AmmoColor.BLUE, 1);
       player.addAmmo(AmmoColor.RED, 1);
@@ -269,7 +288,11 @@ public class TurnController implements Serializable {
     }
   }
 
-  public int getActionQueueSize() {
+  /**
+   * Returns size of the actionQueue, used for testing
+   * @return int
+   */
+  int getActionQueueSize() {
     return turnActionsQueue.size();
   }
 
@@ -335,6 +358,7 @@ public class TurnController implements Serializable {
               new CheckRespawn(this, player));
     }
   }
+
 
   /**
    * Refills a map with new weapons and powerUps to replace the taken ones.

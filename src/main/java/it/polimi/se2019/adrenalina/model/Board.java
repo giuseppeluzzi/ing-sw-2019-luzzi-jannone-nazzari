@@ -56,7 +56,7 @@ public class Board extends Observable implements Serializable {
   private final List<AmmoCard> ammoCards;
   private final List<AmmoCard> takenAmmoCards;
 
-  private Player doubleKill;
+  private int turnKillShots;
   private List<Kill> killShots;
 
   private boolean finalFrenzySelected;
@@ -433,7 +433,7 @@ public class Board extends Observable implements Serializable {
    */
   public boolean existsOverKilledPlayer() {
     for (Player player : players) {
-      if (player.getDamages().size() == Configuration.getInstance().getDeathDamages()+1) {
+      if (player.getDamages().size() == Configuration.getInstance().getDeathDamages() + 1) {
         return true;
       }
     }
@@ -634,35 +634,6 @@ public class Board extends Observable implements Serializable {
    */
   public List<AmmoCard> getTakenAmmoCards() {
     return new ArrayList<>(takenAmmoCards);
-  }
-
-
-  /**
-   * Adds a doubleKill to the Board.
-   *
-   * @param player the Player who scored the doubleKill
-   */
-  public void setDoubleKill(Player player) {
-    if (player == null) {
-      throw new IllegalArgumentException("Player cannot be null, use removeDoubleKill instead");
-    }
-    doubleKill = player;
-  }
-
-  /**
-   * Removes the doubleKill from the board.
-   */
-  public void removeDoubleKill() {
-    doubleKill = null;
-  }
-
-  /**
-   * Returns the player who scored a double kill in the last turn.
-   *
-   * @return the player
-   */
-  public Player getDoubleKill() {
-    return doubleKill;
   }
 
   /**
@@ -883,6 +854,28 @@ public class Board extends Observable implements Serializable {
       }
     }
     return null;
+  }
+
+  /**
+   * Increments the number of players killed this turn
+   */
+  public void incrementTurnKillShots() {
+    turnKillShots++;
+  }
+
+  /**
+   * Resets the number of players killed this turn
+   */
+  public void resetTurnKillShots() {
+    turnKillShots = 0;
+  }
+
+  /**
+   * Returns the number of players killed this turn
+   * @return number of player
+   */
+  public int getTurnKillShots() {
+    return turnKillShots;
   }
 
   /**

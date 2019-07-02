@@ -315,11 +315,6 @@ public class BoardTest {
     assertEquals(2, board.getKillShots().size());
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testSetDoubleKillException() {
-    board.setDoubleKill(null);
-  }
-
   @Test
   public void testGetSpawnPointByColor() {
     Square square = new Square(0,0,SquareColor.RED,WALL,WALL,WALL,WALL,board);
