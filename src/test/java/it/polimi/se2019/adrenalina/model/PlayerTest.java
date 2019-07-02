@@ -270,7 +270,6 @@ public class PlayerTest {
     player3 = new Player("grey", PlayerColor.GREY, board);
     player4 = new Player("yellow", PlayerColor.YELLOW, board);
     player.setMaster(true);
-    board.setDoubleKill(player2);
     player.addDamages(PlayerColor.BLUE, Configuration.getInstance().getDeathDamages(), false);
     board.setSkulls(1);
     player.addDamages(PlayerColor.GREY, 1, false);
