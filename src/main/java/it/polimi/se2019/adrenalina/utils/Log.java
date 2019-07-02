@@ -1,13 +1,18 @@
 package it.polimi.se2019.adrenalina.utils;
 
+import it.polimi.se2019.adrenalina.App;
+import it.polimi.se2019.adrenalina.AppGUI;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.Locale;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Logging and printing manager.
@@ -15,6 +20,8 @@ import java.util.logging.Logger;
 public class Log {
   private static final String LOG_FORMAT = "{0}: {1}";
   private static Logger logger = Logger.getLogger("Adrenalina");
+
+  private static final boolean forceDebug = false;
 
   private Log() {
     // private constructor
@@ -27,7 +34,19 @@ public class Log {
     } catch (IOException ignored) {
       // do nothing
     }
+
     logger = Logger.getLogger(name);
+
+    Handler consoleHandler = new ConsoleHandler();
+    logger.addHandler(consoleHandler);
+
+    if (forceDebug || App.runningFromIntelliJ()) {
+      logger.setLevel(Level.FINEST);
+      consoleHandler.setLevel(Level.FINEST);
+    } else {
+      logger.setLevel(Level.INFO);
+      consoleHandler.setLevel(Level.INFO);
+    }
   }
 
   public static void info(String tag, String message) {
@@ -49,8 +68,8 @@ public class Log {
   }
 
   public static void debug(String tag, String message) {
-    if (logger.isLoggable(Level.WARNING)) {
-      logger.log(Level.WARNING, LOG_FORMAT, new Object[] {tag.toLowerCase(Locale.ENGLISH), message});
+    if (logger.isLoggable(Level.FINE)) {
+      logger.log(Level.FINE, LOG_FORMAT, new Object[] {tag.toLowerCase(Locale.ENGLISH), message});
     }
   }
 
@@ -60,7 +79,7 @@ public class Log {
   }
 
   public static void debug(String message) {
-    logger.warning(message);
+    logger.log(Level.FINE, message);
   }
 
   public static void println(String message) {

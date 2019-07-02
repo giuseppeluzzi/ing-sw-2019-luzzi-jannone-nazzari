@@ -66,7 +66,7 @@ public class App {
     new Thread(() -> Application.launch(AppGUI.class)).start();
   }
 
-  private static boolean runningFromIntelliJ() {
+  public static boolean runningFromIntelliJ() {
     String classPath = System.getProperty("java.class.path");
     return classPath.contains("idea_rt.jar");
   }
