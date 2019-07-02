@@ -392,12 +392,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       }
 
       String current = String.format(weapon.getName() +
-              ", costo di ricarica: %s%d rosso%s, %s%d blu%s, %s%d giallo%s",
-          AmmoColor.RED.getAnsiColor(),
-          costRed,
-          ANSIColor.RESET,
+              ", costo di ricarica: %s%d blu%s, %s%d rosso%s, %s%d giallo%s",
           AmmoColor.BLUE.getAnsiColor(),
           costBlue,
+          ANSIColor.RESET,
+          AmmoColor.RED.getAnsiColor(),
+          costRed,
           ANSIColor.RESET,
           AmmoColor.YELLOW.getAnsiColor(),
           costYellow,
