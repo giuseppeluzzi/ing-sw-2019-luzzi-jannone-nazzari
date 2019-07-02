@@ -22,12 +22,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
+import javafx.scene.shape.Circle;
 
 public class PlayerDashboardFXController extends DashboardFXController {
 
   @FXML
-  private Text helperText;
+  private Pane playerDashboardBackground;
 
   @FXML
   private GridPane playerDashboard;
@@ -47,13 +47,18 @@ public class PlayerDashboardFXController extends DashboardFXController {
   private final EventHandler<MouseEvent> selectWeaponEventHandler;
   private final EventHandler<MouseEvent> selectPowerUpEventHandler;
   private final EventHandler<MouseEvent> discardPowerUpEventHandler;
+  private final EventHandler<MouseEvent> weaponTranslateEnterEventHandler;
+  private final EventHandler<MouseEvent> weaponTranslateExitEventHandler;
   private EventHandler<MouseEvent> powerUpEventHandler;
 
-  public PlayerDashboardFXController(PlayerColor playerColor) {
-    super(playerColor);
+  private static final String PROP_WEAPON = "weapon";
+  private static final String PROP_POWERUP = "powerup";
+
+  public PlayerDashboardFXController(BoardFXController boardFXController, PlayerColor playerColor) {
+    super(boardFXController, playerColor);
 
     selectWeaponEventHandler = event -> {
-      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get("weapon"))
+      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get(PROP_WEAPON))
           .getName();
 
       try {
@@ -67,7 +72,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     };
 
     selectPowerUpEventHandler = event -> {
-      PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get("powerup");
+      PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get(PROP_POWERUP);
 
       try {
         ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
@@ -81,7 +86,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     };
 
     discardPowerUpEventHandler = event -> {
-      PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get("powerup");
+      PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get(PROP_POWERUP);
 
       try {
         ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
@@ -93,10 +98,18 @@ public class PlayerDashboardFXController extends DashboardFXController {
 
       disablePowerUps();
     };
+
+    weaponTranslateEnterEventHandler = event -> ((Node) event.getSource()).setTranslateX(-275);
+
+    weaponTranslateExitEventHandler = event -> ((Node) event.getSource()).setTranslateX(0);
   }
 
   public void initialize() {
     setDashboardColor(getPlayerColor());
+    for (Node weapon : getWeaponContainer().getChildren()) {
+      weapon.addEventHandler(MouseEvent.MOUSE_ENTERED, weaponTranslateEnterEventHandler);
+      weapon.addEventHandler(MouseEvent.MOUSE_EXITED, weaponTranslateExitEventHandler);
+    }
   }
 
   @Override
@@ -130,29 +143,24 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   @Override
-  Pane generateSkull() {
-    Pane pane = new Pane();
-    pane.setPrefHeight(32);
-    pane.setPrefWidth(32);
-    pane.getStyleClass().add("boardSkull");
-    return pane;
+  Node generateSkull() {
+    Circle circle = new Circle();
+    circle.getStyleClass().add("boardSkull");
+    circle.setRadius(13);
+    return circle;
   }
 
   @Override
   Pane generateTag(PlayerColor color) {
     Pane pane = new Pane();
-    pane.setPrefHeight(32);
-    pane.setPrefWidth(32);
-    pane.setMinWidth(32);
-    pane.setMinHeight(32);
+    pane.setPrefHeight(37);
+    pane.setPrefWidth(34);
+    pane.setMinHeight(37);
+    pane.setMinWidth(34);
     pane.setStyle("-fx-background-image: url(\"gui/assets/img/tag_" + color
-        + ".png\"); -fx-background-size: cover; -fx-background-repeat: no-repeat; "
+        + ".png\"); -fx-background-size: contain; -fx-background-repeat: no-repeat; "
         + " -fx-background-position: center;");
     return pane;
-  }
-
-  public Text getHelperText() {
-    return helperText;
   }
 
   @Override
@@ -178,12 +186,11 @@ public class PlayerDashboardFXController extends DashboardFXController {
         imageView.setFitHeight(182);
         imageView.setPreserveRatio(true);
         imageView.setOpacity(1);
-        imageView.getProperties().put("weapon", weapon);
+        imageView.getProperties().put(PROP_WEAPON, weapon);
         imageView.setEffect(bnEffect);
         playerWeapons.getChildren().add(imageView);
       }
       playerWeapons.setVisible(true);
-      Log.debug(">>>>>>>>>>>>>>> p uw");
     });
   }
 
@@ -213,7 +220,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
         imageView.setPreserveRatio(true);
         imageView.setVisible(true);
         imageView.setOpacity(1);
-        imageView.getProperties().put("powerup", powerUp);
+        imageView.getProperties().put(PROP_POWERUP, powerUp);
         imageView.setEffect(bnEffect);
 
         playerPowerUps.getChildren().add(imageView);
@@ -224,9 +231,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
 
   @Override
   public void updateDashboard(PlayerColor color) {
-    Platform.runLater(() -> {
-      setDashboardColor(color);
-    });
+    Platform.runLater(() -> setDashboardColor(color));
   }
 
   @Override
@@ -243,13 +248,13 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void disablePowerUps() {
-    Platform.runLater(() -> helperText.setText(""));
+    getBoardFXController().setHelpText("");
 
     ColorAdjust bnEffect = new ColorAdjust();
     bnEffect.setSaturation(-1);
 
     for (Node powerup : getPowerUpsContainer().getChildren()) {
-      if (powerup.getProperties().containsKey("powerup")) {
+      if (powerup.getProperties().containsKey(PROP_POWERUP)) {
         Platform.runLater(() -> powerup.setEffect(bnEffect));
         powerup.removeEventHandler(MouseEvent.MOUSE_CLICKED, powerUpEventHandler);
       }
@@ -257,30 +262,31 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void disableWeapons() {
-    Platform.runLater(() -> helperText.setText(""));
+    getBoardFXController().setHelpText("");
 
     ColorAdjust bnEffect = new ColorAdjust();
     bnEffect.setSaturation(-1);
 
     for (Node weapon : getWeaponContainer().getChildren()) {
-      if (weapon.getProperties().containsKey("weapon")) {
+      if (weapon.getProperties().containsKey(PROP_WEAPON)) {
         Platform.runLater(() -> weapon.setEffect(bnEffect));
         weapon.removeEventHandler(MouseEvent.MOUSE_CLICKED, selectWeaponEventHandler);
       }
     }
   }
 
-  public void usingPowerUp(boolean discard) {
-    Platform.runLater(() -> helperText.setText("Seleziona un powerup"));
+  public void usingPowerUp(List<PowerUp> powerUps, boolean discard) {
+    getBoardFXController().setHelpText("Seleziona un potenziamento da utilizzare");
     for (Node image : getPowerUpsContainer().getChildren()) {
-      if (image.getProperties().containsKey("powerup")) {
+      if (image.getProperties().containsKey(PROP_POWERUP) && powerUps
+          .contains(image.getProperties().get(PROP_POWERUP))) {
         Platform.runLater(() -> image.setEffect(null));
 
         if (discard) {
           powerUpEventHandler = discardPowerUpEventHandler;
         } else {
           powerUpEventHandler = selectPowerUpEventHandler;
-          AppGUI.getBoardFXController().showPowerUpSkip();
+          getBoardFXController().showPowerUpSkip();
         }
 
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, powerUpEventHandler);
@@ -288,11 +294,12 @@ public class PlayerDashboardFXController extends DashboardFXController {
     }
   }
 
-  public void usingWeapon() {
-    Platform.runLater(() -> helperText.setText("Seleziona un'arma"));
+  public void usingWeapon(List<Weapon> weapons) {
+    getBoardFXController().setHelpText("Seleziona un'arma da utilizzare");
 
     for (Node weapon : playerWeapons.getChildren()) {
-      if (weapon.getProperties().containsKey("weapon")) {
+      if (weapon.getProperties().containsKey(PROP_WEAPON) && weapons
+          .contains(weapon.getProperties().get(PROP_WEAPON))) {
         Platform.runLater(() -> weapon.setEffect(null));
         weapon.addEventHandler(MouseEvent.MOUSE_CLICKED, selectWeaponEventHandler);
       }

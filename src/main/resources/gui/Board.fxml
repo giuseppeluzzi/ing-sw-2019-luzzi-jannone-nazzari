@@ -2,19 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.layout.FlowPane?>
-
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@assets/style.css"
   xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" id="gameContainer">
   <children>
@@ -51,7 +49,8 @@
             vgrow="SOMETIMES"/>
         </rowConstraints>
 
-        <HBox visible="false" fx:id="normalBoardSkulls" GridPane.columnIndex="0" GridPane.rowIndex="0"
+        <HBox visible="false" fx:id="normalBoardSkulls" GridPane.columnIndex="0"
+          GridPane.rowIndex="0"
           GridPane.columnSpan="3" spacing="12.5" alignment="CENTER_RIGHT">
           <padding>
             <Insets top="-19" right="79"/>
@@ -59,28 +58,30 @@
         </HBox>
 
         <HBox fx:id="dominationKilltrack" id="dominationKilltrack" visible="false"
-          GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" minHeight="100" maxHeight="100" >
+          GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" minHeight="100"
+          maxHeight="100">
           <padding>
             <Insets left="35"/>
           </padding>
-          <VBox spacing="23" maxWidth="250" minWidth="250">
+          <VBox spacing="22" maxWidth="250" minWidth="250">
             <padding>
-              <Insets top="12" left="25" />
+              <Insets top="12" left="25"/>
             </padding>
-            <HBox fx:id="blueSpawnPointDamages" spacing="5" />
-            <HBox fx:id="redSpawnPointDamages" spacing="5" />
-            <HBox fx:id="yellowSpawnPointDamages" spacing="5" />
+            <HBox fx:id="blueSpawnPointDamages" spacing="7"/>
+            <HBox fx:id="redSpawnPointDamages" spacing="7"/>
+            <HBox fx:id="yellowSpawnPointDamages" spacing="7"/>
           </VBox>
-          <FlowPane fx:id="dominationBoardSkulls" alignment="TOP_LEFT" orientation="HORIZONTAL" prefWrapLength="58" hgap="6" vgap="12">
+          <FlowPane fx:id="dominationBoardSkulls" alignment="TOP_LEFT" orientation="HORIZONTAL"
+            prefWrapLength="65" hgap="6" vgap="12">
             <padding>
-              <Insets top="15" left="4" />
+              <Insets top="15" left="4"/>
             </padding>
           </FlowPane>
         </HBox>
 
         <VBox GridPane.columnIndex="5" GridPane.rowIndex="0" alignment="BOTTOM_CENTER">
           <padding>
-            <Insets bottom="8.5" left="18"/>
+            <Insets bottom="8.5" left="27"/>
           </padding>
           <ImageView fitWidth="50.0" preserveRatio="true">
             <image>
@@ -92,7 +93,7 @@
         <VBox fx:id="boardHasWeapons" GridPane.columnIndex="5" GridPane.rowIndex="1"
           GridPane.rowSpan="2" alignment="CENTER">
           <padding>
-            <Insets bottom="67.5" right="1"/>
+            <Insets bottom="67.5" right="-6"/>
           </padding>
           <ImageView fitWidth="70.0" preserveRatio="true">
             <image>
@@ -134,27 +135,51 @@
 
       <!-- enemy dashboards -->
       <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
-        <VBox fx:id="enemyDashboards" alignment="TOP_RIGHT" spacing="10" AnchorPane.leftAnchor="0"
+        <VBox fx:id="enemyDashboards" alignment="TOP_RIGHT" spacing="-1" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
           <padding>
-            <Insets top="-5" />
+            <Insets top="-10"/>
           </padding>
         </VBox>
       </AnchorPane>
 
-      <HBox fx:id="bottomGrid" GridPane.columnIndex="0" GridPane.columnSpan="2"
-        GridPane.rowIndex="1">
-        <!-- playerdashboard -->
-        <Region fx:id="spacerBottomGrid"/>
-        <!-- turn actions -->
-        <VBox alignment="BOTTOM_RIGHT" maxWidth="320" minHeight="100" minWidth="300" spacing="10">
-          <Button fx:id="noPowerUpTurnActionButton" alignment="CENTER" prefWidth="300"
-            styleClass="turnActionButton" visible="false">Non usare nessun potenziamento</Button>
-          <Button fx:id="skipTurnActionButton" alignment="CENTER" prefWidth="300"
-            styleClass="turnActionButton" visible="false">Prosegui</Button>
-          <VBox fx:id="turnActionButtons" alignment="TOP_CENTER" spacing="10"/>
+      <GridPane fx:id="bottomGrid" gridLinesVisible="true" GridPane.columnIndex="0"
+        GridPane.columnSpan="2" GridPane.rowIndex="1" translateY="55">
+        <rowConstraints>
+          <RowConstraints minHeight="180" maxHeight="180" vgrow="NEVER"/>
+          <RowConstraints minHeight="170" maxHeight="170" vgrow="NEVER"/>
+        </rowConstraints>
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS"/>
+          <ColumnConstraints/>
+        </columnConstraints>
+
+        <!-- gameLog -->
+        <VBox fx:id="gameLog" id="gameLog" alignment="TOP_LEFT" GridPane.rowIndex="0"
+          GridPane.columnIndex="0" minHeight="82">
+          <Label/>
+          <Label/>
+          <Label/>
+          <Label/>
+          <Label/>
         </VBox>
-      </HBox>
+
+        <!-- turn actions -->
+        <FlowPane fx:id="turnActionButtons" GridPane.rowIndex="1" GridPane.columnIndex="0"
+          alignment="BOTTOM_LEFT" hgap="10" vgap="10">
+          <padding>
+            <Insets bottom="85" left="0"/>
+          </padding>
+          <Button fx:id="noPowerUpTurnActionButton"
+            styleClass="turnActionButton" visible="false" managed="false">Non usare nessun potenziamento
+          </Button>
+          <Button fx:id="skipTurnActionButton"
+            styleClass="turnActionButton" visible="false" managed="false">Prosegui
+          </Button>
+        </FlowPane>
+
+        <!-- playerdashboard -->
+      </GridPane>
 
     </GridPane>
   </children>

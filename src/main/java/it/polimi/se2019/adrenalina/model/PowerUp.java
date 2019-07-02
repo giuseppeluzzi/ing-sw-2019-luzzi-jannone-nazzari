@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.model;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.controller.action.weapon.WeaponAction;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,7 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
 
   /**
    * Specifies whether the power up has a cost or not.
+   *
    * @return true if the power up has a cost, false if it's free
    */
   public boolean doesCost() {
@@ -90,5 +90,16 @@ public abstract class PowerUp extends ExecutableObject implements Spendable, Buy
   @Override
   public boolean isWeapon() {
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return type.hashCode() + 2 * color.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    return object instanceof PowerUp &&
+        ((PowerUp) object).getType() == type && ((PowerUp) object).getColor() == color;
   }
 }

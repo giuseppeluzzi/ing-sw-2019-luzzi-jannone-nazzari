@@ -10,15 +10,18 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Locale;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public abstract class DashboardFXController {
 
+  private final BoardFXController boardFXController;
   private PlayerColor playerColor;
 
-  protected DashboardFXController(PlayerColor playerColor) {
+  protected DashboardFXController(BoardFXController boardFXController, PlayerColor playerColor) {
+    this.boardFXController = boardFXController;
     this.playerColor = playerColor;
   }
 
@@ -31,7 +34,7 @@ public abstract class DashboardFXController {
   abstract HBox getPowerUpsContainer();
 
   abstract Pane generateTag(PlayerColor damage);
-  abstract Pane generateSkull();
+  abstract Node generateSkull();
 
   public void setPlayerColor(PlayerColor color) {
     playerColor = color;
@@ -40,6 +43,10 @@ public abstract class DashboardFXController {
 
   public PlayerColor getPlayerColor() {
     return playerColor;
+  }
+
+  public BoardFXController getBoardFXController() {
+    return boardFXController;
   }
 
   public Pane generateAmmo(AmmoColor color) {
@@ -71,11 +78,14 @@ public abstract class DashboardFXController {
     Platform.runLater(() -> {
       getSkullsContainer().getChildren().clear();
       try {
-        if (AppGUI.getClient().getBoardView().getBoard().isFinalFrenzyActive()) {
-          Pane placeholder = generateSkull();
+        if (false/*AppGUI.getClient().getBoardView().getBoard().isFinalFrenzyActive()*/) {
+          AppGUI.getClient().getBoardView();
+          Node placeholder = generateSkull();
           placeholder.setOpacity(0);
+          Node placeholder2 = generateSkull();
+          placeholder2.setOpacity(0);
           getSkullsContainer().getChildren().add(placeholder);
-          getSkullsContainer().getChildren().add(placeholder);
+          getSkullsContainer().getChildren().add(placeholder2);
           switch (killScore) {
             case -1:
               getSkullsContainer().getChildren().add(generateSkull());
@@ -136,11 +146,11 @@ public abstract class DashboardFXController {
         getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.RED));
       }
 
-      for (int i = 0; i < red; i++) {
+      for (int i = 0; i < blue; i++) {
         getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.BLUE));
       }
 
-      for (int i = 0; i < red; i++) {
+      for (int i = 0; i < yellow; i++) {
         getAmmosContainer().getChildren().add(generateAmmo(AmmoColor.YELLOW));
       }
     });

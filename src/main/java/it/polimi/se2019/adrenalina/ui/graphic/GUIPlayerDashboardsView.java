@@ -201,7 +201,7 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     final PlayerDashboardFXController playerDashboardFXController = AppGUI
         .getPlayerDashboardFXController();
 
-    Platform.runLater(playerDashboardFXController::usingWeapon);
+    Platform.runLater(() -> AppGUI.getPlayerDashboardFXController().usingWeapon(weapons));
   }
 
   @Override
@@ -223,7 +223,7 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     final PlayerDashboardFXController playerDashboardFXController = AppGUI
         .getPlayerDashboardFXController();
 
-    Platform.runLater(() -> playerDashboardFXController.usingPowerUp(discard));
+    Platform.runLater(() -> playerDashboardFXController.usingPowerUp(powerUps, discard));
   }
 
   @Override

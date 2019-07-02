@@ -21,11 +21,15 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +38,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -43,26 +48,22 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
 
 public class BoardFXController {
 
+  private static final double LOG_PAST_OPACITY = 0.6;
   @FXML
   private GridPane boardGrid;
 
   @FXML
   private GridPane mapGrid;
   @FXML
-  private Region spacerBottomGrid;
-  @FXML
-  private HBox bottomGrid;
+  private GridPane bottomGrid;
   @FXML
   private Pane playerDashboardContainer;
   @FXML
@@ -72,7 +73,7 @@ public class BoardFXController {
   @FXML
   private Button noPowerUpTurnActionButton;
   @FXML
-  private VBox turnActionButtons;
+  private FlowPane turnActionButtons;
 
   @FXML
   private VBox redWeapons;
@@ -100,8 +101,9 @@ public class BoardFXController {
   private HBox redSpawnPointDamages;
   @FXML
   private HBox yellowSpawnPointDamages;
+  @FXML
+  private VBox gameLog;
 
-  private Text helperText;
   private Pane boardSkulls;
 
   private boolean domination;
@@ -115,7 +117,10 @@ public class BoardFXController {
 
   private final EventHandler<MouseEvent> buyWeaponEventHandler;
 
+  private final ObservableList<String> gameLogMessages;
+
   public BoardFXController() {
+    gameLogMessages = FXCollections.observableArrayList("", "", "", "", "");
     dashboardControllers = new EnumMap<>(PlayerColor.class);
     playerTiles = new EnumMap<>(PlayerColor.class);
     squareWeapons = new HashMap<>();
@@ -134,17 +139,6 @@ public class BoardFXController {
         Log.exception(e);
       }
     };
-
-    noPowerUpTurnActionButton.setOnAction(event -> {
-      try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-            new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
-        hidePowerUpSkip();
-        AppGUI.getPlayerDashboardFXController().disablePowerUps();
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
-    });
   }
 
   public void initialize() {
@@ -153,7 +147,7 @@ public class BoardFXController {
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
         TilePane cellTilePane = new TilePane();
-        cellTilePane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
+        //cellTilePane.setStyle("-fx-border-color: white; -fx-border-width: 1;");
         cellTilePane.setAlignment(Pos.CENTER);
         cellTilePane.setHgap(10);
         cellTilePane.setVgap(10);
@@ -173,10 +167,36 @@ public class BoardFXController {
       }
     }
 
-    HBox.setHgrow(spacerBottomGrid, Priority.ALWAYS);
-
     mapGrid.setStyle(
         "-fx-background-image: url(\"gui/assets/img/map1.png\");");
+
+    gameLogMessages.addListener((ListChangeListener<String>) change -> {
+      Platform.runLater(() -> {
+        change.next();
+        if (change.getList().size() > 5) {
+          gameLog.getChildren().remove(0);
+        }
+        if (!gameLog.getChildren().isEmpty()) {
+          gameLog.getChildren().get(gameLog.getChildren().size() - 1).setOpacity(LOG_PAST_OPACITY);
+        }
+
+        String newLine = change.getAddedSubList().get(0);
+        Label text = new Label(newLine);
+        text.getStyleClass().add("logLine");
+        gameLog.getChildren().add(text);
+      });
+    });
+
+    noPowerUpTurnActionButton.setOnAction(event -> {
+      try {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
+        hidePowerUpSkip();
+        AppGUI.getPlayerDashboardFXController().disablePowerUps();
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    });
   }
 
   public void setMapId(int mapId) {
@@ -187,7 +207,11 @@ public class BoardFXController {
   }
 
   public void setHelpText(String text) {
-    helperText.setText(text);
+    if (text.isEmpty()) {
+      gameLog.getChildren().get(gameLog.getChildren().size() - 1).setOpacity(LOG_PAST_OPACITY);
+    } else {
+      gameLogMessages.add(text);
+    }
   }
 
   public boolean isDashboardCreated(PlayerColor color) {
@@ -205,11 +229,12 @@ public class BoardFXController {
   public void loadPlayerDashboard(PlayerColor color) {
     FXMLLoader loaderPlayerDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));
-    PlayerDashboardFXController playerDashboardFXController = new PlayerDashboardFXController(
+    PlayerDashboardFXController playerDashboardFXController = new PlayerDashboardFXController(this,
         color);
     dashboardControllers.put(color, playerDashboardFXController);
     loaderPlayerDashboard.setController(playerDashboardFXController);
 
+    // TODO decomemntare
     try {
       domination = AppGUI.getClient().isDomination();
     } catch (RemoteException e) {
@@ -222,14 +247,16 @@ public class BoardFXController {
       boardSkulls = normalBoardSkulls;
     }
     loadBoardSkulls();
+    // END DEBUG
 
     Platform.runLater(() -> {
       try {
         Parent playerDashboard = loaderPlayerDashboard.load();
-        helperText = playerDashboardFXController.getHelperText();
         playerDashboard.getProperties().put("color", color);
-        HBox.setHgrow(playerDashboard, Priority.NEVER);
-        bottomGrid.getChildren().add(0, playerDashboard);
+        GridPane.setRowIndex(playerDashboard, 0);
+        GridPane.setColumnIndex(playerDashboard, 1);
+        GridPane.setRowSpan(playerDashboard, 2);
+        bottomGrid.getChildren().add(playerDashboard);
       } catch (IOException e) {
         Log.exception(e);
       }
@@ -251,20 +278,20 @@ public class BoardFXController {
       skull.getStyleClass().add("boardSkull");
       boardSkulls.getChildren().add(skull);
     }
+    boardSkulls.setVisible(true);
   }
 
   private void loadDominationInterface() {
     normalBoardSkulls.setVisible(false);
-    dominationBoardSkulls.setVisible(true);
+    dominationKilltrack.setVisible(true);
     boardSkulls = dominationBoardSkulls;
-
   }
 
   public void loadEnemyDashboard(PlayerColor color) {
     FXMLLoader loaderEnemyDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/EnemyDashboard.fxml"));
 
-    DashboardFXController enemyDashboardFXController = new EnemyDashboardFXController(color);
+    DashboardFXController enemyDashboardFXController = new EnemyDashboardFXController(this, color);
     loaderEnemyDashboard.setController(enemyDashboardFXController);
     dashboardControllers.put(color, enemyDashboardFXController);
 
@@ -371,7 +398,6 @@ public class BoardFXController {
       for (TurnAction turnAction : turnActions) {
         Button button = new Button(turnAction.getName());
         button.setTooltip(new Tooltip(turnAction.getDescription()));
-        button.setPrefWidth(300);
 
         button.setOnAction(event -> {
           try {
@@ -389,23 +415,41 @@ public class BoardFXController {
   }
 
   public void clearTurnActions() {
-    Platform.runLater(() -> turnActionButtons.getChildren().clear());
+    Platform.runLater(() -> {
+      for (Node node : new ArrayList<>(turnActionButtons.getChildren())) {
+        if (node.getId() == null) {
+          turnActionButtons.getChildren().remove(node);
+        }
+      }
+    });
   }
 
   public void showSkip() {
-    Platform.runLater(() -> skipTurnActionButton.setVisible(true));
+    Platform.runLater(() -> {
+      skipTurnActionButton.setManaged(true);
+      skipTurnActionButton.setVisible(true);
+    });
   }
 
   public void hideSkip() {
-    Platform.runLater(() -> skipTurnActionButton.setVisible(false));
+    Platform.runLater(() -> {
+      skipTurnActionButton.setVisible(false);
+      skipTurnActionButton.setManaged(false);
+    });
   }
 
   public void showPowerUpSkip() {
-    Platform.runLater(() -> noPowerUpTurnActionButton.setVisible(true));
+    Platform.runLater(() -> {
+      noPowerUpTurnActionButton.setManaged(true);
+      noPowerUpTurnActionButton.setVisible(true);
+    });
   }
 
   public void hidePowerUpSkip() {
-    Platform.runLater(() -> noPowerUpTurnActionButton.setVisible(false));
+    Platform.runLater(() -> {
+      noPowerUpTurnActionButton.setVisible(false);
+      noPowerUpTurnActionButton.setManaged(false);
+    });
   }
 
   /**
@@ -419,7 +463,7 @@ public class BoardFXController {
     }
 
     Platform.runLater(() -> {
-      helperText.setText("");
+      setHelpText("");
       for (int x = 0; x < 4; x++) {
         for (int y = 0; y < 3; y++) {
           grid[x][y].getHoverPane().setVisible(false);
@@ -465,9 +509,9 @@ public class BoardFXController {
   public void enableSquareSelection(TargetType selectType, List<Target> squares, final boolean move,
       boolean skippable) {
     if (selectType == TargetType.ATTACK_ROOM) {
-      Platform.runLater(() -> helperText.setText("Seleziona una stanza"));
+      Platform.runLater(() -> setHelpText("Seleziona una stanza"));
     } else {
-      Platform.runLater(() -> helperText.setText("Seleziona un quadrato"));
+      Platform.runLater(() -> setHelpText("Seleziona un quadrato"));
     }
     for (int x = 0; x < 4; x++) {
       for (int y = 0; y < 3; y++) {
@@ -517,7 +561,7 @@ public class BoardFXController {
    * @param players target players
    */
   public void enablePlayerSelection(List<Target> players, boolean skippable) {
-    Platform.runLater(() -> helperText.setText("Seleziona un bersaglio"));
+    Platform.runLater(() -> setHelpText("Seleziona un bersaglio"));
     for (Target target : players) {
       if (target.isPlayer() && playerTiles.containsKey(((Player) target).getColor())) {
         EventHandler<MouseEvent> clickHandler = event -> {
@@ -629,12 +673,12 @@ public class BoardFXController {
 
         imageViewHover.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, event -> {
           imageViewHover.setOpacity(1);
-          imageViewHover.setScaleX(2);
-          imageViewHover.setScaleY(2);
+          imageViewHover.setScaleX(2.5);
+          imageViewHover.setScaleY(2.5);
           if (rotatedImages) {
-            imageViewHover.setTranslateX(50);
+            imageViewHover.setTranslateX(55);
           } else {
-            imageViewHover.setTranslateY(50);
+            imageViewHover.setTranslateY(75);
           }
         });
 
@@ -682,18 +726,41 @@ public class BoardFXController {
 
   public void updateKilltrack(List<Kill> kills, int total) {
     Platform.runLater(() -> {
+      boardSkulls.setVisible(true);
       boardSkulls.getChildren().clear();
+
+      double radius;
+      if (domination) {
+        radius = 5;
+      } else {
+        radius = 9.5;
+      }
+
       for (Kill kill : kills) {
         Circle skull = new Circle();
         skull.setFill(Color.web(kill.getPlayerColor().getHexColor()));
         skull.setStrokeWidth(1);
         skull.setStroke(Color.BLACK);
-        if (domination) {
-          skull.setRadius(5);
+        skull.setRadius(radius);
+
+        if (kill.isOverKill()) {
+          Circle doubleSkull = new Circle();
+          doubleSkull.setFill(Color.web(kill.getPlayerColor().getHexColor()));
+          doubleSkull.setStrokeWidth(1);
+          doubleSkull.setStroke(Color.BLACK);
+          doubleSkull.setRadius(radius);
+
+          VBox vBox = new VBox();
+          vBox.setAlignment(Pos.TOP_CENTER);
+          vBox.getChildren().add(skull);
+          vBox.getChildren().add(doubleSkull);
+          vBox.setTranslateY(2);
+
+          vBox.setSpacing(-14);
+          boardSkulls.getChildren().add(vBox);
         } else {
-          skull.setRadius(9.5);
+          boardSkulls.getChildren().add(skull);
         }
-        boardSkulls.getChildren().add(skull);
       }
 
       for (int i = 0; i < total - kills.size(); i++) {
@@ -745,7 +812,7 @@ public class BoardFXController {
   }
 
   public void reset() {
-    Platform.runLater(() -> helperText.setText(""));
+    Platform.runLater(() -> setHelpText(""));
 
     clearTurnActions();
     hideSkip();

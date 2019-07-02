@@ -6,11 +6,13 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 
 public class EnemyDashboardFXController extends DashboardFXController {
 
@@ -29,8 +31,8 @@ public class EnemyDashboardFXController extends DashboardFXController {
   @FXML
   private HBox enemyPowerUps;
 
-  public EnemyDashboardFXController(PlayerColor playerColor) {
-    super(playerColor);
+  public EnemyDashboardFXController(BoardFXController boardFXController, PlayerColor playerColor) {
+    super(boardFXController, playerColor);
   }
 
   public void initialize() {
@@ -70,25 +72,22 @@ public class EnemyDashboardFXController extends DashboardFXController {
   @Override
   Pane generateTag(PlayerColor color) {
     Pane pane = new Pane();
-    pane.setPrefWidth(18);
-    pane.setPrefHeight(18);
-    pane.setMinWidth(18);
-    pane.setMinHeight(18);
+    pane.setPrefWidth(25);
+    pane.setPrefHeight(27);
+    pane.setMinWidth(25);
+    pane.setMinHeight(27);
     pane.setStyle("-fx-background-image: url(\"gui/assets/img/tag_" + color
-        + ".png\"); -fx-background-size: cover; -fx-background-repeat: no-repeat;"
+        + ".png\"); -fx-background-size: contain; -fx-background-repeat: no-repeat;"
         + "-fx-background-position: center;");
     return pane;
   }
 
   @Override
-  Pane generateSkull() {
-    Pane pane = new Pane();
-    pane.setPrefWidth(18);
-    pane.setPrefHeight(18);
-    pane.setMinWidth(18);
-    pane.setMinHeight(18);
-    pane.getStyleClass().add("boardSkull");
-    return pane;
+  Node generateSkull() {
+    Circle circle = new Circle();
+    circle.setRadius(10);
+    circle.getStyleClass().add("boardSkull");
+    return circle;
   }
 
   @Override
@@ -161,6 +160,6 @@ public class EnemyDashboardFXController extends DashboardFXController {
 
   private void setDashboardColor(PlayerColor color) {
     enemyDashboard.setStyle(
-        "-fx-background-image: url(\"gui/assets/img/dashboard_" + getPlayerColor() + ".png\");");
+        "-fx-background-image: url(\"gui/assets/img/dashboard_" + color + ".png\");");
   }
 }
