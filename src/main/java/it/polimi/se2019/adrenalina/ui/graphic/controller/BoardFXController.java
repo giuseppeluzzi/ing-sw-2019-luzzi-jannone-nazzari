@@ -40,7 +40,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -118,6 +117,7 @@ public class BoardFXController {
   private GUIGridSquare[][] grid;
 
   private final EnumMap<PlayerColor, GUIPlayerTile> playerTiles;
+
   private final EnumMap<PlayerColor, DashboardFXController> dashboardControllers;
   private final HashMap<String, ImageView> squareWeapons;
   private final HashMap<String, ImageView> squareWeaponsHover;
@@ -135,7 +135,8 @@ public class BoardFXController {
     squareWeaponsHover = new HashMap<>();
 
     buyWeaponEventHandler = event -> {
-      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get(WEAPON_PROP))
+      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties()
+          .get(WEAPON_PROP))
           .getName();
 
       disableBoardWeapons();
@@ -178,40 +179,43 @@ public class BoardFXController {
         "-fx-background-image: url(\"gui/assets/img/map1.png\");");
 
     gameLogMessages.addListener((ListChangeListener<String>) change ->
-      Platform.runLater(() -> {
-        change.next();
-        if (change.getList().size() > 5) {
-          gameLog.getChildren().remove(0);
-        }
-        if (!gameLog.getChildren().isEmpty()) {
-          gameLog.getChildren().get(gameLog.getChildren().size() - 1).setOpacity(LOG_PAST_OPACITY);
-        }
-
-        String newLine = change.getAddedSubList().get(0);
-        String[] splitLine = newLine.split("\\u001b");
-
-        TextFlow textFlow = new TextFlow();
-        textFlow.getStyleClass().add("logLine");
-
-        for (String span : splitLine) {
-          Text textSpan = new Text();
-          textSpan.setText(span.substring(span.indexOf('m') + 1));
-          textSpan.setFill(Color.WHITE);
-
-          if (splitLine.length > 1) {
-            String colorString = "\u001b" + span.substring(0, span.indexOf('m') + 1);
-            for (ANSIColor color : ANSIColor.values()) {
-              if (color.toString(true).equals(colorString) || color.toString(false)
-                  .equals(colorString)) {
-                textSpan.setFill(Color.web(color.getHexColor()));
-                break;
-              }
-            }
+        Platform.runLater(() -> {
+          change.next();
+          if (change.getList().size() > 5) {
+            gameLog.getChildren().remove(0);
           }
-          textFlow.getChildren().add(textSpan);
-        }
-        gameLog.getChildren().add(textFlow);
-      })
+          if (!gameLog.getChildren().isEmpty()) {
+            gameLog.getChildren().get(gameLog.getChildren().size() - 1)
+                .setOpacity(LOG_PAST_OPACITY);
+          }
+
+          String newLine = change.getAddedSubList().get(0);
+          String[] splitLine = newLine.split("\\u001b");
+
+          TextFlow textFlow = new TextFlow();
+          textFlow.getStyleClass().add("logLine");
+
+          for (String span : splitLine) {
+            Text textSpan = new Text();
+            textSpan.setFill(Color.WHITE);
+
+            if (splitLine.length > 1) {
+              textSpan.setText(span.substring(span.indexOf('m') + 1));
+              String colorString = "\u001b" + span.substring(0, span.indexOf('m') + 1);
+              for (ANSIColor color : ANSIColor.values()) {
+                if (color.toString(true).equals(colorString) || color.toString(false)
+                    .equals(colorString)) {
+                  textSpan.setFill(Color.web(color.getHexColor()));
+                  break;
+                }
+              }
+            } else {
+              textSpan.setText(newLine);
+            }
+            textFlow.getChildren().add(textSpan);
+          }
+          gameLog.getChildren().add(textFlow);
+        })
     );
 
     noPowerUpTurnActionButton.setOnAction(event -> {
@@ -274,7 +278,6 @@ public class BoardFXController {
     } else {
       boardSkulls = normalBoardSkulls;
     }
-    loadBoardSkulls();
 
     Platform.runLater(() -> {
       try {
@@ -290,33 +293,25 @@ public class BoardFXController {
     });
   }
 
-  private void loadBoardSkulls() {
-    int skulls = 0;
+  public void loadBoardSkulls(int skulls) {
+    Platform.runLater(() -> {
+      boardSkulls.getChildren().clear();
+      double radius;
+      if (domination) {
+        radius = 5;
+      } else {
+        radius = 9.5;
+      }
 
-    // TODO comment in debug
-    try {
-      skulls = AppGUI.getClient().getBoardView().getBoard().getSkulls();
-    } catch (RemoteException e) {
-      Log.exception(e);
-      return;
-    }
-    // end comment in debug
+      for (int i = 0; i < skulls; i++) {
+        Circle skull = new Circle();
+        skull.getStyleClass().add("boardSkull");
+        skull.setRadius(radius);
+        boardSkulls.getChildren().add(skull);
 
-    double radius;
-    if (domination) {
-      radius = 5;
-    } else {
-      radius = 9.5;
-    }
-
-    for (int i = 0; i < skulls; i++) {
-      Circle skull = new Circle();
-      skull.getStyleClass().add("boardSkull");
-      skull.setRadius(radius);
-      boardSkulls.getChildren().add(skull);
-
-    }
-    boardSkulls.setVisible(true);
+      }
+      boardSkulls.setVisible(true);
+    });
   }
 
   private void loadDominationInterface() {
@@ -422,10 +417,17 @@ public class BoardFXController {
     playerIcon.getProperties().put(TILE_PLAYER_COLOR_PROP, playerColor);
     playerIcon.setStroke(Color.WHITE);
     playerIcon.setStrokeWidth(1);
-    grid[posX][posY].getTilePane().getChildren().add(0, playerIcon);
+
+    Circle playerIconHover = new Circle(13);
+    playerIconHover.getStyleClass().add("disabledSquare");
+    playerIconHover.setStroke(Color.BLACK);
+    playerIconHover.setStrokeWidth(1);
+
+    grid[posX][posY].getTilePane().getChildren().add(0, new StackPane(playerIcon, playerIconHover));
 
     if (playerTiles.containsKey(playerColor)) {
       playerTiles.get(playerColor).setPlayerIcon(playerIcon);
+      playerTiles.get(playerColor).setPlayerIconHover(playerIconHover);
     } else {
       playerTiles.put(playerColor, new GUIPlayerTile(playerColor, playerIcon));
     }
@@ -795,7 +797,7 @@ public class BoardFXController {
           vBox.getChildren().add(skull);
           vBox.setTranslateY(2);
 
-          vBox.setSpacing(- radius/2*3);
+          vBox.setSpacing(-radius / 2 * 3);
           boardSkulls.getChildren().add(vBox);
         } else {
           boardSkulls.getChildren().add(skull);

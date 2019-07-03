@@ -444,7 +444,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
           () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un potenziamento a caso"));
     } else {
       if (targetName != null) {
-        prompt = String.format("Seleziona quale potenziamento usare contro %s:", targetName);
+        prompt = String.format("Seleziona quale potenziamento usare contro %s", targetName);
       } else {
         prompt = "Seleziona quale potenziamento usare:";
       }
