@@ -17,6 +17,7 @@ import it.polimi.se2019.adrenalina.model.Kill;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
@@ -54,6 +55,8 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class BoardFXController {
 
@@ -185,9 +188,29 @@ public class BoardFXController {
         }
 
         String newLine = change.getAddedSubList().get(0);
-        Label text = new Label(newLine);
-        text.getStyleClass().add("logLine");
-        gameLog.getChildren().add(text);
+        String[] splitLine = newLine.split("\\u001b");
+
+        TextFlow textFlow = new TextFlow();
+        textFlow.getStyleClass().add("logLine");
+
+        for (String span : splitLine) {
+          Text textSpan = new Text();
+          textSpan.setText(span.substring(span.indexOf('m') + 1));
+          textSpan.setFill(Color.WHITE);
+
+          if (splitLine.length > 1) {
+            String colorString = "\u001b" + span.substring(0, span.indexOf('m') + 1);
+            for (ANSIColor color : ANSIColor.values()) {
+              if (color.toString(true).equals(colorString) || color.toString(false)
+                  .equals(colorString)) {
+                textSpan.setFill(Color.web(color.getHexColor()));
+                break;
+              }
+            }
+          }
+          textFlow.getChildren().add(textSpan);
+        }
+        gameLog.getChildren().add(textFlow);
       })
     );
 
