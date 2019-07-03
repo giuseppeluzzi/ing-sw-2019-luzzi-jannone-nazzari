@@ -292,42 +292,32 @@ public class Player extends Observable implements Target {
    */
   @Override
   public void addDamages(PlayerColor killerColor, int num, boolean powerup) {
-    if (powerup) {
+    int oldDamagesSize = damages.size();
+    int maxDamages = ServerConfig.getInstance().getDeathDamages() + 1 - damages.size();
+
+    for (int i = 0; i < Math.min(num, maxDamages); i++) {
       damages.add(killerColor);
-    } else {
-      int maxDamages = ServerConfig.getInstance().getDeathDamages() + 1 - damages.size();
-
-      if (damages.size() <= ServerConfig.getInstance().getDeathDamages() &&
-          damages.size() + Math.min(num, maxDamages) >= ServerConfig.getInstance().getDeathDamages() + 1) {
-
-        try {
-          board.getPlayerByColor(killerColor).addTags(color, 1);
-        } catch (InvalidPlayerException ignored) {
-          //
-        }
-
-      }
-      for (int i = 0; i < Math.min(num, maxDamages); i++) {
-        damages.add(killerColor);
-      }
-      if (num > 0) {
-        addDamagesFromTags(killerColor);
-      }
     }
-    handleDamagesUpdate(killerColor);
-  }
 
-  /**
-   * Private method that notifies all the observers with correct updates in case of death and damages updates
-   * @param killerColor player that inflicted the damage
-   */
-  private void handleDamagesUpdate(PlayerColor killerColor) {
-    try {
-      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color, killerColor));
-    } catch (RemoteException e) {
-      Log.exception(e);
+    addDamagesFromTags(killerColor, powerup, num);
+
+    if (oldDamagesSize <= ServerConfig.getInstance().getDeathDamages() &&
+            damages.size() >= ServerConfig.getInstance().getDeathDamages() + 1) {
+
+      // An overkill was just scored
+
+      try {
+        board.getPlayerByColor(killerColor).addTags(color, 1);
+      } catch (InvalidPlayerException ignored) {
+        //
+      }
+
     }
-    if (damages.size() >= ServerConfig.getInstance().getDeathDamages()) {
+
+    if (oldDamagesSize < ServerConfig.getInstance().getDeathDamages() &&
+            damages.size() >= ServerConfig.getInstance().getDeathDamages()) {
+
+      // Player just died
 
       if (damages.get(damages.size()-1) != board.getCurrentPlayer()) {
         board.incrementTurnKillShots();
@@ -344,21 +334,27 @@ public class Player extends Observable implements Target {
       } catch (RemoteException e) {
         Log.exception(e);
       }
+
     }
   }
 
   /**
    * Converts any existing tags of a killer into damages
+   * if the damages weren't scored using a powerUp
    * @param killerColor the color of the player who scored the damages
+   * @param powerUp whether the damages were added by a powerUp
+   * @param num number of damages
    */
-  private void addDamagesFromTags(PlayerColor killerColor) {
-    for (PlayerColor tag : new ArrayList<>(tags)) {
-      if (tag == killerColor) {
+  private void addDamagesFromTags(PlayerColor killerColor, boolean powerUp, int num) {
+    if (! powerUp && num > 0) {
+      for (PlayerColor tag : new ArrayList<>(tags)) {
+        if (tag == killerColor) {
 
-        if (damages.size() < ServerConfig.getInstance().getDeathDamages() + 1) {
-          damages.add(killerColor);
+          if (damages.size() < ServerConfig.getInstance().getDeathDamages() + 1) {
+            damages.add(killerColor);
+          }
+          tags.remove(tag);
         }
-        tags.remove(tag);
       }
     }
   }
