@@ -107,7 +107,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
 
     executeCollectAmmo(board, event, player);
-
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -324,7 +323,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
 
     spawnPlayer(player, powerUp);
-
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -399,8 +397,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
           selectedWeapon.getName(),
           ANSIColor.RESET), board);
     }
-
-
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -457,7 +453,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
       boardController.getTurnController().addTurnActions(actions);
     }
-
     boardController.getTurnController().executeGameActionQueue();
   }
 

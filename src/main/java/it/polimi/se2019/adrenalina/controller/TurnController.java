@@ -164,8 +164,6 @@ public class TurnController implements Serializable {
     currentPlayer.setCurrentBuying(null);
     currentPlayer.setCurrentExecutable(null);
 
-    assignDoubleKill(boardController.getBoard());
-
     for (Weapon weapon : currentPlayer.getWeapons()) {
       weapon.reset();
     }
@@ -222,18 +220,6 @@ public class TurnController implements Serializable {
     refillMap();
     addGameTurn(currentPlayer);
     executeGameActionQueue();
-  }
-
-  private void assignDoubleKill(Board board) {
-    if (board.getTurnKillShots() > 1) {
-      try {
-        board.getPlayerByColor(board.getCurrentPlayer()).setScore(
-            board.getPlayerByColor(board.getCurrentPlayer()).getScore() + 1);
-      } catch (InvalidPlayerException e) {
-        Log.debug(e.toString());
-      }
-    }
-    board.resetTurnKillShots();
   }
 
   /**

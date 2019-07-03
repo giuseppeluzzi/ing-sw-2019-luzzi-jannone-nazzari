@@ -56,8 +56,22 @@ public class CheckRespawn extends GameActionAsync {
 
       player.setStatus(PlayerStatus.PLAYING);
       player.assignPoints(); // Assign points and clear his status
+      assignDoubleKill(getTurnController().getBoardController().getBoard());
     }
   }
+
+  private void assignDoubleKill(Board board) {
+    if (board.getTurnKillShots() > 1) {
+      try {
+        board.getPlayerByColor(board.getCurrentPlayer()).setScore(
+            board.getPlayerByColor(board.getCurrentPlayer()).getScore() + 1);
+      } catch (InvalidPlayerException e) {
+        Log.debug(e.toString());
+      }
+    }
+    board.resetTurnKillShots();
+  }
+
 
   /**
    * Adds damages for players who stay alone on a spawnPoint in domination mode.

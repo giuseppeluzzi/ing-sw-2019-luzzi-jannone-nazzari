@@ -335,19 +335,7 @@ public class Player extends Observable implements Target {
    * @param killerColor the color of the killer
    */
   private void handlePlayerDeath(PlayerColor killerColor) {
-    if (damages.get(damages.size()-1) != board.getCurrentPlayer()) {
-      board.incrementTurnKillShots();
-    }
-
-    if (board.getSkulls() > 1) {
-      board.setSkulls(board.getSkulls() - 1);
-    } else if (board.getSkulls() == 1) {
-      handleLastSkull(killerColor);
-    }
-
-    board.addKillShot(new Kill(damages.get(ServerConfig.getInstance().getDeathDamages() - 1),
-            damages.size() >= ServerConfig.getInstance().getDeathDamages() + 1 && ! board.isDominationBoard()));
-
+    board.incrementTurnKillShots();
     try {
       notifyObservers(new PlayerDeathUpdate(color, killerColor));
     } catch (RemoteException e) {
@@ -476,6 +464,16 @@ public class Player extends Observable implements Target {
     if (!isDead()) {
       throw new IllegalStateException("Player is not dead");
     }
+
+    if (board.getSkulls() > 1) {
+      board.setSkulls(board.getSkulls() - 1);
+    } else if (board.getSkulls() == 1) {
+      handleLastSkull(damages.get(damages.size()-1));
+    }
+
+    board.addKillShot(new Kill(damages.get(ServerConfig.getInstance().getDeathDamages() - 1),
+        damages.size() >= ServerConfig.getInstance().getDeathDamages() + 1 && ! board.isDominationBoard()));
+
     if (!board.isFinalFrenzyActive()) {
       assignFirstBlood();
     }

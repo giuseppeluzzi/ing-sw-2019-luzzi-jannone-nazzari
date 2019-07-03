@@ -46,5 +46,5 @@ public class ExecutableEffectTest {
    executableEffect3.execute(board);
    assertFalse(weapon.isLoaded());
  }
- 
+
 }

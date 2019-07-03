@@ -214,8 +214,6 @@ public class Effect implements Buyable {
    */
   @Override
   public void afterPaymentCompleted(TurnController turnController, Board board, Player player) {
-    Log.debug("Entro nell'after payment completed dell'effetto: " + name);
-    Log.debug("La lunghezza dell'actionQueue è: " + turnController.getActionQueueSize());
     Weapon localWeapon = board.getWeaponByName(weapon.getName());
     List<GameAction> turnActions = new ArrayList<>();
 
@@ -223,9 +221,7 @@ public class Effect implements Buyable {
       turnActions.add(new ExecutableEffect(turnController, player, localWeapon, action));
     }
     turnActions.add(new AfterUsageExecutable(turnController, player, localWeapon));
-
     turnController.addTurnActions(turnActions);
-    Log.debug("Dopo l'aggiunta delle azioni la lunghezza della coda è: " + turnController.getActionQueueSize());
     turnController.executeGameActionQueue();
   }
 
