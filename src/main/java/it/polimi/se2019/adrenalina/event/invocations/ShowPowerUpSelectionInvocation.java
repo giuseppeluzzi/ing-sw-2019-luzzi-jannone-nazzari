@@ -14,10 +14,12 @@ public class ShowPowerUpSelectionInvocation implements Invocation {
   private static final long serialVersionUID = 9171282818942368354L;
   private final List<PowerUp> powerUps;
   private final boolean discard;
+  private final String targetName;
 
-  public ShowPowerUpSelectionInvocation(List<PowerUp> powerUps, boolean discard) {
+  public ShowPowerUpSelectionInvocation(String targetName, List<PowerUp> powerUps, boolean discard) {
     this.powerUps = new ArrayList<>(powerUps);
     this.discard = discard;
+    this.targetName = targetName;
   }
 
   public boolean isDiscard() {
@@ -26,6 +28,10 @@ public class ShowPowerUpSelectionInvocation implements Invocation {
 
   public List<PowerUp> getPowerUps() {
     return new ArrayList<>(powerUps);
+  }
+
+  public String getTargetName() {
+    return targetName;
   }
 
   @Override

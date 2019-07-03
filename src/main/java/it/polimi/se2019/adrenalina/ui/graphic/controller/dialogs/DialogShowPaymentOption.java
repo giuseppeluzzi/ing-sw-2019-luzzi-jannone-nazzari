@@ -61,7 +61,7 @@ public class DialogShowPaymentOption extends Dialog {
       Set<String> answers = new HashSet<>();
       for (int i = 0; i < flowPane.getChildren().size(); i++) {
         if (((CheckBox) flowPane.getChildren().get(i)).isSelected()) {
-          answers.add(Integer.toString(i) + 1);
+          answers.add(Integer.toString(i + 1));
         }
       }
 

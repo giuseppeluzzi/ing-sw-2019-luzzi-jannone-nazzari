@@ -117,18 +117,31 @@ public class PowerUpSelection extends GameAction {
     }
 
     try {
+
+      String targetMessage;
+      if (attack || board.getCurrentPlayer() != getPlayer().getColor()) {
+        targetMessage = String.format("%s%s%s",
+            target.getAnsiColor(),
+            target.getName(),
+            ANSIColor.RESET);
+      } else {
+        targetMessage = null;
+      }
+
       if (discard) {
-        handlePowerUpDiscard(board);
+        handlePowerUpDiscard(board, targetMessage);
       } else {
         List<PowerUp> validPowerUps = getValidPowerUps(board, attack);
         if (isSync()) {
+
           PlayerController.sendMessageAllClients(getPlayer(), String.format(
               "%s%s%s sta scegliendo quale potenziamento usare",
               getPlayer().getColor().getAnsiColor(),
               getPlayer().getName(),
               ANSIColor.RESET), board);
+
           getPlayer().getClient().getPlayerDashboardsView()
-              .showPowerUpSelection(validPowerUps, discard);
+              .showPowerUpSelection(targetMessage, validPowerUps, discard);
         }
       }
     } catch (RemoteException e) {
@@ -136,14 +149,14 @@ public class PowerUpSelection extends GameAction {
     }
   }
 
-  private void handlePowerUpDiscard(Board board) throws RemoteException {
+  private void handlePowerUpDiscard(Board board, String targetMessage) throws RemoteException {
     PlayerController.sendMessageAllClients(getPlayer(), String.format(
         "%s%s%s sta scegliendo quale potenziamento scartare",
         getPlayer().getColor().getAnsiColor(),
         getPlayer().getName(),
         ANSIColor.RESET), board);
 
-    getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(getPlayer()
+    getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(targetMessage, getPlayer()
             .getPowerUps(), discard);
   }
 

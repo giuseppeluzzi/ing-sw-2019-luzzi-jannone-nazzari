@@ -116,6 +116,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
     if (socket != null) {
       new Thread(() -> {
         while (running) {
+          //Log.println("PING");
           sendEvent(new PingEvent());
           try {
             sleep(Constants.PING_INTERVAL);
@@ -227,8 +228,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
           case SHOW_POWER_UP_SELECTION_INVOCATION:
             ShowPowerUpSelectionInvocation showPowerUpSelectionInvocation = gson.fromJson(message,
                     ShowPowerUpSelectionInvocation.class);
-            getPlayerDashboardsView().showPowerUpSelection(showPowerUpSelectionInvocation
-                    .getPowerUps(), showPowerUpSelectionInvocation.isDiscard());
+            getPlayerDashboardsView().showPowerUpSelection(showPowerUpSelectionInvocation.getTargetName(),
+                showPowerUpSelectionInvocation.getPowerUps(), showPowerUpSelectionInvocation.isDiscard());
             break;
           case SHOW_TURN_ACTION_SELECTION_INVOCATION:
             ShowTurnActionSelectionInvocation showTurnActionSelectionInvocation = gson

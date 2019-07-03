@@ -433,7 +433,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
    * @param discard true if the selection is going to discard the power up for a (re)spwan, false otherwise
    */
   @Override
-  public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
+  public void showPowerUpSelection(String targetName, List<PowerUp> powerUps, boolean discard) {
     boardView.showBoard();
 
     int chosenTarget = 0;
@@ -445,7 +445,11 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       timer.start(Configuration.getInstance().getTurnTimeout(),
           () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un potenziamento a caso"));
     } else {
-      prompt = "Seleziona quale potenziamento usare:";
+      if (targetName != null) {
+        prompt = String.format("Seleziona quale potenziamento usare contro %s:", targetName);
+      } else {
+        prompt = "Seleziona quale potenziamento usare:";
+      }
       choices.add("Non usare nessun potenziamento");
       timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
           WAIT_TIMEOUT_MSG));

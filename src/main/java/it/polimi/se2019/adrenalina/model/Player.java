@@ -516,6 +516,15 @@ public class Player extends Observable implements Target {
   }
 
   /**
+   * Interface method that returns the equivalent ansi color of the target
+   * @return ansi color
+   */
+  @Override
+  public ANSIColor getAnsiColor() {
+    return color.getAnsiColor();
+  }
+
+  /**
    * Return Weapon whose name matches specified one.
    *
    * @param weaponName name of the weapon

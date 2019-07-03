@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.NotExpose;
 import it.polimi.se2019.adrenalina.utils.NotExposeExclusionStrategy;
@@ -432,12 +433,17 @@ public class Square extends Observable implements Target {
     //do nothing since a square can't be moved
   }
 
+  @Override
+  public String getName() {
+    return String.format("Punto di generazione (x: %d y: %d)", posX, posY);
+  }
   /**
-   * Returns a string containing the correctly formatted coordinates of the square
-   * @return
+   * Interface method that returns the equivalent ansi color of the target
+   * @return ansi color
    */
-  public String getCoordinatesAsString() {
-    return "posX: " + posX + ", posY: " + posY;
+  @Override
+  public ANSIColor getAnsiColor() {
+    return color.getAnsiColor();
   }
 
   public String serialize() {

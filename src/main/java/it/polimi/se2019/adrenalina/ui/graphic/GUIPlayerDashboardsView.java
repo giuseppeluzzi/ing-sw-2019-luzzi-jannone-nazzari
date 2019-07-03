@@ -198,9 +198,6 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
-    final PlayerDashboardFXController playerDashboardFXController = AppGUI
-        .getPlayerDashboardFXController();
-
     Platform.runLater(() -> AppGUI.getPlayerDashboardFXController().usingWeapon(weapons));
   }
 
@@ -219,7 +216,7 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
+  public void showPowerUpSelection(String targetName, List<PowerUp> powerUps, boolean discard) {
     final PlayerDashboardFXController playerDashboardFXController = AppGUI
         .getPlayerDashboardFXController();
 

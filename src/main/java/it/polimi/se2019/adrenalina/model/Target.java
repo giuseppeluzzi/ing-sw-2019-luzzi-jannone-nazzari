@@ -3,6 +3,7 @@ package it.polimi.se2019.adrenalina.model;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import java.io.Serializable;
 
 /**
@@ -15,4 +16,6 @@ public interface Target extends Serializable {
   void addDamages(PlayerColor player, int num, boolean powerup);
   void addTags(PlayerColor player, int num);
   void setSquare(Square square);
+  ANSIColor getAnsiColor();
+  String getName();
 }

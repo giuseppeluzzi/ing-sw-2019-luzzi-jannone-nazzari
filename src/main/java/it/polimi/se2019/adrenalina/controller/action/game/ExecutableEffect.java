@@ -167,7 +167,7 @@ public class ExecutableEffect extends GameAction {
           && ((Player) target).getStatus() != PlayerStatus.SUSPENDED) {
         getTurnController().addTurnActions(
                 new PowerUpSelection(getTurnController(), target.getPlayer(),
-                        null, false, false));
+                        getPlayer(), false, false));
       }
     }
     ((Weapon) executableObject).setLoaded(false);

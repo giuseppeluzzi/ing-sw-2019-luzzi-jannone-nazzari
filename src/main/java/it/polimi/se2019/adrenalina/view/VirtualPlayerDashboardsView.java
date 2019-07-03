@@ -59,8 +59,8 @@ public class VirtualPlayerDashboardsView extends Observable implements
   }
 
   @Override
-  public void showPowerUpSelection(List<PowerUp> powerUps, boolean discard) {
-    clientSocket.sendEvent(new ShowPowerUpSelectionInvocation(powerUps, discard));
+  public void showPowerUpSelection(String targetName, List<PowerUp> powerUps, boolean discard) {
+    clientSocket.sendEvent(new ShowPowerUpSelectionInvocation(targetName, powerUps, discard));
   }
 
   @Override
