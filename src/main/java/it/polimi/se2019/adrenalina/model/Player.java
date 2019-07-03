@@ -301,6 +301,12 @@ public class Player extends Observable implements Target {
 
     addDamagesFromTags(killerColor, powerup, num);
 
+    try {
+      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color, null));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+
     if (oldDamagesSize <= ServerConfig.getInstance().getDeathDamages() &&
             damages.size() >= ServerConfig.getInstance().getDeathDamages() + 1) {
 
@@ -319,22 +325,33 @@ public class Player extends Observable implements Target {
 
       // Player just died
 
-      if (damages.get(damages.size()-1) != board.getCurrentPlayer()) {
-        board.incrementTurnKillShots();
-      }
+      handlePlayerDeath(killerColor);
 
-      if (board.getSkulls() > 1) {
-        board.setSkulls(board.getSkulls() - 1);
-      } else if (board.getSkulls() == 1) {
-        handleLastSkull(killerColor);
-      }
+    }
+  }
 
-      try {
-        notifyObservers(new PlayerDeathUpdate(color, killerColor));
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
+  /**
+   * Handles player death
+   * @param killerColor the color of the killer
+   */
+  private void handlePlayerDeath(PlayerColor killerColor) {
+    if (damages.get(damages.size()-1) != board.getCurrentPlayer()) {
+      board.incrementTurnKillShots();
+    }
 
+    if (board.getSkulls() > 1) {
+      board.setSkulls(board.getSkulls() - 1);
+    } else if (board.getSkulls() == 1) {
+      handleLastSkull(killerColor);
+    }
+
+    board.addKillShot(new Kill(damages.get(ServerConfig.getInstance().getDeathDamages() - 1),
+            damages.size() < ServerConfig.getInstance().getDeathDamages() + 1 && ! board.isDominationBoard()));
+
+    try {
+      notifyObservers(new PlayerDeathUpdate(color, killerColor));
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 
@@ -464,10 +481,6 @@ public class Player extends Observable implements Target {
     }
     assignDamagesPoints();
 
-    if (!board.isDominationBoard()) {
-      board.addKillShot(new Kill(damages.get(ServerConfig.getInstance().getDeathDamages() - 1),
-          damages.size() < ServerConfig.getInstance().getDeathDamages() + 1));
-    }
     decrementKillScore();
     damages.clear();
     try {
