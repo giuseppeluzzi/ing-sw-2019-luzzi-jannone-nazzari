@@ -772,6 +772,8 @@ public class BoardFXController {
   }
 
   void handleSelectTarget(MouseEvent event) {
+    event.consume();
+
     final Target target = (Target) ((Node) event.getSource()).getProperties().get(TARGET_PROP);
 
     stopTurnTimer();

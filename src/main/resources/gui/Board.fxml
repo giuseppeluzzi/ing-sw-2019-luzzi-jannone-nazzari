@@ -68,9 +68,9 @@
             <padding>
               <Insets top="12" left="25"/>
             </padding>
-            <HBox fx:id="blueSpawnPointDamages" spacing="7"/>
-            <HBox fx:id="redSpawnPointDamages" spacing="7"/>
-            <HBox fx:id="yellowSpawnPointDamages" spacing="7"/>
+            <HBox fx:id="blueSpawnPointDamages" spacing="7" minHeight="10" maxHeight="10" />
+            <HBox fx:id="redSpawnPointDamages" spacing="7" minHeight="10" maxHeight="10" />
+            <HBox fx:id="yellowSpawnPointDamages" spacing="7" minHeight="10" maxHeight="10" />
           </VBox>
           <FlowPane fx:id="dominationBoardSkulls" alignment="TOP_LEFT" orientation="HORIZONTAL"
             prefWrapLength="65" hgap="6" vgap="12">
