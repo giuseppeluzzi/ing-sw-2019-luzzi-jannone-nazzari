@@ -112,6 +112,9 @@ public abstract class PlayerDashboardsView extends Observable implements
   }
 
   private void showTagsDamagesMessage(PlayerDamagesTagsUpdate event) throws InvalidPlayerException, RemoteException {
+    if (event.getKillerColor() == null) {
+      return;
+    }
     List<PlayerColor> newDamages = new ArrayList<>(event.getDamages());
     String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
     String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
