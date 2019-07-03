@@ -169,6 +169,12 @@ public class AppGUI extends Application {
     primaryStage.show();
   }
 
+  @Override
+  public void stop() throws Exception {
+    super.stop();
+    System.exit(0);
+  }
+
   public static void startClient(String ipAddress, int port, String name, boolean domination,
       boolean socket) {
     new Thread(() -> {

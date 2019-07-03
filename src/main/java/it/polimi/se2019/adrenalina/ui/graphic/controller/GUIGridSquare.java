@@ -1,11 +1,13 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
+import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.model.Target;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
-public class GUIGridSquare {
+public class GUIGridSquare implements GUITile {
 
   private final int x;
   private final int y;
@@ -30,6 +32,7 @@ public class GUIGridSquare {
     return y;
   }
 
+  @Override
   public TilePane getTilePane() {
     return tilePane;
   }
@@ -38,6 +41,7 @@ public class GUIGridSquare {
     this.tilePane = tilePane;
   }
 
+  @Override
   public Pane getHoverPane() {
     return hoverPane;
   }
@@ -52,5 +56,21 @@ public class GUIGridSquare {
 
   public void setClickHandler(EventHandler<MouseEvent> clickHandler) {
     this.clickHandler = clickHandler;
+  }
+
+  @Override
+  public boolean isTarget(Target target) {
+    return !target.isPlayer() && ((Square) target).getPosX() == x  && ((Square) target).getPosY() == y;
+  }
+
+  @Override
+  public void enableTile() {
+    hoverPane.setVisible(false);
+    //tilePane.removeEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
+  }
+
+  @Override
+  public void disableTile() {
+    hoverPane.setVisible(true);
   }
 }
