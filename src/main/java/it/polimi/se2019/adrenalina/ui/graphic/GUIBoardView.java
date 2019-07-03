@@ -22,15 +22,19 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.FinalRanksFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSelectDirection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSpawnPointTrackSelection;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 
 public class GUIBoardView extends BoardView {
 
@@ -107,7 +111,22 @@ public class GUIBoardView extends BoardView {
 
   @Override
   public void showFinalRanks() {
-    // TODO
+    FXMLLoader loaderRanks = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/FinalRanks.fxml"));
+    loaderRanks.setController(new FinalRanksFXController());
+
+    Platform.runLater(() -> {
+      Scene ranksScene;
+      try {
+        ranksScene = new Scene(loaderRanks.load());
+      } catch (IOException e) {
+        Log.exception(e);
+        return ;
+      }
+
+      ranksScene.getStylesheets().addAll(AppGUI.getCSS());
+      AppGUI.getStage().setScene(ranksScene);
+    });
   }
 
   @Override

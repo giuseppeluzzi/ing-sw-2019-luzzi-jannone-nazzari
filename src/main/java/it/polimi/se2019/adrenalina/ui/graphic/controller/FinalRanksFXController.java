@@ -1,7 +1,15 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
+import static it.polimi.se2019.adrenalina.ui.UIUtils.getFirstKillshotIndex;
+
+import it.polimi.se2019.adrenalina.AppGUI;
+import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Kill;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.utils.Log;
+import java.rmi.RemoteException;
+import java.util.Collections;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,12 +21,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static it.polimi.se2019.adrenalina.ui.UIUtils.getFirstKillshotIndex;
-
 public class FinalRanksFXController {
 
   public static final String DARK_GREY = "#B0B0B0";
@@ -28,24 +30,28 @@ public class FinalRanksFXController {
   @FXML
   private GridPane ranksTable;
 
-  private final List<Player> players;
-  private final List<Kill> killShots;
-
-  public FinalRanksFXController(List<Player> players, List<Kill> killShots) {
-    this.players = new ArrayList<>(players);
-    this.killShots = new ArrayList<>(killShots);
-  }
-
   private StackPane stripedStackPane(Text element, int i, Pos alignment) {
     StackPane output = new StackPane(element);
     if (i % 2 == 1) {
-      output.setBackground(new Background(new BackgroundFill(Color.web(LIGHT_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
+      output.setBackground(new Background(
+          new BackgroundFill(Color.web(LIGHT_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
     }
     output.setAlignment(alignment);
     return output;
   }
 
   public void initialize() {
+    final Board board;
+    try {
+      board = AppGUI.getClient().getBoardView().getBoard();
+    } catch (RemoteException e) {
+      Log.exception(e);
+      return;
+    }
+
+    List<Player> players = board.getPlayers();
+    List<Kill> killShots = board.getKillShots();
+
     Collections.sort(players, (p1, p2) -> {
       if (p1.getScore() == p2.getScore()) {
         int p1Index = getFirstKillshotIndex(killShots, p1.getColor());
@@ -74,16 +80,21 @@ public class FinalRanksFXController {
     overkillsTitle.getStyleClass().add(SUBTITLE_CLASS);
 
     StackPane posTitlePane = new StackPane(pos);
-    posTitlePane.setBackground(new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
+    posTitlePane.setBackground(
+        new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
     StackPane nameTitlePane = new StackPane(name);
-    nameTitlePane.setBackground(new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
+    nameTitlePane.setBackground(
+        new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
     nameTitlePane.setAlignment(Pos.CENTER_LEFT);
     StackPane scoreTitlePane = new StackPane(scoreTitle);
-    scoreTitlePane.setBackground(new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
+    scoreTitlePane.setBackground(
+        new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
     StackPane killsTitlePane = new StackPane(killsTitle);
-    killsTitlePane.setBackground(new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
+    killsTitlePane.setBackground(
+        new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
     StackPane overkillsTitlePane = new StackPane(overkillsTitle);
-    overkillsTitlePane.setBackground(new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
+    overkillsTitlePane.setBackground(
+        new Background(new BackgroundFill(Color.web(DARK_GREY), CornerRadii.EMPTY, Insets.EMPTY)));
 
     GridPane.setColumnIndex(posTitlePane, 0);
     GridPane.setRowIndex(posTitlePane, 0);
@@ -104,11 +115,14 @@ public class FinalRanksFXController {
 
     for (int i = 0; i < players.size(); i++) {
       Player player = players.get(i);
-      long killShotCount = killShots.stream().filter(x -> x.getPlayerColor() == player.getColor()).count();
-      long overkillCount = killShots.stream().filter(x -> x.getPlayerColor() == player.getColor() && x.isOverKill()).count();
+      long killShotCount = killShots.stream().filter(x -> x.getPlayerColor() == player.getColor())
+          .count();
+      long overkillCount = killShots.stream()
+          .filter(x -> x.getPlayerColor() == player.getColor() && x.isOverKill()).count();
       Text position = new Text(Integer.toString(i + 1));
       position.getStyleClass().add("text");
-      Text playerName = new Text(String.format("%s (%s)", player.getName(), player.getColor().getCharacterName()));
+      Text playerName = new Text(
+          String.format("%s (%s)", player.getName(), player.getColor().getCharacterName()));
       playerName.getStyleClass().add("text");
       playerName.setFill(Color.web(player.getColor().getHexColor()));
       Text score = new Text(Integer.toString(player.getScore()));
