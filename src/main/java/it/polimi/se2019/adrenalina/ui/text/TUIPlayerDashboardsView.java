@@ -357,6 +357,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+    boardView.showBoard();
   }
 
   /**
