@@ -832,10 +832,13 @@ public class BoardFXController {
       for (String span : splitLine) {
         Text textSpan = new Text();
         textSpan.setFill(Color.WHITE);
-
         if (splitLine.length > 1) {
-          textSpan.setText(span.substring(span.indexOf('m') + 1));
-          textSpan.setFill(getTextColorFromAnsi(span));
+          if (span.indexOf('[') == -1) {
+            textSpan.setText(span);
+          } else {
+            textSpan.setText(span.substring(span.indexOf('m') + 1));
+            textSpan.setFill(getTextColorFromAnsi(span));
+          }
         } else {
           textSpan.setText(newLine);
         }
