@@ -302,7 +302,7 @@ public class Player extends Observable implements Target {
     addDamagesFromTags(killerColor, powerup, num);
 
     try {
-      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color, null));
+      notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color, killerColor));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -346,7 +346,7 @@ public class Player extends Observable implements Target {
     }
 
     board.addKillShot(new Kill(damages.get(ServerConfig.getInstance().getDeathDamages() - 1),
-            damages.size() < ServerConfig.getInstance().getDeathDamages() + 1 && ! board.isDominationBoard()));
+            damages.size() >= ServerConfig.getInstance().getDeathDamages() + 1 && ! board.isDominationBoard()));
 
     try {
       notifyObservers(new PlayerDeathUpdate(color, killerColor));

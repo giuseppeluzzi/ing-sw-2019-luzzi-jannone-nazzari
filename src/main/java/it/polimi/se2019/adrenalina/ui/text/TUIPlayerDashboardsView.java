@@ -130,7 +130,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
         || !Payment.verifyPaymentFullfilled(answers, spendables, costs)
     );
 
-
+    timer.stop();
 
     for (String element : answers) {
       if (spendables.get(Integer.parseInt(element) - 1).isPowerUp()) {
