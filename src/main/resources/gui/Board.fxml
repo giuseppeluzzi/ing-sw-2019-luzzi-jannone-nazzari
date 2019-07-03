@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ProgressBar?>
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@assets/style.css"
   xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" id="gameContainer">
   <children>
@@ -182,5 +183,7 @@
       </GridPane>
 
     </GridPane>
+
+    <ProgressBar fx:id="turnProgressBar" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" styleClass="turnProgressBar" progress="0" minHeight="5" maxHeight="5" />
   </children>
 </AnchorPane>
