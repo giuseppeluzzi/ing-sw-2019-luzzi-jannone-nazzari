@@ -7,7 +7,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
-            "name": "Modalità base",
+            "name": "Modalita' base",
             "actions": [
                 {
                     "distance": 0,
@@ -24,7 +24,7 @@
             "costRed": 1,
             "costBlue": 1,
             "costYellow": 0,
-            "name": "Modalità mietitore",
+            "name": "Modalita' mietitore",
             "actions": [
                 {
                     "distance": 0,

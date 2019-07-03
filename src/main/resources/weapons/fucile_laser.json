@@ -41,7 +41,7 @@
             "costBlue": 0,
             "costYellow": 0,
             "anyTime": false,
-            "name": "Modalità perforazione",
+            "name": "Modalita' perforazione",
             "actions": [
                 {
                     "type": "SELECT_DIRECTION"

@@ -8,7 +8,7 @@
             "costBlue": 0,
             "costYellow": 0,
             "anyTime": false,
-            "name": "Modalità base",
+            "name": "Modalita' base",
             "actions": [
                 {
                     "from": 0,
@@ -38,7 +38,7 @@
             "costBlue": 0,
             "costYellow": 0,
             "anyTime": false,
-            "name": "Modalità scanner",
+            "name": "Modalita' scanner",
             "actions": [
                 {
                     "from": 0,
