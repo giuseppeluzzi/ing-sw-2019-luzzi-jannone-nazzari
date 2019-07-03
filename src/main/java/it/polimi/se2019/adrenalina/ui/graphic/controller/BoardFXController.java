@@ -15,6 +15,7 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.Kill;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
@@ -30,6 +31,7 @@ import java.util.Map.Entry;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -60,6 +62,7 @@ import javafx.scene.text.TextFlow;
 public class BoardFXController {
 
   private static final String WEAPON_PROP = "weapon";
+  private static final String TARGET_PROP = "target";
   private static final String DASHBOARD_COLOR_PROP = "color";
   private static final String TILE_PLAYER_COLOR_PROP = "playerColor";
   private static final double LOG_PAST_OPACITY = 0.6;
@@ -121,8 +124,8 @@ public class BoardFXController {
   private final EnumMap<PlayerColor, DashboardFXController> dashboardControllers;
   private final HashMap<String, ImageView> squareWeapons;
   private final HashMap<String, ImageView> squareWeaponsHover;
-  private EventHandler<ActionEvent> skipEventHandler;
 
+  private final EventHandler<MouseEvent> selectTargetEventHandler;
   private final EventHandler<MouseEvent> buyWeaponEventHandler;
 
   private final ObservableList<String> gameLogMessages;
@@ -134,20 +137,8 @@ public class BoardFXController {
     squareWeapons = new HashMap<>();
     squareWeaponsHover = new HashMap<>();
 
-    buyWeaponEventHandler = event -> {
-      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties()
-          .get(WEAPON_PROP))
-          .getName();
-
-      disableBoardWeapons();
-
-      try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-            new PlayerCollectWeaponEvent(AppGUI.getClient().getPlayerColor(), weaponName));
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
-    };
+    selectTargetEventHandler = this::handleSelectTarget;
+    buyWeaponEventHandler = this::handleWeaponBuy;
   }
 
   public void initialize() {
@@ -178,56 +169,11 @@ public class BoardFXController {
     mapGrid.setStyle(
         "-fx-background-image: url(\"gui/assets/img/map1.png\");");
 
-    gameLogMessages.addListener((ListChangeListener<String>) change ->
-        Platform.runLater(() -> {
-          change.next();
-          if (change.getList().size() > 5) {
-            gameLog.getChildren().remove(0);
-          }
-          if (!gameLog.getChildren().isEmpty()) {
-            gameLog.getChildren().get(gameLog.getChildren().size() - 1)
-                .setOpacity(LOG_PAST_OPACITY);
-          }
+    //noinspection RedundantCast
+    gameLogMessages.addListener((ListChangeListener<String>) this::onLogUpdate);
 
-          String newLine = change.getAddedSubList().get(0);
-          String[] splitLine = newLine.split("\\u001b");
-
-          TextFlow textFlow = new TextFlow();
-          textFlow.getStyleClass().add("logLine");
-
-          for (String span : splitLine) {
-            Text textSpan = new Text();
-            textSpan.setFill(Color.WHITE);
-
-            if (splitLine.length > 1) {
-              textSpan.setText(span.substring(span.indexOf('m') + 1));
-              String colorString = "\u001b" + span.substring(0, span.indexOf('m') + 1);
-              for (ANSIColor color : ANSIColor.values()) {
-                if (color.toString(true).equals(colorString) || color.toString(false)
-                    .equals(colorString)) {
-                  textSpan.setFill(Color.web(color.getHexColor()));
-                  break;
-                }
-              }
-            } else {
-              textSpan.setText(newLine);
-            }
-            textFlow.getChildren().add(textSpan);
-          }
-          gameLog.getChildren().add(textFlow);
-        })
-    );
-
-    noPowerUpTurnActionButton.setOnAction(event -> {
-      try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-            new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
-        hidePowerUpSkip();
-        AppGUI.getPlayerDashboardFXController().disablePowerUps();
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
-    });
+    noPowerUpTurnActionButton.setOnAction(this::handleNoPowerUpUsage);
+    skipTurnActionButton.setOnAction(this::handleSkipSelection);
   }
 
   public void setMapId(int mapId) {
@@ -386,32 +332,13 @@ public class BoardFXController {
   }
 
   public void setPlayerPosition(int posX, int posY, PlayerColor playerColor) {
-    int removeX = -1;
-    int removeY = -1;
-    Node toRemove = null;
-    for (int x = 0; x < 4; x++) {
-      for (int y = 0; y < 3; y++) {
-        for (Node node : grid[x][y].getTilePane().getChildren()) {
-          if (node.getProperties().containsKey(TILE_PLAYER_COLOR_PROP)
-              && node.getProperties().get(TILE_PLAYER_COLOR_PROP) == playerColor) {
-            removeX = x;
-            removeY = y;
-            toRemove = node;
-            break;
-          }
-        }
-        if (toRemove != null) {
-          break;
-        }
-      }
-      if (toRemove != null) {
-        break;
-      }
-    }
-    if (toRemove != null) {
-      grid[removeX][removeY].getTilePane().getChildren().remove(toRemove);
+    if (playerTiles.containsKey(playerColor)) {
+      final Parent stackPane = playerTiles.get(playerColor).getPlayerIcon().getParent();
+      grid[playerTiles.get(playerColor).getX()][playerTiles.get(playerColor).getY()].getTilePane()
+          .getChildren().remove(stackPane);
       playerTiles.remove(playerColor);
     }
+
     Circle playerIcon = new Circle(13, Color.web(playerColor.getHexColor()));
     playerIcon.getStyleClass().add("player");
     playerIcon.getProperties().put(TILE_PLAYER_COLOR_PROP, playerColor);
@@ -422,6 +349,7 @@ public class BoardFXController {
     playerIconHover.getStyleClass().add("disabledSquare");
     playerIconHover.setStroke(Color.BLACK);
     playerIconHover.setStrokeWidth(1);
+    playerIconHover.setVisible(false);
 
     grid[posX][posY].getTilePane().getChildren().add(0, new StackPane(playerIcon, playerIconHover));
 
@@ -429,7 +357,9 @@ public class BoardFXController {
       playerTiles.get(playerColor).setPlayerIcon(playerIcon);
       playerTiles.get(playerColor).setPlayerIconHover(playerIconHover);
     } else {
-      playerTiles.put(playerColor, new GUIPlayerTile(playerColor, playerIcon));
+      final GUIPlayerTile playerTile = new GUIPlayerTile(posX, posY, playerColor, playerIcon,
+          playerIconHover);
+      playerTiles.put(playerColor, playerTile);
     }
   }
 
@@ -498,45 +428,16 @@ public class BoardFXController {
   public void disableTargetSelection() {
     hideSkip();
 
-    if (skipEventHandler != null) {
-      skipTurnActionButton.setOnAction(null);
-    }
-
     Platform.runLater(() -> {
       setHelpText("");
-      for (int x = 0; x < 4; x++) {
-        for (int y = 0; y < 3; y++) {
-          grid[x][y].getHoverPane().setVisible(false);
 
-          if (grid[x][y].getClickHandler() != null) {
-            grid[x][y].getTilePane()
-                .removeEventHandler(MouseEvent.MOUSE_CLICKED, grid[x][y].getClickHandler());
-            grid[x][y].setClickHandler(null);
-          }
-        }
-      }
-    });
+      List<GUITile> guiTiles = new ArrayList<>(getGridTiles());
+      guiTiles.addAll(playerTiles.values());
 
-    for (GUIPlayerTile playerTile : playerTiles.values()) {
-      if (playerTile.getClickHandler() != null) {
-        playerTile.getPlayerIcon()
-            .removeEventHandler(MouseEvent.MOUSE_CLICKED, playerTile.getClickHandler());
-        playerTile.setClickHandler(null);
-      }
-    }
-  }
-
-  /**
-   * Highlights the selectable squares by reducing the opacity of the others
-   *
-   * @param squares a list of squares to be highlighted
-   */
-  public void highlightSelectableSquares(List<Target> squares) {
-    Platform.runLater(() -> {
-      for (int x = 0; x < 4; x++) {
-        for (int y = 0; y < 3; y++) {
-          grid[x][y].getHoverPane().setVisible(!containsTarget(squares, x, y));
-        }
+      for (GUITile tile : guiTiles) {
+        tile.enableTile();
+        tile.getTilePane().getProperties().remove("move");
+        tile.getTilePane().removeEventHandler(MouseEvent.MOUSE_CLICKED, selectTargetEventHandler);
       }
     });
   }
@@ -553,44 +454,31 @@ public class BoardFXController {
     } else {
       Platform.runLater(() -> setHelpText("Seleziona un quadrato"));
     }
-    for (int x = 0; x < 4; x++) {
-      for (int y = 0; y < 3; y++) {
-        if (containsTarget(squares, x, y)) {
-          final int finalX = x;
-          final int finalY = y;
-          EventHandler<MouseEvent> clickHandler = event -> {
-            try {
-              if (move) {
-                ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                    new SquareMoveSelectionEvent(AppGUI.getClient().getPlayerColor(), finalX,
-                        finalY));
-              } else {
-                ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                    new SelectSquareEvent(AppGUI.getClient().getPlayerColor(), finalX, finalY));
-              }
-            } catch (RemoteException e) {
-              Log.exception(e);
-            }
-            disableTargetSelection();
-          };
 
-          if (skippable) {
-            skipEventHandler = event -> {
-              try {
-                ((BoardView) AppGUI.getClient().getBoardView())
-                    .sendEvent(new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
-              } catch (RemoteException e) {
-                Log.exception(e);
-              }
-              disableTargetSelection();
-            };
-            skipTurnActionButton.setOnAction(skipEventHandler);
+    List<GUITile> tiles = new ArrayList<>(getGridTiles());
 
-            showSkip();
+    if (skippable) {
+      showSkip();
+    }
+
+    for (GUITile tile : tiles) {
+      boolean enabled = false;
+      for (Target square : squares) {
+        if (tile.isTarget(square)) {
+          tile.enableTile();
+          enabled = true;
+
+          tile.getTilePane().getProperties().put(TARGET_PROP, square);
+          tile.getTilePane().addEventHandler(MouseEvent.MOUSE_CLICKED, selectTargetEventHandler);
+
+          if (move) {
+            tile.getTilePane().getProperties().put("move", true);
           }
-          grid[x][y].setClickHandler(clickHandler);
-          grid[x][y].getTilePane().addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
+          break;
         }
+      }
+      if (!enabled) {
+        tile.disableTile();
       }
     }
   }
@@ -598,60 +486,33 @@ public class BoardFXController {
   /**
    * Makes the given players clickable in the grid
    *
-   * @param players target players
+   * @param targets target players
    */
-  public void enablePlayerSelection(List<Target> players, boolean skippable) {
+  public void enableTargetSelection(List<Target> targets, boolean skippable) {
     Platform.runLater(() -> setHelpText("Seleziona un bersaglio"));
-    for (Target target : players) {
-      if (target.isPlayer() && playerTiles.containsKey(((Player) target).getColor())) {
-        EventHandler<MouseEvent> clickHandler = event -> {
-          try {
-            ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                new SelectPlayerEvent(AppGUI.getClient().getPlayerColor(),
-                    ((Player) target).getColor()));
-          } catch (RemoteException e) {
-            Log.exception(e);
-          }
-          disableTargetSelection();
-        };
+    List<GUITile> tiles = new ArrayList<>(getGridTiles());
+    tiles.addAll(playerTiles.values());
 
-        if (skippable) {
-          skipEventHandler = event -> {
-            try {
-              ((BoardView) AppGUI.getClient().getBoardView())
-                  .sendEvent(new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
-            } catch (RemoteException e) {
-              Log.exception(e);
-            }
-            disableTargetSelection();
-          };
-          skipTurnActionButton.setOnAction(skipEventHandler);
+    for (GUITile tile : tiles) {
+      boolean enabled = false;
 
-          showSkip();
+      for (Target target : targets) {
+        if (tile.isTarget(target)) {
+          tile.enableTile();
+          enabled = true;
+          tile.getTilePane().getProperties().put(TARGET_PROP, target);
+          tile.getTilePane().addEventHandler(MouseEvent.MOUSE_CLICKED, selectTargetEventHandler);
+          break;
         }
-
-        playerTiles.get(((Player) target).getColor()).getPlayerIcon()
-            .addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
-        playerTiles.get(((Player) target).getColor()).setClickHandler(clickHandler);
+      }
+      if (!enabled) {
+        tile.disableTile();
       }
     }
-  }
 
-  /**
-   * Checks if exists a target with the specified coordinates in the given list
-   *
-   * @param targets the checked list
-   * @param x coordinate
-   * @param y coordinate
-   * @return true if exists a target with the given coordinates
-   */
-  private boolean containsTarget(List<Target> targets, int x, int y) {
-    for (Target target : targets) {
-      if (target.getSquare().getPosX() == x && target.getSquare().getPosY() == y) {
-        return true;
-      }
+    if (skippable) {
+      showSkip();
     }
-    return false;
   }
 
   public void updateBlueWeapons(List<Weapon> weapons) {
@@ -682,53 +543,42 @@ public class BoardFXController {
 
       for (Weapon weapon : weapons) {
         Image image;
+        ImageView imageView = new ImageView();
+        ImageView imageViewHover = new ImageView();
+
+        imageView.setPreserveRatio(true);
+        imageView.setEffect(bnEffect);
+
+        imageViewHover.setPreserveRatio(true);
+        imageViewHover.setOpacity(0);
+        imageViewHover.getProperties().put(WEAPON_PROP, weapon);
+
         if (rotatedImages) {
+          imageView.setFitHeight(70);
+          imageViewHover.setFitHeight(70);
+          imageViewHover.getProperties().put("rotated", true);
           image = new Image("gui/assets/img/weapon/rotated/weapon_" + weapon.getSlug() + ".png");
         } else {
+          imageView.setFitWidth(70);
+          imageViewHover.setFitWidth(70);
           image = new Image("gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
         }
 
-        ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        if (rotatedImages) {
-          imageView.setFitHeight(70);
-        } else {
-          imageView.setFitWidth(70);
-        }
-        imageView.setEffect(bnEffect);
-        box.getChildren().add(imageView);
+        imageView.setImage(image);
+        imageViewHover.setImage(image);
 
-        ImageView imageViewHover = new ImageView(image);
-        imageViewHover.setPreserveRatio(true);
-        if (rotatedImages) {
-          imageViewHover.setFitHeight(70);
-        } else {
-          imageViewHover.setFitWidth(70);
-        }
-        imageViewHover.setOpacity(0);
-        imageViewHover.getProperties().put(WEAPON_PROP, weapon);
+        box.getChildren().add(imageView);
         boxHover.getChildren().add(imageViewHover);
+
         squareWeapons.put(weapon.getName(), imageView);
         squareWeaponsHover.put(weapon.getName(), imageViewHover);
 
-        imageViewHover.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, event -> {
-          imageViewHover.setOpacity(1);
-          imageViewHover.setScaleX(2.5);
-          imageViewHover.setScaleY(2.5);
-          if (rotatedImages) {
-            imageViewHover.setTranslateX(80);
-          } else {
-            imageViewHover.setTranslateY(88);
-          }
-        });
-
-        imageViewHover.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, event -> {
-          imageViewHover.setScaleX(1);
-          imageViewHover.setScaleY(1);
-          imageViewHover.setTranslateX(0);
-          imageViewHover.setTranslateY(0);
-          imageViewHover.setOpacity(0);
-        });
+        imageViewHover
+            .addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET,
+                BoardFXController::handleBoardWeaponHoverIn);
+        imageViewHover
+            .addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+                BoardFXController::handleBoardWeaponHoverOut);
       }
     });
   }
@@ -860,5 +710,147 @@ public class BoardFXController {
     hidePowerUpSkip();
     disableTargetSelection();
     disableBoardWeapons();
+  }
+
+  public List<GUIGridSquare> getGridTiles() {
+    List<GUIGridSquare> tiles = new ArrayList<>();
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 3; y++) {
+        tiles.add(grid[x][y]);
+      }
+    }
+    return tiles;
+  }
+
+
+  private Color getTextColorFromAnsi(String textSpan) {
+    String colorString = "\u001b" + textSpan.substring(0, textSpan.indexOf('m') + 1);
+    for (ANSIColor color : ANSIColor.values()) {
+      if (color.toString(true).equals(colorString) || color.toString(false)
+          .equals(colorString)) {
+        return Color.web(color.getHexColor());
+      }
+    }
+    return null;
+  }
+
+  private void handleWeaponBuy(MouseEvent event) {
+    final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties()
+        .get(WEAPON_PROP))
+        .getName();
+
+    disableBoardWeapons();
+
+    try {
+      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          new PlayerCollectWeaponEvent(AppGUI.getClient().getPlayerColor(), weaponName));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  void handleSelectTarget(MouseEvent event) {
+    final Target target = (Target) ((Node) event.getSource()).getProperties().get(TARGET_PROP);
+
+    try {
+      if (((Node) event.getSource()).getProperties().containsKey("move")) {
+        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            new SquareMoveSelectionEvent(AppGUI.getClient().getPlayerColor(),
+                ((Square) target).getPosX(), ((Square) target).getPosY()));
+      } else {
+        if (target.isPlayer()) {
+          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+              new SelectPlayerEvent(AppGUI.getClient().getPlayerColor(),
+                  ((Player) target).getColor()));
+        } else {
+          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+              new SelectSquareEvent(AppGUI.getClient().getPlayerColor(),
+                  ((Square) target).getPosX(), ((Square) target).getPosY()));
+        }
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+
+    disableTargetSelection();
+  }
+
+  private void handleSkipSelection(ActionEvent event) {
+    event.getSource(); // Just for Sonar
+
+    try {
+      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+
+    disableTargetSelection();
+  }
+
+  private void onLogUpdate(Change<? extends String> change) {
+    Platform.runLater(() -> {
+      change.next();
+      if (change.getList().size() > 5) {
+        gameLog.getChildren().remove(0);
+      }
+      if (!gameLog.getChildren().isEmpty()) {
+        gameLog.getChildren().get(gameLog.getChildren().size() - 1)
+            .setOpacity(LOG_PAST_OPACITY);
+      }
+
+      String newLine = change.getAddedSubList().get(0);
+      String[] splitLine = newLine.split("\\u001b");
+
+      TextFlow textFlow = new TextFlow();
+      textFlow.getStyleClass().add("logLine");
+
+      for (String span : splitLine) {
+        Text textSpan = new Text();
+        textSpan.setFill(Color.WHITE);
+
+        if (splitLine.length > 1) {
+          textSpan.setText(span.substring(span.indexOf('m') + 1));
+          textSpan.setFill(getTextColorFromAnsi(span));
+        } else {
+          textSpan.setText(newLine);
+        }
+        textFlow.getChildren().add(textSpan);
+      }
+      gameLog.getChildren().add(textFlow);
+    });
+  }
+
+  private void handleNoPowerUpUsage(ActionEvent event) {
+    event.getSource(); // Just for sonar
+    try {
+      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
+      hidePowerUpSkip();
+      AppGUI.getPlayerDashboardFXController().disablePowerUps();
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  private static void handleBoardWeaponHoverIn(MouseEvent event) {
+    Node imageViewHover = (Node) event.getSource();
+    imageViewHover.setOpacity(1);
+    imageViewHover.setScaleX(2.5);
+    imageViewHover.setScaleY(2.5);
+    if (imageViewHover.getProperties().containsKey("rotated")) {
+      imageViewHover.setTranslateX(80);
+    } else {
+      imageViewHover.setTranslateY(88);
+    }
+  }
+
+  private static void handleBoardWeaponHoverOut(MouseEvent event) {
+    Node imageViewHover = (Node) event.getSource();
+    imageViewHover.setScaleX(1);
+    imageViewHover.setScaleY(1);
+    imageViewHover.setTranslateX(0);
+    imageViewHover.setTranslateY(0);
+    imageViewHover.setOpacity(0);
   }
 }
