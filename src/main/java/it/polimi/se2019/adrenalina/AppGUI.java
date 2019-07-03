@@ -7,7 +7,10 @@ import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.BoardFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.PlayerDashboardFXController;
+import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
+
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import javafx.application.Application;
@@ -33,6 +36,13 @@ public class AppGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     setStage(primaryStage);
     Log.setName("ClientGUI");
+
+    try {
+      IOUtils.loadClientConfiguration();
+    } catch (IOException e) {
+      Log.severe("Unable to load client configuration!");
+      System.exit(1);
+    }
 
     primaryStage.setOnCloseRequest(windowEvent -> {
       try {
