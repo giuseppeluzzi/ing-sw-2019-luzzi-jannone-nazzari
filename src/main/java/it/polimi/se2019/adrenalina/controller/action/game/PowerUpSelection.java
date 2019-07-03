@@ -155,8 +155,10 @@ public class PowerUpSelection extends GameAction {
         getPlayer().getName(),
         ANSIColor.RESET), board);
 
-    getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(null, getPlayer()
-            .getPowerUps(), discard);
+    if (getPlayer().getClient() != null) {
+      getPlayer().getClient().getPlayerDashboardsView().showPowerUpSelection(null, getPlayer()
+          .getPowerUps(), discard);
+    }
   }
 
   @Override
