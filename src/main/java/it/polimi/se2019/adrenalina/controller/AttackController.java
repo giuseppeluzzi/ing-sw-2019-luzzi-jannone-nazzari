@@ -79,7 +79,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
                 new CheckReloadWeapons(boardController.getTurnController(), player));
       }
     }
-
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -173,7 +172,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       return;
     }
     player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
-
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -187,7 +185,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
       ((DominationBoard) boardController.getBoard())
           .addDamage(event.getAmmoColor(), event.getPlayerColor());
     }
-
     boardController.getTurnController().executeGameActionQueue();
   }
 
