@@ -172,6 +172,7 @@ public class GUIBoardView extends BoardView {
   public void update(BoardSkullsUpdate event) {
     super.update(event);
     AppGUI.getLobbyFXController().setSkulls(event.getSkulls());
+    AppGUI.getBoardFXController().loadBoardSkulls(event.getSkulls());
   }
 
   @Override

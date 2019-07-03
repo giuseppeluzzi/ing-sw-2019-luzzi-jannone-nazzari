@@ -83,6 +83,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
       }
 
       disablePowerUps();
+      boardFXController.hidePowerUpSkip();
     };
 
     discardPowerUpEventHandler = event -> {
@@ -97,6 +98,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
       }
 
       disablePowerUps();
+      boardFXController.hidePowerUpSkip();
     };
 
     weaponTranslateEnterEventHandler = event -> ((Node) event.getSource()).setTranslateX(-275);
@@ -275,8 +277,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     }
   }
 
-  public void usingPowerUp(List<PowerUp> powerUps, boolean discard) {
-    getBoardFXController().setHelpText("Seleziona un potenziamento da utilizzare");
+  public void usingPowerUp(List<PowerUp> powerUps, boolean discard, String targetName) {
     for (Node image : getPowerUpsContainer().getChildren()) {
       if (image.getProperties().containsKey(PROP_POWERUP) && powerUps
           .contains(image.getProperties().get(PROP_POWERUP))) {
@@ -284,8 +285,14 @@ public class PlayerDashboardFXController extends DashboardFXController {
 
         if (discard) {
           powerUpEventHandler = discardPowerUpEventHandler;
+          getBoardFXController().setHelpText("Seleziona un potenziamento da scartare");
         } else {
           powerUpEventHandler = selectPowerUpEventHandler;
+          if (targetName != null) {
+            getBoardFXController().setHelpText("Seleziona un potenziamento da utilizzare contro " + targetName);
+          } else {
+            getBoardFXController().setHelpText("Seleziona un potenziamento da utilizzare");
+          }
           getBoardFXController().showPowerUpSkip();
         }
 
