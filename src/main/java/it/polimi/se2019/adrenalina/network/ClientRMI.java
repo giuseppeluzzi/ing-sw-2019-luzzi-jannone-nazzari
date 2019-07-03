@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.network;
 
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
+import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.NotBoundException;
@@ -27,8 +28,8 @@ public class ClientRMI extends Client {
 
     try {
       Registry registry = LocateRegistry.getRegistry(
-              ipAddress == null ? Configuration.getInstance().getServerIP() : ipAddress,
-              port == null ? Configuration.getInstance().getRmiPort() : port);
+              ipAddress == null ? ClientConfig.getInstance().getServerIP() : ipAddress,
+              port == null ? ClientConfig.getInstance().getRmiPort() : port);
       server = (ServerInterface) registry.lookup("MyServer");
 
       UnicastRemoteObject.exportObject(getBoardView(), 0);

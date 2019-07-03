@@ -14,30 +14,29 @@ import java.util.List;
 /**
  * Application configuration read from external file.
  */
-public class Configuration {
+public class ServerConfig {
 
-  private String serverIP;
-  private Integer rmiPort;
-  private Integer socketPort;
   private Integer joinTimeout;
   private Integer turnTimeout;
   private Integer deathDamages;
   private Integer spawnPointDamagesFF;
+  private Integer rmiPort;
+  private Integer socketPort;
   private List<String> weaponFiles;
   private List<String> mapFiles;
   private Integer suspendTimeoutCount;
   private Integer minNumPlayers;
 
-  private static Configuration instance = null;
+  private static ServerConfig instance = null;
 
-  private Configuration() {
+  private ServerConfig() {
     // private constructor
   }
 
-  public static synchronized Configuration getInstance() {
+  public static synchronized ServerConfig getInstance() {
     if (instance == null) {
       String json = null;
-      Path extFile = Paths.get(Constants.CONFIG_FILE);
+      Path extFile = Paths.get(Constants.SERVER_CONFIG_FILE);
       try {
         json = String.join("\n", Files.readAllLines(extFile));
       } catch (IOException e) {
@@ -45,13 +44,9 @@ public class Configuration {
         System.exit(1);
       }
       Gson gson = new Gson();
-      instance = gson.fromJson(json, Configuration.class);
+      instance = gson.fromJson(json, ServerConfig.class);
     }
     return instance;
-  }
-
-  public String getServerIP() {
-    return serverIP;
   }
 
   public Integer getJoinTimeout() {

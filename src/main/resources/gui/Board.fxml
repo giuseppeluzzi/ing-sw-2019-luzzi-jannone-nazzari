@@ -51,9 +51,9 @@
 
         <HBox visible="false" fx:id="normalBoardSkulls" GridPane.columnIndex="0"
           GridPane.rowIndex="0"
-          GridPane.columnSpan="3" spacing="12.5" alignment="CENTER_RIGHT">
+          GridPane.columnSpan="3" spacing="12.5" alignment="CENTER_LEFT">
           <padding>
-            <Insets top="-19" right="79"/>
+            <Insets top="-20" left="58"/>
           </padding>
         </HBox>
 
@@ -143,7 +143,7 @@
         </VBox>
       </AnchorPane>
 
-      <GridPane fx:id="bottomGrid" gridLinesVisible="true" GridPane.columnIndex="0"
+      <GridPane fx:id="bottomGrid" gridLinesVisible="false" GridPane.columnIndex="0"
         GridPane.columnSpan="2" GridPane.rowIndex="1" translateY="55">
         <rowConstraints>
           <RowConstraints minHeight="180" maxHeight="180" vgrow="NEVER"/>

@@ -354,7 +354,6 @@ public class Square extends Observable implements Target {
       throw new IllegalStateException("Square is not a spawnPoint");
     }
     weapons.add(weapon);
-    Log.info("Aggiunta " + weapon.getName() + " in " + posX + " - " + posY);
     try {
       notifyObservers(new SquareWeaponUpdate(posX, posY, getWeapons()));
     } catch (RemoteException e) {

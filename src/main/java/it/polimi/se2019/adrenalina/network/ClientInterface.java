@@ -16,6 +16,7 @@ public interface ClientInterface extends Remote {
   void setPlayerColor(PlayerColor color) throws RemoteException;
   boolean isDomination() throws RemoteException;
   void setDomination(boolean domination) throws RemoteException;
+  void updateConfiguration(int turnTimeout, int minNumPlayers) throws RemoteException;
 
   void showMessage(MessageSeverity severity, String title, String message) throws RemoteException;
   void showMessage(MessageSeverity severity, String message) throws RemoteException;

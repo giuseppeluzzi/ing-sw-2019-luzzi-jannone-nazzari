@@ -58,7 +58,6 @@
 .logLine {
   -fx-font-weight: 600;
   -fx-font-size: 14;
-  -fx-text-fill: #ffffff;
 }
 
 .helperText {

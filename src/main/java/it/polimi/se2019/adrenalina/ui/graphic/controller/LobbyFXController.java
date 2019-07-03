@@ -1,14 +1,17 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
-import it.polimi.se2019.adrenalina.controller.Configuration;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogChangePlayerColor;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.rmi.RemoteException;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.Styleable;
@@ -17,7 +20,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -28,8 +35,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.rmi.RemoteException;
 
 public class LobbyFXController {
 
@@ -113,6 +118,19 @@ public class LobbyFXController {
         FXUtils.lobbyTransition(lobbyConnecting, lobbyPlayers);
       }
     });
+
+    IntegerProperty seconds;
+    try {
+      seconds = ((GUIBoardView) AppGUI.getClient().getBoardView())
+          .getTimer().getSeconds();
+    } catch (RemoteException e) {
+      return;
+    }
+    seconds.addListener(change -> {
+      Platform.runLater(() -> lobbyPlayersSubtitle.setText(
+          "La partita inizierà tra " + seconds.getValue() + " " + (seconds.getValue() == 1
+              ? "secondo" : "secondi")));
+    });
   }
 
   public void nextMap(ActionEvent actionEvent) {
@@ -169,7 +187,7 @@ public class LobbyFXController {
   }
 
   private void updateTitle() {
-    int diff = Configuration.getInstance().getMinNumPlayers() - players.size();
+    int diff = ClientConfig.getInstance().getMinNumPlayers() - players.size();
     if (diff <= 0) {
       lobbyPlayersSubtitle.setText("La partita inizierà a breve");
     } else if (diff == 1) {
@@ -177,7 +195,7 @@ public class LobbyFXController {
           "Per iniziare la partita serve un altro giocatore");
     } else {
       lobbyPlayersSubtitle.setText(
-          "Per iniziare la partita servono altri " + (Configuration.getInstance().getMinNumPlayers()
+          "Per iniziare la partita servono altri " + (ClientConfig.getInstance().getMinNumPlayers()
               - players.size()) + " giocatori");
     }
   }

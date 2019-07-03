@@ -26,7 +26,6 @@ import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
-import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 
 /**
@@ -76,6 +75,10 @@ public abstract class BoardView extends Observable implements BoardViewInterface
   @Override
   public void hideTimer() {
     timer.stop();
+  }
+
+  protected Timer getTimer() {
+    return timer;
   }
 
   public void sendEvent(Event event) throws RemoteException {
@@ -224,7 +227,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
       board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(null);
     } else {
       board.getSquare(event.getPosX(), event.getPosY()).setAmmoCard(
-              new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
+          new AmmoCard(event.getRed(), event.getBlue(), event.getYellow(), event.getPowerUps()));
     }
   }
 
@@ -240,6 +243,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see MapSelectionEvent
    */
@@ -249,6 +253,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   /**
    * Event handing.
+   *
    * @param event the received event
    * @see PlayerColorSelectionEvent
    */

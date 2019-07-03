@@ -74,7 +74,8 @@ public enum EventType {
   BOARD_SET_SQUARE_UPDATE(BoardSetSquareUpdate.class),
   BOARD_ADD_PLAYER_UPDATE(BoardAddPlayerUpdate.class),
   BOARD_REMOVE_PLAYER_UPDATE(BoardRemovePlayerUpdate.class),
-  PING_EVENT(PingEvent.class);
+  PING_EVENT(PingEvent.class),
+  CONFIGURATION_UPDATE(ConfigurationUpdate.class);
 
   private final Class<? extends Event> eventClass;
 

@@ -1,9 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.Configuration;
-import it.polimi.se2019.adrenalina.controller.Effect;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.viewcontroller.*;
@@ -106,7 +103,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
         );
 
 
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+    timer.start(ClientConfig.getInstance().getTurnTimeout(), () -> inputManager.cancel(
         WAIT_TIMEOUT_MSG));
 
     String response;
@@ -170,7 +167,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
       choices.add(action.getName() + ": " + action.getDescription());
     }
     inputManager.input("Seleziona un'azione:", choices);
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+    timer.start(ClientConfig.getInstance().getTurnTimeout(), () -> inputManager.cancel(
         WAIT_TIMEOUT_MSG));
     try {
       notifyObservers(
@@ -192,7 +189,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
   public void showWeaponSelection(List<Weapon> weapons) {
     boardView.showBoard();
     String weapon = null;
-    timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
+    timer.start(ClientConfig.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
     try {
       weapon = TUIUtils.selectWeapon(weapons, "Quale arma vuoi usare?", true);
     } catch (InputCancelledException e) {
@@ -216,7 +213,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     List<Effect> buffer;
     List<Effect> chosenEffects;
     Queue<Effect> effectQueue;
-    timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
+    timer.start(ClientConfig.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
     try {
       buffer = new ArrayList<>(TUIUtils.showEffectSelection(effects, false));
       chosenEffects = new ArrayList<>(buffer);
@@ -229,7 +226,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     while (! effectQueue.isEmpty()) {
       currentEffect = effectQueue.remove();
       if (! currentEffect.getSubEffects().isEmpty()) {
-        timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
+        timer.start(ClientConfig.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
         try {
           buffer = new ArrayList<>(TUIUtils.showEffectSelection(currentEffect.getSubEffects(), true));
           chosenEffects.addAll(buffer);
@@ -314,7 +311,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     List<Effect> chosenEffectsWithAnyTimes = chosenEffects.stream().filter(x -> ! x.isAnyTime() || x.isIndexConfirmed()).collect(Collectors.toList());
     for (Effect effect : chosenEffects) {
       if (effect.isAnyTime()) {
-        timer.start(Configuration.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
+        timer.start(ClientConfig.getInstance().getTurnTimeout(), TUIUtils::cancelInput);
         int effectIndex = TUIUtils.askAnyTimeIndex(effect, chosenEffectsWithAnyTimes);
         timer.stop();
         List<Effect> temp = new ArrayList<>(chosenEffectsWithAnyTimes);
@@ -344,7 +341,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     boardView.showBoard();
     String ownWeapon;
     String squareWeapon;
-    timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+    timer.start(ClientConfig.getInstance().getTurnTimeout(), () -> inputManager.cancel(
             WAIT_TIMEOUT_MSG));
     try {
       ownWeapon = TUIUtils
@@ -442,7 +439,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     if (discard) {
       prompt = "Seleziona quale potenziamento scartare:";
-      timer.start(Configuration.getInstance().getTurnTimeout(),
+      timer.start(ClientConfig.getInstance().getTurnTimeout(),
           () -> inputManager.cancel("Tempo di attesa scaduto! Verrà scartato un potenziamento a caso"));
     } else {
       if (targetName != null) {
@@ -451,7 +448,7 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
         prompt = "Seleziona quale potenziamento usare:";
       }
       choices.add("Non usare nessun potenziamento");
-      timer.start(Configuration.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+      timer.start(ClientConfig.getInstance().getTurnTimeout(), () -> inputManager.cancel(
           WAIT_TIMEOUT_MSG));
     }
     for (PowerUp powerUp : powerUps) {
