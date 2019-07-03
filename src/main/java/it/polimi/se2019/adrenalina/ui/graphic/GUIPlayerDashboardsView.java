@@ -220,7 +220,7 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     final PlayerDashboardFXController playerDashboardFXController = AppGUI
         .getPlayerDashboardFXController();
 
-    Platform.runLater(() -> playerDashboardFXController.usingPowerUp(powerUps, discard));
+    Platform.runLater(() -> playerDashboardFXController.usingPowerUp(powerUps, discard, targetName));
   }
 
   @Override
