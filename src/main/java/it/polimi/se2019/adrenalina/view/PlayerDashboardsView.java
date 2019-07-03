@@ -347,15 +347,17 @@ public abstract class PlayerDashboardsView extends Observable implements
                     event.getCurrentPlayerColor().getAnsiColor(),
                     newPlayer.getName(),
                     ANSIColor.RESET));
-            boardView.showBoard();
           }
         } catch (InvalidPlayerException ignored) {
           //
-        } catch (RemoteException e) {
-          Log.exception(e);
         }
       }
       boardView.getBoard().setCurrentPlayer(event.getCurrentPlayerColor());
+      try {
+        boardView.showBoard();
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
     }
   }
 

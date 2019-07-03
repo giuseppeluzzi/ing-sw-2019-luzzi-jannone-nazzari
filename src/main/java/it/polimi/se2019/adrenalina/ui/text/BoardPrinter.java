@@ -40,25 +40,25 @@ public final class BoardPrinter {
     switch (cornerType) {
       case TOP_LEFT_CORNER:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 6;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 8;
         horizontalSide = Direction.WEST;
         verticalSide = Direction.NORTH;
         break;
       case TOP_RIGHT_CORNER:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + Constants.TUI_SQUARE_WIDTH + 1;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 6;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 8;
         horizontalSide = Direction.EAST;
         verticalSide = Direction.NORTH;
         break;
       case BOTTOM_LEFT_CORNER:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 5;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 7;
         horizontalSide = Direction.WEST;
         verticalSide = Direction.SOUTH;
         break;
       case BOTTOM_RIGHT_CORNER:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + Constants.TUI_SQUARE_WIDTH + 1;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 5;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 7;
         horizontalSide = Direction.EAST;
         verticalSide = Direction.SOUTH;
         break;
@@ -104,7 +104,7 @@ public final class BoardPrinter {
     switch (direction) {
       case WEST:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 6 + pos;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 8 + pos;
         squareDimension = Constants.TUI_SQUARE_HEIGHT;
         doorDimension = Constants.TUI_DOOR_HEIGHT;
         line = Constants.TUI_VERTICAL_LINE;
@@ -113,7 +113,7 @@ public final class BoardPrinter {
         break;
       case EAST:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + Constants.TUI_SQUARE_WIDTH + 1;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 6 + pos;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 8 + pos;
         squareDimension = Constants.TUI_SQUARE_HEIGHT;
         doorDimension = Constants.TUI_DOOR_HEIGHT;
         line = Constants.TUI_VERTICAL_LINE;
@@ -122,7 +122,7 @@ public final class BoardPrinter {
         break;
       case NORTH:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2 + pos;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 6;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 8;
         squareDimension = Constants.TUI_SQUARE_WIDTH;
         doorDimension = Constants.TUI_DOOR_WIDTH;
         line = Constants.TUI_HORIZONTAL_LINE;
@@ -131,7 +131,7 @@ public final class BoardPrinter {
         break;
       case SOUTH:
         x = square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2 + pos;
-        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 5;
+        y = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 7;
         squareDimension = Constants.TUI_SQUARE_WIDTH;
         doorDimension = Constants.TUI_DOOR_WIDTH;
         line = Constants.TUI_HORIZONTAL_LINE;
@@ -172,19 +172,19 @@ public final class BoardPrinter {
   /**
    * Generates the attributes inside a square and adds it to the print matrix. An attribute can be
    * either a spawn point or an ammo card. The latter is represented with its three-letter code.
-   * @see it.polimi.se2019.adrenalina.model.AmmoCard#toString
+   * @see AmmoCard#toString
    * @param map the print matrix that will be updated
    * @param square the square to consider
    */
   private static void drawAttributes(String [][] map, Square square) {
     int centerX = square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2 + (Constants.TUI_SQUARE_WIDTH - 1) / 2;
-    int centerY = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 4;
+    int centerY = square.getPosY() * Constants.TUI_SQUARE_HEIGHT + Constants.TUI_SQUARE_HEIGHT + 6;
     if (square.isSpawnPoint()) {
       map[centerX][centerY] = square.getColor().getAnsiColor() + Constants.TUI_SPAWNPOINT_ICON;
     } else if (square.getAmmoCard() != null) {
-      map[centerX - 1][centerY] = ANSIColor.RESET.toString() + square.getAmmoCard().toString().substring(0, 1);
-      map[centerX][centerY] = ANSIColor.RESET.toString() + square.getAmmoCard().toString().substring(1, 2);
-      map[centerX + 1][centerY] = ANSIColor.RESET.toString() + square.getAmmoCard().toString().substring(2, 3);
+      map[centerX - 1][centerY] = ANSIColor.RESET + square.getAmmoCard().toString().substring(0, 1);
+      map[centerX][centerY] = ANSIColor.RESET + square.getAmmoCard().toString().substring(1, 2);
+      map[centerX + 1][centerY] = ANSIColor.RESET + square.getAmmoCard().toString().substring(2, 3);
     }
   }
 
@@ -215,7 +215,7 @@ public final class BoardPrinter {
       drawEdge(map, square, Direction.SOUTH, x);
     } else {
       // Inner whitespace fill-up
-      map[square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2 + x][square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 6 + y] = " ";
+      map[square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2 + x][square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 8 + y] = " ";
     }
   }
 
@@ -257,7 +257,7 @@ public final class BoardPrinter {
       } else {
         y = Constants.TUI_SQUARE_HEIGHT / 2;
       }
-      map[square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2 + x][square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 6 + y] = square.getPlayers().get(i).getColor().getAnsiColor() + Constants.TUI_PLAYER_ICON;
+      map[square.getPosX() * Constants.TUI_SQUARE_WIDTH + 2 + x][square.getPosY() * Constants.TUI_SQUARE_HEIGHT + 8 + y] = square.getPlayers().get(i).getColor().getAnsiColor() + Constants.TUI_PLAYER_ICON;
     }
   }
 
@@ -268,10 +268,10 @@ public final class BoardPrinter {
   private static void drawCoordinates(String[][] map) {
     int initXOffset = 2 + (Constants.TUI_SQUARE_WIDTH - 1) / 2;
     for (Integer i = 0; i < 4; i++) {
-      map[initXOffset][4] = ANSIColor.RESET + i.toString();
+      map[initXOffset][6] = ANSIColor.RESET + i.toString();
       initXOffset += Constants.TUI_SQUARE_WIDTH;
     }
-    int initYOffset = 6 + Constants.TUI_SQUARE_HEIGHT / 2;
+    int initYOffset = 8 + Constants.TUI_SQUARE_HEIGHT / 2;
     for (Integer i = 0; i < 3; i++) {
       map[0][initYOffset] = ANSIColor.RESET + i.toString();
       initYOffset += Constants.TUI_SQUARE_HEIGHT;
@@ -346,7 +346,7 @@ public final class BoardPrinter {
     String playerColor = player.getColor().getAnsiColor().toString(dim);
     int baseX = 4 * Constants.TUI_SQUARE_WIDTH + 4;
     int posX = baseX;
-    int posY = num * Constants.TUI_DASHBOARD_HEIGHT + 4;
+    int posY = num * Constants.TUI_DASHBOARD_HEIGHT + 6;
 
     // Top corners
     map[posX][posY] = playerColor + CornerType.TOP_LEFT_CORNER;
@@ -499,16 +499,16 @@ public final class BoardPrinter {
       for (Weapon weapon : board.getSpawnPointSquare(color).getWeapons()) {
         int offset = 0;
         for (char c : weapon.getName().toCharArray()) {
-          map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 6 + colorCount] = color.getAnsiColor() + Character.toString(c) + ANSIColor.RESET;
+          map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 8 + colorCount] = color.getAnsiColor() + Character.toString(c) + ANSIColor.RESET;
           offset++;
         }
-        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 6 + colorCount] = " ";
+        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 8 + colorCount] = " ";
         offset++;
-        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 6 + colorCount] = "(";
+        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 8 + colorCount] = "(";
         offset++;
-        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 6 + colorCount] = weapon.getSymbol();
+        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 8 + colorCount] = weapon.getSymbol();
         offset++;
-        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 6 + colorCount] = ")";
+        map[offset + i * Constants.TUI_WEAPON_NAME_WIDTH][3 * Constants.TUI_SQUARE_HEIGHT + 8 + colorCount] = ")";
         colorCount++;
       }
       i++;
@@ -589,15 +589,47 @@ public final class BoardPrinter {
   }
 
   /**
+   * Draws the killshots track and adds it to the print matrix.
+   * @param map the print matrix
+   * @param numSkulls the number of remaining skulls
+   * @param killShots the list of killshots
+   */
+  private static void drawKillShots(String[][] map, int numSkulls, List<Kill> killShots) {
+    String killShotsTitle = "Tracciato mortale: ";
+    int posX = 0;
+    for (char c : killShotsTitle.toCharArray()) {
+      map[posX][4] = Character.toString(c);
+      posX++;
+    }
+    for (Kill kill : killShots) {
+      map[posX][4] = String.format(
+              "%s%s%s",
+              kill.getPlayerColor().getAnsiColor(),
+              kill.isOverKill() ? Constants.TUI_OVERKILL_ICON : Constants.TUI_DAMAGE_ICON,
+              ANSIColor.RESET);
+      posX++;
+      map[posX][4] = " ";
+      posX++;
+    }
+    for (int i = 0; i < numSkulls; i++) {
+      map[posX][4] = ANSIColor.RED + Constants.TUI_SKULL_ICON + ANSIColor.RESET;
+      posX++;
+      map[posX][4] = " ";
+      posX++;
+    }
+  }
+
+  /**
    * Generates a print matrix.
    * @param board the board with the game map to draw
    * @return a print matrix for the game board
    */
   static String[][] buildMap(Board board) {
-    String[][] map = new String[4 * Constants.TUI_SQUARE_WIDTH + Constants.TUI_DASHBOARD_WIDTH + 5][3 * Constants.TUI_SQUARE_HEIGHT + 10];
+    String[][] map = new String[4 * Constants.TUI_SQUARE_WIDTH + Constants.TUI_DASHBOARD_WIDTH + 5][3 * Constants.TUI_SQUARE_HEIGHT + 12];
     if (board.isDominationBoard()) {
       drawSpawnpointDamages(map, board);
     }
+    drawKillShots(map, board.getSkulls(), board.getKillShots());
     for (Square square : board.getSquares()) {
       drawSquare(map, square);
       drawPlayers(map, square);
@@ -619,7 +651,7 @@ public final class BoardPrinter {
   static void print(Board board) {
     String[][] map = buildMap(board);
     int dominationLines = board.isDominationBoard() ? 0 : 4;
-    for (int y = dominationLines; y < 3 * Constants.TUI_SQUARE_HEIGHT + 10; y++) {
+    for (int y = dominationLines; y < 3 * Constants.TUI_SQUARE_HEIGHT + 12; y++) {
       for (int x = 0; x < 4 * Constants.TUI_SQUARE_WIDTH + Constants.TUI_DASHBOARD_WIDTH + 5; x++) {
         if (map[x][y] != null) {
           Log.print(map[x][y]);

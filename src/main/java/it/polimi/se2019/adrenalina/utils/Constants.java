@@ -24,6 +24,8 @@ public class Constants {
   public static final String TUI_SPAWNPOINT_ICON = "⊡";
   public static final String TUI_TAG_ICON = "✦";
   public static final String TUI_DAMAGE_ICON = "✚";
+  public static final String TUI_OVERKILL_ICON = "⚔︎";
+  public static final String TUI_SKULL_ICON = "♢";
 
   private Constants() {
     throw new IllegalStateException("Utility class");

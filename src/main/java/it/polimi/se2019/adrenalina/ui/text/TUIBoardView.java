@@ -310,6 +310,7 @@ public class TUIBoardView extends BoardView {
       return;
     }
     notifyObservers(new PlayerCollectWeaponEvent(getClient().getPlayerColor(), weapon));
+    showBoard();
   }
 
   /**
@@ -328,6 +329,7 @@ public class TUIBoardView extends BoardView {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+    showBoard();
   }
 
   /**
