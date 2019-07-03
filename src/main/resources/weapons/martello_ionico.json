@@ -8,7 +8,7 @@
             "costBlue": 0,
             "costYellow": 0,
             "anyTime": false,
-            "name": "Modalità base",
+            "name": "Modalita' base",
             "actions": [
                 {
                     "from": 0,
@@ -38,7 +38,7 @@
             "costBlue": 0,
             "costYellow": 0,
             "anyTime": false,
-            "name": "Modiltà polverizzare",
+            "name": "Modalita' polverizzare",
             "actions": [
                 {
                     "from": 0,

@@ -7,7 +7,7 @@
             "costRed": 0,
             "costBlue": 0,
             "costYellow": 0,
-            "name": "Modalità base",
+            "name": "Modalita' base",
             "actions": [
                 {
                     "from": 0,
@@ -55,7 +55,7 @@
             "costRed": 1,
             "costBlue": 0,
             "costYellow": 1,
-            "name": "Modalità punitore",
+            "name": "Modalita' punitore",
             "actions": [
                 {
                     "from": 0,

@@ -53,7 +53,7 @@
                 }
             ],
             "subEffects": [],
-            "name": "Modalità base"
+            "name": "Modalita' base"
         },
         {
             "costYellow": 2,
@@ -109,7 +109,7 @@
               }
             ],
             "costBlue": 0,
-            "name": "Modalità barbecue"
+            "name": "Modalita' barbecue"
         }
     ],
     "baseCost": "RED",

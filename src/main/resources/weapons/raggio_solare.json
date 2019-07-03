@@ -5,7 +5,7 @@
             "costBlue": 0,
             "costRed": 0,
             "subEffects": [],
-            "name": "Modalità base",
+            "name": "Modalita' base",
             "actions": [
                 {
                     "minDistance": 1,
@@ -67,7 +67,7 @@
                 }
             ],
             "costRed": 1,
-            "name": "Modalità nano-traccianti",
+            "name": "Modalita' nano-traccianti",
             "costBlue": 0,
             "subEffects": []
         }

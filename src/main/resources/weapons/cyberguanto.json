@@ -8,7 +8,7 @@
             "costBlue": 0,
             "costYellow": 0,
             "anyTime": false,
-            "name": "Modalità base",
+            "name": "Modalita' base",
             "actions": [
                 {
                     "from": 0,
@@ -43,7 +43,7 @@
             "costBlue": 1,
             "costYellow": 0,
             "anyTime": false,
-            "name": "Modalità cento pugni",
+            "name": "Modalita' cento pugni",
             "actions": [
                 {
                     "from": 0,

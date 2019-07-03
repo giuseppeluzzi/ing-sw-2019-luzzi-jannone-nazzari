@@ -3,7 +3,7 @@
         {
             "costYellow": 0,
             "subEffects": [],
-            "name": "Modalità base",
+            "name": "Modalita' base",
             "actions": [
                 {
                     "minDistance": 1,
@@ -32,7 +32,7 @@
         {
             "costYellow": 0,
             "subEffects": [],
-            "name": "Modalità fuoco confortevole",
+            "name": "Modalita' fuoco confortevole",
             "actions": [
                 {
                     "minDistance": 1,
