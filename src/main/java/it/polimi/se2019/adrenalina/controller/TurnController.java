@@ -38,6 +38,7 @@ public class TurnController implements Serializable {
   private final Timer timer = new Timer();
   private boolean endGame;
   private boolean suspendPlayer;
+  private int endGameReason;
 
   public TurnController(BoardController boardController) {
     this.boardController = boardController;
@@ -45,6 +46,17 @@ public class TurnController implements Serializable {
 
   public BoardController getBoardController() {
     return boardController;
+  }
+
+  /**
+   * Getter for endGameReason
+   * if 0 then the number of players is below the minimun allowed
+   * if 1 then all the skulls were removed and FinalFrenzy wasn't selected
+   * if 2 then FinalFrenzy has ended
+   * @return endGameReason
+   */
+  public int getEndGameReason() {
+    return endGameReason;
   }
 
   /**
@@ -163,23 +175,27 @@ public class TurnController implements Serializable {
 
     if (boardController.getBoard().getActivePlayers().size() < ServerConfig.getInstance().getMinNumPlayers()) {
       showEndGameReason("Il numero di giocatori è sceso sotto al limite minimo!");
+      endGameReason = 0;
       endGame = true;
       turnActionsQueue.add(new EndGame());
       executeGameActionQueue();
       return;
     } else if (boardController.getBoard().getSkulls() == 0 && !boardController.getBoard().isFinalFrenzySelected()) {
       showEndGameReason("Tutti i teschi del tracciato mortale sono stati presi!");
+      endGameReason = 1;
       endGame = true;
       turnActionsQueue.add(new EndGame());
       executeGameActionQueue();
       return;
     } else if (boardController.getBoard().isFinalFrenzyActive() && currentPlayerIndex == getFfActivatorIndex()) {
       showEndGameReason("La frenesia finale è terminata!");
+      endGameReason = 2;
       endGame = true;
       turnActionsQueue.add(new EndGame());
       executeGameActionQueue();
       return;
     }
+
     if (suspendPlayer) {
       currentPlayer.setStatus(PlayerStatus.SUSPENDED);
       suspendPlayer = false;
@@ -358,6 +374,13 @@ public class TurnController implements Serializable {
     }
   }
 
+  /**
+   * Getter that specifies if it's the last turn
+   * @return endGame
+   */
+  public boolean isEndGame() {
+    return endGame;
+  }
 
   /**
    * Refills a map with new weapons and powerUps to replace the taken ones.

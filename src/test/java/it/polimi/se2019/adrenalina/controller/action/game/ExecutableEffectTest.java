@@ -18,6 +18,7 @@ import org.junit.Test;
 
 public class ExecutableEffectTest {
 
+
  @Test
  public void testExecuteWeapon() {
    Board board = new Board();
@@ -45,4 +46,5 @@ public class ExecutableEffectTest {
    executableEffect3.execute(board);
    assertFalse(weapon.isLoaded());
  }
+ 
 }

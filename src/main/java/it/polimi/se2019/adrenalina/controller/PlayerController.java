@@ -7,6 +7,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectEffect;
 import it.polimi.se2019.adrenalina.controller.action.game.SelectWeapon;
 import it.polimi.se2019.adrenalina.controller.action.game.SquareSelection;
+import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
@@ -68,22 +69,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.PLAYER_SELECT_WEAPON_EFFECT_EVENT);
     registeredEvents.add(EventType.PLAYER_SWAP_WEAPON_EVENT);
     registeredEvents.add(EventType.PLAYER_UNSUSPEND_EVENT);
-  }
-
-  /**
-   * Get a player of the specified color from the board.
-   * @param board the game board
-   * @param playerColor the color of the player to get
-   * @return the Player object
-   */
-  private Player getPlayerFromBoard(Board board, PlayerColor playerColor) {
-    Player player;
-    try {
-      player = board.getPlayerByColor(playerColor);
-    } catch (InvalidPlayerException ignored) {
-      return null;
-    }
-    return player;
   }
 
   /**
@@ -161,8 +146,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
       return;
     }
 
+
     boardController.getTurnController().addTurnActions(
-        new Payment(boardController.getTurnController(),
+    new Payment(boardController.getTurnController(),
             player, new WeaponBuy(board.getWeaponByName(event.getWeaponName()))
             ));
     boardController.getTurnController().executeGameActionQueue();
@@ -193,7 +179,11 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     PowerUp powerUp = player.getPowerUp(event.getType(), event.getColor());
 
     if (powerUp.getType() == PowerUpType.TAGBACK_GRANADE) {
-      powerUp.setTargetHistory(1, getPlayerFromBoard(board, board.getCurrentPlayer()));
+      try {
+        powerUp.setTargetHistory(1, board.getPlayerByColor(board.getCurrentPlayer()));
+      } catch (InvalidPlayerException e) {
+        Log.debug("Invalid player thrown in PlayerController");
+      }
     }
     Buyable buyable = new PowerUpUsage(powerUp);
     player.setCurrentBuying(buyable);
@@ -211,18 +201,8 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
    * @param board board
    */
   public static void sendMessageAllClients(Player excludedPlayer, String message, Board board) {
-    if (excludedPlayer != null) {
-      for (Player notCurrentPlayer : board.getPlayers()) {
-        if (notCurrentPlayer.getColor() != excludedPlayer.getColor() && notCurrentPlayer.getClient() != null) {
-          try {
-            notCurrentPlayer.getClient().showGameMessage(message);
-          } catch (RemoteException e) {
-            Log.exception(e);
-          }
-        }
-      }
-    } else {
-      for (Player player : board.getPlayers()) {
+    for (Player player : board.getPlayers()) {
+      if (player != excludedPlayer && player.getClient() != null) {
         try {
           player.getClient().showGameMessage(message);
         } catch (RemoteException e) {
@@ -255,8 +235,25 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         ANSIColor.RESET,
         event.getTurnAction().getMessage()), board);
 
+    List<GameAction> actions = getActions(event.getTurnAction(), player);
+
+    if (actions == null) {
+      return;
+    }
+
+    boardController.getTurnController().addTurnActions(actions);
+    boardController.getTurnController().executeGameActionQueue();
+  }
+
+  /**
+   * Given a TurnAction returns a list of GameActions
+   * @param action turnAction selected
+   * @param player player who chosed the turnAction
+   * @return list of GameAction
+   */
+  public List<GameAction> getActions(TurnAction action, Player player) {
     List<GameAction> actions = new ArrayList<>();
-    switch (event.getTurnAction()) {
+    switch (action) {
       case RUN:
         actions.add(new SquareSelection(player, 3, false));
         break;
@@ -298,11 +295,9 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         actions.add(new SelectEffect(player));
         break;
       default:
-        return;
+        return null;
     }
-
-    boardController.getTurnController().addTurnActions(actions);
-    boardController.getTurnController().executeGameActionQueue();
+    return actions;
   }
 
   /**
@@ -329,47 +324,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
     }
 
     spawnPlayer(player, powerUp);
-
-    // CHEAT SUITE
-    // TODO CANCELLARE
-    //player.addAmmo(AmmoColor.RED, 3);
-    //player.addAmmo(AmmoColor.BLUE, 3);
-    //player.addAmmo(AmmoColor.YELLOW, 3);
-    /*Weapon weapon = board.getWeapons().get(0);
-    Weapon weapon1 = board.getWeapons().get(1);
-    Weapon weapon2 = board.getWeapons().get(2);
-    board.takeWeapon(weapon);
-    player.addWeapon(weapon);
-    board.takeWeapon(weapon1);
-    player.addWeapon(weapon1);
-    board.takeWeapon(weapon2);
-    player.addWeapon(weapon2);*/
-    if ("PeppeSocket".equals(player.getName())) {
-      player.addAmmo(AmmoColor.RED, 3);
-      player.addAmmo(AmmoColor.BLUE, 3);
-      player.addAmmo(AmmoColor.YELLOW, 3);
-    }
-    if ("socket2".equals(player.getName())) {
-      player.addAmmo(AmmoColor.RED, 3);
-      player.addAmmo(AmmoColor.BLUE, 3);
-      player.addAmmo(AmmoColor.YELLOW, 3);
-    }
-    if ("socket3".equals(player.getName())) {
-      player.addAmmo(AmmoColor.RED, 3);
-      player.addAmmo(AmmoColor.BLUE, 3);
-      player.addAmmo(AmmoColor.YELLOW, 3);
-    }
-    if ("socket4".equals(player.getName())) {
-      player.addAmmo(AmmoColor.RED, 3);
-      player.addAmmo(AmmoColor.BLUE, 3);
-      player.addAmmo(AmmoColor.YELLOW, 3);
-    }
-    if ("socket5".equals(player.getName())) {
-      player.addAmmo(AmmoColor.RED, 3);
-      player.addAmmo(AmmoColor.BLUE, 3);
-      player.addAmmo(AmmoColor.YELLOW, 3);
-    }
-    // END CHEAT SUITE
 
     boardController.getTurnController().executeGameActionQueue();
   }

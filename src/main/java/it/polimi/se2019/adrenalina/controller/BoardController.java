@@ -345,10 +345,12 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     timer.start(ServerConfig.getInstance().getJoinTimeout(), this::chooseMap);
 
     board.getPlayers().stream().forEach(p -> {
-      try {
-        boardViews.get(p.getClient()).startTimer(ServerConfig.getInstance().getJoinTimeout());
-      } catch (RemoteException e) {
-        Log.exception(e);
+      if (p.getClient() != null) {
+        try {
+          boardViews.get(p.getClient()).startTimer(ServerConfig.getInstance().getJoinTimeout());
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
       }
     });
   }
