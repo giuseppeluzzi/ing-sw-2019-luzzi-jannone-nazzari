@@ -69,9 +69,9 @@
     <rowConstraints>
       <RowConstraints percentHeight="20" vgrow="SOMETIMES"/>
       <RowConstraints vgrow="SOMETIMES"/>
-      <RowConstraints percentHeight="10" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="12" vgrow="SOMETIMES"/>
       <RowConstraints vgrow="SOMETIMES"/>
-      <RowConstraints percentHeight="8" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="6" vgrow="SOMETIMES"/>
       <RowConstraints vgrow="SOMETIMES"/>
       <RowConstraints percentHeight="26" vgrow="SOMETIMES"/>
     </rowConstraints>

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
@@ -18,8 +19,10 @@ import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.Dialog;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -116,6 +119,7 @@ public class BoardFXController {
 
   private Pane boardSkulls;
 
+  private final Timer turnTimer = new Timer();
   private boolean domination;
   private GUIGridSquare[][] grid;
 
@@ -212,11 +216,12 @@ public class BoardFXController {
     loaderPlayerDashboard.setController(playerDashboardFXController);
 
     // TODO decomemntare
-    try {
+    /*try {
       domination = AppGUI.getClient().isDomination();
     } catch (RemoteException e) {
       Log.exception(e);
-    }
+    }*/
+    domination = true;
     // END DEBUG
 
     if (domination) {
@@ -370,6 +375,7 @@ public class BoardFXController {
         button.setTooltip(new Tooltip(turnAction.getDescription()));
 
         button.setOnAction(event -> {
+          stopTurnTimer();
           try {
             ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
                 new PlayerActionSelectionEvent(AppGUI.getClient().getPlayerColor(), turnAction));
@@ -686,16 +692,20 @@ public class BoardFXController {
     if (track == null) {
       return;
     }
-    track.getChildren().clear();
+    HBox finalTrack = track;
 
-    for (PlayerColor kill : players) {
-      Circle circle = new Circle();
-      circle.setFill(Color.web(kill.getHexColor()));
-      circle.setStrokeWidth(1);
-      circle.setStroke(Color.BLACK);
-      circle.setRadius(5);
-      track.getChildren().add(circle);
-    }
+    Platform.runLater(() -> {
+      finalTrack.getChildren().clear();
+
+      for (PlayerColor kill : players) {
+        Circle circle = new Circle();
+        circle.setFill(Color.web(kill.getHexColor()));
+        circle.setStrokeWidth(1);
+        circle.setStroke(Color.BLACK);
+        circle.setRadius(5);
+        finalTrack.getChildren().add(circle);
+      }
+    });
   }
 
   public void switchDashboardToFrenzy(PlayerColor color) {
@@ -739,6 +749,7 @@ public class BoardFXController {
         .get(WEAPON_PROP))
         .getName();
 
+    stopTurnTimer();
     disableBoardWeapons();
 
     try {
@@ -751,6 +762,8 @@ public class BoardFXController {
 
   void handleSelectTarget(MouseEvent event) {
     final Target target = (Target) ((Node) event.getSource()).getProperties().get(TARGET_PROP);
+
+    stopTurnTimer();
 
     try {
       if (((Node) event.getSource()).getProperties().containsKey("move")) {
@@ -852,5 +865,27 @@ public class BoardFXController {
     imageViewHover.setTranslateX(0);
     imageViewHover.setTranslateY(0);
     imageViewHover.setOpacity(0);
+  }
+
+  private void cancelInput() {
+    Platform.runLater(() -> {
+      setHelpText("Tempo di attesa scaduto! Salti il turno!");
+      reset();
+    });
+  }
+
+  public void startTurnTimer(Dialog dialog) {
+    turnTimer.start(ClientConfig.getInstance().getTurnTimeout(), () -> {
+      dialog.close();
+      cancelInput();
+    });
+  }
+
+  public void startTurnTimer() {
+    turnTimer.start(ClientConfig.getInstance().getTurnTimeout(), this::cancelInput);
+  }
+
+  public void stopTurnTimer() {
+    turnTimer.stop();
   }
 }

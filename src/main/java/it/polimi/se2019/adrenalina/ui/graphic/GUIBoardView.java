@@ -79,23 +79,30 @@ public class GUIBoardView extends BoardView {
   @Override
   public void showDirectionSelect() {
     final DialogSelectDirection dialogSelectDirection = new DialogSelectDirection();
+
+    AppGUI.getBoardFXController().startTurnTimer(dialogSelectDirection);
     dialogSelectDirection.show();
   }
 
   @Override
   public void showSquareSelect(List<Target> targets) {
+    AppGUI.getBoardFXController().startTurnTimer();
     AppGUI.getBoardFXController()
         .enableSquareSelection(TargetType.MOVE_SQUARE, targets, true, false);
   }
 
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
+    AppGUI.getBoardFXController().startTurnTimer();
     AppGUI.getBoardFXController().enableBoardWeapons(weapons);
   }
 
   @Override
   public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
-    new DialogSpawnPointTrackSelection().show();
+    final DialogSpawnPointTrackSelection dialogSpawnPointTrackSelection = new DialogSpawnPointTrackSelection();
+
+    AppGUI.getBoardFXController().startTurnTimer(dialogSpawnPointTrackSelection);
+    dialogSpawnPointTrackSelection.show();
   }
 
   @Override
@@ -107,6 +114,7 @@ public class GUIBoardView extends BoardView {
   public void update(BoardStatusUpdate event) {
     super.update(event);
     if (event.getStatus() == BoardStatus.MATCH) {
+      AppGUI.getLobbyFXController().closeChangeColorDialog();
       Platform.runLater(() -> AppGUI.getStage().setScene(AppGUI.getBoardScene()));
     }
   }

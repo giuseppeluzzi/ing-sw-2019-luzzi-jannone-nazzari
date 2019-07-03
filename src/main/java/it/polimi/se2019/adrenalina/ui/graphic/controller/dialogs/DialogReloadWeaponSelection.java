@@ -66,6 +66,7 @@ public class DialogReloadWeaponSelection extends Dialog {
     }
 
     buttonNext.setOnAction(event -> {
+      AppGUI.getBoardFXController().stopTurnTimer();
       Weapon weapon = weapons.get(Integer.parseInt(((Styleable) weaponToggleGroup.getSelectedToggle()).getId()));
       try {
         ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
@@ -77,6 +78,7 @@ public class DialogReloadWeaponSelection extends Dialog {
     });
 
     buttonCancel.setOnAction(event -> {
+      AppGUI.getBoardFXController().stopTurnTimer();
       try {
         ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
                 new PlayerReloadEvent(AppGUI.getClient().getPlayerColor(), null));

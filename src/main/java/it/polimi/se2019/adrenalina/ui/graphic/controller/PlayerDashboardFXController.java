@@ -58,6 +58,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     super(boardFXController, playerColor);
 
     selectWeaponEventHandler = event -> {
+      boardFXController.stopTurnTimer();
       final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get(PROP_WEAPON))
           .getName();
 
@@ -72,6 +73,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     };
 
     selectPowerUpEventHandler = event -> {
+      boardFXController.stopTurnTimer();
       PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get(PROP_POWERUP);
 
       try {
@@ -87,6 +89,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
     };
 
     discardPowerUpEventHandler = event -> {
+      boardFXController.stopTurnTimer();
       PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get(PROP_POWERUP);
 
       try {
