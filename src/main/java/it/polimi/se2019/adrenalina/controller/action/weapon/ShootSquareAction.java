@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -100,8 +101,9 @@ public class ShootSquareAction extends ShootAction {
     return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.SHOOT_SQUARE
         && ((ShootAction) object).getTarget() == getTarget()
         && ((ShootAction) object).getDamages() == getDamages()
-        && ((ShootSquareAction) object).getExclude() == getExclude()
-        && ((ShootAction) object).getTag() == getTag();
+        && Arrays.equals(((ShootSquareAction) object).getExclude(), getExclude())
+        && ((ShootAction) object).getTag() == getTag()
+        && ((ShootSquareAction) object).distance == distance;
   }
 
   @Override
