@@ -45,10 +45,7 @@ public abstract class DashboardFXController {
 
   abstract Node generateSkull();
 
-
-  public Pane getDashboardContainer() {
-    return (Pane) getDamagesContainer().getParent();
-  }
+  public abstract Pane getDashboardBackground();
 
   public void setPlayerColor(PlayerColor color) {
     playerColor = color;
@@ -64,13 +61,13 @@ public abstract class DashboardFXController {
   }
 
   public void enable() {
-    getDashboardContainer().setEffect(null);
+    getDashboardBackground().setEffect(null);
   }
 
   public void disable() {
     ColorAdjust bnEffect = new ColorAdjust();
     bnEffect.setSaturation(-1);
-    getDashboardContainer().setEffect(bnEffect);
+    getDashboardBackground().setEffect(bnEffect);
   }
 
   public Pane generateAmmo(AmmoColor color) {

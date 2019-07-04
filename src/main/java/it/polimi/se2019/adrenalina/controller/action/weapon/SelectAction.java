@@ -117,10 +117,12 @@ public class SelectAction implements WeaponAction {
 
     if (!optional || !targets.isEmpty()) {
       object.setCurrentSelectTargetSlot(target);
-      try {
-        object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets, skippable);
-      } catch (RemoteException e) {
-        Log.exception(e);
+      if (object.getOwner().getClient() != null) {
+        try {
+          object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets, skippable);
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
       }
     }
   }
@@ -280,6 +282,8 @@ public class SelectAction implements WeaponAction {
         && ((SelectAction) object).target == target
         && ((SelectAction) object).differentRoom == differentRoom
         && ((SelectAction) object).selectType == selectType
+        && ((SelectAction) object).optional == optional
+        && ((SelectAction) object).skippable == skippable
         && ((SelectAction) object).useLastDirection == useLastDirection;
   }
 

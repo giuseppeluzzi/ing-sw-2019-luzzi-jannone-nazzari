@@ -236,14 +236,11 @@ public class BoardFXController {
     dashboardControllers.put(color, playerDashboardFXController);
     loaderPlayerDashboard.setController(playerDashboardFXController);
 
-    // TODO decomemntare
     try {
       domination = AppGUI.getClient().isDomination();
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    //domination = true;
-    // END DEBUG
 
     if (domination) {
       loadDominationInterface();
@@ -261,7 +258,10 @@ public class BoardFXController {
         bottomGrid.getChildren().add(playerDashboard);
 
         Player player = AppGUI.getClient().getBoardView().getBoard().getPlayerByColor(color);
-        dashboardControllers.get(color).getDashboardNameLabel().setText(player.getName() + " (" + player.getScore() + ")");
+        dashboardControllers.get(color).getDashboardNameLabel()
+            .setText(player.getName() + " (" + player.getScore() + ")");
+        dashboardControllers.get(color).getDashboardNameLabel()
+            .setFill(Color.web(color.getHexColor()));
       } catch (IOException e) {
         Log.exception(e);
       } catch (InvalidPlayerException ignored) {
@@ -312,7 +312,10 @@ public class BoardFXController {
         enemyDashboards.getChildren().add(dashboard);
 
         Player player = AppGUI.getClient().getBoardView().getBoard().getPlayerByColor(color);
-        dashboardControllers.get(color).getDashboardNameLabel().setText(player.getName() + " (" + player.getScore() + ")");
+        dashboardControllers.get(color).getDashboardNameLabel()
+            .setText(player.getName() + " (" + player.getScore() + ")");
+        dashboardControllers.get(color).getDashboardNameLabel()
+            .setFill(Color.web(color.getHexColor()));
       } catch (IOException e) {
         Log.exception(e);
       } catch (InvalidPlayerException ignored) {
@@ -822,12 +825,11 @@ public class BoardFXController {
   }
 
   private void handleSkipSelection(ActionEvent event) {
-    event.getSource(); // Just for Sonar
-
     try {
       ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
           new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
     } catch (RemoteException e) {
+      Log.debug(event.getSource().toString());
       Log.exception(e);
     }
 
@@ -871,13 +873,13 @@ public class BoardFXController {
   }
 
   private void handleNoPowerUpUsage(ActionEvent event) {
-    event.getSource(); // Just for sonar
     try {
       ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
           new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
       hidePowerUpSkip();
       AppGUI.getPlayerDashboardFXController().disablePowerUps();
     } catch (RemoteException e) {
+      Log.debug(event.getSource().toString());
       Log.exception(e);
     }
   }

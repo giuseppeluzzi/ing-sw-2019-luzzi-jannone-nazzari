@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -10,14 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-  alignment="BOTTOM_LEFT">
+  alignment="CENTER_LEFT">
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" maxWidth="90 "/>
     <ColumnConstraints hgrow="NEVER"/>
     <ColumnConstraints hgrow="NEVER" maxWidth="90"/>
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints vgrow="SOMETIMES"/>
+    <RowConstraints vgrow="NEVER" minHeight="190" maxHeight="190"/>
   </rowConstraints>
 
   <HBox fx:id="playerWeapons" alignment="CENTER_LEFT" maxWidth="90" minWidth="90" prefWidth="90"
@@ -57,8 +59,8 @@
     </ImageView>-->
   </HBox>
 
-  <GridPane id="playerDashboard" fx:id="playerDashboard" minWidth="760.0" GridPane.columnIndex="1"
-    GridPane.rowIndex="0" styleClass="debugPlayerDashboard" gridLinesVisible="false">
+  <GridPane id="playerDashboard" fx:id="playerDashboard" minWidth="760.0" alignment="CENTER" GridPane.columnIndex="1"
+    GridPane.rowIndex="0" gridLinesVisible="false">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="9"/>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5"/>
@@ -66,14 +68,18 @@
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="24"/>
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints percentHeight="20" vgrow="SOMETIMES"/>
-      <RowConstraints vgrow="SOMETIMES"/>
-      <RowConstraints percentHeight="12" vgrow="SOMETIMES"/>
-      <RowConstraints vgrow="SOMETIMES"/>
-      <RowConstraints percentHeight="6" vgrow="SOMETIMES"/>
-      <RowConstraints vgrow="SOMETIMES"/>
-      <RowConstraints percentHeight="26" vgrow="SOMETIMES"/>
+      <RowConstraints minHeight="5" maxHeight="5" vgrow="NEVER" />
+      <RowConstraints vgrow="NEVER" minHeight="37" maxHeight="37" />
+      <RowConstraints minHeight="35" maxHeight="35" vgrow="NEVER"/>
+      <RowConstraints vgrow="NEVER" minHeight="37" maxHeight="37"/>
+      <RowConstraints minHeight="35" maxHeight="35" vgrow="NEVER"/>
+      <RowConstraints vgrow="NEVER" minHeight="26" maxHeight="26"/>
+      <RowConstraints minHeight="15" maxHeight="15" vgrow="NEVER"/>
     </rowConstraints>
+
+    <Pane fx:id="playerDashboardBorders" id="playerDashboardBorders" GridPane.rowIndex="0"
+      GridPane.rowSpan="7" GridPane.columnIndex="0" GridPane.columnSpan="4"
+      minHeight="190" maxHeight="190"/>
 
     <HBox id="playerTagsContainer" fx:id="playerTagsContainer" alignment="CENTER_RIGHT"
       minHeight="32" GridPane.columnIndex="1" GridPane.columnSpan="2"
@@ -86,9 +92,10 @@
     <HBox id="playerSkulls" fx:id="playerSkulls" minHeight="32" spacing="8" GridPane.columnIndex="2"
       GridPane.rowIndex="5"/>
 
-    <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3" minHeight="182" spacing="20">
+    <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3"
+      minHeight="182" spacing="20">
       <padding>
-        <Insets top="10" />
+        <Insets top="10"/>
       </padding>
       <Text fx:id="playerName" styleClass="playerDashboardName"/>
       <HBox alignment="CENTER">
@@ -98,6 +105,4 @@
     </VBox>
   </GridPane>
 
-  <Pane fx:id="playerDashboardBorders" id="playerDashboardBorders" GridPane.rowIndex="0"
-    GridPane.columnIndex="1" minWidth="760.0" minHeight="350"/>
 </GridPane>

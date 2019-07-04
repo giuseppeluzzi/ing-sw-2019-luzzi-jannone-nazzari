@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
 public class PlayerDashboardFXController extends DashboardFXController {
 
   @FXML
-  private Pane playerDashboardBackground;
+  private Pane playerDashboardBorders;
 
   @FXML
   private GridPane playerDashboard;
@@ -165,6 +165,11 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   @Override
+  public Pane getDashboardBackground() {
+    return playerDashboardBorders;
+  }
+
+  @Override
   Pane generateTag(PlayerColor color) {
     Pane pane = new Pane();
     pane.setPrefHeight(37);
@@ -253,13 +258,13 @@ public class PlayerDashboardFXController extends DashboardFXController {
   @Override
   public void setFrenzy() {
     Platform.runLater(() ->
-        playerDashboard.setStyle(
+        playerDashboardBorders.setStyle(
             "-fx-background-image: url(\"gui/assets/img/ff_dashboard_" + getPlayerColor()
                 + ".png\");"));
   }
 
   private void setDashboardColor(PlayerColor color) {
-    playerDashboard.setStyle(
+    playerDashboardBorders.setStyle(
         "-fx-background-image: url(\"gui/assets/img/dashboard_" + color + ".png\");");
   }
 

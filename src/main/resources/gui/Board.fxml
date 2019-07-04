@@ -82,7 +82,7 @@
 
         <VBox GridPane.columnIndex="5" GridPane.rowIndex="0" alignment="BOTTOM_CENTER">
           <padding>
-            <Insets bottom="8.5" left="27"/>
+            <Insets bottom="8.5" left="20"/>
           </padding>
           <ImageView fitWidth="50.0" preserveRatio="true">
             <image>
@@ -94,7 +94,7 @@
         <VBox fx:id="boardHasWeapons" GridPane.columnIndex="5" GridPane.rowIndex="1"
           GridPane.rowSpan="2" alignment="CENTER">
           <padding>
-            <Insets bottom="67.5" right="-6"/>
+            <Insets bottom="67.5" right="0"/>
           </padding>
           <ImageView fitWidth="70.0" preserveRatio="true">
             <image>
