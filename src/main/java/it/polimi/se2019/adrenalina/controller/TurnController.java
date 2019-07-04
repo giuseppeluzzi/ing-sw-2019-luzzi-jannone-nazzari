@@ -154,8 +154,6 @@ public class TurnController implements Serializable {
     try {
       currentPlayer = boardController.getBoard()
           .getPlayerByColor(boardController.getBoard().getCurrentPlayer());
-      currentPlayer.setCurrentExecutable(null);
-      currentPlayer.setCurrentBuying(null);
     } catch (InvalidPlayerException e) {
       Log.critical(PLAYER_NOT_EXIST_MSG);
       return;
@@ -216,9 +214,9 @@ public class TurnController implements Serializable {
       boardController.getBoard().setStatus(BoardStatus.FINAL_FRENZY);
     }
 
-    boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
     refillMap();
     addGameTurn(currentPlayer);
+    boardController.getBoard().setCurrentPlayer(currentPlayer.getColor());
     executeGameActionQueue();
   }
 

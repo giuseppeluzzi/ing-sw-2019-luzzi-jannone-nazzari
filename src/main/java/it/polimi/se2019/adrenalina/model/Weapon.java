@@ -98,10 +98,11 @@ public class Weapon extends ExecutableObject implements Buyable {
    * @param loaded, true if weapon is loaded, false otherwise
    */
   public void setLoaded(boolean loaded) {
+    boolean previousStatus = this.loaded;
     this.loaded = loaded;
     try {
       Player owner = getOwner();
-      if (owner.getClient() != null) {
+      if (owner.getClient() != null && previousStatus != this.loaded) {
         notifyLoaded(owner);
       }
     } catch (IllegalStateException ignore) {
