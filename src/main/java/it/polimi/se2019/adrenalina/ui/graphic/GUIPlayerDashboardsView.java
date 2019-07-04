@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.graphic;
 
+import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
@@ -96,6 +97,7 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   public void update(CurrentPlayerUpdate event) {
     super.update(event);
     AppGUI.getBoardFXController().setCurrentEnabledDashboard(event.getCurrentPlayerColor());
+    AppGUI.getBoardFXController().stopTurnTimer();
   }
 
   @Override
