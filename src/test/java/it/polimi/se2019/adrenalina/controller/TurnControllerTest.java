@@ -5,10 +5,6 @@ import static org.junit.Assert.*;
 
 import it.polimi.se2019.adrenalina.controller.action.game.EndGame;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
-import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
-import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
-import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
-import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
@@ -122,4 +118,13 @@ public class TurnControllerTest {
     turnController.prepare();
     assertEquals(4, turnController.getActionQueueSize());
   }
+
+  /*
+  @Test
+  public void testTurnTimeout() {
+    GameAction syncAction = new SelectEffect(player);
+    turnController.addTurnActions(syncAction);
+    turnController.executeGameActionQueue();
+
+  }*/
 }

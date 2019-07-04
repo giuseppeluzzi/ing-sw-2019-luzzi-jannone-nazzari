@@ -102,6 +102,16 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     return turnController;
   }
 
+  public Player getPlayer(PlayerColor color) {
+    Player player;
+    try {
+      player = board.getPlayerByColor(color);
+    } catch (InvalidPlayerException ignored) {
+      return null;
+    }
+    return player;
+  }
+
   public AttackController getAttackController() {
     return attackController;
   }

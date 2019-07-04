@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.controller.action.game.CheckReloadWeapons;
 import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
@@ -52,15 +53,16 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.SPAWN_POINT_DAMAGE_EVENT);
   }
 
+
+
   /**
    * Event fired when a player reloads a weapon.
    * @param event event specifying the weapon reloaded
    */
   public void update(PlayerReloadEvent event) {
-    Player player;
-    try {
-      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
-    } catch (InvalidPlayerException ignored) {
+    Player player = boardController.getPlayer(event.getPlayerColor());
+
+    if (player == null) {
       return;
     }
 
@@ -79,6 +81,7 @@ public class AttackController extends UnicastRemoteObject implements Observer {
                 new CheckReloadWeapons(boardController.getTurnController(), player));
       }
     }
+
     boardController.getTurnController().executeGameActionQueue();
   }
 
@@ -98,14 +101,12 @@ public class AttackController extends UnicastRemoteObject implements Observer {
    * @param event event specifying selected target
    */
   public void update(SelectPlayerEvent event) {
-    Player player;
-    Player target;
-    try {
-      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
-      target = boardController.getBoard().getPlayerByColor(event.getSelectedColor());
-    } catch (InvalidPlayerException ignored) {
+    Player player = boardController.getPlayer(event.getPlayerColor());
+    Player target = boardController.getPlayer(event.getSelectedColor());
+    if (player == null || target == null) {
       return;
     }
+
     ExecutableObject executableObject = player.getCurrentExecutable();
     executableObject.setTargetHistory(executableObject.getCurrentSelectTargetSlot(), target);
     boardController.getTurnController().executeGameActionQueue();
@@ -116,12 +117,11 @@ public class AttackController extends UnicastRemoteObject implements Observer {
    * @param event received event
    */
   public void update(SkipSelectionEvent event) {
-    Player player;
-    try {
-      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
-    } catch (InvalidPlayerException ignored) {
+    Player player = boardController.getPlayer(event.getPlayerColor());
+    if (player == null) {
       return;
     }
+
     ExecutableObject executableObject = player.getCurrentExecutable();
     executableObject.setSkipUntilSelect(true);
     boardController.getTurnController().executeGameActionQueue();
@@ -132,10 +132,8 @@ public class AttackController extends UnicastRemoteObject implements Observer {
    * @param event event specifying selected target
    */
   public void update(SelectSquareEvent event) {
-    Player player;
-    try {
-      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
-    } catch (InvalidPlayerException ignored) {
+    Player player = boardController.getPlayer(event.getPlayerColor());
+    if (player == null) {
       return;
     }
 
@@ -150,12 +148,11 @@ public class AttackController extends UnicastRemoteObject implements Observer {
    * @param event event specifying selected direction
    */
   public void update(SelectDirectionEvent event) {
-    Player player;
-    try {
-      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
-    } catch (InvalidPlayerException ignored) {
+    Player player = boardController.getPlayer(event.getPlayerColor());
+    if (player == null) {
       return;
     }
+
     player.getCurrentExecutable().setLastUsageDirection(event.getSelectedDirection());
     boardController.getTurnController().executeGameActionQueue();
   }
@@ -165,12 +162,11 @@ public class AttackController extends UnicastRemoteObject implements Observer {
    * @param event event specifying selected square
    */
   public void update(SquareMoveSelectionEvent event) {
-    Player player;
-    try {
-      player = boardController.getBoard().getPlayerByColor(event.getPlayerColor());
-    } catch (InvalidPlayerException ignored) {
+    Player player = boardController.getPlayer(event.getPlayerColor());
+    if (player == null) {
       return;
     }
+
     player.setSquare(boardController.getBoard().getSquare(event.getSquareX(), event.getSquareY()));
     boardController.getTurnController().executeGameActionQueue();
   }

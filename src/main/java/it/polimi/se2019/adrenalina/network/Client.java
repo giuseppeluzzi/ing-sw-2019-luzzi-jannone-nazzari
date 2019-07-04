@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.network;
 
 
-import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
