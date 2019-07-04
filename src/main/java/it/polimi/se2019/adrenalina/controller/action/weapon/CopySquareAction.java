@@ -36,12 +36,12 @@ public class CopySquareAction implements WeaponAction {
     return gson.toJson(this);
   }
 
-  public static SelectAction deserialize(String json) {
+  public static CopySquareAction deserialize(String json) {
     if (json == null) {
       throw new IllegalArgumentException("Argument json can't be null");
     }
     Gson gson = new Gson();
-    return gson.fromJson(json, SelectAction.class);
+    return gson.fromJson(json, CopySquareAction.class);
   }
 
   public int getOrigin() {

@@ -243,7 +243,7 @@ public class SquareTest {
     assertEquals("unexpected result after setWeapons", weapons, base.getWeapons());
   }
 
-  /*
+
   @Test
   public void testAddDamages() {
     DominationBoard board = new DominationBoard();
@@ -270,7 +270,7 @@ public class SquareTest {
     square4.addDamages(PlayerColor.BLUE, 1, false);
     assertEquals("unexpected result after addDamages", 1, board.getRedDamages().size());
   }
-   */
+
 
   @Test (expected = IllegalStateException.class)
   public void testAddDamagesException() {

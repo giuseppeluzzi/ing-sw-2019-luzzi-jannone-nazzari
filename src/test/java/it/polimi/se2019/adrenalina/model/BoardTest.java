@@ -72,16 +72,6 @@ public class BoardTest {
     board.setSquare(null);
   }
 
-  @Test
-  public void testGetSquare() {
-    try {
-      board.getSquare(0, 2);
-      board.getSquare(2, 0);
-    } catch (IllegalArgumentException e) {
-      fail("IllegalArgumentException thrown unnecessarily");
-    }
-  }
-
   @Test(expected = IllegalArgumentException.class)
   public void testGetSquareException1() {
     board.getSquare(3, 3);
@@ -108,6 +98,7 @@ public class BoardTest {
     board.addPowerUp(powerUp);
     try {
       board.drawPowerUp(powerUp);
+      assertEquals(1, board.getTakenPowerUps().size());
     } catch (IllegalArgumentException e) {
       fail("IllegalArgumentException thrown unnecessarily");
     }
@@ -210,7 +201,7 @@ public class BoardTest {
   }
 
   @Test
-  public void testSet() {
+  public void testBoard() {
     Player player1 = new Player("test1", PlayerColor.GREEN, board);
     Player player2 = new Player("test2", PlayerColor.GREY, board);
     Player player3 = new Player("test3", PlayerColor.YELLOW, board);

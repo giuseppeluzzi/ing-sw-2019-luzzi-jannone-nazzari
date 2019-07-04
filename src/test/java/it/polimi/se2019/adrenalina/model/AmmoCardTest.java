@@ -13,7 +13,6 @@ public class AmmoCardTest {
   @Test
   public void testAmmoCard() {
     AmmoCard ammoCard = null;
-
     try {
       ammoCard = new AmmoCard(1,2,0,0);
     } catch (InvalidParameterException e) {

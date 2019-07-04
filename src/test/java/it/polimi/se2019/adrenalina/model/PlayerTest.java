@@ -73,8 +73,8 @@ public class PlayerTest {
     }
   }
 
-  @Test
-  public void testAddPowerUpException() {
+  @Test(expected = InvalidPowerUpException.class)
+  public void testAddPowerUpException() throws InvalidPowerUpException {
 
     for (int i = 0; i < 3; i++) {
       try {
@@ -83,12 +83,7 @@ public class PlayerTest {
 
       }
     }
-    try {
-      player.addPowerUp(new Newton(AmmoColor.RED));
-      fail("Exception not caught correctly");
-    } catch (InvalidPowerUpException e) {
-
-    }
+    player.addPowerUp(new Newton(AmmoColor.RED));
   }
 
   @Test
@@ -104,7 +99,6 @@ public class PlayerTest {
 
   @Test(expected = IllegalStateException.class)
   public void testWeaponException() {
-
     for (int i = 0; i < 4; i++) {
       player.addWeapon(new Weapon(1,2,3,AmmoColor.BLUE,"testWeapon", "X"));
     }
@@ -253,7 +247,7 @@ public class PlayerTest {
   }
 
   @Test
-  public void testGet() {
+  public void testPlayer() {
     Weapon weapon = new Weapon(0,1,0, AmmoColor.YELLOW, "test", "X");
     Weapon weapon2 = new Weapon(0,1,0, AmmoColor.YELLOW, "test2", "X");
     player.addWeapon(weapon2);
@@ -278,6 +272,7 @@ public class PlayerTest {
     player2.updateDamages(player.getDamages());
     player.assignPoints();
     player2.assignPoints();
+    assertFalse(player2.isDead());
   }
 
   @Test
@@ -291,14 +286,7 @@ public class PlayerTest {
   }
 
   @Test
-  public void testHandleLastSkull() {
-    board.setFinalFrenzySelected(true);
-    board.setSkulls(1);
-    player.addDamages(PlayerColor.GREY, ServerConfig.getInstance().getDeathDamages(), false);
-  }
-
-  @Test
-  public void testSet() {
+  public void testSetter() {
     List<PlayerColor> tags = new ArrayList<>();
     Weapon weapon1 = new Weapon(0,0,0,AmmoColor.BLUE,"test", "r");
     Weapon weapon2 = new Weapon(0,0,0,AmmoColor.BLUE,"test2", "w");

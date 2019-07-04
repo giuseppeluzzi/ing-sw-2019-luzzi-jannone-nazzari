@@ -112,7 +112,6 @@ public class BoardControllerTest {
   @Test
   public void testRemovePlayer() {
     Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
-    //player.setClient(new FakeTestClient("test", false, true));
     try {
       boardController.addPlayer(player);
     } catch (FullBoardException | PlayingBoardException | EndedGameException ignore) {
@@ -128,18 +127,6 @@ public class BoardControllerTest {
     }
 
     assertEquals(PlayerStatus.DISCONNECTED, player.getStatus());
-
-  }
-
-
-  private class FakeTestClient extends Client {
-
-    private static final long serialVersionUID = 3058306177850233433L;
-
-    protected FakeTestClient(String playerName, boolean domination, boolean tui) {
-      super(playerName, domination, tui);
-    }
-
 
   }
 }

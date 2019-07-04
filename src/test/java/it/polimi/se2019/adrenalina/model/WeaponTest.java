@@ -129,10 +129,14 @@ public class WeaponTest {
   public void testReset() {
     Weapon weapon = new Weapon(1,0,0,AmmoColor.BLUE,"test","f");
     Player player = new Player("testPlayer", PlayerColor.GREY, null);
+    weapon.setDidShoot();
     weapon.setTargetHistory(0, player);
+    weapon.setLastUsageDirection(Direction.NORTH);
     if (weapon.targetHistoryContainsKey(0) && weapon.targetHistoryContainsValue(player)) {
       weapon.reset();
     }
+    assertEquals(weapon.getTargetHistory(0).getName(), player.getName());
+    assertNull(weapon.getLastUsageDirection());
   }
 
   @Test

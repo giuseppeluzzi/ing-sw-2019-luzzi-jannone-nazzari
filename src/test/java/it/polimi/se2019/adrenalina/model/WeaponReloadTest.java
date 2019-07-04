@@ -33,21 +33,37 @@ public class WeaponReloadTest {
     assertEquals(weapon, weaponReload.getBaseBuyable());
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testAfterPaymentException() {
+    BoardController boardController = null;
+    try {
+      boardController = new BoardController(false);
+    } catch (RemoteException ignore) {
+      //
+    }
+    TurnController turnController = new TurnController(boardController);
+
     Board board = new Board();
-    Player player = new Player("test", PlayerColor.GREY, board);
+    Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
+    Player player2 = new Player("test2", PlayerColor.YELLOW, boardController.getBoard());
+    boardController.getBoard().addPlayer(player);
+    boardController.getBoard().addPlayer(player2);
+    boardController.getBoard().setCurrentPlayer(PlayerColor.YELLOW);
+
     player.addWeapon(weapon);
-    Square square1 = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, board);
-    Square square2 = new Square(0, 1, SquareColor.RED, WALL, WALL, WALL, WALL, board);
-    Square square3 = new Square(1, 0, SquareColor.RED, WALL, WALL, WALL, WALL, board);
-    Square square4 = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL, board);
+    Square square1 = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
+    Square square2 = new Square(0, 1, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
+    Square square3 = new Square(1, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
+    Square square4 = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
     square1.setSpawnPoint(true);
     square1.addWeapon(weapon);
     board.setSquare(square1);
     board.setSquare(square2);
     board.setSquare(square3);
     board.setSquare(square4);
-    weaponReload.afterPaymentCompleted(null, board, player);
+    board.addWeapon(weapon);
+    weaponReload.afterPaymentCompleted(turnController, board, player);
+    assertTrue(player.getWeaponByName("test").isLoaded());
   }
+
 }

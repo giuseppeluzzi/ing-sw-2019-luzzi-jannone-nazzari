@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.BoardStatus;
 import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
@@ -19,6 +20,7 @@ public class DominationBoardTest {
   public void setDominationBoard() {
     dominationBoard = new DominationBoard();
   }
+
   @Test
   public void testSerialization(){
     DominationBoard dominationBoard2;
@@ -64,6 +66,23 @@ public class DominationBoardTest {
       assertEquals(2, dominationBoard.getRedDamages().size());
       assertEquals(2, dominationBoard.getBlueDamages().size());
       assertEquals(2, dominationBoard.getYellowDamages().size());
+      assertEquals(new Integer(2), dominationBoard.getSpawnPointDamages().get(AmmoColor.RED));
     }
+  }
+
+  @Test
+  public void testCheckEnableFrenzy() {
+    List<PlayerColor> damages = new ArrayList<>();
+
+    for (int i = 0; i < 8; i++) {
+      damages.add(PlayerColor.GREEN);
+    }
+    dominationBoard.setFinalFrenzySelected(true);
+    dominationBoard.setStatus(BoardStatus.MATCH);
+    dominationBoard.updateDamages(AmmoColor.RED, damages);
+    damages.remove(0);
+    dominationBoard.updateDamages(AmmoColor.BLUE, damages);
+    dominationBoard.addBlueDamage(PlayerColor.GREEN);
+    assertEquals(BoardStatus.FINAL_FRENZY_ENABLED, dominationBoard.getStatus());
   }
 }

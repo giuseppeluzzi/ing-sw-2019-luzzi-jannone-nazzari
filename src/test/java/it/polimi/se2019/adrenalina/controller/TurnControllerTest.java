@@ -118,13 +118,4 @@ public class TurnControllerTest {
     turnController.prepare();
     assertEquals(4, turnController.getActionQueueSize());
   }
-
-  /*
-  @Test
-  public void testTurnTimeout() {
-    GameAction syncAction = new SelectEffect(player);
-    turnController.addTurnActions(syncAction);
-    turnController.executeGameActionQueue();
-
-  }*/
 }
