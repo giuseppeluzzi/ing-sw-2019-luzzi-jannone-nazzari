@@ -218,6 +218,16 @@ public class BoardFXController {
     return dashboardControllers.get(color);
   }
 
+  public void setCurrentEnabledDashboard(PlayerColor enabledColor) {
+    for (Entry<PlayerColor, DashboardFXController> dashboard : dashboardControllers.entrySet()) {
+      if (dashboard.getKey() == enabledColor) {
+        dashboard.getValue().enable();
+      } else {
+        dashboard.getValue().disable();
+      }
+    }
+  }
+
   public void loadPlayerDashboard(PlayerColor color) {
     FXMLLoader loaderPlayerDashboard = new FXMLLoader(
         AppGUI.class.getClassLoader().getResource("gui/PlayerDashboard.fxml"));

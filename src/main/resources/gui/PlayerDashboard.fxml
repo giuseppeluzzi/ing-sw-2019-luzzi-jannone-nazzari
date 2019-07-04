@@ -93,6 +93,6 @@
     </HBox>
   </GridPane>
 
-  <Pane fx:id="playerDashboardBorders" id="playerDashboardBorders" GridPane.rowIndex="0"
+  <Pane fx:id="playerDashboardCover" id="playerDashboardCover" GridPane.rowIndex="0"
     GridPane.columnIndex="1" minWidth="760.0" minHeight="350"/>
 </GridPane>

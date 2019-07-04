@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -26,15 +27,24 @@ public abstract class DashboardFXController {
   }
 
   abstract HBox getDamagesContainer();
+
   abstract HBox getTagsContainer();
+
   abstract HBox getSkullsContainer();
+
   abstract FlowPane getAmmosContainer();
 
   abstract HBox getWeaponContainer();
+
   abstract HBox getPowerUpsContainer();
 
   abstract Pane generateTag(PlayerColor damage);
+
   abstract Node generateSkull();
+
+  public Pane getDashboardContainer() {
+    return (Pane) getDamagesContainer().getParent();
+  }
 
   public void setPlayerColor(PlayerColor color) {
     playerColor = color;
@@ -47,6 +57,16 @@ public abstract class DashboardFXController {
 
   public BoardFXController getBoardFXController() {
     return boardFXController;
+  }
+
+  public void enable() {
+    getDashboardContainer().setEffect(null);
+  }
+
+  public void disable() {
+    ColorAdjust bnEffect = new ColorAdjust();
+    bnEffect.setSaturation(-1);
+    getDashboardContainer().setEffect(bnEffect);
   }
 
   public Pane generateAmmo(AmmoColor color) {
@@ -157,7 +177,9 @@ public abstract class DashboardFXController {
   }
 
   public abstract void updateWeapons(List<Weapon> weapons, int weaponsNum);
+
   public abstract void updatePowerUps(List<PowerUp> powerUps);
+
   public abstract void updateDashboard(PlayerColor color);
 
   public abstract void setFrenzy();
