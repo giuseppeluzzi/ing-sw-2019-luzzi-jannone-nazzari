@@ -62,5 +62,7 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
 
     void showFinalRanks() throws RemoteException;
 
+    void showDisconnectWarning() throws RemoteException;
+
     void cancelInput() throws RemoteException;
 }

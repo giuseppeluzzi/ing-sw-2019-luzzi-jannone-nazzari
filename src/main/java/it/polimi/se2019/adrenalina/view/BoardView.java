@@ -77,6 +77,9 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     timer.stop();
   }
 
+  @Override
+  public abstract void showDisconnectWarning();
+
   protected Timer getTimer() {
     return timer;
   }

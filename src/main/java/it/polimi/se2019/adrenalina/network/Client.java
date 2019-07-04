@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.network;
 
 
-import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.MessageSeverity;
@@ -185,10 +184,20 @@ public abstract class Client implements ClientInterface, Serializable {
   }
 
   @Override
-  public void disconnect(String message) {
+  public void disconnect(String message, boolean keepAlive) {
     if (!message.isEmpty()) {
       showMessage(MessageSeverity.ERROR, "Disconnessione", message);
     }
-    System.exit(0);
+    if (tui) {
+      System.exit(0);
+    }
+
+    if (! keepAlive) {
+      try {
+        boardView.showDisconnectWarning();
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    }
   }
 }

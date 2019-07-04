@@ -1,7 +1,6 @@
 package it.polimi.se2019.adrenalina.network;
 
 import it.polimi.se2019.adrenalina.controller.ClientConfig;
-import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.rmi.NotBoundException;
@@ -56,7 +55,7 @@ public class ClientRMI extends Client {
           Thread.currentThread().interrupt();
           break;
         } catch (RemoteException e) {
-          disconnect("La connessione con il server è stata persa!");
+          disconnect("La connessione con il server è stata persa!", false);
         }
       }
     });
@@ -69,8 +68,8 @@ public class ClientRMI extends Client {
   }
 
   @Override
-  public void disconnect(String message) {
-    super.disconnect(message);
+  public void disconnect(String message, boolean keepAlive) {
+    super.disconnect(message, keepAlive);
     pooler.interrupt();
     System.exit(0);
   }
