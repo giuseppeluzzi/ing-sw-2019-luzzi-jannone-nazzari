@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ProgressBar?>
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@assets/style.css"
   xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" id="gameContainer">
   <children>
@@ -67,9 +68,9 @@
             <padding>
               <Insets top="12" left="25"/>
             </padding>
-            <HBox fx:id="blueSpawnPointDamages" spacing="7"/>
-            <HBox fx:id="redSpawnPointDamages" spacing="7"/>
-            <HBox fx:id="yellowSpawnPointDamages" spacing="7"/>
+            <HBox fx:id="blueSpawnPointDamages" spacing="7" minHeight="10" maxHeight="10" />
+            <HBox fx:id="redSpawnPointDamages" spacing="7" minHeight="10" maxHeight="10" />
+            <HBox fx:id="yellowSpawnPointDamages" spacing="7" minHeight="10" maxHeight="10" />
           </VBox>
           <FlowPane fx:id="dominationBoardSkulls" alignment="TOP_LEFT" orientation="HORIZONTAL"
             prefWrapLength="65" hgap="6" vgap="12">
@@ -182,5 +183,7 @@
       </GridPane>
 
     </GridPane>
+
+    <ProgressBar fx:id="turnProgressBar" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" styleClass="turnProgressBar" progress="0" minHeight="5" maxHeight="5" />
   </children>
 </AnchorPane>

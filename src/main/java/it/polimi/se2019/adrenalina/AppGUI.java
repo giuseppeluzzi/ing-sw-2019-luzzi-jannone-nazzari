@@ -1,6 +1,9 @@
 package it.polimi.se2019.adrenalina;
 
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
+import it.polimi.se2019.adrenalina.model.Kill;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
 import it.polimi.se2019.adrenalina.network.ClientRMI;
 import it.polimi.se2019.adrenalina.network.ClientSocket;
@@ -9,10 +12,10 @@ import it.polimi.se2019.adrenalina.ui.graphic.controller.LobbyFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.PlayerDashboardFXController;
 import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
-
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -82,14 +85,14 @@ public class AppGUI extends Application {
     boardFXController.getDashboardController(PlayerColor.GREEN).updateAmmos(1,1,1);
     boardFXController.getDashboardController(PlayerColor.YELLOW).updateAmmos(1,1,1);
     /*boardFXController.loadEnemyDashboard(PlayerColor.BLUE);
-    boardFXController.loadEnemyDashboard(PlayerColor.GREY);*/
-    /*boardFXController.updateKilltrack(Arrays.asList(new Kill[]{
+    boardFXController.loadEnemyDashboard(PlayerColor.GREY);
+    boardFXController.updateKilltrack(Arrays.asList(new Kill[]{
         new Kill(PlayerColor.GREEN, false),
         new Kill(PlayerColor.GREEN, true),
         new Kill(PlayerColor.GREEN, true),
         new Kill(PlayerColor.GREEN, true),
         new Kill(PlayerColor.YELLOW, false)
-    }), 8);/*
+    }), 8);
     boardFXController.updateSpawnpointDamages(AmmoColor.RED, Arrays.asList(new PlayerColor[] {
         PlayerColor.YELLOW,
         PlayerColor.BLUE,
@@ -148,7 +151,7 @@ public class AppGUI extends Application {
         PlayerColor.PURPLE,
         PlayerColor.PURPLE,
         PlayerColor.PURPLE
-    }));
+    }));/*
     boardFXController.getDashboardController(PlayerColor.GREEN).updateTags(Arrays.asList(new PlayerColor[] {
         PlayerColor.YELLOW,
         PlayerColor.YELLOW,

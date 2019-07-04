@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <GridPane alignment="CENTER" maxWidth="20" xmlns="http://javafx.com/javafx/8.0.121"
   xmlns:fx="http://javafx.com/fxml/1" gridLinesVisible="false">
@@ -72,4 +73,7 @@
         vgap="5"/>
     </HBox>
   </GridPane>
+
+  <Pane fx:id="enemyDashboardCover" GridPane.rowIndex="0" GridPane.columnIndex="1" minWidth="576.0"
+    minHeight="141"/>
 </GridPane>

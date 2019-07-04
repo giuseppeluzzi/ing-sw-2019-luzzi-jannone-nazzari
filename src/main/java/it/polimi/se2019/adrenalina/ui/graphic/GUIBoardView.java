@@ -22,22 +22,26 @@ import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Client;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.FinalRanksFXController;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSelectDirection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSpawnPointTrackSelection;
 import it.polimi.se2019.adrenalina.utils.Constants;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 
 public class GUIBoardView extends BoardView {
 
   private static final long serialVersionUID = -5469323461908447838L;
 
   public GUIBoardView(Client client) {
-    super(client, new GUITimer(client));
+    super(client, new GUITimer());
   }
 
   @Override
@@ -79,34 +83,57 @@ public class GUIBoardView extends BoardView {
   @Override
   public void showDirectionSelect() {
     final DialogSelectDirection dialogSelectDirection = new DialogSelectDirection();
+
+    AppGUI.getBoardFXController().startTurnTimer(dialogSelectDirection);
     dialogSelectDirection.show();
   }
 
   @Override
   public void showSquareSelect(List<Target> targets) {
+    AppGUI.getBoardFXController().startTurnTimer();
     AppGUI.getBoardFXController()
         .enableSquareSelection(TargetType.MOVE_SQUARE, targets, true, false);
   }
 
   @Override
   public void showBuyableWeapons(List<Weapon> weapons) {
+    AppGUI.getBoardFXController().startTurnTimer();
     AppGUI.getBoardFXController().enableBoardWeapons(weapons);
   }
 
   @Override
   public void showSpawnPointTrackSelection(Map<AmmoColor, Integer> damages) {
-    new DialogSpawnPointTrackSelection().show();
+    final DialogSpawnPointTrackSelection dialogSpawnPointTrackSelection = new DialogSpawnPointTrackSelection();
+
+    AppGUI.getBoardFXController().startTurnTimer(dialogSpawnPointTrackSelection);
+    dialogSpawnPointTrackSelection.show();
   }
 
   @Override
   public void showFinalRanks() {
-    // TODO
+    FXMLLoader loaderRanks = new FXMLLoader(
+        AppGUI.class.getClassLoader().getResource("gui/FinalRanks.fxml"));
+    loaderRanks.setController(new FinalRanksFXController());
+
+    Platform.runLater(() -> {
+      Scene ranksScene;
+      try {
+        ranksScene = new Scene(loaderRanks.load());
+      } catch (IOException e) {
+        Log.exception(e);
+        return ;
+      }
+
+      ranksScene.getStylesheets().addAll(AppGUI.getCSS());
+      AppGUI.getStage().setScene(ranksScene);
+    });
   }
 
   @Override
   public void update(BoardStatusUpdate event) {
     super.update(event);
     if (event.getStatus() == BoardStatus.MATCH) {
+      AppGUI.getLobbyFXController().closeChangeColorDialog();
       Platform.runLater(() -> AppGUI.getStage().setScene(AppGUI.getBoardScene()));
     }
   }

@@ -1,9 +1,20 @@
 package it.polimi.se2019.adrenalina.ui.text;
 
-import it.polimi.se2019.adrenalina.controller.*;
+import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.ClientConfig;
+import it.polimi.se2019.adrenalina.controller.Effect;
+import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.Payment;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
-import it.polimi.se2019.adrenalina.event.viewcontroller.*;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerActionSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerUnsuspendEvent;
 import it.polimi.se2019.adrenalina.exceptions.InputCancelledException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
@@ -21,7 +32,15 @@ import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsView;
 
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

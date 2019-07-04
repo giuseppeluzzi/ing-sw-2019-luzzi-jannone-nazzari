@@ -1,5 +1,6 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
+import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
@@ -80,6 +81,7 @@ public class LobbyFXController {
   private int mapId;
 
   private final ObservableList<ListPlayer> players = FXCollections.observableArrayList();
+  private DialogChangePlayerColor changePlayerColorDialog;
 
   public void initialize() {
     lobbyConnecting.setVisible(true);
@@ -216,6 +218,12 @@ public class LobbyFXController {
     Platform.runLater(() -> skullsText.setText("Teschi: " + skulls));
   }
 
+  public void closeChangeColorDialog() {
+    if (changePlayerColorDialog != null) {
+      Platform.runLater(() -> changePlayerColorDialog.close());
+    }
+  }
+
   private static class ListPlayer {
 
     private final String name;
@@ -280,7 +288,8 @@ public class LobbyFXController {
             editIcon.setMouseTransparent(false);
             editIcon.setCursor(Cursor.HAND);
             editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-              new DialogChangePlayerColor().show();
+              AppGUI.getLobbyFXController().changePlayerColorDialog = new DialogChangePlayerColor();
+              AppGUI.getLobbyFXController().changePlayerColorDialog.show();
               event.consume();
             });
             hBox.getChildren().add(editIcon);

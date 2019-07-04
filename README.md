@@ -35,9 +35,9 @@ Analogamente i **parametri del client** possono essere configurati mediante un f
 
 Nella parte alta dell'interfaccia vengono mostrati i **tracciati** dei punti di generazione con i relativi danni (solo se si gioca in modalità dominazione) e il tracciato mortale con teschi e colpi mortali.
 
-Al centro viene stampata una rappresentazione testuale della **mappa** con coordinate per identificare ogni quadrato. In ogni quadrato è presente una **tessera munizioni** o un **punto di generazione**. Le tessere munizioni sono rappresentate con tre lettere, ognuna rappresentante il colore di una munizione o un potenziamento (`R` = rosso, `B` = blu, `Y` = giallo, `P` = potenziamento).
+Al centro viene stampata una rappresentazione testuale della **mappa** con coordinate per identificare ogni quadrato. In ogni quadrato è presente una **tessera munizioni** o un **punto di generazione**. Le tessere munizioni sono rappresentate con tre lettere, ognuna rappresentante il colore di una munizione o un potenziamento (`R` = munizione rossa, `B` = munizione blu, `Y` = munizione gialla, `P` = potenziamento).
 
-Sulla destra sono rappresentate le **plance dei giocatori**. Ogni plancia mostra, dall'altro verso il basso e da sinistra verso destra: il nome del giocatore, il punteggio (tra parentesi), i simboli delle armi, i marchi, i simboli dei potenziamenti, i danni, il punteggio attribuito all'uccisione, il numero di munizioni di ogni colore.
+Sulla destra sono rappresentate le **plance dei giocatori**. Ogni plancia mostra, dall'alto verso il basso e da sinistra verso destra: il nome del giocatore, il punteggio (tra parentesi), i simboli delle armi, i marchi, i simboli dei potenziamenti, i danni, il punteggio attribuito all'uccisione del giocatore, il numero di munizioni di ogni colore.
 
 La plancia del giocatore che sta giocando il turno attuale viene stampata in **colori brillanti**, mentre quelle dei giocatori in attesa del loro turno vengono stampate con colori spenti.
 
@@ -74,7 +74,7 @@ Le seguenti tabelle illustrano il significato dei simboli usati, per compattezza
 |    `Z`    |*Zx-2*|
 |    `*`    |Arma generica (usato quando l'arma non è visibile perché carica e di proprietà di un altro giocatore)|
 
-Per le armi una lettera maiuscola rappresenta un'**arma caria**, mentre una lettera minuscola rappresenta un'arma scarica.
+Per le armi una lettera maiuscola rappresenta un'**arma carica**, mentre una lettera minuscola rappresenta un'arma scarica.
 
 ### Potenziamenti
 

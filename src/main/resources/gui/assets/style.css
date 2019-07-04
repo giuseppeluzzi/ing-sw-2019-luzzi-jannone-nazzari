@@ -57,7 +57,7 @@
 
 .logLine {
   -fx-font-weight: 600;
-  -fx-font-size: 14;
+  -fx-font-size: 16;
 }
 
 .helperText {
@@ -235,4 +235,23 @@
   -fx-fill: #545454;
   -fx-stroke: #000000;
   -fx-stroke-width: 1;
+}
+
+.turnProgressBar {
+  -fx-padding: 0;
+}
+
+.turnProgressBar > .track {
+  -fx-padding: 0;
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-box-border: transparent;
+  -fx-background-color: transparent;
+}
+
+.turnProgressBar > .bar {
+  -fx-padding: 0;
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-background-color: #d32a2a;
 }

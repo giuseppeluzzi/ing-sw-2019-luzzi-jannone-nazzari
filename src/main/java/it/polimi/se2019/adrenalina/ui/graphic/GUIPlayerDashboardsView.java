@@ -5,16 +5,15 @@ import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
+import it.polimi.se2019.adrenalina.event.modelview.CurrentPlayerUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerDamagesTagsUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerFrenzyUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
-import it.polimi.se2019.adrenalina.event.modelview.PlayerStatusUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Newton;
@@ -76,9 +75,9 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   }
 
   @Override
-  public void update(PlayerStatusUpdate event) {
+  public void update(CurrentPlayerUpdate event) {
     super.update(event);
-    // TODO ?
+    AppGUI.getBoardFXController().setCurrentEnabledDashboard(event.getCurrentPlayerColor());
   }
 
   @Override
@@ -187,18 +186,23 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     dialog.setBuyableCost(buyableCost);
     dialog.setBudgetPowerUp(budgetPowerUp);
     dialog.setBudgetAmmo(budgetAmmo);
+
+    AppGUI.getBoardFXController().startTurnTimer(dialog);
     dialog.show();
   }
 
   @Override
   public void showTurnActionSelection(List<TurnAction> actions) {
+    AppGUI.getBoardFXController().startTurnTimer();
     AppGUI.getBoardFXController().showTurnActions(actions);
-
   }
 
   @Override
   public void showWeaponSelection(List<Weapon> weapons) {
-    Platform.runLater(() -> AppGUI.getPlayerDashboardFXController().usingWeapon(weapons));
+    Platform.runLater(() -> {
+      AppGUI.getBoardFXController().startTurnTimer();
+      AppGUI.getPlayerDashboardFXController().usingWeapon(weapons);
+    });
   }
 
   @Override
@@ -206,6 +210,8 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     final DialogEffectSelection dialogEffectSelection = new DialogEffectSelection();
     dialogEffectSelection.setWeapon(weapon);
     dialogEffectSelection.setEffects(effects);
+
+    AppGUI.getBoardFXController().startTurnTimer(dialogEffectSelection);
     dialogEffectSelection.show();
   }
 
@@ -220,7 +226,10 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     final PlayerDashboardFXController playerDashboardFXController = AppGUI
         .getPlayerDashboardFXController();
 
-    Platform.runLater(() -> playerDashboardFXController.usingPowerUp(powerUps, discard, targetName));
+    Platform.runLater(() -> {
+      AppGUI.getBoardFXController().startTurnTimer();
+      playerDashboardFXController.usingPowerUp(powerUps, discard, targetName);
+    });
   }
 
   @Override
@@ -228,12 +237,17 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     final DialogSwapWeaponSelection dialogSwapWeaponSelection = new DialogSwapWeaponSelection();
     dialogSwapWeaponSelection.setSwappableWeapons(ownWeapons);
     dialogSwapWeaponSelection.setPickableWeapons(squareWeapons);
+
+    AppGUI.getBoardFXController().startTurnTimer(dialogSwapWeaponSelection);
+    dialogSwapWeaponSelection.show();
   }
 
   @Override
   public void showReloadWeaponSelection(List<Weapon> unloadedWeapons) {
     final DialogReloadWeaponSelection dialogReloadWeaponSelection = new DialogReloadWeaponSelection();
     dialogReloadWeaponSelection.setWeapons(unloadedWeapons);
+
+    AppGUI.getBoardFXController().startTurnTimer(dialogReloadWeaponSelection);
     dialogReloadWeaponSelection.show();
   }
 }

@@ -157,6 +157,9 @@ public class Player extends Observable implements Target {
 
   @Override
   public void setSquare(Square square) {
+    if (this.square != null && this.square.getPosX() == square.getPosX() && this.square.getPosY() == square.getPosY()) {
+      return;
+    }
     if (this.square != null) {
       this.square.removePlayer(this);
     }
@@ -483,15 +486,7 @@ public class Player extends Observable implements Target {
     damages.clear();
     try {
       notifyObservers(new PlayerDamagesTagsUpdate(getDamages(), getTags(), color, null));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
-    try {
       notifyObservers(new PlayerKillScoreUpdate(color, killScore));
-    } catch (RemoteException e) {
-      Log.exception(e);
-    }
-    try {
       notifyObservers(new PlayerScoreUpdate(color, score));
     } catch (RemoteException e) {
       Log.exception(e);
@@ -662,13 +657,17 @@ public class Player extends Observable implements Target {
             weapon.addObserver(player.client.getBoardView());
             weapon.addObserver(player.client.getPlayerDashboardsView());
             weapon.addObserver(player.client.getCharactersView());
-            notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
-            notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
           } catch (RemoteException e) {
             Log.exception(e);
           }
         }
       }
+    }
+    try {
+      notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
+      notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));
+    } catch (RemoteException e) {
+      Log.exception(e);
     }
   }
 

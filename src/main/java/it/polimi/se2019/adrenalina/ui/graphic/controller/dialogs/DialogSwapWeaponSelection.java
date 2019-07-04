@@ -70,19 +70,13 @@ public class DialogSwapWeaponSelection extends Dialog {
 
   @Override
   public void build() {
-    /* TEST
-    pickableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "Onda d'urto", "X"));
-    pickableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "Falce protonica", "X"));
-    pickableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "ZX-2", "X"));
-    swappableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "Onda d'urto", "X"));
-    swappableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "Falce protonica", "X"));
-    swappableWeapons.add(new Weapon(0, 0, 0, AmmoColor.RED, "ZX-2", "X"));
-     */
     ToggleGroup pickWeaponToggleGroup = new ToggleGroup();
     addWeaponsToHbox(pickableHBox, pickableWeapons, pickWeaponToggleGroup);
     ToggleGroup swapWeaponToggleGroup = new ToggleGroup();
     addWeaponsToHbox(swappableHBox, swappableWeapons, swapWeaponToggleGroup);
+
     buttonNext.setOnAction(event -> {
+      AppGUI.getBoardFXController().stopTurnTimer();
       Weapon pickedWeapon = pickableWeapons.get(Integer.parseInt(((Styleable) pickWeaponToggleGroup.getSelectedToggle()).getId()));
       Weapon swappedWeapon = swappableWeapons.get(Integer.parseInt(((Styleable) swapWeaponToggleGroup.getSelectedToggle()).getId()));
       try {
