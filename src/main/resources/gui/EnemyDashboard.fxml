@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -22,7 +21,6 @@
   <rowConstraints>
     <RowConstraints maxHeight="141" vgrow="NEVER"/>
   </rowConstraints>
-
 
   <HBox fx:id="enemyWeapons" alignment="CENTER_LEFT" maxWidth="90" minWidth="90" prefWidth="90"
     spacing="-209" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
@@ -46,7 +44,7 @@
     </ImageView>
   </HBox>
 
-  <GridPane fx:id="enemyDashboard" minWidth="576.0" styleClass="enemyDashboard"
+  <GridPane fx:id="enemyDashboard" alignment="CENTER" minWidth="576.0" styleClass="enemyDashboard"
     GridPane.columnIndex="1" GridPane.rowIndex="0" gridLinesVisible="false">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="9"/>
@@ -62,6 +60,10 @@
       <RowConstraints vgrow="NEVER" minHeight="27" maxHeight="27"/>
     </rowConstraints>
 
+    <Pane fx:id="enemyDashboardBackground" id="enemyDashboardBackground" GridPane.columnIndex="0"
+      GridPane.columnSpan="4" GridPane.rowIndex="0" GridPane.rowSpan="5" minHeight="160"
+      maxHeight="141" minWidth="141" maxWidth="576"/>
+
     <HBox fx:id="enemyTagsContainer" alignment="CENTER_RIGHT" minHeight="24"
       styleClass="enemyTagsContainer" GridPane.columnIndex="1" GridPane.columnSpan="2"
       GridPane.rowIndex="0"/>
@@ -73,11 +75,12 @@
     <HBox fx:id="enemySkulls" minHeight="20" styleClass="enemySkulls" GridPane.columnIndex="2"
       GridPane.rowIndex="4"/>
 
-    <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.rowSpan="5" minHeight="141" spacing="10">
+    <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.rowSpan="5"
+      minHeight="141" spacing="10">
       <padding>
-        <Insets top="5" />
+        <Insets top="5"/>
       </padding>
-      <Text fx:id="enemyName" styleClass="playerDashboardName" />
+      <Text fx:id="enemyName" styleClass="playerDashboardName"/>
 
       <HBox alignment="CENTER">
         <FlowPane id="enemyAmmos" fx:id="enemyAmmos" alignment="CENTER" hgap="5" maxWidth="82"

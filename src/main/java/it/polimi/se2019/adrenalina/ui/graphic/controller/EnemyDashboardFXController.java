@@ -18,6 +18,8 @@ import javafx.scene.text.Text;
 public class EnemyDashboardFXController extends DashboardFXController {
 
   @FXML
+  private Pane enemyDashboardBackground;
+  @FXML
   private GridPane enemyDashboard;
   @FXML
   private HBox enemyTagsContainer;
@@ -99,6 +101,11 @@ public class EnemyDashboardFXController extends DashboardFXController {
   }
 
   @Override
+  public Pane getDashboardBackground() {
+    return enemyDashboardBackground;
+  }
+
+  @Override
   public void updateWeapons(List<Weapon> weapons, int weaponsNum) {
     Platform.runLater(() -> {
       enemyWeapons.getChildren().clear();
@@ -161,13 +168,13 @@ public class EnemyDashboardFXController extends DashboardFXController {
   @Override
   public void setFrenzy() {
     Platform.runLater(() ->
-        enemyDashboard.setStyle(
+        enemyDashboardBackground.setStyle(
             "-fx-background-image: url(\"gui/assets/img/ff_dashboard_" + getPlayerColor()
                 + ".png\");"));
   }
 
   private void setDashboardColor(PlayerColor color) {
-    enemyDashboard.setStyle(
+    enemyDashboardBackground.setStyle(
         "-fx-background-image: url(\"gui/assets/img/dashboard_" + color + ".png\");");
   }
 }
