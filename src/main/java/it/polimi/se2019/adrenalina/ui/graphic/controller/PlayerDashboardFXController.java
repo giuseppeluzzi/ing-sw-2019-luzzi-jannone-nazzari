@@ -202,6 +202,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
         imageView.setOpacity(1);
         imageView.getProperties().put(PROP_WEAPON, weapon);
         imageView.setEffect(bnEffect);
+        imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, BoardFXController::handlePlayerWeaponHoverIn);
+        imageView.addEventHandler(MouseEvent.MOUSE_EXITED, BoardFXController::handlePlayerWeaponHoverOut);
         playerWeapons.getChildren().add(imageView);
       }
       playerWeapons.setVisible(true);

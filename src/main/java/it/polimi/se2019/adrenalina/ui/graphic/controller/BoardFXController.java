@@ -903,6 +903,16 @@ public class BoardFXController {
     imageViewHover.setOpacity(0);
   }
 
+  static void handlePlayerWeaponHoverIn(MouseEvent event) {
+    Node imageViewHover = (Node) event.getSource();
+    imageViewHover.setTranslateX(-260);
+  }
+
+  static void handlePlayerWeaponHoverOut(MouseEvent event) {
+    Node imageViewHover = (Node) event.getSource();
+    imageViewHover.setTranslateX(0);
+  }
+
   private void cancelInput() {
     Platform.runLater(() -> {
       turnProgressBar.setProgress(0);
