@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 public class EnemyDashboardFXController extends DashboardFXController {
 
@@ -30,9 +31,16 @@ public class EnemyDashboardFXController extends DashboardFXController {
   private HBox enemyWeapons;
   @FXML
   private HBox enemyPowerUps;
+  @FXML
+  private Text enemyName;
 
   public EnemyDashboardFXController(BoardFXController boardFXController, PlayerColor playerColor) {
     super(boardFXController, playerColor);
+  }
+
+  @Override
+  public Text getDashboardNameLabel() {
+    return enemyName;
   }
 
   public void initialize() {

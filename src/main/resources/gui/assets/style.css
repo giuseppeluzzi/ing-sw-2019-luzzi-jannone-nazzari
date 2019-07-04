@@ -118,6 +118,15 @@
   -fx-opacity: 0.7;
 }
 
+.playerDashboardName {
+  -fx-fill: #ffffff;
+  -fx-font-size: 13;
+  -fx-font-weight: bolder;
+  -fx-stroke: #000000;
+  -fx-stroke-type: outside;
+  -fx-stroke-width: 1px;
+}
+
 #playerDashboard {
   -fx-background-size: contain;
   -fx-background-repeat: no-repeat;

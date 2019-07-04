@@ -259,8 +259,13 @@ public class BoardFXController {
         GridPane.setColumnIndex(playerDashboard, 1);
         GridPane.setRowSpan(playerDashboard, 2);
         bottomGrid.getChildren().add(playerDashboard);
+
+        Player player = AppGUI.getClient().getBoardView().getBoard().getPlayerByColor(color);
+        dashboardControllers.get(color).getDashboardNameLabel().setText(player.getName() + " (" + player.getScore() + ")");
       } catch (IOException e) {
         Log.exception(e);
+      } catch (InvalidPlayerException ignored) {
+        //
       }
     });
   }
@@ -305,8 +310,13 @@ public class BoardFXController {
         Parent dashboard = loaderEnemyDashboard.load();
         dashboard.getProperties().put(DASHBOARD_COLOR_PROP, color);
         enemyDashboards.getChildren().add(dashboard);
+
+        Player player = AppGUI.getClient().getBoardView().getBoard().getPlayerByColor(color);
+        dashboardControllers.get(color).getDashboardNameLabel().setText(player.getName() + " (" + player.getScore() + ")");
       } catch (IOException e) {
         Log.exception(e);
+      } catch (InvalidPlayerException ignored) {
+        //
       }
     });
 
@@ -891,6 +901,16 @@ public class BoardFXController {
     imageViewHover.setTranslateX(0);
     imageViewHover.setTranslateY(0);
     imageViewHover.setOpacity(0);
+  }
+
+  static void handlePlayerWeaponHoverIn(MouseEvent event) {
+    Node imageViewHover = (Node) event.getSource();
+    imageViewHover.setTranslateX(-260);
+  }
+
+  static void handlePlayerWeaponHoverOut(MouseEvent event) {
+    Node imageViewHover = (Node) event.getSource();
+    imageViewHover.setTranslateX(0);
   }
 
   private void cancelInput() {

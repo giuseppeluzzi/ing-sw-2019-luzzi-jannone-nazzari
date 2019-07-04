@@ -17,6 +17,7 @@ import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.model.BuyableType;
 import it.polimi.se2019.adrenalina.model.Newton;
+import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.DashboardFXController;
@@ -40,8 +41,11 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = -1044436470709908758L;
 
+  private final BoardView boardView;
+
   public GUIPlayerDashboardsView(BoardViewInterface boardView) {
     super((BoardView) boardView);
+    this.boardView = (BoardView) boardView;
   }
 
   @Override
@@ -60,7 +64,21 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
   @Override
   public void update(PlayerScoreUpdate event) {
     super.update(event);
-    // TODO ?
+    Player player;
+    try {
+      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+    } catch (InvalidPlayerException ignored) {
+      return;
+    }
+    Platform.runLater(
+        () -> {
+          try {
+            AppGUI.getBoardFXController().getDashboardController(event.getPlayerColor())
+                .getDashboardNameLabel().setText(player.getName() + " (" + player.getScore() + ")");
+          } catch (InvalidPlayerException ignored) {
+            //
+          }
+        });
   }
 
   @Override
