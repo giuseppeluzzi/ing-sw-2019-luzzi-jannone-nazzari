@@ -24,7 +24,7 @@ public interface ClientInterface extends Remote {
   void ping() throws IOException;
   Long getLastPing() throws IOException;
 
-  void disconnect(String message) throws RemoteException;
+  void disconnect(String message, boolean keepAlive) throws RemoteException;
 
   BoardViewInterface getBoardView() throws RemoteException;
   CharactersViewInterface getCharactersView() throws RemoteException;

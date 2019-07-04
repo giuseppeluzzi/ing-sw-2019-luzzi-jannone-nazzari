@@ -15,6 +15,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 public abstract class DashboardFXController {
 
@@ -25,6 +26,8 @@ public abstract class DashboardFXController {
     this.boardFXController = boardFXController;
     this.playerColor = playerColor;
   }
+
+  public abstract Text getDashboardNameLabel();
 
   abstract HBox getDamagesContainer();
 
@@ -41,6 +44,7 @@ public abstract class DashboardFXController {
   abstract Pane generateTag(PlayerColor damage);
 
   abstract Node generateSkull();
+
 
   public Pane getDashboardContainer() {
     return (Pane) getDamagesContainer().getParent();

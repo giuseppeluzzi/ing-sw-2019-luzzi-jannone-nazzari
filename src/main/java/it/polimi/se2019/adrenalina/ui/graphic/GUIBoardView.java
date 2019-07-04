@@ -23,6 +23,7 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.FinalRanksFXController;
+import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogDisconnectWarning;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSelectDirection;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogSpawnPointTrackSelection;
 import it.polimi.se2019.adrenalina.utils.Constants;
@@ -127,6 +128,11 @@ public class GUIBoardView extends BoardView {
       ranksScene.getStylesheets().addAll(AppGUI.getCSS());
       AppGUI.getStage().setScene(ranksScene);
     });
+  }
+
+  @Override
+  public void showDisconnectWarning() {
+    new DialogDisconnectWarning().show();
   }
 
   @Override

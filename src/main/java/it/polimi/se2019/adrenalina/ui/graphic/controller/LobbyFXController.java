@@ -4,6 +4,7 @@ import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
@@ -21,11 +22,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -64,6 +61,8 @@ public class LobbyFXController {
   private Circle skullsImage;
   @FXML
   private ListView playerList;
+  @FXML
+  private Slider skullsSelector;
 
   @FXML
   private ImageView selectedMapImage;
@@ -148,6 +147,11 @@ public class LobbyFXController {
 
   public void nextSkulls(ActionEvent actionEvent) {
     FXUtils.lobbyTransition(lobbyConfigurationSkulls, lobbyPlayers);
+    try {
+      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new BoardSkullsUpdate((int) skullsSelector.getValue()));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
   }
 
   public void addPlayer(Player player) {

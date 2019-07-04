@@ -115,6 +115,10 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
     clientSocket.sendEvent(new ShowFinalRanksInvocation());
   }
 
+  @Override
+  public void showDisconnectWarning() {
+    // not needed here
+  }
 
   @Override
   public void update(Event event) {

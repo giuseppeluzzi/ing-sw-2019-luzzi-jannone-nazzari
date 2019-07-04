@@ -185,8 +185,8 @@ public class VirtualClientSocket implements ClientInterface, Runnable {
   }
 
   @Override
-  public void disconnect(String message) {
-    sendEvent(new PlayerDisconnectEvent(message));
+  public void disconnect(String message, boolean keepAlive) {
+    sendEvent(new PlayerDisconnectEvent(message, keepAlive));
     try {
       bufferedReader.close();
       printWriter.close();

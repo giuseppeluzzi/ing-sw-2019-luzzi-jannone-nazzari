@@ -16,7 +16,7 @@ public abstract class Dialog {
 
   private final boolean closeable;
   private final String title;
-  private Stage stage;
+  protected Stage stage;
 
   protected Dialog(String title, boolean closeable) {
     this.title = title;

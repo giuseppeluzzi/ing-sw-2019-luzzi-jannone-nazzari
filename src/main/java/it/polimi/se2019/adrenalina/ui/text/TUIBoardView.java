@@ -420,6 +420,11 @@ public class TUIBoardView extends BoardView {
     }
   }
 
+  @Override
+  public void showDisconnectWarning() {
+    // not needed in TUI
+  }
+
   /**
    * Asks master player to choose whether to use Final Frenzy at the end of the game.
    */

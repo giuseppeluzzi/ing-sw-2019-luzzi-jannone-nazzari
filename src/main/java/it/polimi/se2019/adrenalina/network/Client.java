@@ -184,10 +184,20 @@ public abstract class Client implements ClientInterface, Serializable {
   }
 
   @Override
-  public void disconnect(String message) {
+  public void disconnect(String message, boolean keepAlive) {
     if (!message.isEmpty()) {
       showMessage(MessageSeverity.ERROR, "Disconnessione", message);
     }
-    System.exit(0);
+    if (tui) {
+      System.exit(0);
+    }
+
+    if (! keepAlive) {
+      try {
+        boardView.showDisconnectWarning();
+      } catch (RemoteException e) {
+        Log.exception(e);
+      }
+    }
   }
 }

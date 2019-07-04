@@ -26,7 +26,7 @@ public class EndGame extends GameActionAsync {
         if (player.getClient() != null) {
           player.getClient().showGameMessage("La partita è terminata.");
           player.getClient().getBoardView().showFinalRanks();
-          player.getClient().disconnect("");
+          player.getClient().disconnect("", true);
         }
       } catch (RemoteException e) {
         Log.exception(e);

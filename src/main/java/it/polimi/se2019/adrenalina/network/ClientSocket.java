@@ -85,8 +85,8 @@ public class ClientSocket extends Client implements Runnable, Observer {
   }
 
   @Override
-  public void disconnect(String message) {
-    super.disconnect(message);
+  public void disconnect(String message, boolean keepAlive) {
+    super.disconnect(message, keepAlive);
     running = false;
     try {
       bufferedReader.close();
@@ -153,7 +153,7 @@ public class ClientSocket extends Client implements Runnable, Observer {
           case PLAYER_DISCONNECT_EVENT:
             PlayerDisconnectEvent disconnectEvent = gson
                     .fromJson(message, PlayerDisconnectEvent.class);
-            disconnect(disconnectEvent.getMessage());
+            disconnect(disconnectEvent.getMessage(), disconnectEvent.keepAlive());
             break;
           case TIMER_SET_EVENT:
             TimerSetEvent timerSetEvent = gson.fromJson(message, TimerSetEvent.class);
@@ -270,10 +270,10 @@ public class ClientSocket extends Client implements Runnable, Observer {
         }
       }
       if (socket == null || message == null) {
-        disconnect("La connessione con il server è stata persa!");
+        disconnect("La connessione con il server è stata persa!", false);
       }
     } catch (IOException e) {
-      disconnect("La connessione con il server è stata persa!");
+      disconnect("La connessione con il server è stata persa!", false);
     }
   }
 }
