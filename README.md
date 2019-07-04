@@ -1,5 +1,13 @@
 # Adrenalina
 
+## Funzionalità implementate
+
+* Regole complete: tutte le modalità delle armi, *frenesia finale* e *azioni adrenaliniche*
+* Interfaccia da linea di comando (CLI)
+* Interfaccia grafica (GUI)
+* Connessione tramite socket e RMI
+* Funzionalità avanzate: partite multiple, modalità dominazione
+
 ## Parametri da linea di comando
 
 Il file `Adrenalina.jar`, se eseguito senza ulteriori parametri, avvia l'applicazione in modalità client **con interfaccia grafica** (GUI).
