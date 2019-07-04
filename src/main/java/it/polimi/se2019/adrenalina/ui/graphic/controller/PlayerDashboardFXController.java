@@ -23,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 public class PlayerDashboardFXController extends DashboardFXController {
 
@@ -43,6 +44,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
   private HBox playerWeapons;
   @FXML
   private HBox playerPowerUps;
+  @FXML
+  private Text playerName;
 
   private final EventHandler<MouseEvent> selectWeaponEventHandler;
   private final EventHandler<MouseEvent> selectPowerUpEventHandler;
@@ -59,7 +62,8 @@ public class PlayerDashboardFXController extends DashboardFXController {
 
     selectWeaponEventHandler = event -> {
       boardFXController.stopTurnTimer();
-      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties().get(PROP_WEAPON))
+      final String weaponName = ((Weapon) ((Node) event.getSource()).getProperties()
+          .get(PROP_WEAPON))
           .getName();
 
       try {
@@ -107,6 +111,11 @@ public class PlayerDashboardFXController extends DashboardFXController {
     weaponTranslateEnterEventHandler = event -> ((Node) event.getSource()).setTranslateX(-275);
 
     weaponTranslateExitEventHandler = event -> ((Node) event.getSource()).setTranslateX(0);
+  }
+
+  @Override
+  public Text getDashboardNameLabel() {
+    return playerName;
   }
 
   public void initialize() {
@@ -281,23 +290,24 @@ public class PlayerDashboardFXController extends DashboardFXController {
   }
 
   public void usingPowerUp(List<PowerUp> powerUps, boolean discard, String targetName) {
+    if (discard) {
+      powerUpEventHandler = discardPowerUpEventHandler;
+      getBoardFXController().setHelpText("Seleziona un potenziamento da scartare");
+    } else {
+      powerUpEventHandler = selectPowerUpEventHandler;
+      if (targetName != null) {
+        getBoardFXController()
+            .setHelpText("Seleziona un potenziamento da utilizzare contro " + targetName);
+      } else {
+        getBoardFXController().setHelpText("Seleziona un potenziamento da utilizzare");
+      }
+      getBoardFXController().showPowerUpSkip();
+    }
+
     for (Node image : getPowerUpsContainer().getChildren()) {
       if (image.getProperties().containsKey(PROP_POWERUP) && powerUps
           .contains(image.getProperties().get(PROP_POWERUP))) {
         Platform.runLater(() -> image.setEffect(null));
-
-        if (discard) {
-          powerUpEventHandler = discardPowerUpEventHandler;
-          getBoardFXController().setHelpText("Seleziona un potenziamento da scartare");
-        } else {
-          powerUpEventHandler = selectPowerUpEventHandler;
-          if (targetName != null) {
-            getBoardFXController().setHelpText("Seleziona un potenziamento da utilizzare contro " + targetName);
-          } else {
-            getBoardFXController().setHelpText("Seleziona un potenziamento da utilizzare");
-          }
-          getBoardFXController().showPowerUpSkip();
-        }
 
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, powerUpEventHandler);
       }

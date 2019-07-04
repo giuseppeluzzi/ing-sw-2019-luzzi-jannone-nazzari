@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -87,12 +86,18 @@
     <HBox id="playerSkulls" fx:id="playerSkulls" minHeight="32" spacing="8" GridPane.columnIndex="2"
       GridPane.rowIndex="5"/>
 
-    <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3">
-      <FlowPane id="playerAmmos" fx:id="playerAmmos" alignment="CENTER" hgap="5" maxWidth="82"
-        vgap="5"/>
-    </HBox>
+    <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.rowSpan="3" minHeight="182" spacing="20">
+      <padding>
+        <Insets top="10" />
+      </padding>
+      <Text fx:id="playerName" styleClass="playerDashboardName"/>
+      <HBox alignment="CENTER">
+        <FlowPane id="playerAmmos" fx:id="playerAmmos" alignment="CENTER" hgap="5" maxWidth="82"
+          vgap="5"/>
+      </HBox>
+    </VBox>
   </GridPane>
 
-  <Pane fx:id="playerDashboardCover" id="playerDashboardCover" GridPane.rowIndex="0"
+  <Pane fx:id="playerDashboardBorders" id="playerDashboardBorders" GridPane.rowIndex="0"
     GridPane.columnIndex="1" minWidth="760.0" minHeight="350"/>
 </GridPane>
