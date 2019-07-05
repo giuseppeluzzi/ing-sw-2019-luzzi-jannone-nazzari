@@ -51,7 +51,8 @@ public class DialogSelectDirection extends Dialog {
 
       try {
         PlayerColor playerColor = AppGUI.getClient().getPlayerColor();
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new SelectDirectionEvent(playerColor, selectedDirection));
+        AppGUI.getClient().getBoardView()
+            .sendEvent(new SelectDirectionEvent(playerColor, selectedDirection));
       } catch (RemoteException e) {
         Log.exception(e);
       }

@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.css.Styleable;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -14,10 +17,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DialogSwapWeaponSelection extends Dialog {
 
@@ -52,7 +51,8 @@ public class DialogSwapWeaponSelection extends Dialog {
       vBox.setSpacing(25);
       vBox.setPrefHeight(200);
       vBox.setPrefWidth(100);
-      ImageView weaponImg = new ImageView("gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
+      ImageView weaponImg = new ImageView(
+          "gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
       weaponImg.setFitHeight(200);
       weaponImg.setPreserveRatio(true);
       RadioButton radioButton = new RadioButton();
@@ -77,11 +77,14 @@ public class DialogSwapWeaponSelection extends Dialog {
 
     buttonNext.setOnAction(event -> {
       AppGUI.getBoardFXController().stopTurnTimer();
-      Weapon pickedWeapon = pickableWeapons.get(Integer.parseInt(((Styleable) pickWeaponToggleGroup.getSelectedToggle()).getId()));
-      Weapon swappedWeapon = swappableWeapons.get(Integer.parseInt(((Styleable) swapWeaponToggleGroup.getSelectedToggle()).getId()));
+      Weapon pickedWeapon = pickableWeapons
+          .get(Integer.parseInt(((Styleable) pickWeaponToggleGroup.getSelectedToggle()).getId()));
+      Weapon swappedWeapon = swappableWeapons
+          .get(Integer.parseInt(((Styleable) swapWeaponToggleGroup.getSelectedToggle()).getId()));
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                new PlayerSwapWeaponEvent(AppGUI.getClient().getPlayerColor(), swappedWeapon.getName(), pickedWeapon.getName()));
+        AppGUI.getClient().getBoardView().sendEvent(
+            new PlayerSwapWeaponEvent(AppGUI.getClient().getPlayerColor(), swappedWeapon.getName(),
+                pickedWeapon.getName()));
       } catch (RemoteException e) {
         Log.exception(e);
       }

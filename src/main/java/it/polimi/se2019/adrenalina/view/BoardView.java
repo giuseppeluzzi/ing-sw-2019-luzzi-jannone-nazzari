@@ -85,6 +85,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     return timer;
   }
 
+  @Override
   public void sendEvent(Event event) throws RemoteException {
     notifyObservers(event);
   }

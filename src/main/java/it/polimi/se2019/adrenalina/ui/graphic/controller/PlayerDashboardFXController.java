@@ -67,7 +67,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
           .getName();
 
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+        AppGUI.getClient().getBoardView().sendEvent(
             new PlayerSelectWeaponEvent(AppGUI.getClient().getPlayerColor(), weaponName));
       } catch (RemoteException e) {
         Log.exception(e);
@@ -81,7 +81,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
       PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get(PROP_POWERUP);
 
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+        AppGUI.getClient().getBoardView().sendEvent(
             new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), powerup.getType(),
                 powerup.getColor()));
       } catch (RemoteException e) {
@@ -97,7 +97,7 @@ public class PlayerDashboardFXController extends DashboardFXController {
       PowerUp powerup = (PowerUp) ((Node) event.getSource()).getProperties().get(PROP_POWERUP);
 
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+        AppGUI.getClient().getBoardView().sendEvent(
             new PlayerDiscardPowerUpEvent(AppGUI.getClient().getPlayerColor(), powerup.getType(),
                 powerup.getColor()));
       } catch (RemoteException e) {
@@ -214,8 +214,10 @@ public class PlayerDashboardFXController extends DashboardFXController {
         } else {
           imageView.setEffect(unloadedEffect);
         }
-        imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, BoardFXController::handlePlayerWeaponHoverIn);
-        imageView.addEventHandler(MouseEvent.MOUSE_EXITED, BoardFXController::handlePlayerWeaponHoverOut);
+        imageView.addEventHandler(MouseEvent.MOUSE_ENTERED,
+            BoardFXController::handlePlayerWeaponHoverIn);
+        imageView.addEventHandler(MouseEvent.MOUSE_EXITED,
+            BoardFXController::handlePlayerWeaponHoverOut);
         playerWeapons.getChildren().add(imageView);
       }
       playerWeapons.setVisible(true);
@@ -297,7 +299,6 @@ public class PlayerDashboardFXController extends DashboardFXController {
     ColorAdjust unloadedEffect = new ColorAdjust();
     unloadedEffect.setSaturation(-1);
     unloadedEffect.setBrightness(-0.5);
-
 
     for (Node weapon : getWeaponContainer().getChildren()) {
       if (weapon.getProperties().containsKey(PROP_WEAPON)) {

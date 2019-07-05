@@ -18,7 +18,6 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +39,11 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
   @Override
   public Board getBoard() {
     return board;
+  }
+
+  @Override
+  public void sendEvent(Event event) {
+    // not needed here
   }
 
   @Override

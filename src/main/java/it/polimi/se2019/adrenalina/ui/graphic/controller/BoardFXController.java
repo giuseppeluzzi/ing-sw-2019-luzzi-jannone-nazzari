@@ -411,7 +411,7 @@ public class BoardFXController {
         button.setOnAction(event -> {
           stopTurnTimer();
           try {
-            ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            AppGUI.getClient().getBoardView().sendEvent(
                 new PlayerActionSelectionEvent(AppGUI.getClient().getPlayerColor(), turnAction));
           } catch (RemoteException e) {
             Log.exception(e);
@@ -787,7 +787,7 @@ public class BoardFXController {
     disableBoardWeapons();
 
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+      AppGUI.getClient().getBoardView().sendEvent(
           new PlayerCollectWeaponEvent(AppGUI.getClient().getPlayerColor(), weaponName));
     } catch (RemoteException e) {
       Log.exception(e);
@@ -803,16 +803,16 @@ public class BoardFXController {
 
     try {
       if (((Node) event.getSource()).getProperties().containsKey("move")) {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+        AppGUI.getClient().getBoardView().sendEvent(
             new SquareMoveSelectionEvent(AppGUI.getClient().getPlayerColor(),
                 ((Square) target).getPosX(), ((Square) target).getPosY()));
       } else {
         if (target.isPlayer()) {
-          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          AppGUI.getClient().getBoardView().sendEvent(
               new SelectPlayerEvent(AppGUI.getClient().getPlayerColor(),
                   ((Player) target).getColor()));
         } else {
-          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          AppGUI.getClient().getBoardView().sendEvent(
               new SelectSquareEvent(AppGUI.getClient().getPlayerColor(),
                   ((Square) target).getPosX(), ((Square) target).getPosY()));
         }
@@ -826,7 +826,7 @@ public class BoardFXController {
 
   private void handleSkipSelection(ActionEvent event) {
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+      AppGUI.getClient().getBoardView().sendEvent(
           new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
     } catch (RemoteException e) {
       Log.debug(event.getSource().toString());
@@ -874,7 +874,7 @@ public class BoardFXController {
 
   private void handleNoPowerUpUsage(ActionEvent event) {
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+      AppGUI.getClient().getBoardView().sendEvent(
           new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
       hidePowerUpSkip();
       AppGUI.getPlayerDashboardFXController().disablePowerUps();

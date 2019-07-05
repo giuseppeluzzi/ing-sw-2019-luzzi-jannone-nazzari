@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.ui.graphic;
 
-import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.Effect;
@@ -42,11 +41,8 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
 
   private static final long serialVersionUID = -1044436470709908758L;
 
-  private final BoardView boardView;
-
   public GUIPlayerDashboardsView(BoardViewInterface boardView) {
     super((BoardView) boardView);
-    this.boardView = (BoardView) boardView;
   }
 
   @Override
@@ -67,8 +63,12 @@ public class GUIPlayerDashboardsView extends PlayerDashboardsView {
     super.update(event);
     Player player;
     try {
-      player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());
+      player = AppGUI.getClient().getBoardView().getBoard()
+          .getPlayerByColor(event.getPlayerColor());
     } catch (InvalidPlayerException ignored) {
+      return;
+    } catch (RemoteException e) {
+      Log.exception(e);
       return;
     }
     Platform.runLater(

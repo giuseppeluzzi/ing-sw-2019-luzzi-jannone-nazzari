@@ -7,6 +7,11 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffect
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.css.Styleable;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -25,20 +30,14 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class DialogEffectSelection extends Dialog {
 
   public static final String END_OF_TURN = "(fine del turno)";
   private ToggleGroup effectSelectionGroup;
   private Weapon weapon;
   private List<Effect> effects;
-  private Map<String, Boolean> effectStatus = new HashMap<>();
-  private List<String> chosenEffects = new ArrayList<>();
+  private final Map<String, Boolean> effectStatus = new HashMap<>();
+  private final List<String> chosenEffects = new ArrayList<>();
   private ComboBox<String> comboBox;
   private Effect anyTimeEffect;
 
@@ -103,7 +102,8 @@ public class DialogEffectSelection extends Dialog {
         if (effectBefore != null) {
           anyTimeIndex = chosenEffects.indexOf(anyTimeEffectBefore);
         } else {
-          Alert alert = new Alert(Alert.AlertType.WARNING, String.format("Scegli quando vuoi usare l'effetto \"%s\"", anyTimeEffect.getName()));
+          Alert alert = new Alert(Alert.AlertType.WARNING,
+              String.format("Scegli quando vuoi usare l'effetto \"%s\"", anyTimeEffect.getName()));
           Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
           stage.setAlwaysOnTop(true);
           alert.showAndWait();
@@ -126,8 +126,9 @@ public class DialogEffectSelection extends Dialog {
     AppGUI.getBoardFXController().stopTurnTimer();
 
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-              new PlayerSelectWeaponEffectEvent(AppGUI.getClient().getPlayerColor(), weapon.getName(), output));
+      AppGUI.getClient().getBoardView().sendEvent(
+          new PlayerSelectWeaponEffectEvent(AppGUI.getClient().getPlayerColor(), weapon.getName(),
+              output));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -150,7 +151,8 @@ public class DialogEffectSelection extends Dialog {
   }
 
   private TextFlow getLabel(Effect effect) {
-    if (effect.getCost().get(AmmoColor.BLUE) == 0 && effect.getCost().get(AmmoColor.RED) == 0 && effect.getCost().get(AmmoColor.YELLOW) == 0) {
+    if (effect.getCost().get(AmmoColor.BLUE) == 0 && effect.getCost().get(AmmoColor.RED) == 0
+        && effect.getCost().get(AmmoColor.YELLOW) == 0) {
       Text text = new Text(effect.getName());
       text.getStyleClass().add("text");
       return new TextFlow(text);
@@ -173,7 +175,7 @@ public class DialogEffectSelection extends Dialog {
   }
 
   private void addSubEffects(Effect effect) {
-    if (effectStatus.get(effect.getName()) == null || ! effectStatus.get(effect.getName())) {
+    if (effectStatus.get(effect.getName()) == null || !effectStatus.get(effect.getName())) {
       return;
     }
     for (Effect subEffect : effect.getSubEffects()) {
@@ -197,7 +199,8 @@ public class DialogEffectSelection extends Dialog {
   }
 
   private void rebuildSubEffects() {
-    Effect mainEffect =  effects.get(Integer.parseInt(((Styleable) effectSelectionGroup.getSelectedToggle()).getId()));
+    Effect mainEffect = effects
+        .get(Integer.parseInt(((Styleable) effectSelectionGroup.getSelectedToggle()).getId()));
     subEffectsVBox.getChildren().clear();
     anyTimeVBox.getChildren().clear();
     addSubEffects(mainEffect);
@@ -227,7 +230,8 @@ public class DialogEffectSelection extends Dialog {
       comboBox.getItems().add(END_OF_TURN);
       VBox vbox = new VBox();
       vbox.setSpacing(7);
-      vbox.getChildren().add(new Label(String.format("Usa \"%s\" prima di:", anyTimeEffect.getName())));
+      vbox.getChildren()
+          .add(new Label(String.format("Usa \"%s\" prima di:", anyTimeEffect.getName())));
       vbox.getChildren().add(comboBox);
       anyTimeVBox.getChildren().add(vbox);
     } else {

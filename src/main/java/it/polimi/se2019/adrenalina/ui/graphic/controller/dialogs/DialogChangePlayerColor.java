@@ -43,7 +43,7 @@ public class DialogChangePlayerColor extends Dialog {
       try {
         if (AppGUI.getClient().getBoardView().getBoard().getFreePlayerColors()
             .contains(chosenColor)) {
-          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          AppGUI.getClient().getBoardView().sendEvent(
               new PlayerColorSelectionEvent(AppGUI.getClient().getPlayerColor(), chosenColor));
 
           close();

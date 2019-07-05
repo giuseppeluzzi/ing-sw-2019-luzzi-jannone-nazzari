@@ -101,7 +101,7 @@ public class DialogShowPaymentOption extends Dialog {
       }
     }
     try {
-      ((BoardView) AppGUI.getClient().getBoardView())
+      AppGUI.getClient().getBoardView()
           .sendEvent(new PlayerPaymentEvent(AppGUI.getClient().getPlayerColor(),
               answerRed, answerBlue, answerYellow, answerPowerUp));
       close();
