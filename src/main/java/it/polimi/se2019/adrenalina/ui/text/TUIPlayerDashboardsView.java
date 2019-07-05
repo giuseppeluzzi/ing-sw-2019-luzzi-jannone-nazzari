@@ -155,24 +155,23 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
         WAIT_TIMEOUT_MSG));
     String response;
     Set<String> answers;
+    boolean valid = true;
     do {
+      valid = true;
       inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
       response = inputManager.waitForStringResult().replace(" ", "");
 
       answers = new HashSet<>(Arrays.asList(response.split(",")));
 
-      if (!Payment.verifyPaymentAnswers(answers, spendables)) {
+      if (!response.matches(inputValidationRegex) || !Payment.verifyPaymentAnswers(answers, spendables)) {
+        valid = false;
         Log.println("Hai selezionato un'opzione non valida!");
-      } else {
-        if (!Payment.verifyPaymentFullfilled(answers, spendables, costs)) {
-          Log.println("Hai selezionato un'opzione non valida!");
-        }
+      } else if (!Payment.verifyPaymentFullfilled(answers, spendables, costs)) {
+        valid = false;
+        Log.println("Hai pagato una quantità non valida!");
       }
 
-    } while (!response.matches(inputValidationRegex)
-        || !Payment.verifyPaymentAnswers(answers, spendables)
-        || !Payment.verifyPaymentFullfilled(answers, spendables, costs)
-    );
+    } while (!valid);
 
     timer.stop();
     return answers;
