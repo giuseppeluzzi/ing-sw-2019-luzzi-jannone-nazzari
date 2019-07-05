@@ -2,13 +2,22 @@ package it.polimi.se2019.adrenalina.controller;
 
 import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import it.polimi.se2019.adrenalina.controller.action.game.EndGame;
 import it.polimi.se2019.adrenalina.controller.action.game.GameAction;
+import it.polimi.se2019.adrenalina.controller.action.game.GameActionAsync;
+import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -30,7 +39,8 @@ public class TurnControllerTest {
     } catch (RemoteException e) {
       Log.exception(e);
     }
-    turnController = new TurnController(boardController);
+    turnController = spy(new TurnController(boardController));
+    doNothing().when(turnController).executeGameActionQueue();
     player = new Player("test", PlayerColor.GREY, boardController.getBoard());
     player2 = new Player("test2", PlayerColor.GREEN, boardController.getBoard());
     Square square1 = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
@@ -70,13 +80,43 @@ public class TurnControllerTest {
     turnController.getBoardController().getBoard().incrementTurnCounter();
     turnController.prepare();
     assertEquals(player.getColor(), boardController.getBoard().getCurrentPlayer());
+    player.setClient(new FakeClient(player.getName(), boardController.getBoard().isDominationBoard(), true, player.getColor()));
+    player2.setClient(new FakeClient(player2.getName(), boardController.getBoard().isDominationBoard(), true, player2.getColor()));
+    boardController.addClient(player.getClient());
+    boardController.addClient(player2.getClient());
     boardController.getBoard().addPlayer(player2);
-    boardController.getBoard().setFinalFrenzySelected(true);
+    boardController.getBoard().setFinalFrenzySelected(false);
     boardController.getBoard().setFinalFrenzyActivator(player2.getColor());
     boardController.getBoard().setSkulls(0);
     turnController.clearActionsQueue();
     turnController.endTurn();
     assertTrue(turnController.isEndGame());
+    assertTrue(((FakeClient) player.getClient()).received);
+    assertTrue(((FakeClient) player2.getClient()).received);
+  }
+
+  @Test
+  public void testEndTurn() {
+    boardController.getBoard().addPlayer(player2);
+    Player player3 = new Player("test3", PlayerColor.YELLOW, boardController.getBoard());
+    boardController.getBoard().addPlayer(player3);
+    boardController.getBoard().setCurrentPlayer(player2.getColor());
+    turnController.endTurn();
+    assertEquals(PlayerColor.YELLOW, boardController.getBoard().getCurrentPlayer());
+  }
+
+  @Test
+  public void testEndTurn2() {
+    boardController.getBoard().addPlayer(player2);
+    Player player3 = new Player("test3", PlayerColor.YELLOW, boardController.getBoard());
+    boardController.getBoard().addPlayer(player3);
+    boardController.getBoard().setStatus(BoardStatus.FINAL_FRENZY);
+    boardController.getBoard().setFinalFrenzyActivator(player.getColor());
+    boardController.getBoard().setCurrentPlayer(player2.getColor());
+    boardController.getBoard().incrementTurnCounter();
+    boardController.getBoard().setFinalFrenzySelected(true);
+    turnController.endTurn();
+    assertEquals(PlayerColor.YELLOW, boardController.getBoard().getCurrentPlayer());
   }
 
   @Test
@@ -117,5 +157,81 @@ public class TurnControllerTest {
     boardController.getBoard().addPlayer(new Player("test4", PlayerColor.GREEN, null));
     turnController.prepare();
     assertEquals(4, turnController.getActionQueueSize());
+  }
+
+  @Test
+  public void testExecuteGameAction() {
+    BoardController boardController2 = null;
+    try {
+      boardController2 = new BoardController(false);
+    } catch (RemoteException ignore) {
+      //
+    }
+    boardController2.getBoard().addPlayer(new Player("test", PlayerColor.GREEN, boardController2.getBoard()));
+    boardController2.getBoard().setCurrentPlayer(PlayerColor.GREEN);
+
+    TurnController turnController2 = new TurnController(boardController2);
+    TurnController fakeTurnController = spy(turnController2);
+    boardController2.setTurnController(turnController2);
+
+    doNothing().when(fakeTurnController).executeGameActionQueue();
+    player.addWeapon(new Weapon(0,0,0,AmmoColor.BLUE,"test", "r"));
+    fakeTurnController.clearActionsQueue();
+    fakeTurnController.endTurn();
+    fakeTurnController.clearActionsQueue();
+    FakeAsyncAction asyncAction = new FakeAsyncAction(turnController, player);
+
+    turnController2.addTurnActions(asyncAction);
+    turnController2.executeGameActionQueue();
+    assertTrue(asyncAction.executed);
+  }
+  private class FakeClient extends Client {
+    private boolean received;
+    private PlayerColor color;
+
+    protected FakeClient(String playerName, boolean domination, boolean tui, PlayerColor color) {
+      super(playerName, domination, tui);
+      received = false;
+      this.color = color;
+    }
+
+    public boolean isReceived() {
+      return received;
+    }
+
+    public void setReceived(boolean received) {
+      this.received = received;
+    }
+
+    @Override
+    public void showMessage(MessageSeverity messageSeverity, String message) {
+      received = true;
+    }
+
+    @Override
+    public void showGameMessage(String message) {
+      received = true;
+    }
+
+    @Override
+    public PlayerColor getPlayerColor() {
+      return color;
+    }
+  }
+
+  private class FakeAsyncAction extends GameActionAsync {
+
+    private boolean executed;
+
+    protected FakeAsyncAction(TurnController turnController,
+        Player player) {
+      super(turnController, player);
+      executed = false;
+    }
+
+    @Override
+    public void execute(Board board) {
+      executed = true;
+    }
   }
 }

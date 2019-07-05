@@ -34,7 +34,7 @@ public class WeaponSwap implements Buyable {
 
   @Override
   public Buyable getBaseBuyable() {
-    return boardWeapon;
+    return getBoardWeapon();
   }
 
   @Override

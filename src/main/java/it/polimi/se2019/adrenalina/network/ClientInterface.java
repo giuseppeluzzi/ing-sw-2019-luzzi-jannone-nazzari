@@ -23,7 +23,6 @@ public interface ClientInterface extends Remote {
   void showGameMessage(String message) throws RemoteException;
   void ping() throws IOException;
   Long getLastPing() throws IOException;
-
   void disconnect(String message, boolean keepAlive) throws RemoteException;
 
   BoardViewInterface getBoardView() throws RemoteException;
