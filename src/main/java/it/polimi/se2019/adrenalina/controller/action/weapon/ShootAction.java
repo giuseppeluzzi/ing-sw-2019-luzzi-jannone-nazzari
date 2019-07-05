@@ -14,7 +14,7 @@ public class ShootAction implements WeaponAction {
   private int damages;
   private int tag;
   private boolean powerup;
-  WeaponActionType type = WeaponActionType.SHOOT;
+  WeaponActionType type;
 
   public ShootAction(int target, int damages, int tag, boolean powerup) {
     this.target = target;
@@ -72,7 +72,8 @@ public class ShootAction implements WeaponAction {
     return object instanceof WeaponAction && ((WeaponAction) object).getActionType() == WeaponActionType.SHOOT
         && ((ShootAction) object).target == target
         && ((ShootAction) object).damages == damages
-        && ((ShootAction) object).tag == tag;
+        && ((ShootAction) object).tag == tag
+        && ((ShootAction) object).powerup == powerup;
   }
 
   @Override
