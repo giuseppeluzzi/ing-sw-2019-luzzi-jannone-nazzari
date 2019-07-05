@@ -10,6 +10,8 @@ import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 public class WeaponBuyTest {
   private Weapon weapon;
@@ -37,7 +39,8 @@ public class WeaponBuyTest {
     } catch (RemoteException ignore) {
       //
     }
-    TurnController turnController = new TurnController(boardController);
+    TurnController turnController = spy(new TurnController(boardController));
+    doNothing().when(turnController).executeGameActionQueue();
 
     Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
     Player player2 = new Player("test2", PlayerColor.YELLOW, boardController.getBoard());
@@ -69,7 +72,8 @@ public class WeaponBuyTest {
     } catch (RemoteException ignore) {
       //
     }
-    TurnController turnController = new TurnController(boardController);
+    TurnController turnController = spy(new TurnController(boardController));
+    doNothing().when(turnController).executeGameActionQueue();
     Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
     Player player2 = new Player("test2", PlayerColor.YELLOW, boardController.getBoard());
     boardController.getBoard().addPlayer(player);
