@@ -3,27 +3,60 @@ package it.polimi.se2019.adrenalina.controller;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
+import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardKillShotsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerKillScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerMasterUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerScoreUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
-import it.polimi.se2019.adrenalina.model.*;
+import it.polimi.se2019.adrenalina.model.AmmoCard;
+import it.polimi.se2019.adrenalina.model.Board;
+import it.polimi.se2019.adrenalina.model.Direction;
+import it.polimi.se2019.adrenalina.model.DominationBoard;
+import it.polimi.se2019.adrenalina.model.Newton;
+import it.polimi.se2019.adrenalina.model.Player;
+import it.polimi.se2019.adrenalina.model.Square;
+import it.polimi.se2019.adrenalina.model.TagbackGrenade;
+import it.polimi.se2019.adrenalina.model.TargetingScope;
+import it.polimi.se2019.adrenalina.model.Teleporter;
+import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.ClientInterface;
+import it.polimi.se2019.adrenalina.utils.ANSIColor;
+import it.polimi.se2019.adrenalina.utils.IOUtils;
+import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
-import it.polimi.se2019.adrenalina.utils.*;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
-
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Controller in charge of handling the game board.
@@ -150,6 +183,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Returns a set of valid maps for a given number of players.
+   *
    * @param players number of players
    * @return a set of GameMap
    */
@@ -219,37 +253,88 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       PlayingBoardException, EndedGameException {
     if (board.getStatus() == BoardStatus.END) {
       throw new EndedGameException();
-    } else if (board.getStatus() == BoardStatus.LOBBY) {
-      if (board.getPlayers().size() >= 5) {
-        throw new FullBoardException();
-      }
-
-      setViews(player);
-      player.setMaster(board.getPlayers().isEmpty());
-      board.addPlayer(player);
-
-      try {
-        addPlayerObservers(player);
-        if (player.getClient() != null) {
-          board.addObserver(player.getClient().getBoardView(), true);
-          board.addObserver(player.getClient().getPlayerDashboardsView());
-          board.addObserver(player.getClient().getCharactersView());
-        }
-      } catch (RemoteException e) {
-        Log.exception(e);
-      }
-
-      player.setStatus(PlayerStatus.WAITING);
+    } else {
       notifyPlayerJoin(player);
 
-      if (board.getPlayers().size() >= ServerConfig.getInstance().getMinNumPlayers()) {
-        startJoinTimer();
-      }
-    } else {
-      if (board.getPlayers().contains(player)) {
-        player.setStatus(PlayerStatus.PLAYING);
+      if (board.getStatus() == BoardStatus.LOBBY) {
+        if (board.getPlayers().size() >= 5) {
+          throw new FullBoardException();
+        }
+
+        setViews(player);
+        board.addPlayer(player);
+
+        try {
+          addPlayerObservers(player);
+          if (player.getClient() != null) {
+            board.addObserver(player.getClient().getBoardView(), true);
+            board.addObserver(player.getClient().getPlayerDashboardsView());
+            board.addObserver(player.getClient().getCharactersView());
+          }
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
+
+        player.setMaster(board.getPlayers().isEmpty());
+        player.setStatus(PlayerStatus.WAITING);
+
+        if (board.getPlayers().size() >= ServerConfig.getInstance().getMinNumPlayers()) {
+          startJoinTimer();
+        }
       } else {
-        throw new PlayingBoardException("Board isn't in LOBBY status");
+        if (board.getPlayers().contains(player)) {
+          try {
+            for (Square square : board.getSquares()) {
+              player.getClient().getBoardView().update(new BoardSetSquareUpdate(square));
+              player.getClient().getBoardView().update(new SquareWeaponUpdate(square.getPosX(), square.getPosY(), square.getWeapons()));
+            }
+
+            if (board.isDominationBoard()) {
+              for (PlayerColor redDamage : ((DominationBoard) board).getRedDamages()) {
+                player.getClient().getBoardView().update(new SpawnPointDamageEvent(redDamage, AmmoColor.RED));
+              }
+
+              for (PlayerColor blueDamage : ((DominationBoard) board).getBlueDamages()) {
+                player.getClient().getBoardView().update(new SpawnPointDamageEvent(blueDamage, AmmoColor.BLUE));
+              }
+
+              for (PlayerColor yellowDamage : ((DominationBoard) board).getYellowDamages()) {
+                player.getClient().getBoardView().update(new SpawnPointDamageEvent(yellowDamage, AmmoColor.YELLOW));
+              }
+            }
+
+            for (Player ofPlayer: board.getPlayers()) {
+              player.getClient().getBoardView().update(new BoardAddPlayerUpdate(ofPlayer.getName(), ofPlayer.getColor()));
+              //player.getClient().getBoardView().update(new PlayerMasterUpdate(ofPlayer.getColor(), ofPlayer.isMaster()));
+
+              if (ofPlayer.getColor() == player.getColor()) {
+                player.getClient().getPlayerDashboardsView()
+                    .update(new OwnWeaponUpdate(ofPlayer.getColor(), ofPlayer.getWeapons()));
+                player.getClient().getPlayerDashboardsView()
+                    .update(new OwnPowerUpUpdate(ofPlayer.getColor(), ofPlayer.getPowerUps()));
+              } else {
+                player.getClient().getPlayerDashboardsView().update(
+                    new EnemyWeaponUpdate(ofPlayer.getColor(), player.getWeapons().size(),
+                        player.getUnloadedWeapons()));
+                player.getClient().getPlayerDashboardsView().update(
+                    new EnemyPowerUpUpdate(ofPlayer.getColor(), ofPlayer.getPowerUps().size()));
+              }
+
+              player.getClient().getPlayerDashboardsView().update(new PlayerScoreUpdate(ofPlayer.getColor(), ofPlayer.getScore()));
+              player.getClient().getPlayerDashboardsView().update(new PlayerKillScoreUpdate(ofPlayer.getColor(), ofPlayer.getKillScore()));
+              player.getClient().getCharactersView().update(new PlayerPositionUpdate(ofPlayer.getColor(), ofPlayer.getSquare().getPosX(), ofPlayer.getSquare().getPosY()));
+            }
+
+            player.getClient().getBoardView().update(new BoardKillShotsUpdate(board.getKillShots()));
+            player.getClient().getBoardView().update(new MapSelectionEvent(board.getMapId()));
+            player.getClient().getBoardView().update(new BoardStatusUpdate(BoardStatus.MATCH));
+          } catch (RemoteException e) {
+            Log.exception(e);
+          }
+          player.setStatus(PlayerStatus.PLAYING);
+        } else {
+          throw new PlayingBoardException("Board isn't in LOBBY status");
+        }
       }
     }
   }
@@ -276,6 +361,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Notifies clients when a player joins a game.
+   *
    * @param player the player who just joined the game
    */
   public void notifyPlayerJoin(Player player) {
@@ -343,6 +429,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Finds a free PlayerColor for this game board.
+   *
    * @return a PlayerColor or null
    */
   public PlayerColor getFreePlayerColor() {
@@ -374,8 +461,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   }
 
   /**
-   * Verifies if a map is selected otherwise one is chosen depending on the number of
-   * players.
+   * Verifies if a map is selected otherwise one is chosen depending on the number of players.
    */
   private void chooseMap() {
     if (selectedMap == 0) {
@@ -399,11 +485,14 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   /**
    * Create every square for a map from the template in the GameMap.
+   *
    * @param gameMap the map template
    */
   public void createSquares(GameMap gameMap) {
     for (Square square : gameMap.getSquares()) {
-      Square realSquare = new Square(square.getPosX(), square.getPosY(), square.getColor(), new BorderType[]{square.getEdge(Direction.NORTH), square.getEdge(Direction.EAST), square.getEdge(Direction.SOUTH), square.getEdge(Direction.WEST)}, board);
+      Square realSquare = new Square(square.getPosX(), square.getPosY(), square.getColor(),
+          new BorderType[]{square.getEdge(Direction.NORTH), square.getEdge(Direction.EAST),
+              square.getEdge(Direction.SOUTH), square.getEdge(Direction.WEST)}, board);
       if (square.isSpawnPoint()) {
         realSquare.setSpawnPoint(true);
       }
@@ -427,13 +516,14 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
    * the game on that board is already in progress.
+   *
    * @param player the player to be removed
    */
   public void removePlayer(Player player) throws InvalidPlayerException {
     clientsName.remove(player.getClient());
     if (board.getStatus() == BoardStatus.LOBBY) {
       board.removePlayer(player.getColor());
-      if (! board.getPlayers().isEmpty() && player.isMaster()) {
+      if (!board.getPlayers().isEmpty() && player.isMaster()) {
         board.getPlayers().get(0).setMaster(true);
       }
       if (board.getPlayers().size() >= 2) {
@@ -595,12 +685,12 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       try {
         if (client.getPlayerColor() != event.getNewPlayerColor()) {
           client.showGameMessage(String.format("%s%s%s ha cambiato personaggio in %s%s%s",
-                  event.getNewPlayerColor().getAnsiColor(),
-                  player.getName(),
-                  ANSIColor.RESET,
-                  event.getNewPlayerColor().getAnsiColor(),
-                  event.getNewPlayerColor().getCharacterName(),
-                  ANSIColor.RESET));
+              event.getNewPlayerColor().getAnsiColor(),
+              player.getName(),
+              ANSIColor.RESET,
+              event.getNewPlayerColor().getAnsiColor(),
+              event.getNewPlayerColor().getCharacterName(),
+              ANSIColor.RESET));
         }
       } catch (RemoteException e) {
         // ignore

@@ -247,7 +247,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
           Log.info("server", "A client disconnected! (Name: " + player.getName() + ")");
           game.notifyPlayerQuit(player);
           game.removePlayer(player);
-          playing.remove(player);
+          if (game.getBoard().getStatus() == BoardStatus.LOBBY) {
+            playing.remove(player);
+          }
           game.handleDisconnect(player.getColor());
           break;
         } catch (InvalidPlayerException ignored) {

@@ -50,8 +50,6 @@ public class AttackController extends UnicastRemoteObject implements Observer {
     registeredEvents.add(EventType.SPAWN_POINT_DAMAGE_EVENT);
   }
 
-
-
   /**
    * Event fired when a player reloads a weapon.
    * @param event event specifying the weapon reloaded
