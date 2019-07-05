@@ -1,8 +1,10 @@
 package it.polimi.se2019.adrenalina.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
+import it.polimi.se2019.adrenalina.event.Event;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
+import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
@@ -18,9 +20,12 @@ import javafx.print.PageLayout;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 public class BoardControllerTest {
 
   private BoardController boardController;
+  private GameMap testMap;
 
   @Before
   public void setBoardController() {
@@ -29,6 +34,7 @@ public class BoardControllerTest {
     } catch (RemoteException ignore) {
       //
     }
+    testMap = new GameMap(5, "test", "testMap", 3,4);
   }
 
   @Test(expected = EndedGameException.class)
@@ -76,6 +82,11 @@ public class BoardControllerTest {
       List<GameMap> validMaps = boardController.getValidMaps(3);
       int spawnPoints = 0;
       GameMap map = validMaps.get(0);
+      assertEquals(testMap.getMinPlayers(), map.getMinPlayers());
+      assertEquals(testMap.getMaxPlayers(), map.getMaxPlayers());
+      assertNotEquals(testMap.getDescription(), map.getDescription());
+      assertNotEquals(testMap.getName(), map.getName());
+      assertNotEquals(map.getId(), testMap.getId());
       boardController.createSquares(map);
       for (Square square : boardController.getBoard().getSquares()) {
         if (square.isSpawnPoint()) {
@@ -127,6 +138,69 @@ public class BoardControllerTest {
     }
 
     assertEquals(PlayerStatus.DISCONNECTED, player.getStatus());
+  }
 
+  @Test
+  public void testAddPlayerSuspended() {
+    Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
+    boardController.getBoard().addPlayer(player);
+    player.setStatus(PlayerStatus.SUSPENDED);
+    boardController.getBoard().setStatus(BoardStatus.MATCH);
+    try {
+      boardController.addPlayer(player);
+    } catch (FullBoardException | PlayingBoardException | EndedGameException ignore) {
+      //
+    }
+
+    assertEquals(PlayerStatus.PLAYING, player.getStatus());
+  }
+
+  @Test(expected = PlayingBoardException.class)
+  public void testAddPlayerMatchException() throws PlayingBoardException {
+    Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
+    boardController.getBoard().setStatus(BoardStatus.MATCH);
+    try {
+      boardController.addPlayer(player);
+    } catch (FullBoardException | EndedGameException ignore) {
+      //
+    }
+  }
+
+
+  @Test
+  public void testFinalFrenzyToggleEvent() {
+    FinalFrenzyToggleEvent event = new FinalFrenzyToggleEvent(true);
+    boardController.update(event);
+    assertTrue(boardController.getBoard().isFinalFrenzySelected());
+  }
+
+  @Test
+  public void testBoardSkullEvent() {
+    BoardSkullsUpdate event = new BoardSkullsUpdate(3);
+    boardController.update(event);
+    assertEquals(3, boardController.getBoard().getSkulls());
+  }
+
+  @Test
+  public void testMapSelectionEvent() {
+    MapSelectionEvent event = new MapSelectionEvent(2);
+    boardController.update(event);
+    assertEquals(2, boardController.getBoard().getMapId());
+  }
+
+  @Test
+  public void testPlayerColorSelectionEvent() {
+    PlayerColorSelectionEvent event = new PlayerColorSelectionEvent(PlayerColor.GREEN, PlayerColor.GREY);
+    Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
+    boardController.getBoard().addPlayer(player);
+    boardController.update(event);
+    assertEquals(PlayerColor.GREY, player.getColor());
+  }
+
+  @Test
+  public void testGenericEvent() {
+    Event event = new MapSelectionEvent(2);
+    boardController.update(event);
+    assertEquals(2, boardController.getBoard().getMapId());
   }
 }

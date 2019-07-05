@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
+import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectAmmoEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
@@ -136,6 +137,15 @@ public class PlayerControllerTest {
   @Test
   public void testUnsuspendEvent() {
     PlayerUnsuspendEvent event = new PlayerUnsuspendEvent(PlayerColor.GREEN);
+    player1.setStatus(PlayerStatus.SUSPENDED);
+    player1.incrementTimeoutCount();
+    playerController.update(event);
+    assertEquals(PlayerStatus.PLAYING, player1.getStatus());
+  }
+
+  @Test
+  public void testGenericEvent() {
+    Event event = new PlayerUnsuspendEvent(PlayerColor.GREEN);
     player1.setStatus(PlayerStatus.SUSPENDED);
     player1.incrementTimeoutCount();
     playerController.update(event);
