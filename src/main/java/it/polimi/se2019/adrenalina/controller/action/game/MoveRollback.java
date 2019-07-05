@@ -20,10 +20,6 @@ public class MoveRollback extends GameAction {
     this.executableObject = executableObject;
   }
 
-  public ExecutableObject getExecutableObject() {
-    return executableObject;
-  }
-
   @Override
   public void execute(Board board) {
     for (Map.Entry<Player, Square> entrySet : executableObject.getInitialPlayerPositions().entrySet()) {

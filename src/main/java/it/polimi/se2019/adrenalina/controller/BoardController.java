@@ -500,18 +500,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     return board.getPlayerByName(clientsName.get(client));
   }
 
-  public void setClientBoardView(ClientInterface client, BoardViewInterface view) {
-    boardViews.put(client, view);
-  }
-
-  public void setClientCharacterView(ClientInterface client, CharactersViewInterface view) {
-    charactersViews.put(client, view);
-  }
-
-  public void setClientDashboardView(ClientInterface client, PlayerDashboardsViewInterface view) {
-    playerDashboardViews.put(client, view);
-  }
-
   /**
    * Starts a game.
    */
@@ -595,7 +583,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     player.setColor(event.getNewPlayerColor());
 
     try {
-      player.getClient().setPlayerColor(event.getNewPlayerColor());
+      if (player.getClient() != null) {
+        player.getClient().setPlayerColor(event.getNewPlayerColor());
+      }
     } catch (RemoteException e) {
       Log.exception(e);
     }

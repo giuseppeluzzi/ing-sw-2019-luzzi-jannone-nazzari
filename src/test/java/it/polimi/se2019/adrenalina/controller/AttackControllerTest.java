@@ -2,15 +2,13 @@ package it.polimi.se2019.adrenalina.controller;
 
 import static org.junit.Assert.*;
 
-import it.polimi.se2019.adrenalina.controller.action.game.SelectWeapon;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
+import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectPlayerEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectSquareEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SkipSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SquareMoveSelectionEvent;
-import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.DominationBoard;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -128,5 +126,19 @@ public class AttackControllerTest {
     attackController2.update(event);
 
     assertEquals(1, ((DominationBoard) boardController2.getBoard()).getRedDamages().size());
+  }
+
+  @Test
+  public void testEventGeneric() {
+    Square square1 = new Square(0,0,SquareColor.RED,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL, boardController.getBoard());
+    Square square2 = new Square(1,0,SquareColor.YELLOW,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL, boardController.getBoard());
+    Event event = new SquareMoveSelectionEvent(PlayerColor.GREEN, 1,0);
+    boardController.getBoard().setSquare(square1);
+    boardController.getBoard().setSquare(square2);
+    player.setSquare(square1);
+    attackController.update(event);
+    assertEquals(player.getSquare(), square2);
+    assertEquals(attackController.hashCode(), boardController.hashCode());
+
   }
 }

@@ -22,6 +22,7 @@ public class SquareSelectionTest {
     square.setAmmoCard(new AmmoCard(2,1,0,0));
     player.setSquare(square);
     SquareSelection squareSelection = new SquareSelection(player, 0, true);
+    assertEquals(0, squareSelection.getMaxDistance());
     if (squareSelection.isFetch()) {
       assertEquals(1, squareSelection.getTargets().size());
     }
