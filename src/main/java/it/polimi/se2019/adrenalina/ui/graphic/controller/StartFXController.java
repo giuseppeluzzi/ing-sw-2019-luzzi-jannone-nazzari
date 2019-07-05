@@ -2,8 +2,8 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.ClientConfig;
-import it.polimi.se2019.adrenalina.controller.ServerConfig;
 import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.Log;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +12,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -32,7 +36,15 @@ public class StartFXController {
   @FXML
   private BorderPane startGameModeSelector;
   @FXML
+  private RadioButton gamemodeClassic;
+  @FXML
   private RadioButton gamemodeDomination;
+  @FXML
+  private Circle classicCircle;
+  @FXML
+  private Circle dominationCircle;
+  @FXML
+  private Circle nameCircle;
 
   @FXML
   private BorderPane startNameSelector;
@@ -64,6 +76,10 @@ public class StartFXController {
     textFieldIpAddress.setText(ClientConfig.getInstance().getServerIP());
     textFieldPort.setText(Integer.toString(ClientConfig.getInstance().getSocketPort()));
     buttonNext0.requestFocus();
+
+    classicCircle.setFill(new ImagePattern(new Image("gui/assets/img/classic_mode.jpg")));
+    dominationCircle.setFill(new ImagePattern(new Image("gui/assets/img/domination_mode.jpg")));
+    nameCircle.setFill(new ImagePattern(new Image("gui/assets/img/character_YELLOW.jpg")));
 
     checkBoxRMI.selectedProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue != oldValue) {

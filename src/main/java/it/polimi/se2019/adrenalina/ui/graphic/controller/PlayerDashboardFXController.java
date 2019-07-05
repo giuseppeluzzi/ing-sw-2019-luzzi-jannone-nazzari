@@ -187,6 +187,9 @@ public class PlayerDashboardFXController extends DashboardFXController {
     Platform.runLater(() -> {
       ColorAdjust bnEffect = new ColorAdjust();
       bnEffect.setSaturation(-1);
+      ColorAdjust unloadedEffect = new ColorAdjust();
+      unloadedEffect.setSaturation(-1);
+      unloadedEffect.setBrightness(-0.5);
 
       playerWeapons.getChildren().clear();
       for (int i = 0; i < 3 - weaponsNum; i++) {
@@ -206,7 +209,11 @@ public class PlayerDashboardFXController extends DashboardFXController {
         imageView.setPreserveRatio(true);
         imageView.setOpacity(1);
         imageView.getProperties().put(PROP_WEAPON, weapon);
-        imageView.setEffect(bnEffect);
+        if (weapon.isLoaded()) {
+          imageView.setEffect(bnEffect);
+        } else {
+          imageView.setEffect(unloadedEffect);
+        }
         imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, BoardFXController::handlePlayerWeaponHoverIn);
         imageView.addEventHandler(MouseEvent.MOUSE_EXITED, BoardFXController::handlePlayerWeaponHoverOut);
         playerWeapons.getChildren().add(imageView);
@@ -287,10 +294,20 @@ public class PlayerDashboardFXController extends DashboardFXController {
 
     ColorAdjust bnEffect = new ColorAdjust();
     bnEffect.setSaturation(-1);
+    ColorAdjust unloadedEffect = new ColorAdjust();
+    unloadedEffect.setSaturation(-1);
+    unloadedEffect.setBrightness(-0.5);
+
 
     for (Node weapon : getWeaponContainer().getChildren()) {
       if (weapon.getProperties().containsKey(PROP_WEAPON)) {
-        Platform.runLater(() -> weapon.setEffect(bnEffect));
+        Platform.runLater(() -> {
+          if (((Weapon) weapon.getProperties().get(PROP_WEAPON)).isLoaded()) {
+            weapon.setEffect(bnEffect);
+          } else {
+            weapon.setEffect(unloadedEffect);
+          }
+        });
         weapon.removeEventHandler(MouseEvent.MOUSE_CLICKED, selectWeaponEventHandler);
       }
     }

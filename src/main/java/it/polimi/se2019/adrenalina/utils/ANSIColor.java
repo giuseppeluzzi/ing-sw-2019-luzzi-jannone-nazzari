@@ -15,7 +15,7 @@ public enum ANSIColor {
   YELLOW(ansi().fgBrightYellow().toString(), ansi().fgBrightYellow().a(Attribute.INTENSITY_FAINT).toString(), "#FF9800"),
   BLUE(ansi().fgBrightCyan().toString(), ansi().fgBrightCyan().a(Attribute.INTENSITY_FAINT).toString(), "#3F51B5"), // using cyan instead of blue for visibility
   MAGENTA(ansi().fgBrightMagenta().toString(), ansi().fgBrightMagenta().a(Attribute.INTENSITY_FAINT).toString(), "#9C27B0"),
-  CYAN(ansi().fgBrightCyan().toString(), ansi().fgBrightCyan().a(Attribute.INTENSITY_FAINT).toString(), "#3aa0e8"),
+  CYAN(ansi().fgBrightCyan().toString(), ansi().fgBrightCyan().a(Attribute.INTENSITY_FAINT).toString(), "#2d83bd"),
   WHITE(ansi().fg(Color.WHITE).toString(), ansi().fg(Color.WHITE).a(Attribute.INTENSITY_FAINT).toString(), "#606060"),
   RESET(ansi().reset().toString(), ansi().reset().toString(), "#ffffff");
 
