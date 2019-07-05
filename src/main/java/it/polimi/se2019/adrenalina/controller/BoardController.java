@@ -3,7 +3,17 @@ package it.polimi.se2019.adrenalina.controller;
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
-import it.polimi.se2019.adrenalina.event.modelview.*;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSetSquareUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.BoardStatusUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.EnemyWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnPowerUpUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.OwnWeaponUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerAmmoUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.PlayerPositionUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareAmmoCardUpdate;
+import it.polimi.se2019.adrenalina.event.modelview.SquareWeaponUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.FinalFrenzyToggleEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
@@ -29,7 +39,6 @@ import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import it.polimi.se2019.adrenalina.view.BoardViewInterface;
 import it.polimi.se2019.adrenalina.view.CharactersViewInterface;
 import it.polimi.se2019.adrenalina.view.PlayerDashboardsViewInterface;
@@ -250,9 +259,8 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
         }
 
         setViews(player);
-        board.addPlayer(player);
-
         player.setMaster(board.getPlayers().isEmpty());
+        board.addPlayer(player);
 
         setFirstJoinObservers(player);
 
@@ -294,7 +302,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
       addPlayerObservers(player);
       board.addObserver(player.getClient().getBoardView(), true);
-      board.addObserver(player.getClient().getPlayerDashboardsView() );
+      board.addObserver(player.getClient().getPlayerDashboardsView());
       board.addObserver(player.getClient().getCharactersView());
 
       resendSquares(player);
@@ -318,27 +326,38 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     }
 
     for (PlayerColor blueDamage : ((DominationBoard) board).getBlueDamages()) {
-      player.getClient().getBoardView().update(new SpawnPointDamageEvent(blueDamage, AmmoColor.BLUE));
+      player.getClient().getBoardView()
+          .update(new SpawnPointDamageEvent(blueDamage, AmmoColor.BLUE));
     }
 
     for (PlayerColor yellowDamage : ((DominationBoard) board).getYellowDamages()) {
-      player.getClient().getBoardView().update(new SpawnPointDamageEvent(yellowDamage, AmmoColor.YELLOW));
+      player.getClient().getBoardView()
+          .update(new SpawnPointDamageEvent(yellowDamage, AmmoColor.YELLOW));
     }
   }
 
   private void resendPlayers(Player player) throws RemoteException {
     for (Player ofPlayer : board.getActivePlayers()) {
       if (ofPlayer.getSquare() != null) {
-        player.getClient().getCharactersView().update(new PlayerPositionUpdate(ofPlayer.getColor(), ofPlayer.getSquare().getPosX(), ofPlayer.getSquare().getPosY()));
+        player.getClient().getCharactersView().update(
+            new PlayerPositionUpdate(ofPlayer.getColor(), ofPlayer.getSquare().getPosX(),
+                ofPlayer.getSquare().getPosY()));
       }
-      player.getClient().getPlayerDashboardsView().update(new PlayerAmmoUpdate(ofPlayer.getColor(), ofPlayer.getAmmo(AmmoColor.BLUE), ofPlayer.getAmmo(AmmoColor.RED), ofPlayer.getAmmo(AmmoColor.YELLOW)));
+      player.getClient().getPlayerDashboardsView().update(
+          new PlayerAmmoUpdate(ofPlayer.getColor(), ofPlayer.getAmmo(AmmoColor.BLUE),
+              ofPlayer.getAmmo(AmmoColor.RED), ofPlayer.getAmmo(AmmoColor.YELLOW)));
 
       if (ofPlayer.getColor() == player.getColor()) {
-        player.getClient().getPlayerDashboardsView().update(new OwnWeaponUpdate(player.getColor(), player.getWeapons()));
-        player.getClient().getPlayerDashboardsView().update(new OwnPowerUpUpdate(player.getColor(), player.getPowerUps()));
+        player.getClient().getPlayerDashboardsView()
+            .update(new OwnWeaponUpdate(player.getColor(), player.getWeapons()));
+        player.getClient().getPlayerDashboardsView()
+            .update(new OwnPowerUpUpdate(player.getColor(), player.getPowerUps()));
       } else {
-        player.getClient().getPlayerDashboardsView().update(new EnemyWeaponUpdate(ofPlayer.getColor(), ofPlayer.getWeapons().size(), ofPlayer.getUnloadedWeapons()));
-        player.getClient().getPlayerDashboardsView().update(new EnemyPowerUpUpdate(ofPlayer.getColor(), ofPlayer.getPowerUps().size()));
+        player.getClient().getPlayerDashboardsView().update(
+            new EnemyWeaponUpdate(ofPlayer.getColor(), ofPlayer.getWeapons().size(),
+                ofPlayer.getUnloadedWeapons()));
+        player.getClient().getPlayerDashboardsView()
+            .update(new EnemyPowerUpUpdate(ofPlayer.getColor(), ofPlayer.getPowerUps().size()));
       }
     }
   }
@@ -346,15 +365,18 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   private void resendSquares(Player player) throws RemoteException {
     for (Square square : board.getSquares()) {
       player.getClient().getBoardView().update(new BoardSetSquareUpdate(square));
-      player.getClient().getBoardView().update(new SquareWeaponUpdate(square.getPosX(), square.getPosY(), square.getWeapons()));
+      player.getClient().getBoardView()
+          .update(new SquareWeaponUpdate(square.getPosX(), square.getPosY(), square.getWeapons()));
 
       square.addObserver(player.getClient().getBoardView());
       square.addObserver(player.getClient().getPlayerDashboardsView());
       square.addObserver(player.getClient().getCharactersView());
 
       if (square.getAmmoCard() != null) {
-        player.getClient().getBoardView().update(new SquareAmmoCardUpdate(square.getPosX(), square.getPosY(),
-                square.getAmmoCard().getAmmo(AmmoColor.BLUE), square.getAmmoCard().getAmmo(AmmoColor.RED),
+        player.getClient().getBoardView()
+            .update(new SquareAmmoCardUpdate(square.getPosX(), square.getPosY(),
+                square.getAmmoCard().getAmmo(AmmoColor.BLUE),
+                square.getAmmoCard().getAmmo(AmmoColor.RED),
                 square.getAmmoCard().getAmmo(AmmoColor.YELLOW), square.getAmmoCard().getPowerUp()));
       }
     }

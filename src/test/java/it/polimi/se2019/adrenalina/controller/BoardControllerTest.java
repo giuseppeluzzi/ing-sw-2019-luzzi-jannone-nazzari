@@ -6,10 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
@@ -23,13 +21,7 @@ import it.polimi.se2019.adrenalina.exceptions.EndedGameException;
 import it.polimi.se2019.adrenalina.exceptions.FullBoardException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.PlayingBoardException;
-import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.BuyableType;
-import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.model.PowerUp;
-import it.polimi.se2019.adrenalina.model.Square;
-import it.polimi.se2019.adrenalina.model.Target;
-import it.polimi.se2019.adrenalina.model.Weapon;
+import it.polimi.se2019.adrenalina.model.*;
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.Timer;
@@ -40,7 +32,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class BoardControllerTest {
@@ -57,7 +48,7 @@ public class BoardControllerTest {
   @Before
   public void setBoardController() {
     try {
-      boardController = new BoardController(false);
+      boardController = new BoardController(true);
       boardController.setAttackController(new AttackController(boardController));
       turnController = spy(new TurnController(boardController));
       doNothing().when(turnController).executeGameActionQueue();
@@ -282,8 +273,22 @@ public class BoardControllerTest {
     player.setSquare(new Square(2, 2, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, null));
     player.setClient(fakeClient);
 
+    ((DominationBoard) boardController.getBoard()).addDamage(AmmoColor.RED, player.getColor());
+    ((DominationBoard) boardController.getBoard()).addDamage(AmmoColor.BLUE, player.getColor());
+    ((DominationBoard) boardController.getBoard()).addDamage(AmmoColor.YELLOW, player.getColor());
 
+    boardController.getBoard().setSquare(new Square(0,0,SquareColor.BLUE, new BorderType[] {WALL,WALL,WALL,WALL}, boardController.getBoard()));
+    boardController.getBoard().getSquare(0,0).setAmmoCard(new AmmoCard(3,0,0,0));
     boardController.getBoard().addPlayer(player);
+    FakeClient fakeClient2 = new FakeClient(player2.getName(), true, true, player2.getColor());
+    fakeClient2.setCharactersView(new FakeCharacterViewInterface());
+    fakeClient2.setBoardView(new FakeBoardViewInterface());
+    fakeClient2.setPlayerDashboardsView(new FakePlayerDashboardViewInterface());
+    player2.setClient(fakeClient2);
+    boardController.addClient(player.getClient());
+    boardController.addClient(player2.getClient());
+    player2.setStatus(PlayerStatus.PLAYING);
+    boardController.getBoard().addPlayer(player2);
     player.setStatus(PlayerStatus.SUSPENDED);
     boardController.getBoard().setStatus(BoardStatus.MATCH);
     try {
@@ -327,21 +332,6 @@ public class BoardControllerTest {
     @Override
     public PlayerColor getPlayerColor() {
       return color;
-    }
-
-    @Override
-    public BoardViewInterface getBoardView() {
-      return new FakeBoardViewInterface();
-    }
-
-    @Override
-    public CharactersViewInterface getCharactersView() {
-      return new FakeCharacterViewInterface();
-    }
-
-    @Override
-    public PlayerDashboardsViewInterface getPlayerDashboardsView() {
-      return new FakePlayerDashboardViewInterface();
     }
   }
 
