@@ -942,7 +942,7 @@ public class BoardFXController {
   public void startTurnTimer(Dialog dialog) {
     initializeProgressBar();
     turnTimer.start(ClientConfig.getInstance().getTurnTimeout(), () -> {
-      dialog.close();
+      Platform.runLater(dialog::close);
       cancelInput();
     });
     taskTurnProgressBar.playFromStart();
