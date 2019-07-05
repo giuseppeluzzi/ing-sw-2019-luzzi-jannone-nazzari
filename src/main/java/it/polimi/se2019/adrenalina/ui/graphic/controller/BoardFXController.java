@@ -23,7 +23,6 @@ import it.polimi.se2019.adrenalina.ui.graphic.GUITimer;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.Dialog;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -894,15 +893,20 @@ public class BoardFXController {
     } else {
       imageViewHover.setTranslateY(88);
     }
+    imageViewHover.setEffect(null);
   }
 
   private static void handleBoardWeaponHoverOut(MouseEvent event) {
+    ColorAdjust bnEffect = new ColorAdjust();
+    bnEffect.setSaturation(-1);
+
     Node imageViewHover = (Node) event.getSource();
     imageViewHover.setScaleX(1);
     imageViewHover.setScaleY(1);
     imageViewHover.setTranslateX(0);
     imageViewHover.setTranslateY(0);
     imageViewHover.setOpacity(0);
+    imageViewHover.setEffect(bnEffect);
   }
 
   static void handlePlayerWeaponHoverIn(MouseEvent event) {
