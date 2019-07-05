@@ -45,9 +45,7 @@ public class Square extends Observable implements Target {
   @NotExpose
   private List<Weapon> weapons;
 
-  public Square(int posX, int posY, SquareColor color,
-      BorderType edgeUp, BorderType edgeRight,
-      BorderType edgeDown, BorderType edgeLeft, Board board) {
+  public Square(int posX, int posY, SquareColor color, BorderType[] borders, Board board) {
 
     this.board = board;
     this.posX = posX;
@@ -57,11 +55,11 @@ public class Square extends Observable implements Target {
     spawnPoint = false;
     ammoCard = null;
 
-    borders = new HashMap<>();
-    borders.put(Direction.NORTH, edgeUp);
-    borders.put(Direction.EAST, edgeRight);
-    borders.put(Direction.SOUTH, edgeDown);
-    borders.put(Direction.WEST, edgeLeft);
+    this.borders = new HashMap<>();
+    this.borders.put(Direction.NORTH, borders[0]);
+    this.borders.put(Direction.EAST, borders[1]);
+    this.borders.put(Direction.SOUTH, borders[2]);
+    this.borders.put(Direction.WEST, borders[3]);
 
     neighbours = new HashMap<>();
     weapons = new ArrayList<>();

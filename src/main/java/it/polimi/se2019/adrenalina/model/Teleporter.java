@@ -12,12 +12,12 @@ public class Teleporter extends PowerUp {
 
   private static final long serialVersionUID = -384452700114270235L;
 
-
   public Teleporter(AmmoColor color) {
     super(color, false, PowerUpType.TELEPORTER);
-    addAction(new SelectAction(0,1,0,-1, new int[]{},
-        new int[]{}, null, false, false,
-        false, TargetType.MOVE_SQUARE, false, true, false));
+    addAction(
+        new SelectAction(0, 1, TargetType.MOVE_SQUARE)
+            .setMinDistance(0)
+            .setMaxDistance(-1));
     addAction(new MoveAction(0, 1));
   }
 

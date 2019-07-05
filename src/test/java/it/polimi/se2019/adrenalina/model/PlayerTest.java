@@ -1,9 +1,6 @@
 package it.polimi.se2019.adrenalina.model;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.ServerConfig;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import org.junit.Before;
 import org.junit.Test;
@@ -149,7 +146,7 @@ public class PlayerTest {
 
   @Test
   public void testCopyConstructor() {
-    player.setSquare(new Square(1, 2, SquareColor.GREEN, WALL, WALL, WALL, WALL, null));
+    player.setSquare(new Square(1, 2, SquareColor.GREEN, new BorderType[]{WALL, WALL, WALL, WALL}, null));
     try {
       player.addPowerUp(new Newton(AmmoColor.YELLOW));
     } catch (InvalidPowerUpException e) {
@@ -204,10 +201,8 @@ public class PlayerTest {
 
   @Test
   public void testSetSquare() {
-    Square square = new Square(2,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL, null);
-    Square square2 = new Square(0,1, SquareColor.GREEN, WALL,
-        WALL, WALL, WALL, null);
+    Square square = new Square(2, 1, SquareColor.GREEN, new BorderType[]{WALL, WALL, WALL, WALL}, null);
+    Square square2 = new Square(0, 1, SquareColor.GREEN, new BorderType[]{WALL, WALL, WALL, WALL}, null);
     player.resetTimeoutCount();
     player.incrementTimeoutCount();
     assertEquals(1, player.getTimeoutCount());

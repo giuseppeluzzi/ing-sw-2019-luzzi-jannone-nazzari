@@ -14,9 +14,11 @@ public class TargetingScope extends PowerUp {
 
   public TargetingScope(AmmoColor color) {
     super(color, true, PowerUpType.TARGETING_SCOPE);
-    addAction(new SelectAction(0,1, 0, -1, new int[]{0},
-        new int[] {1,2,3,4,5,6,7,8}, null, false, false,
-        false, TargetType.ATTACK_TARGET, false, true, false));
+    addAction(new SelectAction(0,1, TargetType.ATTACK_TARGET)
+        .setMinDistance(0)
+        .setMaxDistance(-1)
+        .setDifferentFrom(0)
+        .setBetween(1, 2, 3, 4, 5, 6, 7, 8));
     addAction(new ShootAction(1, 1, 0, true));
   }
 

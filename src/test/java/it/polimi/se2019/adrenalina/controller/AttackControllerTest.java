@@ -74,7 +74,7 @@ public class AttackControllerTest {
   @Test
   public void testSelectSquare() {
     SelectSquareEvent event = new SelectSquareEvent(PlayerColor.GREEN, 0, 0);
-    boardController.getBoard().setSquare(new Square(0,0,SquareColor.RED,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL,boardController.getBoard()));
+    boardController.getBoard().setSquare(new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
     attackController.update(event);
     assertEquals(SquareColor.RED.getAnsiColor(), player.getCurrentExecutable().getTargetHistory(0).getAnsiColor());
   }
@@ -89,8 +89,8 @@ public class AttackControllerTest {
   @Test
   public void testSquareMove() {
     SquareMoveSelectionEvent event = new SquareMoveSelectionEvent(PlayerColor.GREEN, 1, 1);
-    boardController.getBoard().setSquare(new Square(0,0,SquareColor.RED,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL,boardController.getBoard()));
-    boardController.getBoard().setSquare(new Square(1,1,SquareColor.YELLOW,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL,boardController.getBoard()));
+    boardController.getBoard().setSquare(new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
+    boardController.getBoard().setSquare(new Square(1, 1, SquareColor.YELLOW, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
     attackController.update(event);
     assertEquals(SquareColor.YELLOW, player.getSquare().getColor());
   }
@@ -105,9 +105,9 @@ public class AttackControllerTest {
     } catch (RemoteException ignore) {
       //
     }
-    Square square1 = new Square(0,0,SquareColor.RED,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL, boardController2.getBoard());
-    Square square2 = new Square(1,0,SquareColor.YELLOW,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL, boardController2.getBoard());
-    Square square3 = new Square(2,0,SquareColor.BLUE,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL, boardController2.getBoard());
+    Square square1 = new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController2.getBoard());
+    Square square2 = new Square(1, 0, SquareColor.YELLOW, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController2.getBoard());
+    Square square3 = new Square(2, 0, SquareColor.BLUE, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController2.getBoard());
 
     square1.setSpawnPoint(true);
     square2.setSpawnPoint(true);
@@ -130,8 +130,8 @@ public class AttackControllerTest {
 
   @Test
   public void testEventGeneric() {
-    Square square1 = new Square(0,0,SquareColor.RED,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL, boardController.getBoard());
-    Square square2 = new Square(1,0,SquareColor.YELLOW,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL, boardController.getBoard());
+    Square square1 = new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard());
+    Square square2 = new Square(1, 0, SquareColor.YELLOW, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard());
     Event event = new SquareMoveSelectionEvent(PlayerColor.GREEN, 1,0);
     boardController.getBoard().setSquare(square1);
     boardController.getBoard().setSquare(square2);

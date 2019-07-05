@@ -13,7 +13,7 @@ public class WeaponTest {
   @Test
   public void testCopyConstructor() {
     Weapon weapon1 = new Weapon(0, 1, 2, AmmoColor.YELLOW, "test", "X", false);
-    weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL, null));
+    weapon1.setTargetHistory(1, new Square(0, 0, SquareColor.YELLOW, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, null));
     weapon1.setTargetHistory(2, new Player("test", PlayerColor.YELLOW, null));
     weapon1.addEffect(new Effect("test", weapon1, 0, 1, 2, false));
     weapon1.setSelectedEffect(weapon1.getEffects().get(0));
@@ -32,9 +32,12 @@ public class WeaponTest {
         AmmoColor.YELLOW, "test", "X");
     Effect base = new Effect("test", weapon, 0,
         1, 2, false);
-    base.addAction(new SelectAction(0, 1, 0, 0, new int[]{},
-        new int[]{}, true, false, true, false,
-        TargetType.ATTACK_TARGET, false, true, false));
+    base.addAction(new SelectAction(0, 1, TargetType.ATTACK_TARGET)
+    .setMinDistance(0)
+    .setMaxDistance(0)
+    .setVisible(true)
+    .setUseLastDirection(true)
+    .setStopPropagation(true));
 
     weapon.addEffect(base);
     String json = weapon.serialize();
@@ -145,7 +148,7 @@ public class WeaponTest {
     weapon.setDidShoot();
     Player player = new Player("testPlayer", PlayerColor.GREY, null);
     if (! weapon.didShoot()) {
-      weapon.setInitialPlayerPosition(player, new Square(0,0,SquareColor.GREY,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL,null));
+      weapon.setInitialPlayerPosition(player, new Square(0, 0, SquareColor.GREY, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, null));
       if (weapon.isInitialPositionSet(player)) {
         weapon.getInitialPlayerPositions();
       }

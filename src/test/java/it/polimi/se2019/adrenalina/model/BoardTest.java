@@ -27,21 +27,16 @@ public class BoardTest {
   @Test
   public void testSetSquare() {
     try {
-      Square square = new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR,
-          BorderType.AIR, BorderType.AIR, board);
+      Square square = new Square(1, 1, SquareColor.RED, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board);
       board.setSquare(square);
       board.setSquare(
-          new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-              BorderType.AIR, board));
+          new Square(2, 1, SquareColor.YELLOW, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
       board.setSquare(
-          new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-              BorderType.AIR, board));
+          new Square(1, 2, SquareColor.BLUE, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
       board.setSquare(
-          new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-              BorderType.AIR, board));
+          new Square(0, 1, SquareColor.PURPLE, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
       board.setSquare(
-          new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-              BorderType.AIR, board));
+          new Square(1, 0, SquareColor.GREY, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
 
       assertEquals(
           "Square navigation failed",
@@ -137,20 +132,15 @@ public class BoardTest {
     Player player = new Player("test", PlayerColor.YELLOW, board);
     board.addPlayer(player);
     board.setSquare(
-        new Square(1, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-            BorderType.AIR, board));
+        new Square(1, 1, SquareColor.RED, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
     board.setSquare(
-        new Square(2, 1, SquareColor.YELLOW, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-            BorderType.AIR, board));
+        new Square(2, 1, SquareColor.YELLOW, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
     board.setSquare(
-        new Square(1, 2, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-            BorderType.AIR, board));
+        new Square(1, 2, SquareColor.BLUE, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
     board.setSquare(
-        new Square(0, 1, SquareColor.PURPLE, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-            BorderType.AIR, board));
+        new Square(0, 1, SquareColor.PURPLE, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
     board.setSquare(
-        new Square(1, 0, SquareColor.GREY, BorderType.AIR, BorderType.AIR, BorderType.AIR,
-            BorderType.AIR, board));
+        new Square(1, 0, SquareColor.GREY, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
     String json = board.serialize();
 
     if (json.isEmpty()) {
@@ -308,7 +298,7 @@ public class BoardTest {
 
   @Test
   public void testGetSpawnPointByColor() {
-    Square square = new Square(0,0,SquareColor.RED,WALL,WALL,WALL,WALL,board);
+    Square square = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, board);
     square.setSpawnPoint(true);
     board.setSquare(square);
     assertEquals(0, board.getSpawnPointSquare(AmmoColor.RED).getPosX());

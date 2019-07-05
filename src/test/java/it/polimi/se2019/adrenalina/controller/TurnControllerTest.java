@@ -33,10 +33,10 @@ public class TurnControllerTest {
     turnController = new TurnController(boardController);
     player = new Player("test", PlayerColor.GREY, boardController.getBoard());
     player2 = new Player("test2", PlayerColor.GREEN, boardController.getBoard());
-    Square square1 = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
-    Square square2 = new Square(0, 1, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
-    Square square3 = new Square(1, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
-    Square square4 = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
+    Square square1 = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
+    Square square2 = new Square(0, 1, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
+    Square square3 = new Square(1, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
+    Square square4 = new Square(1, 1, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
     square1.setSpawnPoint(true);
     boardController.getBoard().setSquare(square1);
     boardController.getBoard().setSquare(square2);

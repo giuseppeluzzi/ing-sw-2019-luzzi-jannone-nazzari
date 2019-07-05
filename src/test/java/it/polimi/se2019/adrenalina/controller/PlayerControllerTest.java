@@ -75,8 +75,7 @@ public class PlayerControllerTest {
   @Test
   public void testExecuteCollectAmmo() {
     boardController.getBoard().setSquare(
-        new Square(0, 0, SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL,
-            BorderType.WALL, boardController.getBoard()));
+        new Square(0, 0, SquareColor.GREEN, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
     boardController.getBoard().getSquare(0, 0).setAmmoCard(new AmmoCard(1, 1, 1, 0));
     PlayerCollectAmmoEvent event = new PlayerCollectAmmoEvent(PlayerColor.GREEN, 0, 0);
     playerController.executeCollectAmmo(boardController.getBoard(), event, player1);
@@ -91,8 +90,7 @@ public class PlayerControllerTest {
     PlayerCollectAmmoEvent event = new PlayerCollectAmmoEvent(PlayerColor.GREEN, 0, 0);
 
     boardController.getBoard().setSquare(
-        new Square(0, 0, SquareColor.GREEN, BorderType.WALL, BorderType.WALL, BorderType.WALL,
-            BorderType.WALL, boardController.getBoard()));
+        new Square(0, 0, SquareColor.GREEN, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
     boardController.getBoard().getSquare(0, 0).setAmmoCard(new AmmoCard(1, 1, 1, 0));
     turnController.clearActionsQueue();
     boardController.getBoard().setCurrentPlayer(PlayerColor.GREEN);
@@ -108,8 +106,7 @@ public class PlayerControllerTest {
   @Test
   public void testDiscardPowerUpEvent() {
     Newton newton = new Newton(AmmoColor.RED);
-    Square square = new Square(0, 0, SquareColor.RED, BorderType.WALL, BorderType.WALL,
-        BorderType.WALL, BorderType.WALL, boardController.getBoard());
+    Square square = new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard());
     square.setSpawnPoint(true);
     boardController.getBoard().addPowerUp(newton);
     boardController.getBoard().drawPowerUp(newton);
@@ -226,7 +223,7 @@ public class PlayerControllerTest {
   @Test
   public void testSwapWeaponEvent() {
     PlayerSwapWeaponEvent event = new PlayerSwapWeaponEvent(PlayerColor.GREEN, "test", "Lanciafiamme");
-    Square square = new Square(0,0,SquareColor.BLUE,BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL,boardController.getBoard());
+    Square square = new Square(0, 0, SquareColor.BLUE, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard());
     square.setSpawnPoint(true);
     boardController.getBoard().setSquare(square);
     boardController.getBoard().setCurrentPlayer(PlayerColor.GREEN);

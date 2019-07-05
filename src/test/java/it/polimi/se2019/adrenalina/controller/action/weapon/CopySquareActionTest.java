@@ -3,11 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.*;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BoardController;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.controller.action.game.ExecutableEffect;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -37,7 +33,7 @@ public class CopySquareActionTest {
     turnController = new TurnController(boardController);
     weapon = new Weapon(0,0,0,AmmoColor.BLUE,"test", "f");
     player = new Player("test", PlayerColor.GREY, boardController.getBoard());
-    square1 = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
+    square1 = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
     boardController.getBoard().setSquare(square1);
     boardController.getBoard().addPlayer(player);
   }

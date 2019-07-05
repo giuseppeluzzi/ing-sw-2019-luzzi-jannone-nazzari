@@ -395,14 +395,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
    */
   public void createSquares(GameMap gameMap) {
     for (Square square : gameMap.getSquares()) {
-      Square realSquare = new Square(square.getPosX(),
-          square.getPosY(),
-          square.getColor(),
-          square.getEdge(Direction.NORTH),
-          square.getEdge(Direction.EAST),
-          square.getEdge(Direction.SOUTH),
-          square.getEdge(Direction.WEST),
-          board);
+      Square realSquare = new Square(square.getPosX(), square.getPosY(), square.getColor(), new BorderType[]{square.getEdge(Direction.NORTH), square.getEdge(Direction.EAST), square.getEdge(Direction.SOUTH), square.getEdge(Direction.WEST)}, board);
       if (square.isSpawnPoint()) {
         realSquare.setSpawnPoint(true);
       }

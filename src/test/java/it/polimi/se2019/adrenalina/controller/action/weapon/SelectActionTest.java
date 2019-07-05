@@ -28,43 +28,32 @@ public class SelectActionTest {
 
   @Before
   public void prepare() {
-    action1 = new SelectAction(
-        0,
-        3,
-        1,
-        5,
-        new int[]{1, 2, 3},
-        new int[]{4, 5, 6},
-        false,
-        true,
-        true,
-        false,
-        TargetType.ATTACK_TARGET,
-        true,
-        false,
-        false);
-    action2 = new SelectAction(
-        0,
-        3,
-        1,
-        5,
-        new int[]{1, 3, 2},
-        new int[]{4, 5, 6},
-        false,
-        false,
-        true,
-        false,
-        TargetType.ATTACK_TARGET,
-        true,
-        false,
-        false);
+    action1 = new SelectAction(0, 3, TargetType.ATTACK_TARGET)
+        .setMinDistance(1)
+        .setMaxDistance(5)
+        .setDifferentFrom(1, 2, 3)
+        .setBetween(4, 5, 6)
+        .setVisible(false)
+        .setOptional(true)
+        .setUseLastDirection(true)
+        .setSkippable(true)
+        .setDifferentRoom(false)
+        .setStopPropagation(false)
+        .setDisallowSpawnPoint(false);
+    action2 = new SelectAction(0, 3, TargetType.ATTACK_TARGET)
+        .setMinDistance(1)
+        .setMaxDistance(5)
+        .setDifferentFrom(1, 3, 2)
+        .setBetween(4, 5, 6)
+        .setUseLastDirection(true)
+        .setSkippable(true);
     board = new DominationBoard();
     Player player1 = new Player("test1", PlayerColor.GREEN, board);
     player2 = new Player("test2", PlayerColor.YELLOW, board);
     Player player3 = new Player("test3", PlayerColor.GREY, board);
     Player player4 = new Player("test4", PlayerColor.PURPLE, board);
     Player player5 = new Player("test5", PlayerColor.BLUE, board);
-    square = new Square(0, 0, SquareColor.BLUE, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board);
+    square = new Square(0, 0, SquareColor.BLUE, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board);
     square.setSpawnPoint(true);
     player1.setSquare(square);
     player2.setSquare(square);
@@ -82,29 +71,22 @@ public class SelectActionTest {
     board.addPlayer(player4);
     board.addPlayer(player5);
     board.setSquare(square);
-    board.setSquare(new Square(0, 1, SquareColor.RED, BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR, board));
+    board.setSquare(new Square(0, 1, SquareColor.RED, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
     weapon1 = new Weapon(0,0,0, AmmoColor.YELLOW, "test", "q");
     weapon1.setTargetHistory(0, player1);
   }
 
   @Test
   public void testEquals() {
-    SelectAction action3 = new SelectAction(
-        0,
-        3,
-        1,
-        5,
-        new int[]{1, 2, 3},
-        new int[]{4, 5, 6},
-        false,
-        true,
-        true,
-        false,
-        TargetType.ATTACK_TARGET,
-        true,
-        false,
-        false);
-
+    SelectAction action3 = new SelectAction(0, 3, TargetType.ATTACK_TARGET)
+        .setMinDistance(1)
+        .setMaxDistance(5)
+        .setDifferentFrom(1, 2, 3)
+        .setBetween(4, 5, 6)
+        .setVisible(false)
+        .setOptional(true)
+        .setUseLastDirection(true)
+        .setSkippable(true);
     assertNotEquals(action1, action2);
     assertNotEquals(action1, new EndGame());
     assertNotEquals(action1, new ShootAction(2, 1, 2, false));
@@ -160,63 +142,32 @@ public class SelectActionTest {
 
   @Test(expected = NoTargetsExceptionOptional.class)
   public void testExecuteNoPropagationAllowed() throws Exception {
-    SelectAction action = new SelectAction(
-        1,
-        3,
-        0,
-        10,
-        new int[]{},
-        new int[]{},
-        null,
-        false,
-        false,
-        false,
-        TargetType.ATTACK_TARGET,
-        true,
-        true,
-        false);
+    SelectAction action = new SelectAction(1, 3, TargetType.ATTACK_TARGET)
+        .setMinDistance(0)
+        .setMaxDistance(10)
+        .setSkippable(true)
+        .setStopPropagation(true);
     weapon1.setTargetHistory(1, square);
     action.execute(board, weapon1);
   }
 
   @Test
   public void testExecuteNoExceptions() throws Exception {
-    SelectAction action = new SelectAction(
-        1,
-        3,
-        0,
-        10,
-        new int[]{},
-        new int[]{},
-        null,
-        false,
-        false,
-        false,
-        TargetType.ATTACK_TARGET,
-        true,
-        false,
-        false);
+    SelectAction action = new SelectAction(1, 3, TargetType.ATTACK_TARGET)
+        .setMinDistance(0)
+        .setMaxDistance(10)
+        .setSkippable(true);
     weapon1.setTargetHistory(1, square);
     action.execute(board, weapon1);
   }
 
   @Test
   public void testExecuteNoExceptionsDifferentRoom() throws Exception {
-    SelectAction action = new SelectAction(
-        1,
-        3,
-        0,
-        10,
-        new int[]{},
-        new int[]{},
-        null,
-        false,
-        false,
-        true,
-        TargetType.MOVE_SQUARE,
-        true,
-        false,
-        false);
+    SelectAction action = new SelectAction(1, 3, TargetType.MOVE_SQUARE)
+        .setMinDistance(0)
+        .setMaxDistance(10)
+        .setDifferentRoom(true)
+        .setSkippable(true);
     weapon1.setTargetHistory(1, square);
     action.execute(board, weapon1);
   }

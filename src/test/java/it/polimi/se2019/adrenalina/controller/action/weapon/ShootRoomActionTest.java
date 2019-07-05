@@ -23,17 +23,17 @@ public class ShootRoomActionTest {
     public void set() {
         action = new ShootRoomAction(1,1,1);
         board = new DominationBoard();
-        board.setSquare(new Square(0,0, SquareColor.YELLOW, BorderType.WALL,BorderType.AIR,BorderType.AIR,BorderType.WALL, board));
-        board.setSquare(new Square(0,1, SquareColor.YELLOW, BorderType.AIR,BorderType.AIR,BorderType.AIR,BorderType.WALL, board));
-        board.setSquare(new Square(0,2, SquareColor.YELLOW, BorderType.AIR,BorderType.AIR,BorderType.WALL,BorderType.WALL, board));
-        board.setSquare(new Square(1,0, SquareColor.YELLOW, BorderType.WALL,BorderType.AIR,BorderType.AIR,BorderType.AIR, board));
+        board.setSquare(new Square(0, 0, SquareColor.YELLOW, new BorderType[]{BorderType.WALL, BorderType.AIR, BorderType.AIR, BorderType.WALL}, board));
+        board.setSquare(new Square(0, 1, SquareColor.YELLOW, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.WALL}, board));
+        board.setSquare(new Square(0, 2, SquareColor.YELLOW, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.WALL, BorderType.WALL}, board));
+        board.setSquare(new Square(1, 0, SquareColor.YELLOW, new BorderType[]{BorderType.WALL, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
 
-        board.setSquare(new Square(1,1, SquareColor.RED, BorderType.AIR,BorderType.AIR,BorderType.AIR,BorderType.AIR, board));
+        board.setSquare(new Square(1, 1, SquareColor.RED, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.AIR, BorderType.AIR}, board));
 
-        board.setSquare(new Square(1,2, SquareColor.BLUE, BorderType.AIR,BorderType.WALL,BorderType.AIR,BorderType.AIR, board));
-        board.setSquare(new Square(2,0, SquareColor.BLUE, BorderType.AIR,BorderType.AIR,BorderType.WALL,BorderType.WALL, board));
-        board.setSquare(new Square(2,1, SquareColor.BLUE, BorderType.AIR,BorderType.AIR,BorderType.WALL,BorderType.AIR, board));
-        board.setSquare(new Square(2,2, SquareColor.BLUE, BorderType.AIR,BorderType.WALL,BorderType.WALL,BorderType.AIR, board));
+        board.setSquare(new Square(1, 2, SquareColor.BLUE, new BorderType[]{BorderType.AIR, BorderType.WALL, BorderType.AIR, BorderType.AIR}, board));
+        board.setSquare(new Square(2, 0, SquareColor.BLUE, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.WALL, BorderType.WALL}, board));
+        board.setSquare(new Square(2, 1, SquareColor.BLUE, new BorderType[]{BorderType.AIR, BorderType.AIR, BorderType.WALL, BorderType.AIR}, board));
+        board.setSquare(new Square(2, 2, SquareColor.BLUE, new BorderType[]{BorderType.AIR, BorderType.WALL, BorderType.WALL, BorderType.AIR}, board));
 
         player1 = new Player("P1", PlayerColor.GREEN, board);
         player2 = new Player("P2", PlayerColor.GREY, board);

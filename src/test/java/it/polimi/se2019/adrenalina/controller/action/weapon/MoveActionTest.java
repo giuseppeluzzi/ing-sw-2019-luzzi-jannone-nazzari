@@ -3,11 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.weapon;
 import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.*;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BoardController;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.controller.action.game.ExecutableEffect;
 import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.model.Player;
@@ -41,8 +37,8 @@ public class MoveActionTest {
     player = new Player("test", PlayerColor.GREY, boardController.getBoard());
     player2 = new Player("test2", PlayerColor.GREEN, boardController.getBoard());
     player3 = new Player("test3", PlayerColor.PURPLE, boardController.getBoard());
-    square1 = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
-    square2 = new Square(1, 0, SquareColor.BLUE, WALL, WALL, WALL, WALL, boardController.getBoard());
+    square1 = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
+    square2 = new Square(1, 0, SquareColor.BLUE, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
     boardController.getBoard().setSquare(square1);
     boardController.getBoard().addPlayer(player);
   }
