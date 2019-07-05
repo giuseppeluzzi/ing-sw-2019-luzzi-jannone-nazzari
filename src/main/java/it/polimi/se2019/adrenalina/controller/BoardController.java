@@ -254,16 +254,7 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
         player.setMaster(board.getPlayers().isEmpty());
 
-        try {
-          addPlayerObservers(player);
-          if (player.getClient() != null) {
-            board.addObserver(player.getClient().getBoardView(), true);
-            board.addObserver(player.getClient().getPlayerDashboardsView());
-            board.addObserver(player.getClient().getCharactersView());
-          }
-        } catch (RemoteException e) {
-          Log.exception(e);
-        }
+        setFirstJoinObservers(player);
 
         player.setStatus(PlayerStatus.WAITING);
 
@@ -273,87 +264,118 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
       } else {
         if (board.getPlayers().contains(player)) {
 
-          ClientInterface clientInterfaceOld = null;
-          HashMap<ClientInterface, BoardViewInterface> copyBoardViews = new HashMap<>(boardViews);
-          for (Map.Entry<ClientInterface, BoardViewInterface> clientSet : copyBoardViews.entrySet()) {
-            try {
-              if (clientSet.getKey().getName().equals(player.getName())) {
-                clientInterfaceOld = clientSet.getKey();
-                boardViews.remove(clientInterfaceOld);
-                charactersViews.remove(clientInterfaceOld);
-                playerDashboardViews.remove(clientInterfaceOld);
-                break;
-              }
-            } catch (RemoteException e) {
-              boardViews.remove(clientSet.getKey());
-              charactersViews.remove(clientSet.getKey());
-              playerDashboardViews.remove(clientSet.getKey());
-            }
-          }
-
-
-          try {
-
-            setViews(player);
-
-            addPlayerObservers(player);
-            board.addObserver(player.getClient().getBoardView(), true);
-            board.addObserver(player.getClient().getPlayerDashboardsView() );
-            board.addObserver(player.getClient().getCharactersView());
-
-            for (Square square : board.getSquares()) {
-              player.getClient().getBoardView().update(new BoardSetSquareUpdate(square));
-              player.getClient().getBoardView().update(new SquareWeaponUpdate(square.getPosX(), square.getPosY(), square.getWeapons()));
-
-              square.addObserver(player.getClient().getBoardView());
-              square.addObserver(player.getClient().getPlayerDashboardsView());
-              square.addObserver(player.getClient().getCharactersView());
-
-              if (square.getAmmoCard() != null) {
-                player.getClient().getBoardView().update(new SquareAmmoCardUpdate(square.getPosX(), square.getPosY(),
-                        square.getAmmoCard().getAmmo(AmmoColor.BLUE), square.getAmmoCard().getAmmo(AmmoColor.RED),
-                        square.getAmmoCard().getAmmo(AmmoColor.YELLOW), square.getAmmoCard().getPowerUp()));
-              }
-            }
-
-            for (Player ofPlayer : board.getActivePlayers()) {
-              if (ofPlayer.getSquare() != null) {
-                player.getClient().getCharactersView().update(new PlayerPositionUpdate(ofPlayer.getColor(), ofPlayer.getSquare().getPosX(), ofPlayer.getSquare().getPosY()));
-              }
-              player.getClient().getPlayerDashboardsView().update(new PlayerAmmoUpdate(ofPlayer.getColor(), ofPlayer.getAmmo(AmmoColor.BLUE), ofPlayer.getAmmo(AmmoColor.RED), ofPlayer.getAmmo(AmmoColor.YELLOW)));
-
-              if (ofPlayer.getColor() == player.getColor()) {
-                player.getClient().getPlayerDashboardsView().update(new OwnWeaponUpdate(player.getColor(), player.getWeapons()));
-                player.getClient().getPlayerDashboardsView().update(new OwnPowerUpUpdate(player.getColor(), player.getPowerUps()));
-              } else {
-                player.getClient().getPlayerDashboardsView().update(new EnemyWeaponUpdate(ofPlayer.getColor(), ofPlayer.getWeapons().size(), ofPlayer.getUnloadedWeapons()));
-                player.getClient().getPlayerDashboardsView().update(new EnemyPowerUpUpdate(ofPlayer.getColor(), ofPlayer.getPowerUps().size()));
-              }
-            }
-
-            if (board.isDominationBoard()) {
-              for (PlayerColor redDamage : ((DominationBoard) board).getRedDamages()) {
-                player.getClient().getBoardView().update(new SpawnPointDamageEvent(redDamage, AmmoColor.RED));
-              }
-
-              for (PlayerColor blueDamage : ((DominationBoard) board).getBlueDamages()) {
-                player.getClient().getBoardView().update(new SpawnPointDamageEvent(blueDamage, AmmoColor.BLUE));
-              }
-
-              for (PlayerColor yellowDamage : ((DominationBoard) board).getYellowDamages()) {
-                player.getClient().getBoardView().update(new SpawnPointDamageEvent(yellowDamage, AmmoColor.YELLOW));
-              }
-            }
-
-            player.getClient().getBoardView().showBoard();
-            player.getClient().getBoardView().update(new BoardStatusUpdate(BoardStatus.MATCH));
-          } catch (RemoteException e) {
-            Log.exception(e);
-          }
+          uncacheClients(player);
+          reconcilePlayer(player);
           player.setStatus(PlayerStatus.PLAYING);
         } else {
           throw new PlayingBoardException("Board isn't in LOBBY status");
         }
+      }
+    }
+  }
+
+  private void setFirstJoinObservers(Player player) {
+    try {
+      addPlayerObservers(player);
+      if (player.getClient() != null) {
+        board.addObserver(player.getClient().getBoardView(), true);
+        board.addObserver(player.getClient().getPlayerDashboardsView());
+        board.addObserver(player.getClient().getCharactersView());
+      }
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  private void reconcilePlayer(Player player) {
+    try {
+
+      setViews(player);
+
+      addPlayerObservers(player);
+      board.addObserver(player.getClient().getBoardView(), true);
+      board.addObserver(player.getClient().getPlayerDashboardsView() );
+      board.addObserver(player.getClient().getCharactersView());
+
+      resendSquares(player);
+
+      resendPlayers(player);
+
+      if (board.isDominationBoard()) {
+        resendDominationBoard(player);
+      }
+
+      player.getClient().getBoardView().showBoard();
+      player.getClient().getBoardView().update(new BoardStatusUpdate(BoardStatus.MATCH));
+    } catch (RemoteException e) {
+      Log.exception(e);
+    }
+  }
+
+  private void resendDominationBoard(Player player) throws RemoteException {
+    for (PlayerColor redDamage : ((DominationBoard) board).getRedDamages()) {
+      player.getClient().getBoardView().update(new SpawnPointDamageEvent(redDamage, AmmoColor.RED));
+    }
+
+    for (PlayerColor blueDamage : ((DominationBoard) board).getBlueDamages()) {
+      player.getClient().getBoardView().update(new SpawnPointDamageEvent(blueDamage, AmmoColor.BLUE));
+    }
+
+    for (PlayerColor yellowDamage : ((DominationBoard) board).getYellowDamages()) {
+      player.getClient().getBoardView().update(new SpawnPointDamageEvent(yellowDamage, AmmoColor.YELLOW));
+    }
+  }
+
+  private void resendPlayers(Player player) throws RemoteException {
+    for (Player ofPlayer : board.getActivePlayers()) {
+      if (ofPlayer.getSquare() != null) {
+        player.getClient().getCharactersView().update(new PlayerPositionUpdate(ofPlayer.getColor(), ofPlayer.getSquare().getPosX(), ofPlayer.getSquare().getPosY()));
+      }
+      player.getClient().getPlayerDashboardsView().update(new PlayerAmmoUpdate(ofPlayer.getColor(), ofPlayer.getAmmo(AmmoColor.BLUE), ofPlayer.getAmmo(AmmoColor.RED), ofPlayer.getAmmo(AmmoColor.YELLOW)));
+
+      if (ofPlayer.getColor() == player.getColor()) {
+        player.getClient().getPlayerDashboardsView().update(new OwnWeaponUpdate(player.getColor(), player.getWeapons()));
+        player.getClient().getPlayerDashboardsView().update(new OwnPowerUpUpdate(player.getColor(), player.getPowerUps()));
+      } else {
+        player.getClient().getPlayerDashboardsView().update(new EnemyWeaponUpdate(ofPlayer.getColor(), ofPlayer.getWeapons().size(), ofPlayer.getUnloadedWeapons()));
+        player.getClient().getPlayerDashboardsView().update(new EnemyPowerUpUpdate(ofPlayer.getColor(), ofPlayer.getPowerUps().size()));
+      }
+    }
+  }
+
+  private void resendSquares(Player player) throws RemoteException {
+    for (Square square : board.getSquares()) {
+      player.getClient().getBoardView().update(new BoardSetSquareUpdate(square));
+      player.getClient().getBoardView().update(new SquareWeaponUpdate(square.getPosX(), square.getPosY(), square.getWeapons()));
+
+      square.addObserver(player.getClient().getBoardView());
+      square.addObserver(player.getClient().getPlayerDashboardsView());
+      square.addObserver(player.getClient().getCharactersView());
+
+      if (square.getAmmoCard() != null) {
+        player.getClient().getBoardView().update(new SquareAmmoCardUpdate(square.getPosX(), square.getPosY(),
+                square.getAmmoCard().getAmmo(AmmoColor.BLUE), square.getAmmoCard().getAmmo(AmmoColor.RED),
+                square.getAmmoCard().getAmmo(AmmoColor.YELLOW), square.getAmmoCard().getPowerUp()));
+      }
+    }
+  }
+
+  private void uncacheClients(Player player) {
+    ClientInterface clientInterfaceOld = null;
+    HashMap<ClientInterface, BoardViewInterface> copyBoardViews = new HashMap<>(boardViews);
+    for (Map.Entry<ClientInterface, BoardViewInterface> clientSet : copyBoardViews.entrySet()) {
+      try {
+        if (clientSet.getKey().getName().equals(player.getName())) {
+          clientInterfaceOld = clientSet.getKey();
+          boardViews.remove(clientInterfaceOld);
+          charactersViews.remove(clientInterfaceOld);
+          playerDashboardViews.remove(clientInterfaceOld);
+          break;
+        }
+      } catch (RemoteException e) {
+        boardViews.remove(clientSet.getKey());
+        charactersViews.remove(clientSet.getKey());
+        playerDashboardViews.remove(clientSet.getKey());
       }
     }
   }
