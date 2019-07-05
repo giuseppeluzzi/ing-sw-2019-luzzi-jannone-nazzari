@@ -663,6 +663,7 @@ public class Player extends Observable implements Target {
         }
       }
     }
+
     try {
       notifyObservers(new OwnWeaponUpdate(color, getWeapons()));
       notifyObservers(new EnemyWeaponUpdate(color, weaponCount, getUnloadedWeapons()));

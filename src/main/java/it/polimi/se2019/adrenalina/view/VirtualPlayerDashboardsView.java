@@ -25,10 +25,14 @@ public class VirtualPlayerDashboardsView extends Observable implements
     PlayerDashboardsViewInterface {
 
   private static final long serialVersionUID = 4893523547038046745L;
-  private final transient VirtualClientSocket clientSocket;
+  private transient VirtualClientSocket clientSocket;
 
   public VirtualPlayerDashboardsView(VirtualClientSocket clientSocket) {
     this.clientSocket = clientSocket;
+  }
+
+  public void setClient(VirtualClientSocket client) {
+    this.clientSocket = client;
   }
 
   @Override

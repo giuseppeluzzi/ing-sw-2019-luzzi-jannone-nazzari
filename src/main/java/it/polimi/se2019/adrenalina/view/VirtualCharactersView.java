@@ -15,10 +15,14 @@ import java.rmi.RemoteException;
 public class VirtualCharactersView extends Observable implements CharactersViewInterface {
 
   private static final long serialVersionUID = -6715889122608916050L;
-  private final transient VirtualClientSocket clientSocket;
+  private transient VirtualClientSocket clientSocket;
 
   public VirtualCharactersView(VirtualClientSocket clientSocket) {
     this.clientSocket = clientSocket;
+  }
+
+  public void setClient(VirtualClientSocket client) {
+    this.clientSocket = client;
   }
 
   @Override

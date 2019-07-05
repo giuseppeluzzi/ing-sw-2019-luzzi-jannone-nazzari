@@ -36,7 +36,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
 
   private static final long serialVersionUID = 2545732483334205102L;
 
-  private final transient Client client;
+  private transient Client client;
   private Board board;
   private final Timer timer;
 
@@ -52,6 +52,10 @@ public abstract class BoardView extends Observable implements BoardViewInterface
     } else {
       board = new Board();
     }
+  }
+
+  public void setClient(Client client) {
+    this.client = client;
   }
 
   public Client getClient() {
