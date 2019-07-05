@@ -158,8 +158,9 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set northern neighbour of a square if it exists.
-   *
    * @param square whose neighbour will be set
+   * @param board the game board
+   * @param reciprocal whether to create the inverse link too
    */
   private static void setNorthNeighbour(Square square, Board board, boolean reciprocal) {
     if (square.getPosY() > 0 && square.getEdge(Direction.NORTH) != BorderType.WALL) {
@@ -175,8 +176,9 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set southern neighbour of a square if it exists.
-   *
    * @param square whose neighbour will be set
+   * @param board the game board
+   * @param reciprocal whether to create the inverse link too
    */
   private static void setSouthNeighbour(Square square, Board board, boolean reciprocal) {
     if (square.getPosY() < 2 && square.getEdge(Direction.SOUTH) != BorderType.WALL) {
@@ -192,8 +194,9 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set eastern neighbour of a square if it exists.
-   *
    * @param square whose neighbour will be set
+   * @param board the game board
+   * @param reciprocal whether to create the inverse link too
    */
   private static void setEastNeighbour(Square square, Board board, boolean reciprocal) {
     if (square.getPosX() < 3 && square.getEdge(Direction.EAST) != BorderType.WALL) {
@@ -209,8 +212,9 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Set western neighbour of a square if it exists.
-   *
    * @param square whose neighbour will be set
+   * @param board the game board
+   * @param reciprocal whether to create the inverse link too
    */
   private static void setWestNeighbour(Square square, Board board, boolean reciprocal) {
     if (square.getPosX() > 0 && square.getEdge(Direction.WEST) != BorderType.WALL) {
@@ -357,7 +361,9 @@ public class Board extends Observable implements Serializable {
   }
 
   /**
-   * Notifies the initial state to every observer
+   * Adds an observer and notifies the initial state to every observer
+   * @param observer the observer to add
+   * @param notify whether to notify the state of the observer
    */
   public void addObserver(Observer observer, boolean notify) {
     addObserver(observer);
@@ -806,8 +812,9 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Retrieves a player by its color.
-   *
    * @throws InvalidPlayerException thrown if there are no players of the specified color
+   * @param color the color of the player to return
+   * @return the requested Player object
    */
   public Player getPlayerByColor(PlayerColor color) throws InvalidPlayerException {
     for (Player player : players) {
@@ -820,8 +827,9 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Retrieves a player by its name.
-   *
    * @throws InvalidPlayerException thrown if there are no players with the specified name
+   * @param playerName the name of the player to get
+   * @return the requested Player object
    */
   public Player getPlayerByName(String playerName) throws InvalidPlayerException {
     for (Player player : players) {

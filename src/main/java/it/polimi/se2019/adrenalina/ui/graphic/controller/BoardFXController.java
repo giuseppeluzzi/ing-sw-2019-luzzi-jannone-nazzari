@@ -484,8 +484,10 @@ public class BoardFXController {
 
   /**
    * Makes the given squares clickable in the grid
-   *
    * @param squares target squares
+   * @param selectType the type of select action
+   * @param move whether to add a {@code move} attribute to the tile pane
+   * @param skippable whether the user can skip the selection
    */
   public void enableSquareSelection(TargetType selectType, List<Target> squares, final boolean move,
       boolean skippable) {
@@ -525,8 +527,8 @@ public class BoardFXController {
 
   /**
    * Makes the given players clickable in the grid
-   *
    * @param targets target players
+   * @param skippable whether the user can skip the selection
    */
   public void enableTargetSelection(List<Target> targets, boolean skippable) {
     Platform.runLater(() -> setHelpText("Seleziona un bersaglio"));

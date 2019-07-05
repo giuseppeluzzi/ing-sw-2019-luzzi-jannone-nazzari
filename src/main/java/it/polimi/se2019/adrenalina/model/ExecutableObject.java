@@ -115,7 +115,7 @@ public abstract class ExecutableObject extends Observable {
 
   /**
    * Sets currentSelectTargetSlot value.
-   * @param slot
+   * @param slot the value to set
    */
   public void setCurrentSelectTargetSlot(Integer slot) {
     currentSelectTargetSlot = slot;

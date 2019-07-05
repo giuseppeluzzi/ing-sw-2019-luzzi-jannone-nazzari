@@ -117,6 +117,7 @@ public class DominationBoard extends Board {
   /**
    * Checks if Final Frenzy has to be enabled after two spawn point tracks have reached
    * at least 8 skulls.
+   * @param activatorColor the color of the player who activated Final Frenzy
    */
   private void checkEnableFrenzy(PlayerColor activatorColor) {
     if (Stream.of(blueDamages, yellowDamages, redDamages).filter(x -> x.size() >= ServerConfig.getInstance().getSpawnPointDamagesFF()).count() >= 2) {

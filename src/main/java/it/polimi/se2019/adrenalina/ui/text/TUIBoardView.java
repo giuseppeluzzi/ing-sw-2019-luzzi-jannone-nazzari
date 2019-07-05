@@ -135,6 +135,9 @@ public class TUIBoardView extends BoardView {
   /**
    * Show room selection prompt to the user.
    * @param targets a list of targets to show
+   * @param skippable whether the action can be skipped
+   * @return a square belonging to the selected room
+   * @throws InputCancelledException thrown if the input is cancelled for timeout or other reasons
    */
   private Target selectRoom(List<Target> targets, boolean skippable) throws InputCancelledException {
     EnumSet<SquareColor> squareColors = EnumSet.noneOf(SquareColor.class);
@@ -178,6 +181,9 @@ public class TUIBoardView extends BoardView {
    * Show square selection prompt to the user.
    * @param targets a list of targets to show
    * @param fetch true if ammoCards on each square should be shown, false otherwise
+   * @param skippable whether the action can be skipped
+   * @return the selected square
+   * @throws InputCancelledException thrown if the input is cancelled for timeout or other reasons
    */
   private Target selectSquare(List<Target> targets, boolean fetch, boolean skippable) throws InputCancelledException {
     List<String> choices = new ArrayList<>();
@@ -217,6 +223,9 @@ public class TUIBoardView extends BoardView {
   /**
    * Show target selection prompt to the user for attacking.
    * @param targets a list of targets to show
+   * @param skippable whether the action can be skipped
+   * @return the selected target
+   * @throws InputCancelledException thrown if the input is cancelled for timeout or other reasons
    */
   private Target selectAttackTarget(List<Target> targets, boolean skippable) throws InputCancelledException {
     List<String> choices = new ArrayList<>();

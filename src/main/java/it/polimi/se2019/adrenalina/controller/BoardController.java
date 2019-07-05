@@ -579,8 +579,8 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
   /**
    * Removes a player from a board in LOBBY status or sets the player's status to DISCONNECTED if
    * the game on that board is already in progress.
-   *
    * @param player the player to be removed
+   * @throws InvalidPlayerException thrown if the player is invalid (e.g. not in the board)
    */
   public void removePlayer(Player player) throws InvalidPlayerException {
     clientsName.remove(player.getClient());
