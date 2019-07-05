@@ -5,6 +5,9 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.css.Styleable;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -14,10 +17,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DialogReloadWeaponSelection extends Dialog {
 
@@ -50,7 +49,8 @@ public class DialogReloadWeaponSelection extends Dialog {
       vBox.setSpacing(25);
       vBox.setPrefHeight(200);
       vBox.setPrefWidth(100);
-      ImageView weaponImg = new ImageView("gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
+      ImageView weaponImg = new ImageView(
+          "gui/assets/img/weapon/weapon_" + weapon.getSlug() + ".png");
       weaponImg.setFitHeight(250);
       weaponImg.setPreserveRatio(true);
       RadioButton radioButton = new RadioButton();
@@ -67,10 +67,11 @@ public class DialogReloadWeaponSelection extends Dialog {
 
     buttonNext.setOnAction(event -> {
       AppGUI.getBoardFXController().stopTurnTimer();
-      Weapon weapon = weapons.get(Integer.parseInt(((Styleable) weaponToggleGroup.getSelectedToggle()).getId()));
+      Weapon weapon = weapons
+          .get(Integer.parseInt(((Styleable) weaponToggleGroup.getSelectedToggle()).getId()));
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                new PlayerReloadEvent(AppGUI.getClient().getPlayerColor(), weapon.getName()));
+        AppGUI.getClient().getBoardView().sendEvent(
+            new PlayerReloadEvent(AppGUI.getClient().getPlayerColor(), weapon.getName()));
       } catch (RemoteException e) {
         Log.exception(e);
       }
@@ -80,8 +81,8 @@ public class DialogReloadWeaponSelection extends Dialog {
     buttonCancel.setOnAction(event -> {
       AppGUI.getBoardFXController().stopTurnTimer();
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                new PlayerReloadEvent(AppGUI.getClient().getPlayerColor(), null));
+        AppGUI.getClient().getBoardView().sendEvent(
+            new PlayerReloadEvent(AppGUI.getClient().getPlayerColor(), null));
       } catch (RemoteException e) {
         Log.exception(e);
       }

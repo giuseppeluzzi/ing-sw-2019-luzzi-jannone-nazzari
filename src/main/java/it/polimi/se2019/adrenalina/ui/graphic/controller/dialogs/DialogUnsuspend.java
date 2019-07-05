@@ -4,10 +4,9 @@ import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerUnsuspendEvent;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.view.BoardView;
+import java.rmi.RemoteException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
-import java.rmi.RemoteException;
 
 public class DialogUnsuspend extends Dialog {
 
@@ -22,13 +21,13 @@ public class DialogUnsuspend extends Dialog {
   public void build() {
     buttonNext.setOnAction(event -> {
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
-                new PlayerUnsuspendEvent(AppGUI.getClient().getPlayerColor()));
+        AppGUI.getClient().getBoardView().sendEvent(
+            new PlayerUnsuspendEvent(AppGUI.getClient().getPlayerColor()));
       } catch (RemoteException e) {
         Log.exception(e);
       }
       close();
     });
-   }
   }
+}
 

@@ -23,7 +23,6 @@ import it.polimi.se2019.adrenalina.ui.graphic.GUITimer;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.Dialog;
 import it.polimi.se2019.adrenalina.utils.ANSIColor;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -411,7 +410,7 @@ public class BoardFXController {
         button.setOnAction(event -> {
           stopTurnTimer();
           try {
-            ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+            AppGUI.getClient().getBoardView().sendEvent(
                 new PlayerActionSelectionEvent(AppGUI.getClient().getPlayerColor(), turnAction));
           } catch (RemoteException e) {
             Log.exception(e);
@@ -787,7 +786,7 @@ public class BoardFXController {
     disableBoardWeapons();
 
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+      AppGUI.getClient().getBoardView().sendEvent(
           new PlayerCollectWeaponEvent(AppGUI.getClient().getPlayerColor(), weaponName));
     } catch (RemoteException e) {
       Log.exception(e);
@@ -803,16 +802,16 @@ public class BoardFXController {
 
     try {
       if (((Node) event.getSource()).getProperties().containsKey("move")) {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+        AppGUI.getClient().getBoardView().sendEvent(
             new SquareMoveSelectionEvent(AppGUI.getClient().getPlayerColor(),
                 ((Square) target).getPosX(), ((Square) target).getPosY()));
       } else {
         if (target.isPlayer()) {
-          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          AppGUI.getClient().getBoardView().sendEvent(
               new SelectPlayerEvent(AppGUI.getClient().getPlayerColor(),
                   ((Player) target).getColor()));
         } else {
-          ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+          AppGUI.getClient().getBoardView().sendEvent(
               new SelectSquareEvent(AppGUI.getClient().getPlayerColor(),
                   ((Square) target).getPosX(), ((Square) target).getPosY()));
         }
@@ -826,7 +825,7 @@ public class BoardFXController {
 
   private void handleSkipSelection(ActionEvent event) {
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+      AppGUI.getClient().getBoardView().sendEvent(
           new SkipSelectionEvent(AppGUI.getClient().getPlayerColor()));
     } catch (RemoteException e) {
       Log.debug(event.getSource().toString());
@@ -874,7 +873,7 @@ public class BoardFXController {
 
   private void handleNoPowerUpUsage(ActionEvent event) {
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+      AppGUI.getClient().getBoardView().sendEvent(
           new PlayerPowerUpEvent(AppGUI.getClient().getPlayerColor(), null, null));
       hidePowerUpSkip();
       AppGUI.getPlayerDashboardFXController().disablePowerUps();
@@ -894,15 +893,20 @@ public class BoardFXController {
     } else {
       imageViewHover.setTranslateY(88);
     }
+    imageViewHover.setEffect(null);
   }
 
   private static void handleBoardWeaponHoverOut(MouseEvent event) {
+    ColorAdjust bnEffect = new ColorAdjust();
+    bnEffect.setSaturation(-1);
+
     Node imageViewHover = (Node) event.getSource();
     imageViewHover.setScaleX(1);
     imageViewHover.setScaleY(1);
     imageViewHover.setTranslateX(0);
     imageViewHover.setTranslateY(0);
     imageViewHover.setOpacity(0);
+    imageViewHover.setEffect(bnEffect);
   }
 
   static void handlePlayerWeaponHoverIn(MouseEvent event) {

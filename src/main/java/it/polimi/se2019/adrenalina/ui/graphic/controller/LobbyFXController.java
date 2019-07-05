@@ -6,10 +6,10 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
+import it.polimi.se2019.adrenalina.ui.graphic.GUITimer;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogChangePlayerColor;
+import it.polimi.se2019.adrenalina.ui.text.TUITimer;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -21,7 +21,12 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -121,22 +126,22 @@ public class LobbyFXController {
 
     IntegerProperty seconds;
     try {
-      seconds = ((GUIBoardView) AppGUI.getClient().getBoardView())
-          .getTimer().getSeconds();
+      seconds = ((GUITimer) AppGUI.getClient().getBoardView().getTimer()).getSeconds();
     } catch (RemoteException e) {
       return;
     }
     seconds.addListener(change -> Platform.runLater(() -> lobbyPlayersSubtitle.setText(
-          "La partita inizierà tra " + seconds.getValue() + " " + (seconds.getValue() == 1
-              ? "secondo" : "secondi"))));
+        "La partita inizierà tra " + seconds.getValue() + " " + (seconds.getValue() == 1
+            ? "secondo" : "secondi"))));
   }
 
   public void nextMap(ActionEvent actionEvent) {
     FXUtils.lobbyTransition(lobbyConfigurationMap, lobbyConfigurationSkulls);
     buttonNextSkulls.requestFocus();
-    int selMapId = Integer.valueOf(((Styleable) map.getSelectedToggle()).getId().replace("map", ""));
+    int selMapId = Integer
+        .valueOf(((Styleable) map.getSelectedToggle()).getId().replace("map", ""));
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new MapSelectionEvent(selMapId));
+      AppGUI.getClient().getBoardView().sendEvent(new MapSelectionEvent(selMapId));
     } catch (RemoteException e) {
       Log.debug(actionEvent.toString());
       Log.exception(e);
@@ -146,7 +151,8 @@ public class LobbyFXController {
   public void nextSkulls(ActionEvent actionEvent) {
     FXUtils.lobbyTransition(lobbyConfigurationSkulls, lobbyPlayers);
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new BoardSkullsUpdate((int) skullsSelector.getValue()));
+      AppGUI.getClient().getBoardView()
+          .sendEvent(new BoardSkullsUpdate((int) skullsSelector.getValue()));
     } catch (RemoteException e) {
       Log.debug(actionEvent.toString());
       Log.exception(e);

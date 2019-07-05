@@ -30,7 +30,7 @@ public class DialogSpawnPointTrackSelection extends Dialog {
       AppGUI.getBoardFXController().stopTurnTimer();
 
       try {
-        ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(
+        AppGUI.getClient().getBoardView().sendEvent(
             new SpawnPointDamageEvent(AppGUI.getClient().getPlayerColor(), chosenAmmo));
       } catch (RemoteException e) {
         Log.exception(e);

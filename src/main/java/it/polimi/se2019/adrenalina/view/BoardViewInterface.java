@@ -2,13 +2,14 @@ package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.controller.action.weapon.TargetType;
+import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.EventType;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
-
+import it.polimi.se2019.adrenalina.utils.Timer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -40,11 +41,15 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
 
     Board getBoard() throws RemoteException;
 
+    void sendEvent(Event event) throws RemoteException;
+
     void setBoard(Board board) throws RemoteException;
 
     void startTimer(int time) throws RemoteException;
 
     void hideTimer() throws RemoteException;
+
+    Timer getTimer() throws RemoteException;
 
     void endLoading(boolean masterPlayer) throws RemoteException;
 
