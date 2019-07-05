@@ -18,6 +18,7 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,12 @@ public class VirtualBoardView extends Observable implements BoardViewInterface {
   @Override
   public void hideTimer() {
     clientSocket.sendEvent(new TimerSetEvent(0));
+  }
+
+  @Override
+  public Timer getTimer() {
+    // not needed here
+    return null;
   }
 
   @Override

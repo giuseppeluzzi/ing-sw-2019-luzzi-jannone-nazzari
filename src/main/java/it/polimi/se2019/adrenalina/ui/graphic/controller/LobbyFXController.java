@@ -6,10 +6,10 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.modelview.BoardSkullsUpdate;
 import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.ui.graphic.GUIBoardView;
+import it.polimi.se2019.adrenalina.ui.graphic.GUITimer;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogChangePlayerColor;
+import it.polimi.se2019.adrenalina.ui.text.TUITimer;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -126,8 +126,7 @@ public class LobbyFXController {
 
     IntegerProperty seconds;
     try {
-      seconds = ((GUIBoardView) AppGUI.getClient().getBoardView())
-          .getTimer().getSeconds();
+      seconds = ((GUITimer) AppGUI.getClient().getBoardView().getTimer()).getSeconds();
     } catch (RemoteException e) {
       return;
     }

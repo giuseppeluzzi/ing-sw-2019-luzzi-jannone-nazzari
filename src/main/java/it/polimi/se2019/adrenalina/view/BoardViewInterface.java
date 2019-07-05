@@ -9,6 +9,7 @@ import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Observer;
 import it.polimi.se2019.adrenalina.utils.RemoteObservable;
+import it.polimi.se2019.adrenalina.utils.Timer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public interface BoardViewInterface extends Observer, RemoteObservable, Serializ
     void startTimer(int time) throws RemoteException;
 
     void hideTimer() throws RemoteException;
+
+    Timer getTimer() throws RemoteException;
 
     void endLoading(boolean masterPlayer) throws RemoteException;
 
