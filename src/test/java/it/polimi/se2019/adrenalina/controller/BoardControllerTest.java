@@ -16,14 +16,14 @@ import java.util.List;
 
 import it.polimi.se2019.adrenalina.network.Client;
 import it.polimi.se2019.adrenalina.utils.Observer;
+import it.polimi.se2019.adrenalina.view.*;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.notNull;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 public class BoardControllerTest {
 
@@ -158,10 +158,15 @@ public class BoardControllerTest {
     assertEquals(PlayerStatus.DISCONNECTED, player1.getStatus());
   }
 
-  @Ignore
+  @Ignore //TODO
   @Test
   public void testAddPlayerSuspended() {
-    Player player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
+    Player player = spy(new Player("test", PlayerColor.GREEN, boardController.getBoard()));
+    FakeClient client = spy(new FakeClient(player.getName(), false, false, player.getColor()));
+
+
+
+    player.setClient(client);
     boardController.getBoard().addPlayer(player);
     player.setStatus(PlayerStatus.SUSPENDED);
     boardController.getBoard().setStatus(BoardStatus.MATCH);
@@ -295,6 +300,7 @@ public class BoardControllerTest {
     public PlayerColor getPlayerColor() {
       return color;
     }
+
   }
 }
 

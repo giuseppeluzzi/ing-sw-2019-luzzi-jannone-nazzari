@@ -403,6 +403,7 @@ public class BoardFXController {
 
   public void showTurnActions(List<TurnAction> turnActions) {
     Platform.runLater(() -> {
+      turnActionButtons.getChildren().clear();
       for (TurnAction turnAction : turnActions) {
         Button button = new Button(turnAction.getName());
         button.setTooltip(new Tooltip(turnAction.getDescription()));
