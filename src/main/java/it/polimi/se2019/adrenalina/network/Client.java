@@ -33,9 +33,9 @@ public abstract class Client implements ClientInterface, Serializable {
   private boolean outputSuspended;
   private boolean tui;
 
-  private final BoardViewInterface boardView;
-  private final CharactersViewInterface charactersView;
-  private final PlayerDashboardsViewInterface playerDashboardsView;
+  private BoardViewInterface boardView;
+  private CharactersViewInterface charactersView;
+  private PlayerDashboardsViewInterface playerDashboardsView;
 
   protected Client(String playerName, boolean domination, boolean tui) {
     this.playerName = playerName;
@@ -168,6 +168,21 @@ public abstract class Client implements ClientInterface, Serializable {
   @Override
   public final PlayerDashboardsViewInterface getPlayerDashboardsView() {
     return playerDashboardsView;
+  }
+
+  @Override
+  public void setBoardView(BoardViewInterface boardView) {
+    this.boardView = boardView;
+  }
+
+  @Override
+  public void setCharactersView(CharactersViewInterface charactersView) {
+    this.charactersView = charactersView;
+  }
+
+  @Override
+  public void setPlayerDashboardsView(PlayerDashboardsViewInterface playerDashboardsView) {
+    this.playerDashboardsView = playerDashboardsView;
   }
 
   /**

@@ -24,6 +24,12 @@ public interface ClientInterface extends Remote {
   void ping() throws IOException;
   Long getLastPing() throws IOException;
 
+  void setBoardView(BoardViewInterface boardView);
+
+  void setCharactersView(CharactersViewInterface charactersView);
+
+  void setPlayerDashboardsView(PlayerDashboardsViewInterface playerDashboardsView);
+
   void disconnect(String message, boolean keepAlive) throws RemoteException;
 
   BoardViewInterface getBoardView() throws RemoteException;
