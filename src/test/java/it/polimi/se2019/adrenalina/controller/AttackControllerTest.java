@@ -17,19 +17,24 @@ import it.polimi.se2019.adrenalina.model.Weapon;
 import java.rmi.RemoteException;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 public class AttackControllerTest {
-  private AttackController attackController;
   private BoardController boardController;
+  private TurnController turnController;
   private Player player;
   private Player player2;
   private Weapon weapon;
 
   @Before
   public void setAttackController() {
+
     try {
       boardController = new BoardController(false);
-      attackController = new AttackController(boardController);
+      boardController.setAttackController(new AttackController(boardController));
+      turnController = spy(new TurnController(boardController));
+      doNothing().when(turnController).executeGameActionQueue();
+      boardController.setTurnController(turnController);
     } catch (RemoteException ignore) {
       //
     }
@@ -55,20 +60,20 @@ public class AttackControllerTest {
     weapon.setLoaded(false);
     weapon2.setLoaded(false);
     weapon3.setLoaded(false);
-    assertEquals(1, attackController.getReloadableWeapons(player,weapon).size());
+    assertEquals(1, boardController.getAttackController().getReloadableWeapons(player,weapon).size());
   }
 
   @Test
   public void testSelectPlayer() {
     SelectPlayerEvent event = new SelectPlayerEvent(PlayerColor.GREEN, PlayerColor.YELLOW);
-    attackController.update(event);
+    boardController.getAttackController().update(event);
     assertEquals(weapon.getTargetHistory(0).getName(), player2.getName());
   }
 
   @Test
   public void testSkipSelection() {
     SkipSelectionEvent event = new SkipSelectionEvent(PlayerColor.GREEN);
-    attackController.update(event);
+    boardController.getAttackController().update(event);
     assertTrue(player.getCurrentExecutable().skipUntilSelect());
   }
 
@@ -76,14 +81,14 @@ public class AttackControllerTest {
   public void testSelectSquare() {
     SelectSquareEvent event = new SelectSquareEvent(PlayerColor.GREEN, 0, 0);
     boardController.getBoard().setSquare(new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
-    attackController.update(event);
+    boardController.getAttackController().update(event);
     assertEquals(SquareColor.RED.getAnsiColor(), player.getCurrentExecutable().getTargetHistory(0).getAnsiColor());
   }
 
   @Test
   public void testSelectDirection() {
     SelectDirectionEvent event = new SelectDirectionEvent(PlayerColor.GREEN, Direction.NORTH);
-    attackController.update(event);
+    boardController.getAttackController().update(event);
     assertEquals(Direction.NORTH, player.getCurrentExecutable().getLastUsageDirection());
   }
 
@@ -92,7 +97,7 @@ public class AttackControllerTest {
     SquareMoveSelectionEvent event = new SquareMoveSelectionEvent(PlayerColor.GREEN, 1, 1);
     boardController.getBoard().setSquare(new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
     boardController.getBoard().setSquare(new Square(1, 1, SquareColor.YELLOW, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, boardController.getBoard()));
-    attackController.update(event);
+    boardController.getAttackController().update(event);
     assertEquals(SquareColor.YELLOW, player.getSquare().getColor());
   }
 
@@ -100,9 +105,15 @@ public class AttackControllerTest {
   public void testSpawnPointDamage() {
     BoardController boardController2 = null;
     AttackController attackController2 = null;
+    TurnController turnController2 = null;
     try {
       boardController2 = new BoardController(true);
       attackController2 = new AttackController(boardController2);
+      turnController2 = spy(new TurnController(boardController2));
+      boardController2.setTurnController(turnController2);
+      boardController2.setAttackController(attackController2);
+      doNothing().when(turnController2).executeGameActionQueue();
+
     } catch (RemoteException ignore) {
       //
     }
@@ -124,7 +135,7 @@ public class AttackControllerTest {
 
     SpawnPointDamageEvent event = new SpawnPointDamageEvent(PlayerColor.GREEN, AmmoColor.RED);
 
-    attackController2.update(event);
+    boardController2.getAttackController().update(event);
 
     assertEquals(1, ((DominationBoard) boardController2.getBoard()).getRedDamages().size());
   }
@@ -137,9 +148,9 @@ public class AttackControllerTest {
     boardController.getBoard().setSquare(square1);
     boardController.getBoard().setSquare(square2);
     player.setSquare(square1);
-    attackController.update(event);
+    boardController.getAttackController().update(event);
     assertEquals(player.getSquare(), square2);
-    assertEquals(attackController.hashCode(), boardController.hashCode());
+    assertEquals(boardController.getAttackController().hashCode(), boardController.hashCode());
 
   }
 }

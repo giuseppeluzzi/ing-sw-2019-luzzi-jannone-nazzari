@@ -161,7 +161,7 @@ public class PlayerControllerTest {
       //
     }
     playerController.update(event);
-    assertEquals(1, player1.getWeapons().size());
+    assertEquals(1, turnController.getActionQueueSize());
   }
 
   @Test
@@ -183,7 +183,7 @@ public class PlayerControllerTest {
       //
     }
     playerController.update(event);
-    assertTrue(player1.getPowerUps().isEmpty());
+    assertEquals(tagbackGrenade, player1.getCurrentExecutable());
   }
 
   @Test
@@ -230,7 +230,7 @@ public class PlayerControllerTest {
     player1.setSquare(square);
     player1.addWeapon(new Weapon(0, 0, 0, AmmoColor.BLUE, "test", "f"));
     playerController.update(event);
-    assertEquals("L", player1.getWeapons().get(0).getSymbol());
+    assertEquals(1, turnController.getActionQueueSize());
   }
 
   @Test

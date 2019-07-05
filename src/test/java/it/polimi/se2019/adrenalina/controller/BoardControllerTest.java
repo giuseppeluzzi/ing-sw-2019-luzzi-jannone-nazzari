@@ -21,16 +21,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 public class BoardControllerTest {
 
   private BoardController boardController;
+  private TurnController turnController;
   private GameMap testMap;
 
   @Before
   public void setBoardController() {
     try {
       boardController = new BoardController(false);
+      boardController.setAttackController(new AttackController(boardController));
+      turnController = spy(new TurnController(boardController));
+      doNothing().when(turnController).executeGameActionQueue();
+      boardController.setTurnController(turnController);
     } catch (RemoteException ignore) {
       //
     }
