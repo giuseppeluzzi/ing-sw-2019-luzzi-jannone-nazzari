@@ -20,9 +20,5 @@ public interface CharactersViewInterface extends Observer, RemoteObservable, Ser
     return registeredEvents;
   }
 
-  void setSelected(PlayerColor playerColor) throws RemoteException;
-
-  void removeSelected() throws RemoteException;
-
   void showDeath(PlayerColor playerColor) throws RemoteException;
 }

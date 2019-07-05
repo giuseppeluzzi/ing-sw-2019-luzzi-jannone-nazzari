@@ -49,7 +49,7 @@ public class ActionSelection extends GameAction {
       } catch (InvalidPlayerException e) {
         // Shouldn't happen
         Log.critical("Player doesn't exists anymore!");
-        return null;
+        return new ArrayList<>();
       }
 
       turnActions = finalFrenzyTurnActions(playerIndex, getPlayer().hasLoadedWeapons(),
@@ -66,11 +66,10 @@ public class ActionSelection extends GameAction {
     Player player = getPlayer();
     player.setCurrentExecutable(null);
     player.setCurrentBuying(null);
-    List<TurnAction> turnActions;
 
     resetWeapons(player);
     resetPowerUps(player);
-    turnActions = setTurnActions(board);
+    List<TurnAction> turnActions = setTurnActions(board);
 
 
     try {

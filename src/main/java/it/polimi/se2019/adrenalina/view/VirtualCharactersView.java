@@ -22,16 +22,6 @@ public class VirtualCharactersView extends Observable implements CharactersViewI
   }
 
   @Override
-  public void setSelected(PlayerColor playerColor) {
-    // TODO: Show selected player
-  }
-
-  @Override
-  public void removeSelected() {
-    // TODO: Remove selected Player
-  }
-
-  @Override
   public void showDeath(PlayerColor playerColor) {
     clientSocket.sendEvent(new ShowDeathInvocation(playerColor));
   }

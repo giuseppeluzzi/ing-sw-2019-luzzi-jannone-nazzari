@@ -14,7 +14,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -28,7 +27,6 @@ public class StartFXController {
   private boolean choosenDomination;
   private String chosenIpAddress;
   private int chosenPort;
-  private String choosenName;
   private boolean choosenRMI;
 
   @FXML
@@ -93,6 +91,7 @@ public class StartFXController {
   }
 
   public void next0(ActionEvent actionEvent) {
+    Log.debug(actionEvent.toString());
     chosenIpAddress = textFieldIpAddress.getText().trim();
 
     if (! chosenIpAddress.matches("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$")) {
@@ -119,6 +118,7 @@ public class StartFXController {
   }
 
   public void next1(ActionEvent actionEvent) {
+    Log.debug(actionEvent.toString());
     choosenDomination = gamemodeDomination.isSelected();
 
     if (choosenDomination) {
@@ -133,7 +133,8 @@ public class StartFXController {
   }
 
   public void next2(ActionEvent actionEvent) {
-    choosenName = textFieldName.getText().trim();
+    Log.debug(actionEvent.toString());
+    String choosenName = textFieldName.getText().trim();
 
     if (choosenName.isEmpty() || choosenName.length() >= Constants.MAX_NAME_LENGTH) {
       textFieldName.getStyleClass().add(WRONG_FIELD_CSS);

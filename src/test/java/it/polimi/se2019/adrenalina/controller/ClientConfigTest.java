@@ -7,14 +7,20 @@ import org.junit.Test;
 public class ClientConfigTest {
 
   @Test
-  public void testGetInstance() {
+  public void testConfig() {
+    assertNotNull(ClientConfig.getInstance(true));
+    ClientConfig.getInstance(true).setTurnTimeout(120);
+    ClientConfig.getInstance(true).setMinNumPlayers(3);
+    assertEquals(new Integer(3), ClientConfig.getInstance(true).getMinNumPlayers());
+    assertEquals(new Integer(120), ClientConfig.getInstance(true).getTurnTimeout());
+    assertTrue(ClientConfig.getInstance(true).getSocketPort() > 0 && ClientConfig.getInstance(true).getSocketPort() < 65535);
+    assertTrue(ClientConfig.getInstance(true).getRmiPort() > 0 && ClientConfig.getInstance(true).getRmiPort() < 65535);
+    assertTrue(ClientConfig.getInstance(true).getServerIP().matches("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$"));
+  }
+
+  @Test
+  public void testInstance() {
     assertNotNull(ClientConfig.getInstance());
-    ClientConfig.getInstance().setTurnTimeout(120);
-    ClientConfig.getInstance().setMinNumPlayers(3);
-    assertEquals(new Integer(120), ClientConfig.getInstance().getTurnTimeout());
-    assertEquals(new Integer(2345), ClientConfig.getInstance().getSocketPort());
-    assertEquals(new Integer(2234), ClientConfig.getInstance().getRmiPort());
-    assertEquals(new Integer(3), ClientConfig.getInstance().getMinNumPlayers());
-    assertEquals("127.0.0.1", ClientConfig.getInstance().getServerIP());
+    assertNotNull(ServerConfig.getInstance());
   }
 }

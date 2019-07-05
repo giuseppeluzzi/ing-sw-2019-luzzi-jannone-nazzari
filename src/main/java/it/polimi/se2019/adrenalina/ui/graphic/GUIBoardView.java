@@ -69,7 +69,7 @@ public class GUIBoardView extends BoardView {
 
   @Override
   public void showBoard() {
-    // TODO
+    // do nothing in GUI
   }
 
   @Override

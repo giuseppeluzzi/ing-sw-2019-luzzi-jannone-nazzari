@@ -1,6 +1,5 @@
 package it.polimi.se2019.adrenalina.ui.graphic.controller;
 
-import it.polimi.se2019.adrenalina.App;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.ClientConfig;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
@@ -127,20 +126,19 @@ public class LobbyFXController {
     } catch (RemoteException e) {
       return;
     }
-    seconds.addListener(change -> {
-      Platform.runLater(() -> lobbyPlayersSubtitle.setText(
+    seconds.addListener(change -> Platform.runLater(() -> lobbyPlayersSubtitle.setText(
           "La partita inizierà tra " + seconds.getValue() + " " + (seconds.getValue() == 1
-              ? "secondo" : "secondi")));
-    });
+              ? "secondo" : "secondi"))));
   }
 
   public void nextMap(ActionEvent actionEvent) {
     FXUtils.lobbyTransition(lobbyConfigurationMap, lobbyConfigurationSkulls);
     buttonNextSkulls.requestFocus();
-    int mapId = Integer.valueOf(((Styleable) map.getSelectedToggle()).getId().replace("map", ""));
+    int selMapId = Integer.valueOf(((Styleable) map.getSelectedToggle()).getId().replace("map", ""));
     try {
-      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new MapSelectionEvent(mapId));
+      ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new MapSelectionEvent(selMapId));
     } catch (RemoteException e) {
+      Log.debug(actionEvent.toString());
       Log.exception(e);
     }
   }
@@ -150,6 +148,7 @@ public class LobbyFXController {
     try {
       ((BoardView) AppGUI.getClient().getBoardView()).sendEvent(new BoardSkullsUpdate((int) skullsSelector.getValue()));
     } catch (RemoteException e) {
+      Log.debug(actionEvent.toString());
       Log.exception(e);
     }
   }
@@ -161,11 +160,7 @@ public class LobbyFXController {
 
   public void setPlayerMaster(PlayerColor playerColor) {
     for (ListPlayer player : players) {
-      if (player.getColor() == playerColor) {
-        player.setMaster(true);
-      } else {
-        player.setMaster(false);
-      }
+      player.setMaster(player.getColor() == playerColor);
     }
     playerList.refresh();
   }

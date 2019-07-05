@@ -57,7 +57,6 @@ public abstract class GameAction {
   }
 
   public void setEnabled(boolean enabled) {
-    Log.println("Disabilitata");
     this.enabled = enabled;
   }
 }

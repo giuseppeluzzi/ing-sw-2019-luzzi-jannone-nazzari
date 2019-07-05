@@ -112,7 +112,7 @@ public abstract class Client implements ClientInterface, Serializable {
   @Override
   public void showMessage(MessageSeverity severity, String title, String message) {
 
-    Log.debug("Sono nella showMessage è l'output è: " + (outputSuspended ? "sospeso" : "non sospeso"));
+    Log.debug("showMessage: output is " + (outputSuspended ? "suspended" : "NOT suspended"));
 
     if (severity == MessageSeverity.GAME) {
       try {

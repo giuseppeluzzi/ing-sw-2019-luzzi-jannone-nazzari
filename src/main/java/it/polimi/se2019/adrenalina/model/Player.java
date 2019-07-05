@@ -50,9 +50,9 @@ public class Player extends Observable implements Target {
   private List<PowerUp> powerUps = new ArrayList<>();
 
   @NotExpose
-  private ExecutableObject currentExecutable;
+  private transient ExecutableObject currentExecutable;
   @NotExpose
-  private ExecutableObject oldExecutable;
+  private transient ExecutableObject oldExecutable;
   @NotExpose
   private Buyable currentBuying;
 

@@ -98,6 +98,21 @@ public class SelectAction implements WeaponAction {
 
     List<Target> targets = getTargets(board, object);
 
+    checkTargetsAvailable(object, targets);
+
+    if (!optional || !targets.isEmpty()) {
+      object.setCurrentSelectTargetSlot(target);
+      if (object.getOwner().getClient() != null) {
+        try {
+          object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets, skippable);
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
+      }
+    }
+  }
+
+  private void checkTargetsAvailable(ExecutableObject object, List<Target> targets) throws NoTargetsExceptionOptional, NoTargetsException {
     if (optional && object.targetHistoryContainsKey(target)) {
       throw new NoTargetsExceptionOptional("Optional SelectAction already used for this target");
     }
@@ -113,17 +128,6 @@ public class SelectAction implements WeaponAction {
     }
     if (!object.getTargetHistory(from).isPlayer() && stopPropagation) {
       throw new NoTargetsExceptionOptional("No propagation allowed");
-    }
-
-    if (!optional || !targets.isEmpty()) {
-      object.setCurrentSelectTargetSlot(target);
-      if (object.getOwner().getClient() != null) {
-        try {
-          object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets, skippable);
-        } catch (RemoteException e) {
-          Log.exception(e);
-        }
-      }
     }
   }
 

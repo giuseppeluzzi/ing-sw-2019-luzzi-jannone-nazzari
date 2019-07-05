@@ -1,7 +1,7 @@
 package it.polimi.se2019.adrenalina.utils;
 
 import it.polimi.se2019.adrenalina.App;
-import it.polimi.se2019.adrenalina.AppGUI;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +12,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 /**
  * Logging and printing manager.
@@ -21,7 +20,7 @@ public class Log {
   private static final String LOG_FORMAT = "{0}: {1}";
   private static Logger logger = Logger.getLogger("Adrenalina");
 
-  private static final boolean forceDebug = false;
+  private static final boolean FORCE_DEBUG = false;
 
   private Log() {
     // private constructor
@@ -40,7 +39,7 @@ public class Log {
     Handler consoleHandler = new ConsoleHandler();
     logger.addHandler(consoleHandler);
 
-    if (forceDebug || App.runningFromIntelliJ()) {
+    if (FORCE_DEBUG || App.runningFromIntelliJ()) {
       logger.setLevel(Level.FINEST);
       consoleHandler.setLevel(Level.FINEST);
     } else {
@@ -119,6 +118,8 @@ public class Log {
   }
 
   public static void exception(InvocationTargetException exception) {
-    exception.getCause().printStackTrace();
+    for (StackTraceElement stackTraceElement : exception.getCause().getStackTrace()) {
+      debug(stackTraceElement.toString());
+    }
   }
 }

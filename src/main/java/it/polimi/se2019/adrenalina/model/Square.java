@@ -362,7 +362,7 @@ public class Square extends Observable implements Target {
   }
 
   public void removeWeapon(Weapon weapon) {
-    Log.debug("Sono dentro la remove weapon per: " + weapon.getName());
+    Log.debug("removeWeapon for: " + weapon.getName());
     weapons.remove(weapon);
     try {
       notifyObservers(new SquareWeaponUpdate(posX, posY, getWeapons()));

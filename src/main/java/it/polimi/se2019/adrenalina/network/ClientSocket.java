@@ -112,7 +112,6 @@ public class ClientSocket extends Client implements Runnable, Observer {
     if (socket != null) {
       new Thread(() -> {
         while (running) {
-          //Log.println("PING");
           sendEvent(new PingEvent());
           try {
             sleep(Constants.PING_INTERVAL);

@@ -66,7 +66,6 @@ public class GUIGridSquare implements GUITile {
   @Override
   public void enableTile() {
     hoverPane.setVisible(false);
-    //tilePane.removeEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
   }
 
   @Override
