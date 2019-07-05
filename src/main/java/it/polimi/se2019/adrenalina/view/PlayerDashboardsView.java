@@ -72,8 +72,9 @@ public abstract class PlayerDashboardsView extends Observable implements
         if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
           boardView.getClient().showGameMessage(
               String.format(
-                  "Hai ricevuto %d marchi da %s%s%s!",
+                  "Hai ricevuto %d marchi%s  da %s%s%s!",
                   newTags.size(),
+                  (newTags.size() == 1 ? "o" : ""),
                   event.getKillerColor().getAnsiColor(),
                   killerName,
                   ANSIColor.RESET));

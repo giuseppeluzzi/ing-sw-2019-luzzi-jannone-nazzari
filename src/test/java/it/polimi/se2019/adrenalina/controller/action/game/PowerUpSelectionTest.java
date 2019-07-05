@@ -42,6 +42,6 @@ public class PowerUpSelectionTest {
     assertEquals(AmmoColor.BLUE, powerUpSelection.getValidPowerUps(board, true).get(0).getColor());
     assertEquals(AmmoColor.RED, powerUpSelection.getValidPowerUps(board, false).get(0).getColor());
     board.setCurrentPlayer(PlayerColor.YELLOW);
-    assertEquals(AmmoColor.YELLOW, powerUpSelection.getValidPowerUps(board, false).get(0).getColor());
+    assertTrue(powerUpSelection.getValidPowerUps(board, false).isEmpty());
   }
 }
