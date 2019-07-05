@@ -111,6 +111,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
       if (game == null || freeColor == null) {
         game = new BoardController(client.isDomination());
+        game.setAttackController(new AttackController(game));
+        game.setPlayerController(new PlayerController(game));
+        game.setTurnController(new TurnController(game));
+
         Log.info("Created game (domination: " + client.isDomination() + ")");
         games.add(game);
         freeColor = game.getFreePlayerColor();

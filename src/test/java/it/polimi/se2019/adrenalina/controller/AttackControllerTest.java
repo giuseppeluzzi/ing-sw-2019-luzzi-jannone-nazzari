@@ -33,6 +33,7 @@ public class AttackControllerTest {
     } catch (RemoteException ignore) {
       //
     }
+
     player = new Player("test", PlayerColor.GREEN, boardController.getBoard());
     player2 = new Player("test2", PlayerColor.YELLOW, boardController.getBoard());
     weapon = new Weapon(0,0,0,AmmoColor.YELLOW, "test", "q");

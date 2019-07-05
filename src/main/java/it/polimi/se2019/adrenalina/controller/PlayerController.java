@@ -54,7 +54,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
   private final Set<EventType> registeredEvents = new HashSet<>();
 
-  PlayerController(BoardController boardController) throws RemoteException {
+  public PlayerController(BoardController boardController) throws RemoteException {
     // N.B. Sonar incorrectly reports the "throws" clause of this method as redoundant, but it's not.
 
     this.boardController = boardController;

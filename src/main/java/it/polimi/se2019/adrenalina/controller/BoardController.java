@@ -34,9 +34,9 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
 
   private final transient Board board;
 
-  private final TurnController turnController;
-  private final AttackController attackController;
-  private final PlayerController playerController;
+  private TurnController turnController;
+  private AttackController attackController;
+  private PlayerController playerController;
 
   private final transient HashMap<ClientInterface, String> clientsName;
 
@@ -73,10 +73,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     registeredEvents.add(EventType.PLAYER_COLOR_SELECTION_EVENT);
     registeredEvents.add(EventType.BOARD_SKULLS_UPDATE);
 
-    turnController = new TurnController(this);
-    attackController = new AttackController(this);
-    playerController = new PlayerController(this);
-
     loadWeapons();
     loadPowerUps();
     loadMaps();
@@ -98,10 +94,6 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     return board;
   }
 
-  public TurnController getTurnController() {
-    return turnController;
-  }
-
   public Player getPlayer(PlayerColor color) {
     Player player;
     try {
@@ -112,12 +104,28 @@ public class BoardController extends UnicastRemoteObject implements Runnable, Ob
     return player;
   }
 
+  public TurnController getTurnController() {
+    return turnController;
+  }
+
   public AttackController getAttackController() {
     return attackController;
   }
 
   public PlayerController getPlayerController() {
     return playerController;
+  }
+
+  public void setTurnController(TurnController turnController) {
+    this.turnController = turnController;
+  }
+
+  public void setAttackController(AttackController attackController) {
+    this.attackController = attackController;
+  }
+
+  public void setPlayerController(PlayerController playerController) {
+    this.playerController = playerController;
   }
 
   /**

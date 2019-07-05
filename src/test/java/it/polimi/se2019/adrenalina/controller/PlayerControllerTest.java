@@ -2,13 +2,7 @@ package it.polimi.se2019.adrenalina.controller;
 
 import it.polimi.se2019.adrenalina.controller.action.game.TurnAction;
 import it.polimi.se2019.adrenalina.event.Event;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectAmmoEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerCollectWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerDiscardPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPaymentEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerPowerUpEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSwapWeaponEvent;
-import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerUnsuspendEvent;
+import it.polimi.se2019.adrenalina.event.viewcontroller.*;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPlayerException;
 import it.polimi.se2019.adrenalina.exceptions.InvalidPowerUpException;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -29,6 +23,7 @@ import java.rmi.RemoteException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 public class PlayerControllerTest {
 
@@ -39,20 +34,25 @@ public class PlayerControllerTest {
   private Player player2;
   private Player player3;
 
-
   @Before
   public void setBoardController() {
     try {
       boardController = new BoardController(false);
+      playerController = new PlayerController(boardController);
     } catch (RemoteException ignore) {
       //
     }
 
-    turnController = new TurnController(boardController);
+    turnController = spy(new TurnController(boardController));
+    doNothing().when(turnController).executeGameActionQueue();
+    boardController.setTurnController(turnController);
+    boardController.setPlayerController(playerController);
+
 
     player1 = new Player("P1", PlayerColor.GREEN, boardController.getBoard());
     player2 = new Player("P2", PlayerColor.BLUE, boardController.getBoard());
     player3 = new Player("P3", PlayerColor.YELLOW, boardController.getBoard());
+
     try {
       boardController.addPlayer(player1);
       boardController.addPlayer(player2);
@@ -234,5 +234,15 @@ public class PlayerControllerTest {
     player1.addWeapon(new Weapon(0, 0, 0, AmmoColor.BLUE, "test", "f"));
     playerController.update(event);
     assertEquals("L", player1.getWeapons().get(0).getSymbol());
+  }
+
+  @Test
+  public void testPlayerActionSelectionEvent() {
+    for (TurnAction turnAction : TurnAction.values()) {
+      PlayerActionSelectionEvent event = new PlayerActionSelectionEvent(PlayerColor.BLUE, turnAction);
+      turnController.clearActionsQueue();
+      playerController.update(event);
+      assertEquals(playerController.getActions(turnAction, player1).size(), turnController.getActionQueueSize());
+    }
   }
 }
