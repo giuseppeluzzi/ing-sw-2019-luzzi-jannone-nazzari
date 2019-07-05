@@ -64,7 +64,7 @@ public class ExecutableEffect extends GameAction {
 
   void runAction(Board board) {
     try {
-      Log.debug("WA: " + weaponAction.getActionType());
+      Log.debug("WeaponAction: " + weaponAction.getActionType());
       weaponAction.execute(board, executableObject);
       if (executableObject.isWeapon()) {
         handlePowerUps(board);

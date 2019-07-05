@@ -1,6 +1,7 @@
 package it.polimi.se2019.adrenalina.view;
 
 import it.polimi.se2019.adrenalina.controller.BoardStatus;
+import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.event.Event;
 import it.polimi.se2019.adrenalina.event.invocations.TimerSetEvent;
 import it.polimi.se2019.adrenalina.event.modelview.BoardAddPlayerUpdate;
@@ -173,14 +174,7 @@ public abstract class BoardView extends Observable implements BoardViewInterface
    * @see BoardSetSquareUpdate
    */
   public void update(BoardSetSquareUpdate event) {
-    Square square = new Square(event.getPosX(),
-        event.getPosY(),
-        event.getColor(),
-        event.getEdgeUp(),
-        event.getEdgeRight(),
-        event.getEdgeDown(),
-        event.getEdgeLeft(),
-        board);
+    Square square = new Square(event.getPosX(), event.getPosY(), event.getColor(), new BorderType[]{event.getEdgeUp(), event.getEdgeRight(), event.getEdgeDown(), event.getEdgeLeft()}, board);
     if (event.isSpawnPoint()) {
       square.setSpawnPoint(true);
     }

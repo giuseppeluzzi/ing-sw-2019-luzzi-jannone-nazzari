@@ -218,7 +218,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
 
     List<GameAction> actions = getActions(event.getTurnAction(), player);
 
-    if (actions == null) {
+    if (actions.isEmpty()) {
       return;
     }
 
@@ -276,7 +276,7 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
         actions.add(new SelectEffect(player));
         break;
       default:
-        return null;
+        return new ArrayList<>();
     }
     return actions;
   }
@@ -287,7 +287,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
    * @see PlayerDiscardPowerUpEvent
    */
   public void update(PlayerDiscardPowerUpEvent event) {
-    Board board = boardController.getBoard();
     Player player = boardController.getPlayer(event.getPlayerColor());
 
     if (player == null) {
@@ -427,7 +426,6 @@ public class PlayerController extends UnicastRemoteObject implements Observer {
    * @see PlayerUnsuspendEvent
    */
   public void update(PlayerUnsuspendEvent event) {
-    Board board = boardController.getBoard();
     Player player = boardController.getPlayer(event.getPlayerColor());
 
     if (player == null) {

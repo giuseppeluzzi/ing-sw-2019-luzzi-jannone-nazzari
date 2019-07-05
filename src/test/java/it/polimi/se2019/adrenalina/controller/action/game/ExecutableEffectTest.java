@@ -3,10 +3,7 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.*;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.controller.*;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootRoomAction;
 import it.polimi.se2019.adrenalina.controller.action.weapon.ShootSquareAction;
@@ -26,8 +23,8 @@ public class ExecutableEffectTest {
    Player player = new Player("test", PlayerColor.GREEN, null);
    Player player2 = new Player("test2", PlayerColor.GREY, null);
    Player player3 = new Player("test3", PlayerColor.PURPLE, null);
-   Square square  = new Square(2, 2, SquareColor.RED, WALL, WALL, WALL, WALL, null);
-   Square square2 = new Square(2, 3, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+   Square square  = new Square(2, 2, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, null);
+   Square square2 = new Square(2, 3, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, null);
    Weapon weapon = new Weapon(1,0,0, AmmoColor.BLUE,"test","f");
    ExecutableEffect executableEffect = new ExecutableEffect(turnController, player, weapon, new ShootAction(1,1,1, false));
    weapon.setTargetHistory(0,player);

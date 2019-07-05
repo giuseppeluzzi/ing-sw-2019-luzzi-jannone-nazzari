@@ -37,16 +37,6 @@ public abstract class CharactersView extends Observable implements CharactersVie
   }
 
   @Override
-  public void setSelected(PlayerColor playerColor) {
-    // TODO: Show selected player
-  }
-
-  @Override
-  public void removeSelected() {
-    // TODO: Remove selected player
-  }
-
-  @Override
   public abstract void showDeath(PlayerColor playerColor);
 
   /**

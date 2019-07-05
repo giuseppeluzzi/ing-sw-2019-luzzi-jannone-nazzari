@@ -81,7 +81,6 @@ public class GUIPlayerTile implements GUITile {
   @Override
   public void enableTile() {
     playerIconHover.setVisible(false);
-    //playerIcon.removeEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
     playerIcon.getParent().getParent().getParent().getChildrenUnmodifiable().get(1)
         .setVisible(false); // hides hover of the square
   }

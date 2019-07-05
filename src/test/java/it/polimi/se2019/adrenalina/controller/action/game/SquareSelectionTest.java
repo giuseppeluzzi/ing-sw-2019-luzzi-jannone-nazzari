@@ -17,7 +17,7 @@ public class SquareSelectionTest {
   public void testGetTargets() {
     Board board = new Board();
     Player player = new Player("test", PlayerColor.GREEN, board);
-    Square square = new Square(0,0, SquareColor.RED, BorderType.WALL,BorderType.WALL,BorderType.WALL,BorderType.WALL,board);
+    Square square = new Square(0, 0, SquareColor.RED, new BorderType[]{BorderType.WALL, BorderType.WALL, BorderType.WALL, BorderType.WALL}, board);
     board.setSquare(square);
     square.setAmmoCard(new AmmoCard(2,1,0,0));
     player.setSquare(square);

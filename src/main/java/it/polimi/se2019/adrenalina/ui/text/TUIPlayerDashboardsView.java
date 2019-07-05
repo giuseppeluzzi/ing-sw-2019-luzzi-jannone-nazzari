@@ -81,7 +81,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     int answerRed = 0;
     int answerYellow = 0;
     int index = 1;
-    String inputValidationRegex = "^(\\d+(,\\d+)*)?$";
 
     Map<AmmoColor, Integer> costs = new EnumMap<>(AmmoColor.class);
     costs.put(AmmoColor.BLUE, buyableCost.get(AmmoColor.BLUE));
@@ -91,7 +90,6 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
 
     List<Spendable> spendables = Player.setSpendable(budgetPowerUp, budgetAmmo);
     List<PowerUp> answerPowerUp = new ArrayList<>();
-    Set<String> answers = null;
 
     Log.println("Hai a disposizione:");
     for (Spendable match : spendables) {
@@ -121,35 +119,12 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
             prompt)
         );
 
-
-    timer.start(ClientConfig.getInstance().getTurnTimeout(), () -> inputManager.cancel(
-        WAIT_TIMEOUT_MSG));
-
-    String response;
-    do {
-      inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
-      try {
-        response = inputManager.waitForStringResult().replace(" ", "");
-      } catch (InputCancelledException e) {
-        return;
-      }
-
-      answers = new HashSet<>(Arrays.asList(response.split(",")));
-
-      if (!Payment.verifyPaymentAnswers(answers, spendables)) {
-        Log.println("Hai selezionato un'opzione non valida!");
-      } else {
-        if (!Payment.verifyPaymentFullfilled(answers, spendables, costs)) {
-          Log.println("Hai selezionato un'opzione non valida!");
-        }
-      }
-
-    } while (!response.matches(inputValidationRegex)
-        || !Payment.verifyPaymentAnswers(answers, spendables)
-        || !Payment.verifyPaymentFullfilled(answers, spendables, costs)
-    );
-
-    timer.stop();
+    Set<String> answers = null;
+    try {
+      answers = getPaymentInput(spendables, costs);
+    } catch (InputCancelledException e) {
+      return;
+    }
 
     for (String element : answers) {
       if (spendables.get(Integer.parseInt(element) - 1).isPowerUp()) {
@@ -172,6 +147,35 @@ public class TUIPlayerDashboardsView extends PlayerDashboardsView {
     } catch (RemoteException e) {
       Log.exception(e);
     }
+  }
+
+  private Set<String> getPaymentInput(List<Spendable> spendables, Map<AmmoColor, Integer> costs) throws InputCancelledException {
+    String inputValidationRegex = "^(\\d+(,\\d+)*)?$";
+    timer.start(ClientConfig.getInstance().getTurnTimeout(), () -> inputManager.cancel(
+        WAIT_TIMEOUT_MSG));
+    String response;
+    Set<String> answers;
+    do {
+      inputManager.input("Inserisci i numeri delle opzioni scelte separati da una virgola");
+      response = inputManager.waitForStringResult().replace(" ", "");
+
+      answers = new HashSet<>(Arrays.asList(response.split(",")));
+
+      if (!Payment.verifyPaymentAnswers(answers, spendables)) {
+        Log.println("Hai selezionato un'opzione non valida!");
+      } else {
+        if (!Payment.verifyPaymentFullfilled(answers, spendables, costs)) {
+          Log.println("Hai selezionato un'opzione non valida!");
+        }
+      }
+
+    } while (!response.matches(inputValidationRegex)
+        || !Payment.verifyPaymentAnswers(answers, spendables)
+        || !Payment.verifyPaymentFullfilled(answers, spendables, costs)
+    );
+
+    timer.stop();
+    return answers;
   }
 
   /**

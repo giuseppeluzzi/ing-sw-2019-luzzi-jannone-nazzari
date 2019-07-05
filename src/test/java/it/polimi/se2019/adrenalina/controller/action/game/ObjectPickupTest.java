@@ -4,6 +4,7 @@ import static it.polimi.se2019.adrenalina.controller.BorderType.WALL;
 import static org.junit.Assert.*;
 
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
+import it.polimi.se2019.adrenalina.controller.BorderType;
 import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.controller.SquareColor;
 import it.polimi.se2019.adrenalina.model.AmmoCard;
@@ -19,7 +20,7 @@ public class ObjectPickupTest {
   @Test
   public void testGetWeapons() {
     Player player = new Player("test", PlayerColor.GREEN, null);
-    Square square = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, null);
+    Square square = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, null);
     Weapon weapon = new Weapon(0,0,0, AmmoColor.YELLOW, "test", "e");
     Weapon weapon2 = new Weapon(0,0,2, AmmoColor.YELLOW, "test2", "g");
     player.addAmmo(AmmoColor.YELLOW, 1);
@@ -36,7 +37,7 @@ public class ObjectPickupTest {
   public void testFetchAmmoCard() {
     Board board = new Board();
     Player player = new Player("test", PlayerColor.GREEN, board);
-    Square square = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, board);
+    Square square = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, board);
     player.setSquare(square);
     square.setAmmoCard(new AmmoCard(3,0,0,0));
     ObjectPickup objectPickup = new ObjectPickup(player);

@@ -68,7 +68,7 @@ public abstract class PlayerDashboardsView extends Observable implements
       if (!newTags.isEmpty()) {
         String killerName = boardView.getBoard().getPlayerByColor(event.getKillerColor()).getName();
         String playerName = boardView.getBoard().getPlayerByColor(event.getPlayerColor()).getName();
-        Log.debug("Numero di marchi: " + newTags.size());
+        Log.debug("Number of tags: " + newTags.size());
         if (boardView.getClient().getPlayerColor() == event.getPlayerColor()) {
           boardView.getClient().showGameMessage(
               String.format(
@@ -189,7 +189,7 @@ public abstract class PlayerDashboardsView extends Observable implements
    * @see PlayerKillScoreUpdate
    */
   public void update(PlayerKillScoreUpdate event) {
-    Log.debug("entrato nell'evento, killscore:" + event.getKillScore());
+    Log.debug("PlayerKillScoreUpdate, killscore:" + event.getKillScore());
     Player player;
     try {
       player = boardView.getBoard().getPlayerByColor(event.getPlayerColor());

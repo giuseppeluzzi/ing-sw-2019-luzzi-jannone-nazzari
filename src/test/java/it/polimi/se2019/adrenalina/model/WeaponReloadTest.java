@@ -1,10 +1,7 @@
 package it.polimi.se2019.adrenalina.model;
 
-import it.polimi.se2019.adrenalina.controller.AmmoColor;
-import it.polimi.se2019.adrenalina.controller.BoardController;
-import it.polimi.se2019.adrenalina.controller.PlayerColor;
-import it.polimi.se2019.adrenalina.controller.SquareColor;
-import it.polimi.se2019.adrenalina.controller.TurnController;
+import it.polimi.se2019.adrenalina.controller.*;
+
 import java.rmi.RemoteException;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,10 +48,10 @@ public class WeaponReloadTest {
     boardController.getBoard().setCurrentPlayer(PlayerColor.YELLOW);
 
     player.addWeapon(weapon);
-    Square square1 = new Square(0, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
-    Square square2 = new Square(0, 1, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
-    Square square3 = new Square(1, 0, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
-    Square square4 = new Square(1, 1, SquareColor.RED, WALL, WALL, WALL, WALL, boardController.getBoard());
+    Square square1 = new Square(0, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
+    Square square2 = new Square(0, 1, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
+    Square square3 = new Square(1, 0, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
+    Square square4 = new Square(1, 1, SquareColor.RED, new BorderType[]{WALL, WALL, WALL, WALL}, boardController.getBoard());
     square1.setSpawnPoint(true);
     square1.addWeapon(weapon);
     board.setSquare(square1);

@@ -2,6 +2,7 @@ package it.polimi.se2019.adrenalina.controller;
 
 import com.google.gson.Gson;
 import it.polimi.se2019.adrenalina.utils.Constants;
+import it.polimi.se2019.adrenalina.utils.IOUtils;
 import it.polimi.se2019.adrenalina.utils.Log;
 
 import java.io.IOException;
@@ -12,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Application configuration read from external file.
+ * Server specific configuration class
  */
-public class ServerConfig {
+public final class ServerConfig implements Configuration {
 
   private Integer joinTimeout;
   private Integer turnTimeout;
@@ -28,39 +29,67 @@ public class ServerConfig {
   private Integer minNumPlayers;
 
   private static ServerConfig instance = null;
+  private static ServerConfig internalInstance = null;
 
   private ServerConfig() {
     // private constructor
   }
 
-  public static synchronized ServerConfig getInstance() {
-    if (instance == null) {
-      String json = null;
-      Path extFile = Paths.get(Constants.SERVER_CONFIG_FILE);
-      try {
-        json = String.join("\n", Files.readAllLines(extFile));
-      } catch (IOException e) {
-        Log.severe("Configuration file not found!");
-        System.exit(1);
+  public static ServerConfig getInstance() {
+    return getInstance(false);
+  }
+
+  /**
+   * Get configuration instance
+   * @param forceInternal whether the internal configuration file must be used insted of the external one.
+   * @return the singleton instance
+   */
+  public static ServerConfig getInstance(boolean forceInternal) {
+    if (! forceInternal) {
+      if (instance == null) {
+        String json = null;
+        Path extFile = Paths.get(Constants.SERVER_CONFIG_FILE);
+        try {
+          json = String.join("\n", Files.readAllLines(extFile));
+        } catch (IOException e) {
+          Log.severe("Configuration file not found!");
+          System.exit(1);
+        }
+        Gson gson = new Gson();
+        instance = gson.fromJson(json, ServerConfig.class);
       }
-      Gson gson = new Gson();
-      instance = gson.fromJson(json, ServerConfig.class);
+      return instance;
+    } else {
+      if (internalInstance == null) {
+        String json = null;
+        try {
+          json = IOUtils.readResourceFile("server_config.json");
+        } catch (IOException e) {
+          Log.severe("Configuration file not found!");
+          System.exit(1);
+        }
+        Gson gson = new Gson();
+        internalInstance = gson.fromJson(json, ServerConfig.class);
+      }
+      return internalInstance;
     }
-    return instance;
   }
 
   public Integer getJoinTimeout() {
     return joinTimeout;
   }
 
+  @Override
   public Integer getTurnTimeout() {
     return turnTimeout;
   }
 
+  @Override
   public Integer getRmiPort() {
     return rmiPort;
   }
 
+  @Override
   public Integer getSocketPort() {
     return socketPort;
   }
@@ -77,6 +106,7 @@ public class ServerConfig {
     return suspendTimeoutCount;
   }
 
+  @Override
   public Integer getMinNumPlayers() {
     return minNumPlayers;
   }

@@ -35,32 +35,77 @@ public class SelectAction implements WeaponAction {
   private boolean skippable = false;
   private boolean useLastDirection = false;
   private boolean differentRoom = false;
-  private boolean stopPropagation;
-  private boolean disallowSpawnPoint;
+  private boolean stopPropagation = false;
+  private boolean disallowSpawnPoint = false;
   private TargetType selectType = TargetType.ATTACK_TARGET;
   private WeaponActionType type = WeaponActionType.SELECT;
 
-  public SelectAction(int from, int target, int minDistance,
-                      int maxDistance, int[] differentFrom, int[] between,
-                      Boolean visible, boolean optional, boolean useLastDirection,
-                      boolean differentRoom, TargetType selectType, boolean skippable,
-                      boolean stopPropagation, boolean disallowSpawnPoint) {
+  public SelectAction(int from, int target, TargetType selectType) {
 
     this.from = from;
     this.target = target;
-    this.minDistance = minDistance;
-    this.maxDistance = maxDistance;
-    this.differentFrom = differentFrom.clone();
-    this.between = between.clone();
-    this.visible = visible;
-    this.optional = optional;
-    this.skippable = skippable;
-    this.useLastDirection = useLastDirection;
-    this.differentRoom = differentRoom;
     this.selectType = selectType;
-    this.stopPropagation = stopPropagation;
-    this.disallowSpawnPoint = disallowSpawnPoint;
     type = WeaponActionType.SELECT;
+  }
+
+  public SelectAction setMinDistance(int minDistance) {
+    this.minDistance = minDistance;
+    return this;
+  }
+
+  public SelectAction setMaxDistance(int maxDistance) {
+    this.maxDistance = maxDistance;
+    return this;
+  }
+
+  public SelectAction setDifferentFrom(int... differentFrom) {
+    this.differentFrom = differentFrom.clone();
+    return this;
+  }
+
+  public SelectAction setBetween(int... between) {
+    this.between = between.clone();
+    return this;
+  }
+
+  public SelectAction setVisible(Boolean visible) {
+    this.visible = visible;
+    return this;
+  }
+
+  public SelectAction setOptional(boolean optional) {
+    this.optional = optional;
+    return this;
+  }
+
+  public SelectAction setSkippable(boolean skippable) {
+    this.skippable = skippable;
+    return this;
+  }
+
+  public SelectAction setUseLastDirection(boolean useLastDirection) {
+    this.useLastDirection = useLastDirection;
+    return this;
+  }
+
+  public SelectAction setDifferentRoom(boolean differentRoom) {
+    this.differentRoom = differentRoom;
+    return this;
+  }
+
+  public SelectAction setStopPropagation(boolean stopPropagation) {
+    this.stopPropagation = stopPropagation;
+    return this;
+  }
+
+  public SelectAction setDisallowSpawnPoint(boolean disallowSpawnPoint) {
+    this.disallowSpawnPoint = disallowSpawnPoint;
+    return this;
+  }
+
+  public SelectAction setType(WeaponActionType type) {
+    this.type = type;
+    return this;
   }
 
   @Override
@@ -98,6 +143,21 @@ public class SelectAction implements WeaponAction {
 
     List<Target> targets = getTargets(board, object);
 
+    checkTargetsAvailable(object, targets);
+
+    if (!optional || !targets.isEmpty()) {
+      object.setCurrentSelectTargetSlot(target);
+      if (object.getOwner().getClient() != null) {
+        try {
+          object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets, skippable);
+        } catch (RemoteException e) {
+          Log.exception(e);
+        }
+      }
+    }
+  }
+
+  private void checkTargetsAvailable(ExecutableObject object, List<Target> targets) throws NoTargetsExceptionOptional, NoTargetsException {
     if (optional && object.targetHistoryContainsKey(target)) {
       throw new NoTargetsExceptionOptional("Optional SelectAction already used for this target");
     }
@@ -113,17 +173,6 @@ public class SelectAction implements WeaponAction {
     }
     if (!object.getTargetHistory(from).isPlayer() && stopPropagation) {
       throw new NoTargetsExceptionOptional("No propagation allowed");
-    }
-
-    if (!optional || !targets.isEmpty()) {
-      object.setCurrentSelectTargetSlot(target);
-      if (object.getOwner().getClient() != null) {
-        try {
-          object.getOwner().getClient().getBoardView().showTargetSelect(selectType, targets, skippable);
-        } catch (RemoteException e) {
-          Log.exception(e);
-        }
-      }
     }
   }
 

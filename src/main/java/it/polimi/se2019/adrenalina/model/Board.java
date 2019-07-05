@@ -452,7 +452,7 @@ public class Board extends Observable implements Serializable {
    */
   public void addWeapon(Weapon weapon) {
     weapons.add(weapon);
-    //Collections.shuffle(weapons);
+    Collections.shuffle(weapons);
 
     try {
       notifyObservers(new BoardHasWeaponsUpdate(true));

@@ -85,15 +85,15 @@ public class TurnController implements Serializable {
    */
   public void executeGameActionQueue() {
     timer.stop();
-    Log.debug("execute! " + turnActionsQueue.size());
+    Log.debug("Executing GameAction, total: " + turnActionsQueue.size());
     GameAction gameAction = null;
 
     while (!turnActionsQueue.isEmpty()) {
       gameAction = turnActionsQueue.pop();
-      Log.debug("GA: " + gameAction.getClass().getSimpleName());
+      Log.debug("GameAction: " + gameAction.getClass().getSimpleName());
 
       if (gameAction.isSync()) {
-        Log.debug("stooooop");
+        Log.debug("Sync action, waiting for user input");
         break;
       }
       gameAction.execute(boardController.getBoard());
@@ -165,7 +165,7 @@ public class TurnController implements Serializable {
       weapon.reset();
     }
 
-    Log.debug(currentPlayer.getName() + " ha terminato il turno!");
+    Log.debug(currentPlayer.getName() + " ended his turn");
     int currentPlayerIndex = boardController.getBoard().getPlayers().indexOf(currentPlayer);
 
     if (boardController.getBoard().getActivePlayers().size() < ServerConfig.getInstance().getMinNumPlayers()) {
@@ -256,11 +256,6 @@ public class TurnController implements Serializable {
    * @param player the player for which to add a game turn
    */
   private void addGameTurn(Player player) {
-    //CHEAT
-    player.addAmmo(AmmoColor.BLUE, 3);
-    player.addAmmo(AmmoColor.RED, 3);
-    player.addAmmo(AmmoColor.YELLOW, 3);
-    //MUST BE REMOVED
     if (boardController.getBoard().getTurnCounter() == 1) {
       player.addAmmo(AmmoColor.BLUE, 1);
       player.addAmmo(AmmoColor.RED, 1);
@@ -276,9 +271,9 @@ public class TurnController implements Serializable {
         }
 
         for (Player player2 : boardController.getBoard().getPlayers()) {
-          Log.debug("Indice di " + player2.getName() + ": " + boardController.getBoard().getPlayers().indexOf(player2));
+          Log.debug("Index of " + player2.getName() + ": " + boardController.getBoard().getPlayers().indexOf(player2));
         }
-        Log.debug("Indice di " + boardController.getBoard().getFinalFrenzyActivator() + "(attivatore della frenesia): " + getFfActivatorIndex());
+        Log.debug("Index of " + boardController.getBoard().getFinalFrenzyActivator() + "(ff activator): " + getFfActivatorIndex());
         addFinalFrenyTurnActions(player);
       } else {
         addBaseGameTurnActions(player);
