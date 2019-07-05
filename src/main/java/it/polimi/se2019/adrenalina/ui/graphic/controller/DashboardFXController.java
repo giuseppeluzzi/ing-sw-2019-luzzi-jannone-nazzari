@@ -15,6 +15,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public abstract class DashboardFXController {
@@ -50,6 +51,7 @@ public abstract class DashboardFXController {
   public void setPlayerColor(PlayerColor color) {
     playerColor = color;
     updateDashboard(color);
+    getDashboardNameLabel().setFill(Color.web(color.getHexColor()));
   }
 
   public PlayerColor getPlayerColor() {
