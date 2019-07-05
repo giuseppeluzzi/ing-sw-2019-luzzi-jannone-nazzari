@@ -413,6 +413,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Gets a list of players that are not disconnected, or suspended or waiting
+   *
    * @return a list of Player
    */
   public List<Player> getPlayingPlayers() {
@@ -424,16 +425,18 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Gets a list of spawned players
+   *
    * @return a list of Player
    */
   public List<Player> getShootablePlayers() {
     return players.stream()
-        .filter(x ->  x.getStatus() != PlayerStatus.WAITING)
+        .filter(x -> x.getStatus() != PlayerStatus.WAITING)
         .collect(Collectors.toList());
   }
 
   /**
    * Function that tells if any player has died
+   *
    * @return true if it exists, false otherwise
    */
   public boolean existsOverKilledPlayer() {
@@ -475,7 +478,7 @@ public class Board extends Observable implements Serializable {
     takenWeapons.add(weapon);
 
     try {
-      notifyObservers(new BoardHasWeaponsUpdate(! weapons.isEmpty()));
+      notifyObservers(new BoardHasWeaponsUpdate(!weapons.isEmpty()));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -601,7 +604,7 @@ public class Board extends Observable implements Serializable {
     takenAmmoCards.add(ammoCard);
 
     try {
-      notifyObservers(new BoardHasAmmoCardsUpdate(! ammoCards.isEmpty()));
+      notifyObservers(new BoardHasAmmoCardsUpdate(!ammoCards.isEmpty()));
     } catch (RemoteException e) {
       Log.exception(e);
     }
@@ -877,6 +880,7 @@ public class Board extends Observable implements Serializable {
 
   /**
    * Returns the number of players killed this turn
+   *
    * @return number of player
    */
   public int getTurnKillShots() {
