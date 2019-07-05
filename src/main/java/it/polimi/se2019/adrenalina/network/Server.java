@@ -229,13 +229,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
   }
 
   /**
-   * Stops the server pinging.
-   */
-  private void stopPinging() {
-    running = false;
-  }
-
-  /**
    * Called on client disconnection.
    * @param client disconnected client
    */
@@ -257,5 +250,15 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
       }
     }
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    return object instanceof Server;
+  }
+
+  @Override
+  public int hashCode() {
+    return games.hashCode();
   }
 }
