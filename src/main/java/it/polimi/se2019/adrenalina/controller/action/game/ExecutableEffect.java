@@ -102,7 +102,7 @@ public class ExecutableEffect extends GameAction {
                       false, true));
       getTurnController().addTurnActions(
               new PowerUpSelection(getTurnController(), player,
-                      getPlayer(), false, false));
+                      getPlayer(), false, false, player.getSquare().isVisible(getPlayer().getSquare())));
     }
   }
 
@@ -157,6 +157,7 @@ public class ExecutableEffect extends GameAction {
     }
 
     if (((ShootAction) weaponAction).getDamages() > 0) {
+
       getTurnController().addTurnActions(
               new PowerUpSelection(getTurnController(), getPlayer(), target,
                       false, true));
@@ -165,7 +166,7 @@ public class ExecutableEffect extends GameAction {
           && ((Player) target).getStatus() != PlayerStatus.SUSPENDED) {
         getTurnController().addTurnActions(
                 new PowerUpSelection(getTurnController(), target.getPlayer(),
-                        getPlayer(), false, false));
+                        getPlayer(), false, false, target.getSquare().isVisible(getPlayer().getSquare())));
       }
     }
     ((Weapon) executableObject).setLoaded(false);
