@@ -94,21 +94,24 @@ public class ExecutableEffect extends GameAction {
     }
   }
 
+  private void addPowerUps(Player player) {
+    if (player.getStatus() != PlayerStatus.DISCONNECTED
+            && player.getStatus() != PlayerStatus.SUSPENDED) {
+      getTurnController().addTurnActions(
+              new PowerUpSelection(getTurnController(), getPlayer(), player,
+                      false, true));
+      getTurnController().addTurnActions(
+              new PowerUpSelection(getTurnController(), player,
+                      getPlayer(), false, false));
+    }
+  }
+
   private void handleRoomShoot(Board board) {
     if (((ShootAction) weaponAction).getDamages() > 0) {
       List<Player> roomPlayers = ((ShootRoomAction) weaponAction).getPlayers(board, executableObject);
       roomPlayers.remove(executableObject.getOwner());
       for (Player player : roomPlayers) {
-
-        if (player.getStatus() != PlayerStatus.DISCONNECTED
-            && player.getStatus() != PlayerStatus.SUSPENDED) {
-          getTurnController().addTurnActions(
-              new PowerUpSelection(getTurnController(), getPlayer(), player,
-                  false, true));
-          getTurnController().addTurnActions(
-              new PowerUpSelection(getTurnController(), player,
-                  getPlayer(), false, false));
-        }
+        addPowerUps(player);
       }
       if (board.isDominationBoard()) {
         getTurnController().addTurnActions(
@@ -129,15 +132,7 @@ public class ExecutableEffect extends GameAction {
       squarePlayers.remove(executableObject.getOwner());
 
       for (Player player : squarePlayers) {
-        if (player.getStatus() != PlayerStatus.DISCONNECTED
-            && player.getStatus() != PlayerStatus.SUSPENDED) {
-          getTurnController().addTurnActions(
-              new PowerUpSelection(getTurnController(), getPlayer(),
-                  player, false, true));
-          getTurnController().addTurnActions(
-              new PowerUpSelection(getTurnController(), player,
-                  getPlayer(), false, false));
-        }
+        addPowerUps(player);
       }
 
       if (board.isDominationBoard() && getPlayer().getSquare().isSpawnPoint()) {
