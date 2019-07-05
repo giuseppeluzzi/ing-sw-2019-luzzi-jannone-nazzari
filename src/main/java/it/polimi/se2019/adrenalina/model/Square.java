@@ -316,6 +316,7 @@ public class Square extends Observable implements Target {
    * Calculate the cardinal direction between two squares.
    * @param square another square
    * @return direction between the squares, null if the input is the same square as this
+   * @throws InvalidSquareException thrown if the square is not on a cardinal direction
    */
   public Direction getCardinalDirection(Square square) throws InvalidSquareException {
     int diffX = square.posX - posX;

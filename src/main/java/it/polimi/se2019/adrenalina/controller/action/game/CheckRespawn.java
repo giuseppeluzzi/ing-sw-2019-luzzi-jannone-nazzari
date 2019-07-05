@@ -76,6 +76,7 @@ public class CheckRespawn extends GameActionAsync {
   /**
    * Adds damages for players who stay alone on a spawnPoint in domination mode.
    * @param currentPlayer the considered player
+   * @param board the game board
    */
   private void addDominationDamages(Player currentPlayer, Board board) {
     if (currentPlayer.getSquare().getPlayers().size() == 1) {

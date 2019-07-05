@@ -369,6 +369,7 @@ public class Player extends Observable implements Target {
 
   /**
    * Handles the case when the last skull is taken.
+   * @param finalFrenzyActivator the color of the player who activated Final Frenzy
    */
   private void handleLastSkull(PlayerColor finalFrenzyActivator) {
     board.setSkulls(0);

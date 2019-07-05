@@ -132,6 +132,7 @@ public class TurnController implements Serializable {
 
   /**
    * @see #addTurnActions(List)
+   * @param gameActions the game actions to add
    */
   public void addTurnActions(GameAction... gameActions) {
     addTurnActions(Arrays.asList(gameActions));

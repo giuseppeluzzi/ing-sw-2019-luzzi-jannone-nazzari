@@ -58,6 +58,7 @@ public class TUIUtils {
 
   /**
    * AmmoColor selection prompt
+   * @param damages the amount of damages of each spawnpoint
    * @return the chosen ammoColor
    * @throws InputCancelledException thrown if the user's input is cancelled
    */
