@@ -23,6 +23,7 @@ public class PowerUpSelection extends GameAction {
 
   private final boolean discard;
   private final boolean attack;
+  private final boolean visible;
   private final Target target;
 
   public PowerUpSelection(TurnController turnController, Player player, Target target, boolean discard, boolean attack) {
@@ -30,6 +31,16 @@ public class PowerUpSelection extends GameAction {
     this.discard = discard;
     this.attack = attack;
     this.target = target;
+    this.visible = false;
+  }
+
+
+  public PowerUpSelection(TurnController turnController, Player player, Target target, boolean discard, boolean attack, boolean isVisible) {
+    super(turnController, player);
+    this.discard = discard;
+    this.attack = attack;
+    this.target = target;
+    this.visible = isVisible;
   }
 
   /**
@@ -103,7 +114,9 @@ public class PowerUpSelection extends GameAction {
         powerUps.addAll(getNotAttackPowerUps(board));
       }
     } else {
-      powerUps.addAll(getGranades());
+      if (visible) {
+        powerUps.addAll(getGranades());
+      }
     }
 
     return powerUps;
