@@ -15,8 +15,6 @@ import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Square;
 import it.polimi.se2019.adrenalina.model.Target;
 import it.polimi.se2019.adrenalina.model.Weapon;
-import it.polimi.se2019.adrenalina.network.Client;
-import it.polimi.se2019.adrenalina.network.ClientSocket;
 import it.polimi.se2019.adrenalina.network.VirtualClientSocket;
 import it.polimi.se2019.adrenalina.utils.Log;
 import it.polimi.se2019.adrenalina.utils.Observable;

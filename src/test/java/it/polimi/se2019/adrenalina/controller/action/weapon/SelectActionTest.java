@@ -159,6 +159,7 @@ public class SelectActionTest {
         .setSkippable(true);
     weapon1.setTargetHistory(1, square);
     action.execute(board, weapon1);
+    assertEquals(weapon1.getOwner(), weapon1.getTargetHistory(0));
   }
 
   @Test
@@ -170,6 +171,7 @@ public class SelectActionTest {
         .setSkippable(true);
     weapon1.setTargetHistory(1, square);
     action.execute(board, weapon1);
+    assertEquals(weapon1.getOwner(), weapon1.getTargetHistory(0));
   }
 }
 

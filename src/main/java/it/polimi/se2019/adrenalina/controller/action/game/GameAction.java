@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.controller.action.game;
 import it.polimi.se2019.adrenalina.controller.TurnController;
 import it.polimi.se2019.adrenalina.model.Board;
 import it.polimi.se2019.adrenalina.model.Player;
-import it.polimi.se2019.adrenalina.utils.Log;
 
 /**
  * Generic game action that will be executed during a player's turn.

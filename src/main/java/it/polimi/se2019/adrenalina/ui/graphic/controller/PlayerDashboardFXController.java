@@ -8,7 +8,6 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEvent;
 import it.polimi.se2019.adrenalina.model.PowerUp;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.List;
 import javafx.application.Platform;

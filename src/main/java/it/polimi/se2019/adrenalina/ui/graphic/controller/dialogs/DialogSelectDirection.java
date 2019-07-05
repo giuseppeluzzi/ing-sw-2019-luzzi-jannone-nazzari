@@ -5,7 +5,6 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SelectDirectionEvent;
 import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

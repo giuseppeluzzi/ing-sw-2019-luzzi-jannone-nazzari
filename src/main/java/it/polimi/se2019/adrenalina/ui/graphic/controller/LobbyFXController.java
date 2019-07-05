@@ -8,7 +8,6 @@ import it.polimi.se2019.adrenalina.event.viewcontroller.MapSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.ui.graphic.GUITimer;
 import it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs.DialogChangePlayerColor;
-import it.polimi.se2019.adrenalina.ui.text.TUITimer;
 import it.polimi.se2019.adrenalina.utils.Log;
 import java.rmi.RemoteException;
 import javafx.application.Platform;

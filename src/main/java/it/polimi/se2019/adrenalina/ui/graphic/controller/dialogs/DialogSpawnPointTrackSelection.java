@@ -4,7 +4,6 @@ import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.controller.AmmoColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.SpawnPointDamageEvent;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import javafx.css.Styleable;
 import javafx.fxml.FXML;

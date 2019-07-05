@@ -11,7 +11,6 @@ import it.polimi.se2019.adrenalina.exceptions.InvalidSquareException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsException;
 import it.polimi.se2019.adrenalina.exceptions.NoTargetsExceptionOptional;
 import it.polimi.se2019.adrenalina.model.Board;
-import it.polimi.se2019.adrenalina.model.Direction;
 import it.polimi.se2019.adrenalina.model.ExecutableObject;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.model.Target;

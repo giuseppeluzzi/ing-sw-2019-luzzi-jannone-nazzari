@@ -4,7 +4,6 @@ import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerReloadEvent;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;

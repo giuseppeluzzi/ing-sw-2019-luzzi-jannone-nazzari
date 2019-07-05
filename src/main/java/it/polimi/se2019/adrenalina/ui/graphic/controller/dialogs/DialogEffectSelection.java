@@ -6,7 +6,6 @@ import it.polimi.se2019.adrenalina.controller.Effect;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerSelectWeaponEffectEvent;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -5,7 +5,6 @@ import it.polimi.se2019.adrenalina.controller.PlayerColor;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerColorSelectionEvent;
 import it.polimi.se2019.adrenalina.model.Player;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;

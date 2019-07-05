@@ -3,7 +3,6 @@ package it.polimi.se2019.adrenalina.ui.graphic.controller.dialogs;
 import it.polimi.se2019.adrenalina.AppGUI;
 import it.polimi.se2019.adrenalina.event.viewcontroller.PlayerUnsuspendEvent;
 import it.polimi.se2019.adrenalina.utils.Log;
-import it.polimi.se2019.adrenalina.view.BoardView;
 import java.rmi.RemoteException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
