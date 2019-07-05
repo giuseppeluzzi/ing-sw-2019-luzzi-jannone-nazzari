@@ -15,14 +15,14 @@ import it.polimi.se2019.adrenalina.model.TagbackGrenade;
 import it.polimi.se2019.adrenalina.model.Weapon;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.polimi.se2019.adrenalina.network.Client;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.rmi.RemoteException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class PlayerControllerTest {
@@ -240,6 +240,72 @@ public class PlayerControllerTest {
       turnController.clearActionsQueue();
       playerController.update(event);
       assertEquals(playerController.getActions(turnAction, player1).size(), turnController.getActionQueueSize());
+    }
+  }
+
+  @Test
+  public void testPlayerSelectWeaponEffect() {
+    List<String> effects = new ArrayList<>();
+    effects.add("testEffect");
+    PlayerSelectWeaponEffectEvent event = new PlayerSelectWeaponEffectEvent(PlayerColor.GREEN, "test", effects);
+    Weapon weapon = new Weapon(0,0,0,AmmoColor.BLUE, "test", "f");
+    weapon.addEffect(new Effect("testEffect", weapon, 1,0,0,false));
+    player1.addWeapon(weapon);
+
+    boardController.getBoard().addWeapon(weapon);
+    playerController.update(event);
+    assertEquals(1, turnController.getActionQueueSize());
+  }
+
+  @Test
+  public void testSendMessageAllClient() {
+    player1.setClient(new FakeClient(player1.getName(), false, true, player1.getColor()));
+    player2.setClient(new FakeClient(player2.getName(), false, true, player2.getColor()));
+    player3.setClient(new FakeClient(player3.getName(), false, true, player3.getColor()));
+    PlayerController.sendMessageAllClients(player3, "prova", boardController.getBoard());
+    assertTrue(((FakeClient) player1.getClient()).received);
+    assertTrue(((FakeClient) player2.getClient()).received);
+    assertFalse(((FakeClient) player3.getClient()).received);
+  }
+
+  @Test
+  public void testPlayerSelectWeaponEvent() {
+    PlayerSelectWeaponEvent event = new PlayerSelectWeaponEvent(PlayerColor.GREEN, "test");
+    Weapon weapon = new Weapon(0,0,0,AmmoColor.BLUE, "test", "f");
+    player1.addWeapon(weapon);
+    boardController.getBoard().addWeapon(weapon);
+    playerController.update(event);
+    assertEquals(weapon, player1.getCurrentExecutable());
+
+  }
+  private class FakeClient extends Client {
+    private boolean received;
+    private PlayerColor color;
+
+    protected FakeClient(String playerName, boolean domination, boolean tui, PlayerColor color) {
+      super(playerName, domination, tui);
+      received = false;
+      this.color = color;
+    }
+
+    public boolean isReceived() {
+      return received;
+    }
+
+    public void setReceived(boolean received) {
+      this.received = received;
+    }
+
+    public void showMessage(MessageSeverity messageSeverity, String message) {
+      received = true;
+    }
+
+    public void showGameMessage(String message) {
+      received = true;
+    }
+
+    public PlayerColor getPlayerColor() {
+      return color;
     }
   }
 }
